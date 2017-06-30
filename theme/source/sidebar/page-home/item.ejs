@@ -1,0 +1,15 @@
+<%
+var clickAttr = href || click;
+if(href && target){
+  clickAttr += ' target="'+target+'"';
+}
+%>
+
+<md-list-item <%-clickAttr%> class="md-no-sticky" layout="row">
+  <%if(item.icon){%>
+    <md-icon  md-svg-icon="<%-get_icon(item.icon)%>"></md-icon>
+    <%}%>
+    <span><%-item_title%></span>
+    <span flex></span>
+    <md-icon class="expander" md-svg-icon="<%-get_icon('material/keyboard-arrow-right')%>"></md-icon>
+</md-list-item>

@@ -1,0 +1,38 @@
+{
+    "name": "App_Page",
+    "plural": "App_Pages",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {},
+    "properties": {
+        "title": {
+            "type": "Object",
+            "required": true
+        },
+        "description": {
+            "type": "Object",
+            "required": false
+        },
+        "template": {
+            "type": "String",
+            "required": true
+        },
+        "path": {
+            "type": "String",
+            "required": true
+        }
+    },
+    "validations": [],
+    "acls": [{
+        "accessType": "*",
+        "principalType": "ROLE",
+        "principalId": "$everyone",
+        "permission": "DENY"
+    }, {
+        "accessType": "EXECUTE",
+        "principalType": "ROLE",
+        "principalId": "editor",
+        "permission": "ALLOW"
+    }],
+    "methods": {}
+}

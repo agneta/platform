@@ -1,0 +1,139 @@
+div[ng-controller=HistoryCtrl] {
+  agneta-chart-feed{
+    padding: 13px 0;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 4px;
+  }
+}
+
+md-dialog.activity{
+  width: 100%;
+  .md-list-item-text.first{
+    padding-left: 10px;
+  }
+
+  .CodeMirror{
+    height: 100%;
+  }
+}
+md-dialog.activities{
+  width: 100%;
+  md-content{
+    min-height: 300px;
+  }
+  md-list-item{
+        padding: 10px 0;
+    p{
+      margin: 0;
+    }
+    .title{
+      font-weight: bold;
+        font-size: 1.2em;
+        text-transform: capitalize;
+    }
+    .subtitle{
+      font-size: 0.85;
+    }
+    .header{
+      margin-bottom: 10px;
+    }
+    .path{
+      color: grey;
+      font-size: 0.9em;
+    }
+    .date{
+      text-align: right;
+    }
+    .md-list-item-text{
+      line-height: initial;
+    }
+  }
+}
+
+md-sidenav md-list-item{
+  &.active{
+    background: color-primary;
+    color: white;
+    md-icon{
+      color: white !important;
+    }
+  }
+}
+
+.page-manager-history{
+
+  .feed-message{
+    text-align: center;
+    margin: 40px 10px;
+
+    .title{
+      font-size: 2.2em;
+      color: color-primary;
+    }
+
+    md-icon{
+      width: 130px;
+      height: 130px;
+      color: alpha(color-primary,0.4);
+    }
+  }
+
+  .feed-list{
+    .feed-color{
+      width: 30px;
+      height: 30px;
+      border-radius: 100%;
+      margin-right: 10px;
+      border: solid 3px white;
+    }
+    md-list-item{
+
+      border-top: solid 1px color-border;
+
+      &:last-child{
+        border-bottom: solid 1px color-border;
+      }
+
+      &.selected{
+        background: color-primary;
+        color: white;
+      }
+      .md-list-item-text{
+        line-height: initial;
+      }
+      p{
+        margin: 0;
+      }
+      .title{
+        font-weight: bold;
+      }
+      .subtitle{
+        font-size: 0.85em
+        }
+      }
+      .selections{
+        md-icon{
+          color: white;
+        }
+      }
+    }
+
+    .tools{
+      background-color: color-grey;
+      .dropdown{
+        margin-left: 4px;
+        label{
+          color: color-primary;
+          font-weight: bold;
+        }
+        md-select{
+          margin-top: 4px;
+        }
+      }
+    }
+
+    md-select{
+      margin: 0;
+    }
+
+  }

@@ -1,0 +1,12 @@
+<%-template('form/description')%>
+<div layout="row" layout-align="end center">
+  <md-input-container flex md-no-float class="md-block">
+<%if(field.title){%>
+<p><%-lng(field.title)%></p>
+<%}%>
+<%-template('form/icon')%>
+<input ng-model="<%-field.model%>" aria-label="<%-field.name%>" name="<%-field.name%>" type="<%-field.type%>" <%-formValidators(field)%> <%-field.attr%>>
+<%-template('form/messages')%>
+</md-input-container>
+<%-template('form/postfix')%>
+</div>

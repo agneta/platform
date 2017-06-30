@@ -1,0 +1,12 @@
+<md-input-container md-no-float class="md-block">
+  <%-template('form/title')%>
+  <%-template('form/icon')%>
+  <textarea
+  ng-model="<%-field.model%>"
+  name="<%-field.name%>"
+  rows="<%-field.rows%>"
+  <%-formValidators(field)%>
+  md-select-on-focus>
+</textarea>
+<%-template('form/messages')%>
+</md-input-container>

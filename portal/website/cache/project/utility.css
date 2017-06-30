@@ -1,0 +1,68 @@
+.page-utility .summary .icon {
+  width: 80px;
+  height: 80px;
+  color: #2196f3;
+  padding-right: 0;
+}
+.page-utility .summary md-card-title-text {
+  color: #2196f3;
+}
+.page-utility .toolbar .parameters {
+  background: #f9fafb;
+  border-radius: 7px;
+  padding: 0 10px;
+}
+.page-utility .toolbar .parameters .parameter .title {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+.page-utility .log md-virtual-repeat-container {
+  height: 400px;
+}
+.page-utility .log .line.error {
+  color: #e80000;
+}
+.page-utility .log .line.error md-icon {
+  color: #e80000;
+}
+.page-utility .log .line.error .icons {
+  border-color: #e80000;
+}
+.page-utility .log .line.success {
+  color: #17a201;
+}
+.page-utility .log .line.success md-icon {
+  color: #17a201;
+}
+.page-utility .log .line.success .icons {
+  border-color: #17a201;
+}
+.page-utility .log .line .message {
+  white-space: pre;
+}
+.page-utility .log .line .icons {
+  width: 25px;
+  border-right: solid 3px transparent;
+  padding-right: 3px;
+  margin-right: 6px;
+}
+.page-utility .progress-bar .title {
+  font-weight: bold;
+  font-size: 18px;
+}
+.page-utility .progress-bar .current {
+  color: #808080;
+  font-size: 13px;
+}
+.page-utility .progress-bar md-icon {
+  margin-right: 10px;
+  height: 40px;
+  width: 40px;
+}
+.page-utility .progress-bar md-icon.complete {
+  color: #008000;
+}
+.page-utility .progress-bar.complete md-progress-linear .md-bar {
+  background-color: #008000;
+}

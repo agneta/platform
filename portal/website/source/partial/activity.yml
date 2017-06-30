@@ -1,0 +1,45 @@
+scripts:
+  - 'manager/history/activity'
+  - 'lib/ua-parser.min'
+  - 'lib/editor/codemirror'
+  - 'lib/editor/javascript'
+styles:
+  - 'lib/editor/codemirror'
+  - 'lib/editor/monokai'
+
+request:
+  -
+    name: path
+    title:
+      en: 'Path'
+    icon: 'material/trending-flat'
+  -
+    name: browser
+    title:
+      en: 'Browser'
+    icon: 'material/language'
+  -
+    name: device
+    title:
+      en: 'Device'
+    icon: 'material/computer'
+  -
+    name: os
+    title:
+      en: 'Operating System'
+    icon: 'material/web-asset'
+  -
+    name: ip
+    title:
+      en: 'IP'
+    icon: 'material/settings-input-antenna'
+  -
+    name: protocol
+    title:
+      en: 'Protocol'
+    icon: 'material/settings-input-svideo'
+  -
+    name: method
+    title:
+      en: 'Method'
+    icon: 'material/swap-horiz'

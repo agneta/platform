@@ -1,0 +1,35 @@
+<%
+var toolbar = config.toolbar || {};
+%>
+
+<md-button ng-href="<%-get_path('/')%>" hide show-gt-xs>
+  <%
+  var attr = '';
+  if(toolbar.image){
+  attr +=  'style="background-image:url('+get_media(toolbar.image)+')"';
+  }%>
+  <div class="brand" <%-attr%> layout="row" layout-align="left center">
+  <%if(toolbar.icon){%>
+  <md-icon class="icon" md-svg-src="<%-get_media(toolbar.icon)%>"></md-icon>
+  <%}%>
+  <%if(toolbar.title){%>
+  <h2 class="title"><%-lng(config.title)%></h2>
+  <%}%>
+</div>
+</md-button>
+
+<%if(config.menu.side){%>
+<md-button ng-click="toggleMenu()" ng-show="hasSidebar&&!menuLock()" aria-label="<%-lng('general.menu')%>" class="md-primary">
+<md-icon md-svg-src=<%-get_icon('material/menu')%>></md-icon>
+<span><%-lng('general.menu')%></span>
+</md-button>
+<%}%>
+
+<%-template('ui/button',{
+title:lng('general.options'),
+click:'sidebarToggle()',
+noInk: true,
+extraAttrs: 'ng-class="{show:showSidebarToggler()}"',
+extraClass: 'hidden sidebar-toggle',
+icon:"material/view-agenda"
+})%>

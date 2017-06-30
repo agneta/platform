@@ -1,0 +1,14 @@
+<script type="text/ng-template" id="upload-template.html">
+
+  <md-toast>
+    <span class="md-toast-text" flex>{{f.name}}</span>
+    <div class="progress" ng-show="f.progress >= 0">
+      <div style="width:{{f.progress}}%"
+      ng-bind="f.progress + '%'"></div>
+    </div>
+    <md-button ng-click="closeToast()">
+      Close
+    </md-button>
+  </md-toast>
+
+</script>

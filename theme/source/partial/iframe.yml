@@ -1,0 +1,7 @@
+controller: 'ModalFrame'
+
+scripts:
+  - partial/iframe
+
+styles:
+  - partial/iframe

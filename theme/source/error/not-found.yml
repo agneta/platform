@@ -1,0 +1,10 @@
+title:
+  en: 'Not found'
+  gr: 'Δε βρέθηκε'
+description:
+  gr: 'Δεν μπορέσαμε να εντοπίσουμε τη σελίδα που ψάχνετε. Μπορείτε να χρησιμοποιήσετε τη γραμμή αναζήτησης παραπάνω για να βρείτε τη σελίδα ή να περιηγηθείτε μέσα από το μενού μας.'
+  en: 'We could not locate the page you are looking for. You can use the search bar above to find the page or navigate through our menu.'
+
+
+template: 'error/not-found'
+searchDisabled: true

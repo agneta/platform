@@ -1,0 +1,26 @@
+<md-content class="md-padding">
+  <%
+
+  var options = [];
+  for(var option of options){
+    var form =
+    {
+      name: option.name,
+      onSubmit: "send('"+option.name+"')",
+      fields:option.fields
+    };
+    %>
+    <div ng-show="selected=='<%-option.name%>'">
+    <h3 align="center"><%-lng(option.title)%></h3>
+    <%-template('form',{form:form})%>
+    <div layout="row">
+    <span flex></span>
+    <md-button ng-click="send('<%-option.name%>')" ng-disabled="<%-option.name%>.$invalid" md-autofocus class="md-raised md-primary">
+      <%-lng('general.send')%>
+    </md-button>
+    </div>
+    </div>
+
+    <%}%>
+
+  </md-content>

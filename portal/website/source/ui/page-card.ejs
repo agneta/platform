@@ -1,0 +1,76 @@
+<div class="page-card" flex="100" flex-gt-sm="50" class="page-card" layout="column">
+  <div class="container">
+  <%
+  var item = _.extend({},data);
+  if(data.page){
+    item = _.extend(data,get_page(data.page));
+  }
+  var url = item.href_full;
+  var itemAttr = '';
+
+  if(item.href_full){
+    itemAttr = 'target="_blank"';
+}
+
+  if(!url && item.path){
+    url = get_path(item.path);
+  }
+  %>
+   <div class="header" layout="row">
+     <%if(item.icon){%>
+     <div>
+       <md-icon class="card-icon" md-svg-src="<%-get_icon(item.icon)%>">
+       </md-icon>
+     </div>
+     <%}%>
+     <div layout="column">
+       <a <%-itemAttr%> ng-href="<%-url%>">
+       <span class="md-headline"><%-lng(item.title)%></span>
+     </a>
+       <span class="md-subhead"><%-lng(item.description)%></span>
+     </div>
+   </div>
+   <div layout="column">
+   <%if(data.menu){
+   for(var option of data.menu){
+     if(option.page){
+       option = get_page(option.page);
+     }
+
+     var optionURL = null;
+     var optionAttr = '';
+
+     if(option.href_full){
+       optionURL = option.href_full;
+       optionAttr = 'target="_blank"';
+   }
+
+   if(!optionURL){
+     optionURL = option.path && get_path(option);
+   }
+
+     %>
+     <div class="menu">
+     <%if(optionURL){%>
+     <md-list-item <%-optionAttr%> ng-href="<%-optionURL%>" >
+     <%if(option.icon){%>
+       <md-icon md-svg-src="<%-get_icon(option.icon)%>"></md-icon>
+       <%}%>
+     <span><%-lng(option.title)%></span>
+     </md-list-item>
+     <%}else{%>
+       <span><%-lng(option.title)%></span>
+     <%}%>
+     </div>
+     <%}}%>
+   </div>
+     <span flex="auto"></span>
+   <div layout="row" layout-align="end center">
+     <md-button class="md-primary" <%-itemAttr%> ng-href="<%-url%>" >
+     <md-icon md-svg-src="<%-get_icon('material/add')%>">
+     </md-icon>
+     <span>More</span>
+     </md-button>
+ </div>
+ </div>
+ </div>

@@ -1,0 +1,30 @@
+title:
+  en: Push Changes
+
+message:
+  en: You are about to commit the following changes and push them to a central repository.
+
+noChanges:
+  en: 'No changes were made to your project. Nothing to push.'
+
+class: push-changes
+
+action:
+  submit:
+    en: 'Push'
+
+form:
+  name: 'formSubmit'
+  onSubmit: 'submit()'
+  fields:
+    -
+      name: message
+      title:
+        en: Describe your changes
+        gr: Περιγράψτε τις αλλαγές σας
+      type: text
+      group: input
+      validators:
+        minlength: '4'
+        maxlength: '50'
+        required: true

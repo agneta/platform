@@ -1,0 +1,46 @@
+minselect:
+  en: Must select at least <%-value%>.
+  gr: Πρέπει να επιλέξετε τουλάχιστον <%-value%>.
+maxselect:
+  en: Selections must not be more than <%-value%>
+  gr: Οι επιλογές δεν πρέπει να είναι περισσότερο από <%-value%>.
+minlength:
+  en: Must be at least <%-value%> characters long.
+  gr: Πρέπει να έχει μήκος τουλάχιστον <%-value%> χαρακτήρες.
+maxlength:
+  en: Must not be more than <%-value%> characters long.
+  gr: Δεν πρέπει να είναι περισσότερο από <%-value%> χαρακτήρες.
+required:
+  en: This field is required.
+  gr: Αυτό το πεδίο απαιτείται.
+phone:
+  pattern: "^\\+?(?:[0-9] ?){6,14}[0-9]$"
+  en: The phone number is invalid
+  gr: Ο αριθμός τηλεφώνου δεν είναι έγκυρος
+website:
+  pattern: '[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)'
+  en: Not a valid website
+  gr: Δεν είναι έγκυρη η ιστοσελίδα
+zip_code:
+  pattern: "^[0-9]+$"
+  en: Not a valid zip code
+  gr: Δεν είναι έγκυρος ο ταχυδρομικός κώδικας
+email:
+  pattern: "^.+@.+\\..+$"
+  en: Does not look like an e-mail address.
+  gr: Δεν μοιάζει με διεύθυνση e-mail.
+username:
+  pattern: "^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$"
+  en: Invalid username.
+  gr: Μη έγκυρο όνομα χρήστη.
+full_name:
+  pattern: "^[A-ZA-zΑ-Ωα-ωίϊΐόάέύϋΰήώ .'-]+$"
+  en: Should contain only letters.
+  gr: Θα πρέπει να περιέχει μόνο γράμματα.
+name:
+  pattern: "^[A-ZA-zΑ-Ωα-ωίϊΐόάέύϋΰήώ]*$"
+  en: Should contain only letters.
+  gr: Θα πρέπει να περιέχει μόνο γράμματα.
+compareTo:
+  en: Must match the previous entry
+  gr: Πρέπει να ταιριάζει με την προηγούμενη καταχώρηση

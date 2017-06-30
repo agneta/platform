@@ -1,0 +1,27 @@
+<md-whiteframe class="md-whiteframe-1dp activities section" layout="column">
+        <div class="md-padding header" layout-align="left center" layout="row">
+            <h3 class="title">Activities</h3>
+        </div>
+        <md-divider></md-divider>
+    <md-list>
+        <div ng-repeat="activity in activities" ng-init="action=activity.action">
+            <md-list-item class="activity" layout="row" layout-align="start center">
+              <md-icon ng-if="action.icon" md-svg-src="{{get_icon(action.icon)}}">
+              </md-icon>
+            <div layout="column">
+              <h4>
+                {{activity.count}} {{action.title || action.type}}
+            </h4>
+            <p>
+              {{action.title?action.subtitle:action.value}}
+            </p>
+          </div>
+            <span flex="auto"></span>
+            <div layout="column" class="date" layout-margin>
+              <span am-time-ago="activity.time"></span>
+              <span>{{activity.time | amUtc | amLocal | amDateFormat:'DD MMMM YYYY HH:mm:ss'}}</span>
+            </div>
+            </md-list-item>
+        </div>
+    </md-list>
+</md-whiteframe>

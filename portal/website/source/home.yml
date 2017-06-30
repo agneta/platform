@@ -1,0 +1,6 @@
+template: 'home'
+title:
+  en: 'Home'
+  gr: 'Αρχική'
+
+path: '/'

@@ -1,0 +1,77 @@
+#-----------------------------------------------
+
+title:
+  en: 'Portal'
+  gr: 'Δικτυακή Πύλη'
+subtitle:
+  gr: "All tools in one place"
+
+#-----------------------------------------------
+
+sync: false
+contact: false
+search: false
+cookies: false
+footer: false
+languages_toolbar: true
+services: true
+lockSidebar: false
+menu:
+  side: true
+  top: false
+
+#-----------------------------------------------
+
+toolbar:
+  image: false
+  icon: 'icons/agneta/logo'
+  title: true
+
+#-----------------------------------------------
+
+recaptcha_key: ''
+gmaps_key: ''
+disqus_shortname: ''
+google_analytics: ''
+google_maps: ''
+
+#-----------------------------------------------
+
+auth: false
+
+minify:
+  html: true
+  js: false
+
+#-----------------------------------------------
+
+libraries:
+  quill.tar:
+    include:
+      - 'quill.snow.css'
+      - 'quill.min.js'
+  codemirror:
+    dir: 'editor'
+    include:
+      - 'addon/lint/lint.js'
+      - 'addon/lint/lint.css'
+      - 'addon/lint/yaml-lint.js'
+      - 'mode/yaml/yaml.js'
+      - 'mode/javascript/javascript.js'
+      - 'keymap/sublime.js'
+      - 'theme/monokai.css'
+      - 'lib/**'
+  st-json-beautifier:
+    include: '*.{css,min.js}'
+  socket.io:
+    include: 'socket.io.js'
+
+#-----------------------------------------------
+
+scripts:
+  - 'lib/socket.io'
+  - 'main/socket'
+  - 'main/portal'
+  - 'portal/main'
+  - 'lib/angular-i18n/angular-locale_el-gr'
+  - 'lib/bluebird.min'

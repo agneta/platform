@@ -1,0 +1,45 @@
+-
+  data:
+    noHeader: true
+    controller: 'UtilityCtrl'
+    scripts:
+      - 'utility'
+      - 'lib/bluebird.min'
+      - 'lib/socket.io'
+  templates:
+    - "utility"
+-
+  data:
+    scripts:
+      - 'lib/quill.min'
+      - 'lib/js-yaml.min'
+      - 'lib/lodash.min'
+      - 'lib/fuse.min'
+      - 'lib/moment/moment.min'
+      - 'edit/main'
+      - 'media/file'
+    styles:
+      - 'lib/quill.snow'
+      - 'lib/ng-sortable.min'
+      - 'edit/main'
+      - 'partial/uploader'
+    angular_libs:
+      -
+        js: lib/ng-quill.min
+        dep: ngQuill
+      -
+        js: lib/ng-sortable.min
+        dep: as.sortable
+      -
+        js: 'lib/ng-file-upload.min'
+        dep: 'ngFileUpload'
+    keypress: true
+    class: 'page-editor'
+  templates:
+    - 'edit/pages'
+    - 'edit/data'
+-
+  data:
+    menuLock: true
+  templates:
+    - "documentation"

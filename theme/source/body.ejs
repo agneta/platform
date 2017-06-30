@@ -1,0 +1,12 @@
+<%
+if(page.barebones && !page.view){
+	%>
+    <%-template(page.template)%>
+<%}else{%>
+    <div id="view-content" layout="column">
+        <%-template(page.template)%>
+				<%if(!page.fullscreen){%>
+					<%- template('layout/footer',null,true) %>
+					<%}%>
+    </div>
+<%}%>

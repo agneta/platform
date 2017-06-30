@@ -1,0 +1,13 @@
+title:
+  en: 'Login'
+  gr: 'Σύνδεση'
+
+submit:
+  label:
+    en: 'Login'
+    gr: 'Σύνδεση'
+
+controller: PopupLoginCtrl
+
+viewData:
+  loginRedirect: '/'

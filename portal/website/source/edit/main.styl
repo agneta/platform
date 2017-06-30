@@ -1,0 +1,39 @@
+.page-editor{
+
+	@import('./_page/sortable')
+	@import('./_page/field')
+	@import('./_page/sidebar')
+	@import('./_page/data')
+	@import('./_page/heading')
+	@import('./_page/quill')
+	@import('./_page/code')
+	@import('./_page/contributor')
+	@import('./_page/push-changes')
+
+	.page-main{
+		opacity: 0;
+		transition: opacity 400ms;
+		background: rgb(236, 236, 236);
+		&.active{
+			opacity: 1;
+		}
+	}
+
+	.template-select{
+		text-align: center;
+
+		md-icon{
+			width: 160px;
+			height: 160px;
+			margin-bottom: 16px;
+			color: alpha(color-primary,0.4);
+		}
+	}
+
+	.md-button.property{
+		text-transform: capitalize;
+		background: color-grey;
+		box-shadow: 0px 1px 2px grey;
+	}
+
+}

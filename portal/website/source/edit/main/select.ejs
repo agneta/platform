@@ -1,0 +1,6 @@
+<md-input-container ng-if="field.type == 'select'" class="select">
+  <md-select placeholder="Select" class="md-no-underline md-raised" ng-change="onFieldSelect(parentField,parent,field,data.__value)" <%-template('edit/main/validators')%> ng-model="data.__value">
+    <md-option ng-selected="option.default" ng-value="value" ng-repeat="(value,option) in field.options">{{value}}</md-option>
+  </md-select>
+  <div ng-include="'data-messages.html'"></div>
+</md-input-container>

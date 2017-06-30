@@ -1,0 +1,63 @@
+<%
+// Load Any Error Messages
+
+var jsErrors = {};
+
+var errors = get_data('errors');
+var errorList = page.errors || [];
+errorList.push('default');
+
+for(var key of errorList){
+  jsErrors = lngScan(errors[key]);
+}
+
+jsErrors = JSON.stringify(jsErrors);
+
+var scripts = loadScripts();
+%>
+
+<script>
+
+window.agneta = {
+  page:{
+    version: "<%-getVersion()%>"
+  },
+  lang: "<%-site.lang%>",
+  path: "<%-path_relative()%>",
+  root: "<%-config.root%>",
+  title: "<%-lng(config.title)%>",
+  server:{
+    lib: "<%-site.servers.lib%>",
+    media: "<%-site.servers.media%>"
+  },
+  view_base: "<%-site.view_base%>",
+  keys:{
+    googleAPI: "<%-services_config('google').apiKey%>",
+    recaptcha: "<%-services_config('recaptcha').siteKey%>"
+  },
+  <%if(config.search){%>
+  urls:{
+    keywords: "<%-get_asset('generated/keywords_' + site.lang + '.json')%>"
+  },
+  <%}%>
+  <%if(site.url_services){%>
+    url_services: "<%-site.url_services%>",
+    <%}%>
+    url_web: "<%-site.url_web%>",
+    host: "<%-site.host_web%>",
+    theme: {
+      primary: "<%-config.colors.primary%>",
+      accent: "<%-config.colors.accent%>"
+    }
+  };
+
+  agneta.errors = JSON.parse('<%-jsErrors%>');
+  window.angularDeps = [<%-scripts.angularDeps%>];
+
+  </script>
+
+  <%-scripts.lines%>
+
+  <%if(!page.static){%>
+    <%-js('main/menu-side')%>
+  <%}%>

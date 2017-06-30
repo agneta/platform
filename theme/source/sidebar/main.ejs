@@ -1,0 +1,14 @@
+<%
+var sidebar = page.template.split('/').join('-');
+if(has_template('sidebar/'+sidebar)){
+    %>
+
+    <md-sidenav class="sidebar-left md-sidenav-left md-whiteframe-4dp" md-component-id="left">
+
+        <div class="list-cont" ng-controller="SidebarLeftCtrl">
+            <%-template('sidebar/'+sidebar)%>
+        </div>
+    </md-sidenav>
+    <%
+}
+%>

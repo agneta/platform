@@ -1,0 +1,42 @@
+{
+    "name": "Form",
+    "base": "PersistedModel",
+    "properties": {
+        "accountId": {
+            "type": "String",
+            "required": false
+        },
+        "language": {
+            "type": "String",
+            "required": true
+        },
+        "name": {
+            "type": "String",
+            "required": false
+        },
+        "title": {
+            "type": "String",
+            "required": false
+        },
+        "data": {
+            "type": "object",
+            "required": true
+        }
+    },
+    "mixins": {
+        "TimeStamp": true
+    },
+    "relations": {
+        "account": {
+            "type": "belongsTo",
+            "model": "Account",
+            "foreign_key": "accountId"
+        }
+    },
+    "acls": [{
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW"
+    }]
+}

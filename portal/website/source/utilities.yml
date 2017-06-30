@@ -1,0 +1,16 @@
+title:
+  en: 'Utilities'
+  gr: 'Εργαλεία'
+
+description:
+  en: Run built-in or project-based utilities to synchronize, auto-correct, build, and more.
+  gr: Εκτελέστε εργαλεία ενσωματωμένα ή του έργου σας για συγχρονισμό, αυτόματη διόρθωση, κατασκευή δεδομένων, και πολλά άλλα.
+
+template: utilities
+icon: agneta/utilities
+
+builtin:
+  en: Built-in Utilities
+
+project:
+  en: Project Based Utilities

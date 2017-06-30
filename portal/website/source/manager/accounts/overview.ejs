@@ -1,0 +1,44 @@
+<md-whiteframe class="md-whiteframe-1dp summary layout-padding" layout="column">
+    <div layout="row" layout-align="center center">
+
+        <md-button class="md-fab md-primary picture" ng-click="changePicture()" ng-style="{'background-image': 'url(' + viewAccount.picture + ')'}" aria-label="Account">
+          <md-icon ng-if="viewAccount.avatar" md-svg-src="{{get_avatar(viewAccount.avatar)}}">
+      </md-icon>
+        </md-button>
+
+        <div flex class="headline">
+            <p class="md-headline">{{viewAccount.name}}</p>
+            <p class="subhead">{{viewAccount.email}}</p>
+        </div>
+    </div>
+    <div layout="column" class="details">
+
+        <div layout="row" layout-align="start center">
+            <span ng-if="viewAccount.emailVerified">Email verified</span>
+            <span ng-if="!viewAccount.emailVerified" class="message red">Email not verified</span>
+            <span flex="auto"></span>
+            <md-button ng-click="resendVerification()" class="md-raised" ng-if="!viewAccount.emailVerified">Send Verification</md-button>
+        </div>
+
+        <md-divider></md-divider>
+        <p class="subhead">Registered
+            <span am-time-ago="viewAccount.createdAt"></span>
+        </p>
+        <p>{{viewAccount.createdAt | amUtc | amLocal | amDateFormat:'DD MMMM YYYY HH:mm:ss'}}</p>
+        <md-divider></md-divider>
+        <p class="subhead">Updated
+            <span am-time-ago="viewAccount.updatedAt"></span>
+        </p>
+        <p>{{viewAccount.updatedAt | amUtc | amLocal | amDateFormat:'DD MMMM YYYY HH:mm:ss'}}</p>
+        <md-divider></md-divider>
+
+        <div class="actions" layout="row">
+            <span flex="auto"></span>
+            <md-button ng-click="changePassword()" class="md-primary md-raised">
+                <md-icon md-svg-src="<%-get_icon('material/vpn-key')%>"></md-icon>
+                <span>Change Password</span>
+            </md-button>
+        </div>
+    </div>
+
+</md-whiteframe>

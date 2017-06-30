@@ -1,0 +1,20 @@
+{
+    "name": "Edit_Data",
+    "plural": "Edit_Data",
+    "base": "Model",
+    "idInjection": true,
+    "options": {},
+    "validations": [],
+    "acls": [{
+        "accessType": "*",
+        "principalType": "ROLE",
+        "principalId": "$everyone",
+        "permission": "DENY"
+    }, {
+        "accessType": "EXECUTE",
+        "principalType": "ROLE",
+        "principalId": "editor",
+        "permission": "ALLOW"
+    }],
+    "methods": {}
+}

@@ -1,0 +1,7 @@
+title:
+  en: Dependencies
+
+description:
+  en: 'Every Agneta project depends on some third-party libraries. This tool will help you generate these libraries and synchronize them with your storage service.'
+
+icon: material/library-books

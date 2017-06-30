@@ -1,0 +1,64 @@
+.edit-gui{
+
+  padding: 20px 10px;
+
+  .page-data{
+
+    max-width: 1000px;
+    margin: auto;
+    background: white;
+    border-radius: 10px;
+
+    .heading{
+      background: color-grey;
+      md-icon{
+        margin-right: 10px;
+      }
+      .title{
+        font-size: 1.2em;
+      }
+    }
+
+    .data-node{
+      .header{
+        label{
+          font-weight: bold;
+          min-width: 200px;
+        }
+      }
+    }
+
+    md-input-container{
+      width: 100%;
+      margin: 0;
+
+      &.select{
+            width: initial;
+      }
+      
+      .md-input{
+        padding: 10px;
+        border: none
+        background: white;
+        box-shadow: inset 0px 1px 2px grey;
+        border-radius: 5px;
+      }
+      .md-errors-spacer{
+        display: none;
+      }
+      label{
+        display: none;
+      }
+    }
+
+    .type-boolean{
+        margin: 0;
+    }
+
+    .delete{
+      cursor: pointer;
+      color: color-red;
+    }
+
+  }
+}

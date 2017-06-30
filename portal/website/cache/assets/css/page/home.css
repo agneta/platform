@@ -1,0 +1,13 @@
+.page-home md-card .md-headline {
+  color: #2196f3;
+}
+.page-home md-card .card-icon {
+  margin-left: 10px;
+  width: 100px;
+  height: 100px;
+  color: #2196f3;
+}
+.page-home .poweredby img {
+  height: 44px;
+  width: auto;
+}

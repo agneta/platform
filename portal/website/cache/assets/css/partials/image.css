@@ -1,0 +1,31 @@
+.dialog-file .preview {
+  margin-right: 10px;
+}
+.dialog-file-select {
+  min-height: 500px;
+  min-width: 700px;
+  max-width: 100%;
+}
+.dialog-file-select md-grid-tile {
+  cursor: pointer;
+}
+.dialog-file .preview .container {
+  width: 400px;
+  height: 400px;
+  border-radius: 6px;
+  background-color: #f9fafb;
+  padding: 10px;
+}
+.dialog-file .preview .image {
+  width: auto;
+  height: auto;
+  border-radius: 4px;
+  background-position: center;
+  -webkit-background-size: contain;
+  -moz-background-size: contain;
+  background-size: contain;
+}
+.dialog-file .preview md-icon {
+  width: 100px;
+  height: 100px;
+}

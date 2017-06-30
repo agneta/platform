@@ -1,0 +1,13 @@
+<div layout="row" class="footer md-padding" layout-align="start center">
+  <span ng-show="count">{{count}} Items</span>
+  <span flex="auto"></span>
+  <div class="search" layout="row" layout-align="start center">
+    <md-icon md-svg-src="<%-get_icon('material/search')%>">
+    </md-icon>
+    <input
+    ng-model="searchText"
+    ng-change="searchKeywords(searchText)"
+    type="text"
+    >
+  </div>
+</div>

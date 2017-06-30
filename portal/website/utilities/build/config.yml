@@ -1,0 +1,8 @@
+title:
+  en: Build
+  gr: Κατασκευή
+
+description:
+  en: 'Compile all pages as static HTML files. The building process also checks if a page has an error. After the building process, you can see the website in live-mode'
+
+icon: material/build

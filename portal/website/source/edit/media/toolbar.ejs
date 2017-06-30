@@ -1,0 +1,17 @@
+<div layout="row" layout-align="left center">
+    <div>
+        <md-button class="md-primary" ng-click="refresh()">
+            <md-icon md-svg-src="<%-get_icon('material/refresh')%>"></md-icon>
+            Refresh</md-button>
+    </div>
+    <div>
+        <md-button class="md-primary" ng-click="newFolder()">
+            <md-icon md-svg-src="<%-get_icon('material/add')%>"></md-icon>
+            New Folder</md-button>
+    </div>
+    <div>
+        <md-button class="md-primary" type="file" ngf-multiple="true" ngf-select="uploadFiles($files, $invalidFiles)">
+            <md-icon md-svg-src="<%-get_icon('material/file-upload')%>"></md-icon>
+            Upload</md-button>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+icon: material/attach-file
+title:
+  en: 'Attachment'
+  gr: 'Συνημμένο'
+type: 'object'
+fields:
+  -
+    extend: 'title'
+    icon: false
+    validators:
+      required: true
+  -
+    title:
+      en: Type
+    type: 'select'
+    name: type
+    validators:
+      required: true
+    options:
+      url:
+        require: 'url'
+      media:
+        default: true
+        require: 'media'
+  -
+    extend: 'url'
+    icon: false
+    hidden: true
+  -
+    extend: 'media'
+    icon: false
+    hidden: true
+  -
+    name: show_icon
+    title:
+      en: Show media icon
+    type: boolean
+    validators:
+      required: true
+  -
+    name: new_tab
+    title:
+      en: Open in new tab
+    type: boolean
+    validators:
+      required: true

@@ -1,0 +1,20 @@
+<md-list class="accounts">
+
+    <div ng-repeat="account in accounts">
+
+        <md-list-item class="account md-long-text md-2-line" md-no-ink ng-click="change(account)">
+            <div layout="column" layout-align="center center" ng-style="{'background-image': 'url(' + account.picture + ')'}" class="md-avatar">
+              <md-icon ng-if="account.avatar" md-svg-src="{{get_avatar(account.avatar)}}">
+      </md-icon>
+            </div>
+            <div class="md-list-item-text">
+                <h3>{{account.name}}
+                </h3>
+                <p>{{account.email}}</p>
+            </div>
+        </md-list-item>
+        <md-divider></md-divider>
+
+    </div>
+
+</md-list>

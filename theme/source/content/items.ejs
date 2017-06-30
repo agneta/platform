@@ -1,0 +1,18 @@
+<%
+for(var item of data){
+	%>
+  <div class="item">
+  	<div>
+  		<%-lng(item)%>
+  	</div>
+  	<%
+  	if(item.list){
+  		%>
+  		<%-template('content/items',{data:item.list})%>
+  		<%
+  	}
+  	%>
+  </div>
+	<%
+}
+%>

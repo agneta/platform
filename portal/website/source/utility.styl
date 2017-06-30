@@ -1,0 +1,98 @@
+color-error = #e80000
+  color-success = #17a201
+
+  .page-utility{
+
+    .summary{
+      .icon{
+        width: 80px;
+        height: 80px;
+        color: color-primary;
+        padding-right: 0;
+      }
+
+      md-card-title-text{
+        color: color-primary;
+      }
+    }
+
+    .toolbar{
+      .parameters{
+        background: color-grey;
+        border-radius: 7px;
+        padding: 0 10px;
+        .parameter{
+          .title{
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+          }
+        }
+      }
+    }
+
+    .log{
+      md-virtual-repeat-container{
+        height: 400px;
+      }
+
+      .line{
+        &.error{
+          color: color-error;
+          md-icon{
+            color: color-error;
+          }
+          .icons{
+            border-color: color-error;
+          }
+        }
+        &.success{
+          color: color-success;
+          md-icon{
+            color: color-success;
+          }
+          .icons{
+            border-color: color-success;
+          }
+        }
+
+        .message{
+          white-space: pre;
+        }
+
+        .icons{
+          width: 25px;
+          border-right: solid 3px transparent;
+          padding-right: 3px;
+          margin-right: 6px;
+        }
+
+      }
+    }
+
+    .progress-bar{
+      .title{
+        font-weight: bold;
+        font-size: 18px;
+      }
+      .current{
+        color: grey;
+        font-size: 13px;
+      }
+
+      md-icon{
+        margin-right: 10px;
+        height: 40px;
+        width: 40px;
+        &.complete{
+          color: green;
+        }
+      }
+
+      &.complete{
+        md-progress-linear .md-bar{
+          background-color: green;
+        }
+      }
+    }
+  }

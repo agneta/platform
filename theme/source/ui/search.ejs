@@ -1,0 +1,22 @@
+<%if(config.services && config.search){%>
+    <div class="search <%-data.class%>" ng-controller="PageSearchCtrl" ng-show="initialized">
+        <md-autocomplete
+            flex=""
+            md-delay=600
+            md-items="item in querySearch(searchText)"
+            md-search-text="searchText"
+            md-selected-item="selectedItem"
+            md-selected-item-change="selectedItemChange(item)"
+            md-item-text="item.title.value"
+            md-no-cache="true"
+            md-menu-class="autocomplete-search-template"
+            placeholder="<%-lng('general.searchPages')%>...">
+            <md-item-template>
+                <span class="item-title" ng-bind-html="item.title.value | highlight:item.words"></span>
+                <span class="item-metadata">
+                    <span class="item-metastat" ng-bind-html="item.content.value | highlight:item.words"></span>
+                </span>
+            </md-item-template>
+        </md-autocomplete>
+    </div>
+<%}%>

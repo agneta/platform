@@ -1,0 +1,9 @@
+my:
+  en: My Account
+  gr: Ο λογαριασμός μου
+forgot_password:
+  en: Forgot Password
+  gr: Ξέχασα τον κωδικό
+not_registered:
+  en: Not Registered?
+  gr: Δεν έχετε εγγραφεί;

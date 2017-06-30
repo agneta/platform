@@ -1,0 +1,14 @@
+title:
+  en: 'Content'
+  gr: 'Περιεχόμενο'
+type: 'array'
+fields:
+  - 'title'
+  - 'paragraph'
+  - 'image'
+  - 'paragraphs'
+  - 'bullets'
+  - 'numbers'
+  - 'attachment'
+  - 'table'
+  - 'template'

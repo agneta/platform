@@ -1,0 +1,10 @@
+title:
+  en: 'First Name'
+  gr: 'Όνομα'
+group: 'contact/input'
+type: 'text'
+validators:
+  minlength: 2
+  maxlength: 24
+  required: true
+  pattern: name

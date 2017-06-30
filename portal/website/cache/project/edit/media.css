@@ -1,0 +1,174 @@
+.page-edit-media .dir .toolbar {
+  padding-bottom: 0;
+  border-bottom: solid 2px #2196f3;
+  padding-top: 0;
+  background: #fbfbfb;
+}
+.page-edit-media .dir .toolbar .location .entry span {
+  text-transform: capitalize;
+  cursor: pointer;
+}
+.page-edit-media .dir .toolbar .location .entry:last-child {
+  font-weight: bold;
+}
+.page-edit-media .dir .footer {
+  padding-bottom: 0;
+  border-top: solid 2px #2196f3;
+  padding-top: 0;
+  background: #fbfbfb;
+}
+.page-edit-media .dir .footer .search {
+  padding: 7px;
+}
+.page-edit-media .dir .footer .search input {
+  background: transparent;
+  border-bottom: solid 2px #afafaf;
+  margin: 0 8px;
+}
+.page-edit-media .dir .empty-folder .title {
+  font-size: 1.6em;
+  color: #2196f3;
+}
+.page-edit-media .dir .empty-folder md-icon {
+  margin: 10px;
+  width: 100px;
+  margin-bottom: 30px;
+  height: 100px;
+  color: #2196f3;
+}
+.page-edit-media md-tabs-content-wrapper {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -o-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex: 1 1 100%;
+  -ms-flex: 1 1 100%;
+  flex: 1 1 100%;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -o-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+}
+.page-edit-media md-tabs-content-wrapper md-tab-content {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -o-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex: 1 1 100%;
+  -ms-flex: 1 1 100%;
+  flex: 1 1 100%;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -o-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+}
+.page-edit-media md-tabs-content-wrapper md-tab-content >div {
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -o-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+}
+.page-edit-media .md-virtual-repeat-container .md-virtual-repeat-offsetter {
+  bottom: 0;
+}
+.page-edit-media .media-tile {
+  cursor: pointer;
+  margin: 4px 0;
+}
+.page-edit-media .media-tile:hover {
+  background: #f3f3f3;
+}
+.page-edit-media .media-tile md-icon {
+  color: #7e7d7d;
+}
+.page-edit-media .media-tile .preview {
+  min-width: 50px;
+  max-width: 50px;
+  min-height: 50px;
+  max-height: 50px;
+  margin: 0;
+  margin-left: 10px;
+  background: #e8e7e7;
+  background-position: center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.page-edit-media .media-tile .info {
+  white-space: nowrap;
+}
+.page-edit-media .media-tile .info .title {
+  font-size: 1.1em;
+}
+.page-edit-media .media-tile .info .description {
+  font-size: 0.9em;
+  color: #808080;
+  background: #ececec;
+  padding: 4px 10px;
+  padding-left: 2px;
+  border-radius: 3px;
+}
+.page-edit-media .media-tile .info .description .entry:before {
+  content: " ";
+  width: 8px;
+  height: 8px;
+  background: #2196f3;
+  margin: 0 7px;
+  border-radius: 100%;
+  display: inline-block;
+}
+.page-edit-media .media-tile .info .description .highlighted {
+  font-weight: bold;
+  color: #000;
+}
+.page-edit-media .media-tile .toolset {
+  height: 20px;
+}
+.page-edit-media .media-tile .toolset md-icon {
+  color: #aeaeae;
+}
+.page-edit-media .media-tile.selected figure {
+  border: solid 9px #fff;
+  -webkit-box-shadow: 0 6px 16px #808080;
+  box-shadow: 0 6px 16px #808080;
+  z-index: 10;
+}
+.page-edit-media .media-tile-footer {
+  background: rgba(0,0,0,0.46);
+}
+.page-edit-media md-tabs[md-border-bottom] md-tabs-wrapper {
+  background: #f6f6f6;
+}
+.page-edit-media md-tabs md-ink-bar {
+  color: #2196f3;
+  background: #2196f3;
+  height: 3px;
+}
+.dialog-file .md-toolbar-tools .title {
+  text-transform: capitalize;
+}

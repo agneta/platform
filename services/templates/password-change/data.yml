@@ -1,0 +1,14 @@
+verifyHref: '#'
+
+header:
+  en: 'Υour password changed'
+  gr: 'Ο κωδικός πρόσβασής σας άλλαξε'
+
+body:
+-
+  en: 'In order to login to your account, you need to verify your email address. To do so, simply click the button below.'
+  gr: 'Για να συνδεθείτε στο λογαριασμό σας, θα πρέπει να επαληθεύσετε τη διεύθυνση ηλεκτρονικού ταχυδρομείου σας. Για να το κάνετε αυτό, απλά κάντε κλικ στο κουμπί παρακάτω.'
+
+action:
+  gr: 'Επιβεβαίωση'
+  en: 'Verify'

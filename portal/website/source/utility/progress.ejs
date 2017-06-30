@@ -1,0 +1,10 @@
+<div layout="column">
+    <div class="progress-bar" ng-class="{complete:progressBar.complete}" ng-repeat="progressBar in progressBars" layout="row" layout-align="start center">
+        <md-icon class="complete" ng-show="progressBar.complete" md-svg-src="<%-get_icon('material/check')%>"></md-icon>
+        <div layout="column" flex="100">
+            <p class="title">{{progressBar.title}}</p>
+            <md-progress-linear md-mode="determinate" value="{{progressBar.value}}"></md-progress-linear>
+            <p class="current">{{progressBar.current.title}}</p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+{
+    "acls": [{
+        "accessType": "EXECUTE",
+        "principalType": "ROLE",
+        "principalId": "administrator",
+        "permission": "ALLOW"
+    }]
+}

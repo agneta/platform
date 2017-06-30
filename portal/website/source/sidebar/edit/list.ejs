@@ -1,0 +1,36 @@
+<md-tab class="list" ng-disabled="work">
+
+    <md-tab-label>
+        <md-icon md-svg-icon="<%-get_icon('material/view-list')%>"></md-icon>
+        <span>List</span>
+    </md-tab-label>
+    <md-tab-body>
+
+        <div class="md-padding" layout="row" ng-if="template" layout-align="start center">
+            <span>{{template.title}}</span>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="restart()" aria-label="close template">
+                <md-icon md-svg-src="<%-get_icon('material/close')%>"></md-icon>
+            </md-button>
+        </div>
+
+        <div layout="row" class="search-list" layout-align="start center">
+            <md-icon md-svg-src="<%-get_icon('material/search')%>"></md-icon>
+            <input flex="auto" ng-model="pageSearch" ng-change="onSearch(pageSearch)" placeholder="Search" aria-label="search page">
+            <md-button class="md-primary md-icon-button" ng-click="selectTemplate()" aria-label="refresh template">
+                <md-icon md-svg-src="<%-get_icon('material/refresh')%>"></md-icon>
+            </md-button>
+        </div>
+
+        <%-template('sidebar/edit/list-items',{
+          name: 'pages',
+          click: 'getPage'
+        })%>
+
+            <%-template('sidebar/edit/list-items',{
+          name: 'templates',
+          click: 'selectTemplate'
+        })%>
+
+    </md-tab-body>
+</md-tab>

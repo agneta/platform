@@ -1,0 +1,28 @@
+<div
+ng-show="object"
+class="media-tile"
+layout="row"
+layout-margin
+layout-align="start center"
+>
+<div class="preview" ng-style="{'background-image':object.background}" layout="column" layout-align="center center">
+  <md-icon ng-if="object.icon" md-svg-src="{{object.icon}}"></md-icon>
+  <span ng-if="object.extension">{{object.extension}}</span>
+</div>
+<div layout="row" layout-align="start center" layout-margin class="info">
+  <span class="title">{{object.name}}</span>
+  <div ng-show="object.type!='folder'" layout="row" layout-align="start center" class="description">
+  <span ng-show="object.size" class="entry">{{object.size}}</span>
+  <%if(locals.details){
+    for(var detail of locals.details){%>
+    <span class="entry" <%-detail.attr%>>
+    <%if(!detail.noValue){%>{{object.<%-detail.name%>}}<%}%>
+    </span>
+    <%}}%>
+</div>
+</div>
+<span flex="100"></span>
+<div ng-show="object.hovered" class="toolset" ng-if="object.type=='folder'" ng-click="toolbarClick($event)" layout="row">
+  <md-icon ng-click="openObject(object)" md-svg-src="<%-get_icon('material/mode-edit')%>"></md-icon>
+</div>
+</div>

@@ -1,0 +1,10 @@
+title:
+  en: Message
+  gr: Μήνυμα
+group: text
+icon: material/short-text
+rows: 3
+validators:
+  minlength: 8
+  maxlength: 250
+  required: true

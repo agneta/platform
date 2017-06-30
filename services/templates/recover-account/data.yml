@@ -1,0 +1,20 @@
+actionHref: '#'
+
+header:
+  en: 'Reactivating your Account'
+  gr: 'Επανενεργοποίηση του λογαριασμού σας'
+
+body:
+-
+  en: 'You have requested to reactivate your account.'
+  gr: 'Έχετε ζητήσει να ενεργοποιήσετε ξανά το λογαριασμό σας.'
+-
+  en: 'You will be asked to create a new password during the process.'
+  gr: 'Θα σας ζητηθεί να δημιουργήσετε έναν νέο κωδικό πρόσβασης κατά τη διάρκεια της διαδικασίας.'
+-
+  en: 'Please click this link to reactivate your account:'
+  gr: 'Κάντε κλικ σε αυτόν το σύνδεσμο για να ενεργοποιήσετε ξανά το λογαριασμό σας:'
+
+action:
+  gr: 'Επαναφορά'
+  en: 'Reactivate'

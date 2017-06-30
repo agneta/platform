@@ -1,0 +1,42 @@
+
+.md-white{
+
+  background: white !important;
+
+  &:hover{
+    background: color-grey;
+  }
+  md-icon {
+    color: color-primary !important;
+    fill: color-primary !important;
+  }
+
+}
+
+.md-button{
+  text-transform: none;
+}
+
+md-menu-item>a.md-button.selected{
+  background: color-primary !important;
+  color: white !important;
+}
+
+select-buttons{
+  .md-button{
+    md-icon{
+      color: color-primary;
+    }
+    &.selected{
+      background: color-primary;
+      color: white;
+      pointer-events: none;
+      md-icon{
+        color: white;
+      }
+      &.md-raised:not([disabled]):hover {
+        background: color-primary;
+      }
+    }
+  }
+}

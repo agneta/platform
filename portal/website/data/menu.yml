@@ -1,0 +1,61 @@
+-
+  title:
+    en: 'Preview'
+    gr: 'Προεπισκόπηση'
+  description:
+    en: "Preview in real-time or view the local build of your application"
+    gr: 'Προεπισκόπηση σε πραγματικό χρόνο ή δείτε το τοπικό build της εφαρμογής σας'
+  icon: 'agneta/website'
+  menu:
+    -
+      title:
+        en: Real Τime
+        gr: Σε πραγματικό χρόνο
+      href_full: '/preview/real-time'
+      icon: material/sync
+    -
+      title:
+        en: Local Build
+        gr: Τοπικό Build
+      href_full: '/preview/local'
+      icon: material/playlist-add-check
+-
+  page: 'edit'
+  menu:
+    -
+      page: 'edit/pages'
+    -
+      page: 'edit/media'
+    -
+      page: 'edit/data'
+-
+  page: 'manager'
+  menu:
+    -
+      page: 'manager/accounts'
+    -
+      page: 'manager/history'
+-
+  page: 'utilities'
+  menu:
+    -
+      page: 'utility/build'
+    -
+      page: 'utility/deploy'
+    -
+      page: 'utility/dependencies'
+    -
+      page: 'utility/media'
+    -
+      page: 'utility/search'
+    -
+      page: 'utility/services'
+-
+  title:
+    en: 'Services'
+  description:
+    en: "Explore your API."
+  href_full: '/services/explorer'
+  icon: 'agneta/services'
+-
+  page: 'documentation'

@@ -1,0 +1,20 @@
+title:
+  en: Contact
+  gr: Επικοινωνία
+
+message:
+  en: What would you like to contact us for?
+  gr: Για ποιο θέμα θα θέλατε να επικοινωνήσετε μαζί μας;
+
+tabs:
+  -
+    label:
+      en: select
+      gr: επιλογη
+    name: select
+  -
+    label:
+      en: form
+      gr: φορμα
+    name: form
+    attrs: 'ng-disabled="!selected"'

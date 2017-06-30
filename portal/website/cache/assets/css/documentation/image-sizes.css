@@ -1,0 +1,6 @@
+.doc-image-sizes table {
+  text-align: left;
+}
+.doc-image-sizes table td {
+  min-width: 160px;
+}

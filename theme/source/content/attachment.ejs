@@ -1,0 +1,21 @@
+<%
+var href;
+get_values(data);
+if(data.media){
+  href = get_media(data.media.location);
+}
+if(data.url){
+  href = data.url
+}
+
+var attr = '';
+if(data.new_tab){
+  attr += 'target="_blank"';
+}
+%>
+    <a class="attachment" ng-href="<%-href%>" layout="row" layout-align="start center" <%-attr%>>
+        <%if(data.show_icon){%>
+            <md-icon md-svg-src="<%-get_media(data.media.icon)%>"></md-icon>
+            <%}%>
+                <span flex="auto"><%-lng(data.title)%></span>
+    </a>

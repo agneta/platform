@@ -1,0 +1,22 @@
+<%-template('manager/accounts/toolbar')%>
+    <div ng-show="viewAccount">
+        <div layout="row" class="boxes">
+            <div flex="50" layout="column">
+                <%-template('manager/accounts/overview')%>
+                    <%-template('manager/accounts/activities')%>
+            </div>
+            <div flex="50" layout="column">
+                <%-template('manager/accounts/fieldset')%>
+                    <%-template('manager/accounts/roles')%>
+            </div>
+        </div>
+        <md-list layout="row">
+            <md-list-item class=" action-warn">
+                <md-button class="md-raised" ng-click="removeAccount()">Remove</md-button>
+            </md-list-item>
+        </md-list>
+
+    </div>
+    <%-template('manager/accounts/empty')%>
+        <%-template('manager/accounts/toast')%>
+            <%-template('manager/accounts/check')%>

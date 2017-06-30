@@ -1,0 +1,29 @@
+title:
+  en: Image Sizes
+
+template: documentation
+class: doc-image-sizes
+
+styles:
+  - documentation/image-sizes
+
+content:
+  -
+    key: paragraphs
+    value:
+      -
+        en: 'With Agneta you are able to upload an image and automatically generate various sizes. This is helpful when you need to optimize image loading.'
+      -
+        en: For example you want to preview many images together. You would most likely select the thumbnail version of the image you have uploaded.
+  -
+    key: title
+    value:
+      en: Sizes
+  -
+    key: paragraph
+    value:
+      en: 'Below are the sizes that your project generates when uploading an image:'
+  -
+    key: template
+    value:
+      path: documentation/image-sizes

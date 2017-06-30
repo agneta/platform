@@ -1,0 +1,16 @@
+<div layout="column">
+    <md-card class="summary">
+      <%-template('utility/intro')%>
+        <md-card-actions class="toolbar" layout="row" layout-align="end center" layout-margin>
+
+            <%-template('utility/parameters')%>
+
+            <p ng-show="status.running">Running...</p>
+            <md-button ng-show="!status.running" class="md-raised md-primary" ng-click="run()">Start</md-button>
+        </md-card-actions>
+    </md-card>
+    <md-card class="log md-padding" flex="100" layout="column">
+      <%-template('utility/log')%>
+      <%-template('utility/progress')%>
+    </md-card>
+</div>

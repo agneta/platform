@@ -1,0 +1,9 @@
+title:
+  en: 'Login'
+  gr: 'Σύνδεση'
+
+template: 'login'
+static: true
+
+viewData:
+  loginRedirect: '/'

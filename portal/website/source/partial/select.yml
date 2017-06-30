@@ -1,0 +1,14 @@
+controller: MediaSelect as media
+
+scripts:
+  - 'ui/paginator'
+  - 'media/file'
+  - 'edit/media'
+
+styles:
+  - 'edit/media'
+
+angular_libs:
+  -
+    js: 'lib/ng-file-upload.min'
+    dep: 'ngFileUpload'

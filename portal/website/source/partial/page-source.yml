@@ -1,0 +1,17 @@
+title:
+  en: Source
+  gr: Κώδικας
+
+controller: PageSourceCtrl
+
+scripts:
+  - 'lib/editor/codemirror'
+  - 'lib/editor/sublime'
+  - 'lib/editor/yaml'
+  - 'lib/editor/lint'
+  - 'lib/editor/yaml-lint'
+
+styles:
+  - 'lib/editor/codemirror'
+  - 'lib/editor/monokai'
+  - 'lib/editor/lint'

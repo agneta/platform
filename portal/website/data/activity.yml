@@ -1,0 +1,26 @@
+period:
+  en: 'Period'
+  gr: 'Περίοδος'
+
+periods:
+  -
+    name: 'year'
+    title:
+      en: 'Year'
+      gr: 'Χρόνος'
+  -
+    name: 'month'
+    title:
+      en: 'Month'
+      gr: 'Μήνας'
+    default: true
+  -
+    name: 'dayOfYear'
+    selected: true
+    title:
+      en: 'Day'
+      gr: 'Ημέρα'
+
+select:
+  en: Select
+  gr: Επιλογή

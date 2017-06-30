@@ -1,0 +1,38 @@
+<md-whiteframe class="md-whiteframe-1dp summary section layout-padding" layout="column">
+  <div class="header" layout-align="left center" layout="row">
+      <h3 class="title">Fields</h3>
+  </div>
+    <%for(var field of page.fields){%>
+        <%
+            switch(field.type){
+              case 'input':
+              %>
+        <div class="field" layout="row" layout-align="start center">
+        <md-icon md-svg-src="<%-get_icon(field.icon)%>" class="name"></md-icon>
+            <label><%-lng(field.title)%></label>
+            <input flex="grow" ng-model="viewAccount.<%-field.prop%>" type="text">
+        </div>
+        <%
+              break;
+              case 'switch':
+              %>
+        <div class="inset">
+            <md-switch ng-model="viewAccount.<%-field.prop%>">
+                <%-lng(field.title)%>
+            </md-switch>
+        </div>
+        <%
+              break;
+            }
+            %>
+    <%}%>
+
+  <div layout="row">
+    <span flex="auto"></span>
+    <md-button class="md-raised md-secondary md-primary" ng-click="save()">
+    <md-icon md-svg-src="<%-get_icon('material/save')%>"></md-icon>
+    <span>Update</span>
+    </md-button>
+  </div>
+
+</md-whiteframe>

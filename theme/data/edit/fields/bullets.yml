@@ -1,0 +1,13 @@
+icon: material/format-list-bulleted
+title:
+  en: 'Bullets'
+  gr: 'Κουκκίδες'
+type: 'array'
+fields:
+  -
+    name: 'text'
+    icon: material/keyboard-arrow-right
+    title:
+      en: 'Bullet'
+      gr: 'Κουκκίδα'
+    type: 'text-rich'

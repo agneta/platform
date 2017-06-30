@@ -1,0 +1,9 @@
+title:
+  en: Phone number
+  gr: Αριθμός τηλεφώνου
+type: phone
+icon: material/phone
+group: input
+validators:
+  pattern: phone
+  required: true

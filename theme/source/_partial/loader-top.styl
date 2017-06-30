@@ -1,0 +1,33 @@
+#loader-top{
+  position: absolute;
+  z-index: 77;
+  top: 0;
+  left: 0;
+
+  .md-mode-determinate{
+    opacity: 0;
+  }
+
+}
+
+md-progress-linear{
+
+  .md-container{
+    opacity: 1;
+    background: transparent;
+    transition: opacity 2s ease;
+  }
+
+  &[md-mode="indeterminate"]{
+    .md-bar{
+      background: linear-gradient(to right, transparent 0%,color-accent 20%,color-accent 80%,transparent 100%);
+    }
+
+    &.primary{
+      .md-bar{
+        background: linear-gradient(to right, transparent 0%,color-primary 50%,transparent 100%);
+      }
+    }
+  }
+
+}

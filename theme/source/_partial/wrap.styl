@@ -1,0 +1,28 @@
+#wrap-cont{
+	position: relative;
+}
+#wrap {
+	overflow-y: auto;
+	overflow-x: hidden;
+	position: relative;
+
+	.view-cont {
+
+		.content-header {
+			text-align: center;
+			margin: 0;
+			padding: 10px;
+			border-bottom: solid 1px color-border;
+			color: color-primary;
+		}
+		.segment {
+			padding: 1em;
+			&.alternate {
+				background: color-grey;
+			}
+		}
+	}
+	&.static{
+		padding-top: 0;
+	}
+}

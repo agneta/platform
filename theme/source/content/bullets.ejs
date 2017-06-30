@@ -1,0 +1,21 @@
+<ul class="ui bulleted divided list">
+  		<%
+for(var item of data){
+	%>
+  <li class="item">
+  	<span <%-contentAttr(item)%>>
+  		<%-lng(item)%>
+  	</span>
+  	<%
+  	if(item.list){
+  		item.list.isChild = true;
+  		%>
+  		<%-template('content/bullets',{data:item.list})%>
+  		<%
+  	}
+  	%>
+  </li>
+	<%
+}
+%>
+</ul>

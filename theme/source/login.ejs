@@ -1,0 +1,38 @@
+<section layout="row" ng-controller="LoginController">
+
+    <div layout-padding class="details md-whiteframe-11dp">
+        <%
+
+var form =
+{
+  name: '$root.login',
+  fields:[
+  'email',
+  'password'
+  ],
+  submit:{
+    title: lng('general.login')
+  },
+  onSubmit: 'signIn()'
+};
+
+%>
+
+        <%-template('form',{form:form})%>
+
+        <div layout="row">
+            <%if(has_path('register')){%>
+                <md-button ng-href="<%-get_path('register')%>">
+                <%-lng('account.not_registered')%>
+                </md-button>
+            <%}%>
+            <md-button ng-click="lostPassword()">
+                <%-lng('account.forgot_password')%>
+            </md-button>
+        </div>
+
+        <%-template('ui/loader')%>
+
+    </div>
+
+</section>

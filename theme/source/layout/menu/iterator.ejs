@@ -1,0 +1,64 @@
+<%
+var list = (menu && (menu.list || menu)) || [] ;
+
+if(!list.length){
+  return;
+}
+
+for(item of list){
+
+  var href = '#';
+  var click = null;
+  var target = null;
+  var item_title = '';
+
+  if(item.page){
+    var item_page = get_page(item.page);
+    item_title = get_title(item_page);
+    href = get_path(item.page);
+
+    if(!item.icon){
+      item.icon = item_page.icon;
+    }
+
+  }else{
+
+    if(item.href_full){
+      href= url_for(item.href_full);
+      target = "_blank";
+    }
+
+    if(item.href){
+      href = get_path(item.href);
+    }
+
+    if(item.media){
+      href = get_media(item.media);
+      target = "_blank";
+    }
+
+  }
+
+  if(item.title){
+    item_title = lng(item.title)
+  }
+
+  href = 'ng-href="'+href+'"';
+  if(item.click){
+    click = 'ng-click="'+item.click+'"';
+  }
+  %>
+
+    <%if(!item.hidden){%>
+        <%-template(locals.itemPath,{
+    item: item,
+    href:href,
+    target:target,
+    click:click,
+    item_title: item_title
+  })%>
+            <%}%>
+
+                <%
+}
+%>

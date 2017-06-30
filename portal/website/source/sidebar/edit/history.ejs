@@ -1,0 +1,34 @@
+<md-tab ng-disabled="!page">
+    <md-tab-label>
+        <md-icon md-svg-icon="<%-get_icon('material/history')%>"></md-icon>
+        <span>History</span>
+    </md-tab-label>
+    <md-tab-body>
+        <div ng-show="page">
+          <div layout="row" ng-show="work" layout-align="center center">
+            <span flex="1">
+            </span>
+          <md-button ng-click="rollback()"  class="md-primary">Rollback</md-button>
+          <md-button ng-click="cancelRollback()" class="md-warn">Exit</md-button>
+        </div>
+          <md-divider ng-show="work">
+          </md-divider>
+
+            <md-list class="log">
+
+                <div ng-repeat="entry in page.log">
+                    <md-list-item ng-click="showCommit(entry)" class="md-3-line">
+                      <div class="md-list-item-text">
+                            <h3 class="time" am-time-ago="entry.date"></h3>
+                            <h4>{{entry.message}}</h4>
+                            <p>{{entry.author_name}}</p>
+                        </div>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                </div>
+
+            </md-list>
+        </div>
+
+    </md-tab-body>
+</md-tab>

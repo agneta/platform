@@ -1,0 +1,17 @@
+icon: material/format-list-numbered
+title:
+  en: 'List (Numbers)'
+  gr: 'Λίστα Νούμερα'
+type: 'array'
+fields:
+  -
+    name: number
+    title:
+      en: Entry
+    type: 'object'
+    fields:
+      -
+        extend: title
+        validators:
+          required: true
+      - text

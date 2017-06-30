@@ -1,0 +1,19 @@
+<%if(field.title){%>
+  <label><%-lng(field.title)%></label>
+  <%}%>
+
+  <%-template('form/description')%>
+  <%-template('form/icon')%>
+  <md-select ng-model="<%-field.model%>" aria-label="<%-field.name%>" md-on-open="<%-field.onOpen%>">
+    <%if(_.isString(field.options)){%>
+      <md-option ng-value="option.value" ng-repeat="option in <%-field.options%>">
+        {{option.title}}
+      </md-option>
+    <%}else {%>
+    <%for(var option of field.options){%>
+    <md-option value="<%-option.name%>">
+      <%-lng(option.title)%>
+    </md-option>
+    <%}}%>
+  </md-select>
+<%-template('form/messages')%>

@@ -1,0 +1,10 @@
+title:
+  en: Address
+  gr: Διεύθυνση
+icon: material/location-on
+type: text
+group: input
+validators:
+  minlength: 4
+  maxlength: 40
+  required: true

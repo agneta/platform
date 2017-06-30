@@ -1,0 +1,17 @@
+<md-dialog class="dialog-file-select">
+
+    <md-toolbar>
+        <div class="md-toolbar-tools" layout="row" layout-align="start center" layout-margin>
+          <md-icon md-svg-src="<%-get_icon('agneta/media')%>"></md-icon>
+          <h2 class="title"><%-lng('portal.media')%></h2>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content class="page-edit-media" flex="100" layout="column">
+        <%-template('edit/media/tabs')%>
+            <%-template('edit/media/upload')%>
+    </md-dialog-content>
+
+    <%-template('ui/loader')%>
+
+</md-dialog>

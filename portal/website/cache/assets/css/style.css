@@ -1,0 +1,31 @@
+memory-usage {
+  background: #edf0f3;
+  padding: 8px;
+  border-radius: 5px;
+}
+memory-usage .icon {
+  color: #2196f3;
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+}
+memory-usage .usage {
+  width: 74px;
+}
+memory-usage .usage .progress {
+  width: 100%;
+  margin-bottom: 6px;
+  background: #fff;
+}
+memory-usage .usage .progress:last-child {
+  margin-bottom: 0;
+}
+md-menu-content.memory-content .header h3 {
+  margin-right: 6px;
+}
+md-menu-content.memory-content .unit .title {
+  margin-right: 6px;
+}
+md-sidenav md-list-item.active {
+  background: #eee;
+}

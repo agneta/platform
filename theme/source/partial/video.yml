@@ -1,0 +1,18 @@
+angular_libs:
+  -
+    dep: 'com.2fdevs.videogular'
+    js: 'lib/videogular.min'
+  -
+    dep: 'com.2fdevs.videogular.plugins.controls'
+    js: 'lib/vg-controls.min'
+  -
+    dep: 'com.2fdevs.videogular.plugins.overlayplay'
+    js: 'lib/vg-overlay-play.min'
+  -
+    dep: 'com.2fdevs.videogular.plugins.poster'
+    js: 'lib/vg-poster.min'
+  -
+    dep: 'com.2fdevs.videogular.plugins.buffering'
+    js: 'lib/vg-buffering.min'
+
+controller: 'VideoCtrl'

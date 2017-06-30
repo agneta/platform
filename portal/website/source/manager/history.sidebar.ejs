@@ -1,0 +1,18 @@
+<md-list>
+
+    <div ng-repeat="group in viewData.extra.groups">
+    <md-subheader class="md-no-sticky">{{group.title}}</md-subheader>
+    <div ng-repeat="groupType in group.types" ng-switch on="groupType.value">
+
+        <md-divider ng-switch-when="divider"></md-divider>
+
+        <md-list-item ng-switch-default class="md-long-text" md-no-ink ng-class="type.value == groupType.value ? 'active' : false" ng-click="changeType(groupType)">
+            <md-icon ng-if="groupType.icon" md-svg-src="{{get_icon(groupType.icon)}}"></md-icon>
+            {{groupType.title}}
+        </md-list-item>
+
+    </div>
+    <md-divider ></md-divider>
+    </div>
+
+</md-list>

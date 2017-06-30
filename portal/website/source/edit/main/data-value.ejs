@@ -1,0 +1,9 @@
+<%
+  var model = '(parent.__value || parent)[key].__value';
+  if(locals.modelRoot){
+    model = 'parent[key]';
+  }
+%>
+    <md-input-container class="type-inline" ng-if="field.type == 'value'">
+        <input aria-label="{{field.name}}" ng-model="<%-model%>" ng-change="onFieldChange(data)" ng-init="registerInput(data)" md-select-on-focus>
+    </md-input-container>

@@ -1,0 +1,8 @@
+<%
+  var model = '(parent.__value || parent)[key].__value';
+  if(locals.modelRoot){
+    model = 'parent[key]';
+  }
+%>
+    <md-checkbox flex="grow" class="type-boolean md-primary" ng-if="field.type == 'boolean'" ng-model="<%-model%>" aria-label="{{field.name}}">
+    </md-checkbox>

@@ -1,0 +1,33 @@
+<section layout="row">
+
+  <div class="intro" flex="60">
+      <%-template('register/intro')%>
+  </div>
+
+  <div layout-padding class="form" flex="40">
+  <md-content class="relative" layout-padding flex="1" ng-controller="RegisterCtrl">
+    <%-template('ui/loader')%>
+  <%
+
+  var form =
+  {
+    name: 'register',
+    onSubmit: 'registerAccount()',
+    fields:[
+    'email',
+    'password',
+    {group: 'recaptcha'}
+    ],
+    submit:{
+      title: lng('general.register')
+    }
+  };
+
+  %>
+
+  <%-template('form',{form:form})%>
+
+</md-content>
+</div>
+
+</section>

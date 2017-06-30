@@ -1,0 +1,11 @@
+header:
+  en: 'Your form submission'
+  gr: 'Υποβολή της φόρμας σας'
+
+body:
+-
+  en: 'We sent you a copy of the form you have submitted to us.'
+  gr: 'Σας στείλαμε ένα αντίγραφο της φόρμας που έχετε υποβάλει σε μας.'
+-
+  en: 'We will review it and get in touch with you shortly.'
+  gr: 'Θα το διαβάσουμε και θα έρθουμε σε επαφή μαζί σας σύντομα.'

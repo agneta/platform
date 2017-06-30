@@ -1,0 +1,131 @@
+#-----------------------------------------------
+
+theme:
+  primary: 'blue'
+  accent: 'blue-grey'
+
+language:
+  default:
+    key: 'en'
+    value: 'English'
+  extra: false
+
+services: true
+scrollTop: true
+sync: true
+
+toolbar:
+  icon: 'icons/agneta/logo'
+  title: true
+
+menu:
+  top: false
+  side: true
+
+colors:
+  primary: '#2196F3'
+  accent: '#b4c3cf'
+  primary-darker: '#0371C9'
+
+#-----------------------------------------------
+
+minify:
+  html: true
+  css: true
+  js: true
+
+#-----------------------------------------------
+
+cookies: true
+search: true
+languages_toolbar: false
+languages_sidebar: true
+languages_footer: true
+
+#-----------------------------------------------
+
+scripts:
+  - 'main'
+  - 'lib/fuse.min'
+  - 'lib/string.min'
+  - 'lib/es6-promise.auto.min'
+
+#-----------------------------------------------
+
+libraries:
+  videogular-themes-default:
+    include:
+      - 'fonts/**'
+      - '*.min.css'
+  string:
+  fuse.js:
+    ignoreDefaults: true
+    include: '*.min.js'
+  angular:
+  angular-animate:
+  angular-aria:
+  angular-i18n:
+    dir: 'angular-i18n'
+    include:
+      - 'angular-locale_el-gr.js'
+  angular-material:
+    ignore:
+      - 'modules/**'
+      - 'layouts/**'
+  angular-messages:
+  angular-resource:
+  angular-cookies:
+  angular-route:
+  angular-moment:
+  angular-material-data-table:
+  angular-sanitize:
+  cookieconsent:
+  oclazyload:
+  ngstorage:
+  Chart.js:
+  angular-swiper:
+    include: 'angular-swiper.js'
+  moment:
+    dir: 'moment'
+    include: '*.js'
+    ignore:
+      - 'ender.js'
+      - 'moment.js'
+      - 'package.js'
+  Swiper:
+    ignore:
+      - '**/*.jquery.**'
+  photoswipe:
+    dir: 'photoswipe'
+    include: '*.{css,min.js}'
+  socket.io:
+    include: 'socket.io.js'
+
+#-----------------------------------------------
+
+angular_libs:
+-
+  js: 'lib/angular-aria.min'
+-
+  js: 'lib/angular-animate.min'
+-
+  dep: 'ngMessages'
+  js: 'lib/angular-messages.min'
+-
+  dep: 'ngMaterial'
+  js: 'lib/angular-material.min'
+-
+  dep: 'ngResource'
+  js: 'lib/angular-resource.min'
+-
+  dep: 'oc.lazyLoad'
+  js: 'lib/ocLazyLoad.min'
+-
+  dep: 'ngRoute'
+  js: 'lib/angular-route.min'
+-
+  dep: 'ngSanitize'
+  js: 'lib/angular-sanitize.min'
+-
+  dep: 'ngStorage'
+  js: 'lib/ngStorage.min'

@@ -1,0 +1,27 @@
+<ng-quill-editor
+on-content-changed="onFieldChange(data)"
+ng-mousedown="fieldFocus(data)"
+ng-init="registerInput(data)"
+ng-if="field.type == 'text-rich'"
+ng-model="data.__value[edit.lang]"
+placeholder="{{edit.lng(data.__value) | limitTo:50}}..."
+>
+    <ng-quill-toolbar ng-show="data.__focused">
+        <div id="ng-quill-toolbar">
+            <span class="ql-formats">
+                <button class="ql-bold" ng-attr-title="{{'Bold'}}"></button>
+                <button class="ql-italic" ng-attr-title="{{'Italic'}}"></button>
+                <button class="ql-underline" ng-attr-title="{{'Underline'}}"></button>
+                <button class="ql-link" ng-attr-title="{{'Link'}}"></button>
+            </span>
+            <span class="ql-formats">
+                <select class="ql-align" ng-attr-title="{{'Aligment'}}">
+                    <option selected></option>
+                    <option value="center"></option>
+                    <option value="right"></option>
+                    <option value="justify"></option>
+                </select>
+            </span>
+        </div>
+    </ng-quill-toolbar>
+</ng-quill-editor>

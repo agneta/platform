@@ -1,0 +1,5 @@
+controller: 'EditFile'
+
+empty:
+  title:
+    en: 'Select a media file'

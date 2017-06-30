@@ -1,0 +1,11 @@
+title:
+  en: Zip code
+  gr: Ταχυδρομικός κώδικας
+type: text
+group: input
+icon: material/location-searching
+validators:
+  required: true
+  pattern: zip_code
+  minlength: 3
+  maxlength: 10

@@ -1,0 +1,7 @@
+<%-template('form/description')%>
+
+<md-radio-group ng-model="<%-field.model%>">
+<%for(var option of field.options){%>
+  <md-radio-button value="<%-option.value%>" class="md-primary"><%-lng(option.title)%></md-radio-button>
+  <%}%>
+</md-radio-group>

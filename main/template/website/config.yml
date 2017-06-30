@@ -1,0 +1,37 @@
+title:
+  en: "Your Title"
+subtitle:
+  en: "Your Description"
+
+#-----------------------------------------------
+
+minify:
+  html:
+  css:
+  js:
+
+#-----------------------------------------------
+
+language:
+  default:
+    key: 'en'
+    value: 'English'
+  extra:
+
+#-----------------------------------------------
+
+url_api:
+  sandbox:
+url_web:
+  sanbox:
+url_views:
+  sandbox:
+
+#-----------------------------------------------
+
+storage:
+  credentials:
+
+#-----------------------------------------------
+
+recaptcha_key:

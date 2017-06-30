@@ -1,0 +1,6 @@
+.file-uploader {
+  position: relative;
+}
+.file-uploader .box {
+  position: absolute;
+}

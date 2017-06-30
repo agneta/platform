@@ -1,0 +1,8 @@
+title:
+  en: Form
+  gr: Φόρμα
+
+controller: ActivityFormCtrl
+
+scripts:
+  - partial/activity-form

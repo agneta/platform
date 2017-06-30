@@ -1,0 +1,111 @@
+@import "_partial/footer"
+@import "_partial/toolbar"
+@import "_partial/wrap"
+@import "_partial/tooltip"
+@import "_partial/input"
+@import "_partial/menu"
+@import "_partial/dialog"
+@import "_partial/button"
+@import "_partial/view"
+@import "_partial/search"
+@import "_partial/responsive"
+@import "_partial/cookies-bar"
+@import "_partial/grid"
+@import "_partial/tools"
+@import "_partial/form"
+@import "_partial/sidebar"
+@import "_partial/video"
+@import "_partial/page-loader"
+@import "_partial/loader-top"
+@import "_partial/compatibility"
+
+if site('portal'){
+  @import "_partial/portal"
+}
+
+if config('contact'){
+  @import "_partial/contact"
+}
+
+if config('scrollTop'){
+  @import "_partial/top-scroll"
+}
+
+html{
+  overflow-x: hidden;
+  background: white;
+}
+
+body{
+color: color-text;
+background: transparent;
+}
+
+a{
+  text-decoration: none;
+}
+
+h1,h2,h3,h4,h5,p{
+  margin: 5px 0;
+}
+
+md-pagination-wrapper{
+  width: initial !important;
+}
+
+.layout-column{
+  max-height: initial !important;
+}
+
+.bullet{
+  list-style-type:disc;
+}
+
+.relative{
+  position: relative;
+}
+
+md-menu md-menu-content{
+  display: none;
+}
+
+a{
+  text-decoration: initial;
+  color: initial;
+}
+
+md-list-item .md-list-item-inner>md-icon:first-child:not(.md-avatar-icon), md-list-item>md-icon:first-child:not(.md-avatar-icon){
+  margin: 0;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+body.sidebar-open{
+  overflow: hidden;
+}
+
+.hidden{
+  display: none;
+}
+.show{
+  display: initial;
+}
+
+.api-loader {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  padding: 0;
+  left: 0;
+  z-index: 25;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.87);
+  md-progress-circular {
+    top: 50%;
+    left: 50%;
+    margin-top: -25px;
+    margin-left: -25px;
+  }
+}

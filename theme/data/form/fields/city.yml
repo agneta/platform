@@ -1,0 +1,11 @@
+title:
+  en: City
+  gr: Πόλη
+icon: material/location-city
+type: text
+group: input
+validators:
+  minlength: 2
+  maxlength: 24
+  required: true
+  pattern: name

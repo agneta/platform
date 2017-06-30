@@ -1,0 +1,15 @@
+icon: material/photo
+title:
+  en: 'Image'
+  gr: 'Εικόνα'
+type: 'media'
+content_type: 'image'
+fields:
+  -
+    name: size
+    title:
+      en: Size
+      gr: Μέγεθος
+    type: value
+    validators:
+      required: true

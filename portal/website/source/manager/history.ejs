@@ -1,0 +1,76 @@
+<div>
+
+    <%
+var dataAct = get_data('activity');
+%>
+    <div layout="row" class="tools" layout-align="start center" layout-padding>
+
+      <%-template('ui/live-toggle')%>
+
+      <div layout="row" ng-show="feeds">
+          <md-button ng-show="page.feedSelected" ng-click="changedType()" md-no-ink class="md-warn">Close Feed</md-button>
+      </div>
+
+        <span flex="100"></span>
+
+        <div class="dropdown">
+            <label><%-lng(dataAct.period)%></label>
+            <md-select aria-label="<%-lng(dataAct.period)%>" ng-change="changedPeriod()" ng-model="page.periodSelected">
+                <%
+            for(var period of dataAct.periods){
+              var attr = '';
+              if(period.default){
+              attr+='selected="selected"'
+            }
+            %>
+                <md-option value="<%-period.name%>" <%-attr%>>
+                    <%-lng(period.title)%>
+                </md-option>
+            <%}%>
+        </md-select>
+    </div>
+
+    <div class="dropdown">
+        <label><%-lng(dataAct.select)%></label>
+        <md-select aria-label="<%-lng(dataAct.select)%>" ng-model="page.valueSelected" ng-change="loadTotals()">
+            <md-option ng-repeat="value in values" ng-value="value.id">
+                {{value.label}}
+            </md-option>
+        </md-select>
+    </div>
+
+</div>
+
+<md-progress-linear ng-show="true" md-mode="{{progressMode}}"></md-progress-linear>
+
+<div ng-show="!feeds && (progressMode=='determinate')" class="feed-message not-found" layout="column">
+    <p class="title">
+    No data to display
+  </p>
+  <md-icon md-svg-src="<%-get_icon('material/info-outline')%>"></md-icon>
+  <p class="message">Select a feed in the sidebar or change the date to where we have recorded activities.</p>
+</div>
+<div ng-show="feeds">
+    <canvas id="manager-history-canvas" width="400" height="140" ng-click="onChartClick($event)"></canvas>
+
+    <div class="feed-list">
+        <md-list-item ng-click="selectFeed(feed)" ng-class="{selected:feed.id==page.feedSelected.id}" ng-repeat="feed in feeds | orderBy:'-total'" layout="row">
+            <div class="feed-color" ng-style="{background:'rgb('+feed.rgb+')'}"></div>
+            <div class="md-list-item-text" layout="column">
+                <p class="title">{{feed.title || feed.value}}</p>
+                <p class="subtitle">{{feed.subtitle}}</p>
+            </div>
+            <span flex="" class="flex"></span>
+            <div ng-show="feed.id==page.feedSelected.id" class="selections">
+              <md-button class="md-icon-button" ng-click="showActivities(feed)">
+                <md-icon md-svg-src="<%-get_icon('material/visibility')%>" aria-label="View"></md-icon>
+              </md-button>
+            </div>
+            <div class="md-list-item-text" layout="column">
+                <p>{{feed.total}}</p>
+            </div>
+        </md-list-item>
+    </div>
+</div>
+
+</div>

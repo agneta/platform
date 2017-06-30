@@ -1,0 +1,8 @@
+title:
+  en: Deploy
+  gr: Μεταφόρτωση
+
+description:
+  en: 'Sync your media, libraries, and pages to your Amazon S3 storage service.'
+
+icon: material/cloud-upload

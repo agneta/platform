@@ -1,0 +1,179 @@
+title:
+  en: 'History'
+  gr: 'Ιστορικό'
+
+template: 'manager/history'
+icon: 'material/history'
+
+scripts:
+  - 'lib/moment/moment.min'
+  - 'lib/moment/el'
+  - 'moment.extend'
+  - 'lib/Chart.min'
+
+controller: 'HistoryCtrl'
+menuLock: true
+
+sidebarTitle:
+  en: 'Categories'
+  gr: 'Κατηγορίες'
+
+viewData:
+  groups:
+    -
+      title:
+        en: 'Searches'
+        gr: 'Aναζητήσεις'
+      types:
+        -
+          value: 'search_page'
+          icon: 'material/insert-drive-file'
+          title:
+            en: 'Pages'
+            gr: 'Σελίδες'
+          single:
+            en: Page
+            gr: Σελίδα
+        -
+          value: 'search_keyword'
+          icon: 'material/vpn-key'
+          title:
+            en: 'Keywords'
+            gr: 'Λέξεις-κλειδιά'
+          single:
+            en: 'Keyword'
+            gr: 'Λέξη-κλειδή'
+    -
+      title:
+        en: 'Interaction'
+        gr: 'Διαδραστικότητα'
+      types:
+        -
+          value: 'engagement'
+          icon: 'material/touch-app'
+          title:
+            en: 'Engagements'
+            gr: 'Eνασχόλησεις'
+          single:
+            en: 'Engagement'
+            gr: 'Eνασχόληση'
+        -
+          value: 'account'
+          icon: 'material/person'
+          title:
+            en: 'Users'
+            gr: 'Χρήστες'
+          single:
+            en: 'User'
+            gr: 'Χρήστης'
+    -
+      title:
+        en: 'System'
+        gr: 'Σύστημα'
+      types:
+        -
+          value: 'error'
+          icon: 'material/bug-report'
+          title:
+            en: 'Errors'
+            gr: 'Σφάλματα'
+          single:
+            en: 'Error'
+            gr: 'Σφάλμα'
+        -
+          value: 'form'
+          icon: 'material/view-list'
+          title:
+            en: 'Forms'
+          single:
+            en: 'Form'
+    -
+      title:
+        en: 'Navigation'
+        gr: 'Πλοήγηση'
+      types:
+        -
+          value: 'session'
+          icon: 'material/account-box'
+          title:
+            en: 'Visitors'
+            gr: 'Επισκέπτες'
+          single:
+            en: 'Visitor'
+            gr: 'Επισκέπτης'
+        -
+          value: 'view_page'
+          icon: 'material/insert-drive-file'
+          title:
+            en: 'Pages'
+            gr: 'Σελίδες'
+          single:
+            en: 'Page'
+            gr: 'Σελίδα'
+        -
+          value: 'divider'
+        -
+          value: 'view_browser'
+          icon: 'material/open-in-browser'
+          title:
+            en: 'Browsers'
+            gr: 'Πρόγραμματα Περιήγησης'
+          single:
+            en: 'Browser'
+            gr: 'Πρόγραμμα Περιήγησης'
+        -
+          value: 'view_browser_version'
+          title:
+            en: 'Versions'
+            gr: 'Εκδόσεις'
+          single:
+            en: 'Version'
+            gr: 'Εκδόση'
+        -
+          value: 'divider'
+        -
+          value: 'view_os'
+          icon: 'material/android'
+          title:
+            en: 'Operating Systems'
+            gr: 'Λειτουργικά Συστήματα'
+          single:
+            en: 'Operating System'
+            gr: 'Λειτουργικό Σύστημα'
+        -
+          value: 'view_os_version'
+          title:
+            en: 'Versions'
+            gr: 'Εκδόσεις'
+          single:
+            en: 'Version'
+            gr: 'Εκδόση'
+        -
+          value: 'divider'
+        -
+          value: 'view_vendor'
+          icon: 'material/computer'
+          title:
+            en: 'Devices'
+            gr: 'Συσκευές'
+          single:
+            en: 'Device'
+            gr: 'Συσκευή'
+        -
+          value: 'view_device'
+          title:
+            en: 'Types'
+            gr: 'Τύποι'
+          single:
+            en: 'Type'
+            gr: 'Τύπος'
+        -
+          value: 'view_vendor_model'
+          title:
+            en: 'Models'
+            gr: 'Μοντέλα'
+          single:
+            en: 'Model'
+            gr: 'Μοντέλο'
+        -
+          value: 'divider'

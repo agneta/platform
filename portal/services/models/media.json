@@ -1,0 +1,72 @@
+{
+    "name": "Media",
+    "base": "PersistedModel",
+    "properties": {
+        "name": {
+            "type": "string",
+            "required": true
+        },
+        "location": {
+            "type": "string",
+            "required": true
+        },
+        "contentType": {
+            "type": "string",
+            "required": false
+        },
+        "type": {
+            "type": "string",
+            "required": true
+        },
+        "lastModified": {
+            "type": "string",
+            "required": false
+        },
+        "size": {
+            "type": "string"
+        },
+        "isSize": {
+            "type": "boolean"
+        }
+    },
+    "mixins": {
+        "TimeStamp": true
+    },
+    "validations": [],
+    "relations": {},
+    "acls": [{
+        "accessType": "*",
+        "principalType": "ROLE",
+        "principalId": "$everyone",
+        "permission": "DENY"
+    }, {
+        "accessType": "EXECUTE",
+        "principalType": "ROLE",
+        "principalId": "administrator",
+        "permission": "ALLOW"
+    }, {
+        "accessType": "EXECUTE",
+        "principalType": "ROLE",
+        "principalId": "reviewer",
+        "permission": "ALLOW"
+    }, {
+        "accessType": "EXECUTE",
+        "principalType": "ROLE",
+        "principalId": "editor",
+        "permission": "ALLOW",
+        "property": "search"
+    }],
+    "indexes": {
+        "fulltext": {
+            "keys": {
+                "location_keywords": "text"
+            },
+            "options": {
+                "weights": {
+                    "location_keywords": 1
+                }
+            }
+        }
+    },
+    "methods": {}
+}

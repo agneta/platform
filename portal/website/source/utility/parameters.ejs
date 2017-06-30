@@ -1,0 +1,8 @@
+<div class="parameters" layout="row" layout-margin>
+<div class="parameter" ng-repeat="parameter in parameters">
+    <p class="title">{{parameter.title}}</p>
+  <%-template('utility/param-select')%>
+  <%-template('utility/param-checkboxes')%>
+  <%-template('utility/param-radio')%>
+</div>
+</div>

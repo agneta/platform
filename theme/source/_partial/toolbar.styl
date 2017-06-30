@@ -1,0 +1,71 @@
+md-menu-toolbar.site-content-toolbar {
+
+  background: white;
+  top: 0;
+  width: 100%;
+  left: 0;
+  z-index: 76;
+
+  .md-toolbar-tools {
+    height: toolbar-height - preloader-height !important;
+    max-height: toolbar-height - preloader-height !important;
+    >.account {
+      position: relative;
+      &.user-check {
+        >.api-loader {
+          display: block !important;
+        }
+      }
+    }
+
+    .md-fab{
+      width: 45px;
+      height: 45px;
+      box-shadow: none;
+    }
+  }
+  .md-button:not(.md-raised) {
+    color: color-primary;
+  }
+
+  .brand{
+    .icon{
+      color: color-primary;
+      width: 32px;
+      height: 32px;
+      margin-right: 10px;
+    }
+
+    .title{
+      color: color-primary;
+    }
+
+    .image {
+      display: block;
+      height: 90%;
+      width: auto;
+    }
+  }
+
+  .account {
+    position: relative;
+    .picture {
+      box-shadow: none;
+      height: 50px;
+      width: 50px;
+      background-position: center;
+      background-size: cover;
+      md-icon {
+        color: white !important;
+        width: 33px;
+        height: 33px;
+      }
+    }
+  }
+}
+
+.md-toolbar-tools{
+  >.icon-container{
+    margin-right: 10px;
+  }
+}

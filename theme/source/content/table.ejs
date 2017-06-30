@@ -1,0 +1,39 @@
+<table class="ui celled table">
+  <%
+  var header = get_value(data.header);
+  var rows = get_value(data.rows);
+
+  if(header){%>
+  <thead>
+    <tr>
+      <%
+      for(var th of header){
+        %>
+        <th><%-lng(th)%></th>
+        <%
+      }
+      %>
+    </tr>
+  </thead>
+  <%}%>
+  <%if(rows){%>
+  <tbody>
+    <%
+    for(var tr of rows){
+      tr = get_value(tr);
+      %>
+      <tr>
+        <%
+        for(var td of tr){
+          %>
+          <td><%-lng(td)%></td>
+          <%
+        }
+        %>
+      </tr>
+      <%
+    }
+    %>
+  </tbody>
+  <%}%>
+</table>

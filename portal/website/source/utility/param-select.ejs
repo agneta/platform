@@ -1,0 +1,5 @@
+<md-input-container ng-if="parameter.type=='select'">
+  <md-select ng-model="runOptions[parameter.name]">
+    <md-option ng-repeat="value in parameter.values" ng-value="value.name">{{value.title}}</md-option>
+  </md-select>
+</md-input-container>

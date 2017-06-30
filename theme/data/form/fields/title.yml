@@ -1,0 +1,10 @@
+title:
+  en: Title
+  gr: Τίτλος
+type: text
+icon: material/title
+group: input
+validators:
+  minlength: 4
+  maxlength: 24
+  required: true

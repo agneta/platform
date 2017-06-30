@@ -1,0 +1,32 @@
+<div class="error-messages" ng-messages="<%-field.prop%>.$error" <%-locals.attr%> role="alert">
+<%
+
+var messages = get_data('form/messages');
+
+for(var name in field.validators){
+
+  var message = name;
+  var value = field.validators[name];
+
+  switch(name){
+    case 'pattern':
+    message = value;
+    break;
+  }
+
+  var validator = {
+    name: name,
+    value: value
+  };
+
+  text = lng(messages[message]);
+  %>
+
+  <div ng-message="<%-name%>" class="error">
+  <%-render_template(text,validator)%>
+  </div>
+
+  <%
+}
+%>
+</div>

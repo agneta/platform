@@ -1,0 +1,8 @@
+<md-list ng-if="<%-name%>">
+    <md-list-item ng-repeat="item in <%-name%>" class="md-2-line" ng-click="<%-click%>(item)" aria-label="{{item.title}}" ng-class="pageActive(item.id)">
+        <div class="md-list-item-text">
+            <h3 ng-bind-html="item.title | highlight:pageSearch"></h3>
+            <p ng-bind-html="item.path | highlight:pageSearch"></p>
+        </div>
+    </md-list-item>
+</md-list>

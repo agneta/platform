@@ -1,0 +1,9 @@
+<md-virtual-repeat-container flex="auto">
+    <div md-virtual-repeat="line in logLines" class="line" ng-class="line.type" layout="row" layout-align="start stretch">
+        <div class="icons">
+            <md-icon ng-if="line.error" md-svg-src="<%-get_icon('material/error')%>"></md-icon>
+            <md-icon ng-if="line.success" md-svg-src="<%-get_icon('material/check-circle')%>"></md-icon>
+        </div>
+        <span class="message" flex="100">{{line.message}}</span>
+    </div>
+</md-virtual-repeat-container>

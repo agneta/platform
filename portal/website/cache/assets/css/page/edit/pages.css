@@ -1,0 +1,194 @@
+.page-edit-pages .as-sortable-item,
+.page-edit-pages .as-sortable-placeholder {
+  min-height: 20px;
+  margin: 1px 2px 5px 1px;
+}
+.page-edit-pages .as-sortable-item {
+  overflow: hidden;
+}
+.page-edit-pages .as-sortable-item >div>.data-node {
+  margin-top: 0;
+}
+.page-edit-pages .as-sortable-placeholder {
+  border: dashed 2px #2196F3;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.page-edit-pages .as-sortable-drag {
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
+  background: #f9fafb;
+  padding: 10px;
+}
+.page-edit-pages .data-field div[data-as-sortable] {
+  position: relative;
+}
+.page-edit-pages .data-field .data-node {
+  padding: 10px;
+  margin-top: 10px;
+  position: relative;
+}
+.page-edit-pages .data-field .data-node .array {
+  -webkit-box-shadow: 0px 1px 3px #808080;
+  box-shadow: 0px 1px 3px #808080;
+  border-top: none;
+}
+.page-edit-pages .data-field .data-node .header {
+  padding: 0px 10px;
+  margin-bottom: 10px;
+  font-size: 23px;
+  color: #2196F3;
+}
+.page-edit-pages .data-field .data-node [data-as-sortable-item-handle] {
+  font-weight: bold;
+}
+.page-edit-pages .data-field .data-node .excerpt {
+  overflow: hidden;
+}
+.page-edit-pages .data-field .data-node .excerpt span {
+  white-space: nowrap;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  width: 100%;
+  overflow: hidden;
+}
+.page-edit-pages .data-field .data-node .highlight {
+  color: #535353;
+  background: #f9fafb;
+  border-bottom: solid 3px #2196F3;
+  padding: 8px;
+}
+.page-edit-pages .data-field .data-node .highlight md-icon {
+  color: #2196F3;
+}
+.page-edit-pages .data-field .data-node .highlight >label {
+  font-weight: bold;
+  margin-right: 4px;
+}
+.page-edit-pages .data-field .data-node .highlight md-icon {
+  cursor: pointer;
+}
+.page-edit-pages .data-field .data-node .expander {
+  -webkit-transition: -webkit-transform 400ms;
+  -moz-transition: -moz-transform 400ms;
+  -o-transition: -o-transform 400ms;
+  -ms-transition: -ms-transform 400ms;
+  transition: transform 400ms;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+.page-edit-pages .data-field .data-node.contracted .array-cont {
+  height: 0;
+}
+.page-edit-pages .data-field .data-node.contracted .expander {
+  -webkit-transform: rotateZ(180deg);
+  -moz-transform: rotateZ(180deg);
+  -o-transform: rotateZ(180deg);
+  -ms-transform: rotateZ(180deg);
+  transform: rotateZ(180deg);
+}
+.page-edit-pages .data-field .data-node .data-node .index {
+  display: block;
+  text-align: center;
+  line-height: 26px;
+  color: #2196F3;
+  border-radius: 100%;
+  font-size: 25px;
+  padding: 4px;
+  content: '';
+}
+.page-edit-pages .data-field .data-node .data-node [data-as-sortable-item-handle] {
+  font-weight: normal;
+}
+.page-edit-pages .data-field .data-node >.index {
+  display: none;
+}
+.page-edit-pages .site-menu .heading {
+  background: #f9fafb;
+}
+.page-edit-pages .site-menu .heading .search {
+  background: #fff;
+  margin: 0;
+  padding: 6px;
+  border-radius: 4px;
+}
+.page-edit-pages .site-menu .heading .search .md-errors-spacer {
+  display: none;
+}
+.page-edit-pages .site-menu .title {
+  color: #2196F3;
+  margin-bottom: 14px;
+  font-size: 18px;
+}
+.page-edit-pages .site-menu .highlighted {
+  font-weight: bold;
+  color: #000;
+}
+.page-edit-pages .site-menu .log md-list-item {
+  padding: 10px 0;
+}
+.page-edit-pages .site-menu .log md-list-item .time {
+  color: #2196F3;
+  font-weight: bold;
+}
+.page-edit-pages .site-menu .log md-list-item p {
+  margin: 0;
+}
+.page-edit-pages .page-data .heading {
+  background: #f9fafb;
+}
+.page-edit-pages .page-data .heading md-icon {
+  margin-right: 10px;
+}
+.page-edit-pages .page-data .heading .title {
+  font-size: 1.2em;
+}
+.page-edit-pages .page-data md-input-container {
+  width: 100%;
+  margin: 0;
+}
+.page-edit-pages .page-data md-input-container .md-input {
+  padding: 10px;
+  border: none;
+  -webkit-box-shadow: inset 0px 1px 2px #808080;
+  box-shadow: inset 0px 1px 2px #808080;
+}
+.page-edit-pages .page-data md-input-container .md-errors-spacer {
+  display: none;
+}
+.page-edit-pages .page-data md-input-container label {
+  display: none;
+}
+.page-edit-pages .page-data .close {
+  cursor: pointer;
+}
+.page-edit-pages .heading md-icon {
+  margin-right: 10px;
+}
+.page-edit-pages .CodeMirror {
+  height: 100%;
+}
+.page-edit-pages h3 {
+  color: #0371C9;
+}
+.page-edit-pages .md-button.property {
+  text-transform: capitalize;
+  background: #f9fafb;
+  -webkit-box-shadow: 0px 1px 2px #808080;
+  box-shadow: 0px 1px 2px #808080;
+}
+.page-edit-pages .image .thumbnail {
+  border-radius: 100%;
+  margin-right: 14px;
+  width: 70px;
+  height: 70px;
+  background-position: center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+}
+.page-edit-pages .image .title {
+  font-size: 24px;
+}

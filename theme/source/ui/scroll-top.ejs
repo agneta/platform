@@ -1,0 +1,9 @@
+<% if(config.scrollTop){ %>
+<md-button ng-cloak class="md-fab docs-scroll-fab md-white"
+                 docs-scroll-class="scrolling"
+                 ng-click="scrollTop()"
+                 aria-label="Back to Top">
+        <md-tooltip md-direction="top">Back to Top</md-tooltip>
+        <md-icon md-svg-src="<%-get_icon('material/keyboard-arrow-up')%>"></md-icon>
+</md-button>
+<%}%>

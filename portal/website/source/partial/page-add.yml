@@ -1,0 +1,30 @@
+title:
+  en: Add {{template.title}}
+  gr: Προσθήκη {{template.title}}
+
+form:
+  name: 'formSubmit'
+  onSubmit: 'submit()'
+  fields:
+   -
+    title:
+      en: "Title"
+      gr: "Τίτλος"
+    type: "text"
+    name: title
+    group: "input"
+    validators:
+      minlength: 2
+      maxlength: 50
+      required: true
+   -
+    title:
+      en: "Path"
+      gr: "Τοποθεσία"
+    type: "text"
+    name: path
+    group: "input"
+    validators:
+      minlength: 2
+      maxlength: 400
+      required: true

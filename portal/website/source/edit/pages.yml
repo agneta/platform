@@ -1,0 +1,16 @@
+title:
+  en: Edit Page
+  gr: Επεξεργασία Σελίδας
+
+description:
+  en: "Create, Edit, or even remove pages based on your website's templates"
+  gr: "Δημιουργία, επεξεργασία, ή ακόμη και διαγραφή σελίδων που βασίζονται σε πρότυπά σας (templates)"
+
+template: 'edit/pages'
+noHeader: true
+controller: 'EditPagesCtrl as editor'
+icon: 'agneta/pages'
+menuLock: true
+
+editor:
+  main: true

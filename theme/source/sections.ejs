@@ -1,0 +1,11 @@
+<div class="sections" layout="column">
+<%
+for(var section of page.sections){
+%>
+<div class="section">
+<%-template('sections/'+section.name,{data:section.data})%>
+</div>
+<%
+}
+%>
+</div>

@@ -1,0 +1,86 @@
+.page-manager-accounts .live-toggle.md-checked {
+  color: #f00;
+}
+.page-manager-accounts .roles .role {
+  text-transform: capitalize;
+}
+.page-manager-accounts .roles .role .delete {
+  color: #f44336;
+}
+.page-manager-accounts md-list.accounts .account .md-avatar {
+  background-color: #2196f3;
+}
+.page-manager-accounts md-list.accounts .account .md-avatar md-icon {
+  color: #fff;
+  padding: 0;
+}
+.page-manager-accounts .summary .picture {
+  background-position: center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  width: 100px;
+  height: 100px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.page-manager-accounts .summary .picture md-icon {
+  color: #fff !important;
+  width: 70px;
+  height: 70px;
+}
+.page-manager-accounts .summary .headline {
+  padding-left: 10px;
+}
+.page-manager-accounts .summary .headline .md-headline {
+  font-weight: bold;
+}
+.page-manager-accounts .summary .field md-icon {
+  margin-right: 6px;
+}
+.page-manager-accounts .summary .field label {
+  margin-right: 6px;
+  min-width: 100px;
+}
+.page-manager-accounts .summary .field input {
+  -webkit-box-shadow: inset 0px 1px 5px #808080;
+  box-shadow: inset 0px 1px 5px #808080;
+  padding: 8px;
+  border-radius: 4px;
+}
+.page-manager-accounts .summary .message.red {
+  color: #f00;
+}
+.page-manager-accounts .summary .details {
+  font-size: 13px;
+}
+.page-manager-accounts .summary .details .subhead {
+  font-size: 14px;
+  font-weight: bold;
+}
+.page-manager-accounts .summary .actions {
+  margin-top: 10px;
+}
+.page-manager-accounts .activities .activity {
+  border-bottom: solid 1px #d9dadb;
+}
+.page-manager-accounts .activities .activity md-icon {
+  margin-right: 6px;
+}
+.page-manager-accounts .activities .activity .date {
+  text-align: right;
+}
+.page-manager-accounts .boxes {
+  padding: 5px;
+}
+.page-manager-accounts .boxes md-whiteframe {
+  margin: 5px;
+}
+.page-manager-accounts .boxes .section .header .title {
+  font-size: 22px;
+  color: #2196f3;
+  font-weight: normal;
+}
+.page-manager-accounts .action-warn {
+  background: #f44336;
+}

@@ -1,0 +1,17 @@
+<script type="text/ng-template" id="page-data.html">
+    <div ng-if="!isInline(field)" class="data-node" content-id="{{data.__id}}" ng-class="{contracted:data._expanded}">
+        <%-template('edit/main/array')%>
+            <%-template('edit/main/object')%>
+                <%-template('edit/main/text')%>
+                    <%-template('edit/main/text-rich')%>
+                        <%-template('edit/main/media')%>
+    </div>
+</script>
+
+<script type="text/ng-template" id="data-messages.html">
+    <div ng-messages="dataForm[data.__id].$error" role="alert">
+        <div ng-repeat="(name,validator) in field.validators" ng-message="{{name}}">
+            This field is required
+        </div>
+    </div>
+</script>

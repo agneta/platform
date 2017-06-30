@@ -1,0 +1,55 @@
+<md-card ng-controller="HomeActivitiesCtrl">
+<div layout="row" layout-padding>
+
+<a ng-href="<%-get_path('manager/history')%>" class="md-headline">History</a>
+  <span flex="" class="flex"></span>
+
+<%
+var dataAct = get_data('activity');
+%>
+
+ <md-input-container>
+        <label><%-lng(dataAct.period)%></label>
+        <md-select ng-change="onPeriodChange()" ng-model="periodSelected">
+            <%
+            for(var period of dataAct.periods){
+            %>
+          <md-option value="<%-period.name%>">
+            <%-lng(period.title)%>
+          </md-option>
+            <%}%>
+        </md-select>
+      </md-input-container>
+
+
+</div>
+
+<md-progress-linear ng-show="true" md-mode="{{progressMode}}"></md-progress-linear>
+
+<div layout-padding>
+ <p>
+   Latest:
+ </p>
+
+<%for(var feed of page.feeds){%>
+<agneta-home-feed name="<%-feed.name%>">
+ <md-list-item layout="row">
+ <div class="md-list-item-text" layout="column">
+  <p><%-lng(feed.title)%></p>
+</div>
+<span flex="" class="flex"></span>
+<div class="md-list-item-text" layout="column">
+  <p>{{feeds.<%-feed.name%>.total}}</p>
+</div>
+</md-list-item>
+</agneta-home-feed>
+<%}%>
+
+
+</div>
+
+
+<md-card-actions layout="row" layout-align="end center">
+<md-button ng-href="<%-get_path('manager/history')%>" class="md-raised md-primary">View</md-button>
+</md-card-actions>
+</md-card>
