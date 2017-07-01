@@ -45,8 +45,8 @@ module.exports = function(app) {
             return ejs.render.apply(this, [file_content, data]);
         },
         lng: function(obj) {
-            if(!obj){
-              return;
+            if (!obj) {
+                return;
             }
             if (_.isString(obj)) {
                 return obj;
@@ -75,10 +75,18 @@ module.exports = function(app) {
             templates[templateDir] = {
                 renderer: renderer,
                 data: templateData,
-                render: function(data, cb) {
-                    renderer.render(
-                        _.extend({}, dataMain, templateData, data, helpers),
-                        cb);
+                render: function(data) {
+
+                    return new Promise(function(resolve, reject) {
+                        renderer.render(
+                            _.extend({}, dataMain, templateData, data, helpers),
+                            function(err, result) {
+                                if (err) {
+                                    return reject(err);
+                                }
+                                resolve(result);
+                            });
+                    });
                 }
             };
 

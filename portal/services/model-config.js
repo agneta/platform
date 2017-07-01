@@ -7,6 +7,10 @@ module.exports = {
         dataSource: 'db',
         public: true
     },
+    Email_Template: {
+        dataSource: false,
+        public: true
+    },
     Edit_Page: {
         dataSource: false,
         public: true

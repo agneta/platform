@@ -19,6 +19,8 @@
         gr: Τοπικό Build
       href_full: '/preview/local'
       icon: material/playlist-add-check
+    -
+      page: 'preview/email'
 -
   page: 'edit'
   menu:

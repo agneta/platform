@@ -76,17 +76,15 @@ module.exports = function(app) {
         var template = config.templates[options.templateName];
 
         if (template) {
-            template.render(options.data, function(err, renderResult) {
+            template.render(options.data)
+                .then(function(renderResult) {
 
-                if (err) {
-                    return cb(err);
-                }
+                    options.html = renderResult.html;
+                    options.text = renderResult.text;
 
-                options.html = renderResult.html;
-                options.text = renderResult.text;
-
-                send();
-            });
+                    send();
+                })
+                .catch(cb);
 
         } else {
             send();

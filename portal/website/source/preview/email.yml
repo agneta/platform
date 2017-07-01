@@ -1,0 +1,5 @@
+title:
+  en: Email templates
+icon: material/email
+controller: PreviewEmailCtrl
+menuLock: true
