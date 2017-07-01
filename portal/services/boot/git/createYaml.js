@@ -3,7 +3,7 @@ var nodegit = require('nodegit');
 var path = require('path');
 var _ = require('lodash');
 var yaml = require('js-yaml');
-var fs = require('fs-promise');
+var fs = require('fs-extra');
 
 
 module.exports = function(app) {

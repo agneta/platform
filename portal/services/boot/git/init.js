@@ -2,7 +2,7 @@ var Promise = require('bluebird');
 var nodegit = require('nodegit');
 var path = require('path');
 var _ = require('lodash');
-var fs = require('fs-promise');
+var fs = require('fs-extra');
 var yaml = require('js-yaml');
 
 module.exports = function(app) {

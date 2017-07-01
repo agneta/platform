@@ -1,6 +1,7 @@
 const fs = require('fs-extra');
 const Promise = require('bluebird');
 const path = require('path');
+const klaw = require('klaw');
 
 module.exports = function(locals) {
 
@@ -22,7 +23,7 @@ module.exports = function(locals) {
 
             fs.ensureDirSync(scriptDir);
 
-            var walker = fs.walk(scriptDir, {
+            var walker = klaw(scriptDir, {
                 followLinks: false
             });
 
@@ -46,14 +47,16 @@ module.exports = function(locals) {
             ////////////////////////////////////////////////////////
 
 
-            return new Promise(function(resolve) {
+            return new Promise(function(resolve, reject) {
 
                 walker.on('end', function() {
                     resolve();
                 });
 
+                walker.on('error', reject);
+
             });
         });
 
-    }
-}
+    };
+};

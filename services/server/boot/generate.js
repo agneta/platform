@@ -1,6 +1,6 @@
 var generator = require('loopback-sdk-angular');
 var path = require('path');
-var fs = require('fs-promise');
+var fs = require('fs-extra');
 
 module.exports = function(app) {
 

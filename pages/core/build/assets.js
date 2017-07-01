@@ -1,18 +1,18 @@
 const path = require('path');
-const stylus = require('stylus');
-const nib = require('nib');
 const CleanCSS = require('clean-css');
 const UglifyJS = require('uglify-js');
-const micromatch = require('micromatch')
+const micromatch = require('micromatch');
 const ngAnnotate = require('ng-annotate');
 
 const Promise = require('bluebird');
 const fs = require('fs-extra');
+const klaw = require('klaw');
 const _ = require('lodash');
 const StylusCompiler = require('../compiler/style');
 const ScriptCompiler = require('../compiler/script');
 
 module.exports = function(locals, options) {
+
     var logger = options.logger;
     var project = locals.project;
 
@@ -41,7 +41,7 @@ module.exports = function(locals, options) {
 
     return Promise.each(sources, function(sourceDir) {
 
-            var walker = fs.walk(sourceDir);
+            var walker = klaw(sourceDir);
 
             ////////////////////////////////////////////////////////
             // LOAD PROCESS PROJECT DATA - SETUP
@@ -80,8 +80,8 @@ module.exports = function(locals, options) {
             });
 
             return new Promise(function(resolve, reject) {
-
                 walker.on('end', resolve);
+                walker.on('error', reject);
             });
         })
         .then(function() {

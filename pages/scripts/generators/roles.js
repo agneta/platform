@@ -1,7 +1,5 @@
-var _ = require('lodash');
-var path = require('path');
-var fs = require('fs-promise');
-var yaml = require('js-yaml');
+const _ = require('lodash');
+const path = require('path');
 const Promise = require('bluebird');
 
 module.exports = function(locals) {

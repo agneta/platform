@@ -8,9 +8,10 @@ module.exports = function(Model, app) {
 
     var sizes = app.get('media').sizes;
     var sizeKeys = _.keys(sizes);
-    var images = {};
 
-    images.onUpload = function(options, operations) {
+    Model.__images = {};
+
+    Model.__images.onUpload = function(options, operations) {
 
         return _.map(sizeKeys, function(key) {
 
@@ -52,7 +53,7 @@ module.exports = function(Model, app) {
 
     };
 
-    images.onUpdate = function(options) {
+    Model.__images.onUpdate = function(options) {
 
         if (options.file.type == "image") {
             for (var key in sizes) {
@@ -66,7 +67,7 @@ module.exports = function(Model, app) {
     };
 
 
-    images.onSaveBefore = function(ctx) {
+    Model.__images.onSaveBefore = function(ctx) {
 
         var instance = ctx.currentInstance || ctx.instance;
         var data = ctx.data || ctx.instance;
@@ -107,7 +108,7 @@ module.exports = function(Model, app) {
 
     };
 
-    images.onSaveAfter = function(instance) {
+    Model.__images.onSaveAfter = function(instance) {
         if (instance.type == "image" && !instance.isSize) {
 
             return Promise.map(sizeKeys, function(sizeKey) {
@@ -128,7 +129,7 @@ module.exports = function(Model, app) {
         return Promise.resolve();
     };
 
-    images.onDelete = function(options) {
+    Model.__images.onDelete = function(options) {
 
         if (options.file.type == 'image') {
 
@@ -140,7 +141,5 @@ module.exports = function(Model, app) {
         }
 
     };
-
-    return images;
 
 };

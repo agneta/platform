@@ -1,5 +1,5 @@
 var Promise = require('bluebird');
-var fs = require('fs-promise');
+var fs = require('fs-extra');
 var path = require('path');
 
 module.exports = function(locals) {

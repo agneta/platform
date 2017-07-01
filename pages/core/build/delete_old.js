@@ -1,12 +1,13 @@
-var path = require('path');
-var Promise = require('bluebird');
-var fs = require('fs-extra');
+const path = require('path');
+const Promise = require('bluebird');
+const fs = require('fs-extra');
+const klaw = require('klaw');
 
 module.exports = function(locals, options) {
 
     var logger = options.logger;
     var exportFile = locals.exportFile;
-    var walker = fs.walk(locals.build_dir);
+    var walker = klaw(locals.build_dir);
     var deletePaths = [];
 
     ////////////////////////////////////////////////////////
@@ -45,6 +46,8 @@ module.exports = function(locals, options) {
                 .then(resolve);
 
         });
+
+        walker.on('error', reject);
 
     });
 };

@@ -1,4 +1,4 @@
-var fs = require('fs-promise');
+var fs = require('fs-extra');
 var path = require('path');
 var Promise = require('bluebird');
 var yaml = require('js-yaml');

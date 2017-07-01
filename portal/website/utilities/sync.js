@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const path = require('path');
-const cleanArray = require('clean-array');
 const prettyBytes = require('pretty-bytes');
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs-extra'));
@@ -9,6 +8,7 @@ const mime = require('mime-type')(db);
 const md5File = require('md5-file/promise');
 const readChunk = require('read-chunk');
 const fileType = require('file-type');
+const klaw = require('klaw');
 
 module.exports = function(util) {
 
@@ -61,7 +61,7 @@ module.exports = function(util) {
         function walkSourceFiles() {
             return new Promise(function(resolve, reject) {
 
-                    fs.walk(pathSource)
+                    klaw(pathSource)
                         .on('data', function(item) {
 
                             if (item.stats.isFile()) {
@@ -78,6 +78,7 @@ module.exports = function(util) {
                             }
 
                         })
+                        .on('error', reject)
                         .on('end', function() {
 
                             util.log('------------------------------------------');

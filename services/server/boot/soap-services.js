@@ -1,5 +1,5 @@
 var loopback = require('loopback');
-var fs = require('fs-promise');
+var fs = require('fs-extra');
 var path = require('path');
 var Promise = require('bluebird');
 var soap = require('soap');

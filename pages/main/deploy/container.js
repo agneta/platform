@@ -1,13 +1,13 @@
-var _ = require('lodash');
-var path = require('path');
-var cleanArray = require('clean-array');
-var prettyBytes = require('pretty-bytes');
-var Promise = require('bluebird');
-var fs = Promise.promisifyAll(require('fs-extra'));
+const _ = require('lodash');
+const path = require('path');
+const prettyBytes = require('pretty-bytes');
+const Promise = require('bluebird');
+const fs = Promise.promisifyAll(require('fs-extra'));
 
-var pkgcloud = require('pkgcloud');
-var ProgressBar = require('progress');
-var Execp = require('../../core/exec');
+const pkgcloud = require('pkgcloud');
+const ProgressBar = require('progress');
+const Execp = require('../../core/exec');
+const klaw = require('klaw');
 
 module.exports = function(locals) {
 
@@ -67,55 +67,55 @@ module.exports = function(locals) {
 
         return new Promise(function(resolve, reject) {
 
-          execp.run(`${swiftCommand} post -r '.r:*' ${containerName}`)
-              .then(function() {
-                  return execp.run(`${swiftCommand} post -m 'web-index:index.html' ${containerName}`);
-              })
-              .then(function() {
+            execp.run(`${swiftCommand} post -r '.r:*' ${containerName}`)
+                .then(function() {
+                    return execp.run(`${swiftCommand} post -m 'web-index:index.html' ${containerName}`);
+                })
+                .then(function() {
 
-            openstack.getContainer(containerName, function(err, _container) {
+                    openstack.getContainer(containerName, function(err, _container) {
 
-                if (err) {
-                    return reject(err);
-                }
+                        if (err) {
+                            return reject(err);
+                        }
 
-                container = _container;
+                        container = _container;
 
-                console.log();
-                console.log('------------------------------------------');
-                console.log('Container:', containerName);
-                console.log('Total Files:', container.count);
-                console.log('Total Size:', prettyBytes(container.bytes));
-                console.log('------------------------------------------');
+                        console.log();
+                        console.log('------------------------------------------');
+                        console.log('Container:', containerName);
+                        console.log('Total Files:', container.count);
+                        console.log('Total Size:', prettyBytes(container.bytes));
+                        console.log('------------------------------------------');
 
-                openstack.getFiles(container, function(err, _filesDest) {
+                        openstack.getFiles(container, function(err, _filesDest) {
 
-                    if (err) {
-                        return reject(err);
-                    }
+                            if (err) {
+                                return reject(err);
+                            }
 
-                    filesDest = _filesDest;
+                            filesDest = _filesDest;
 
-                    Promise.map(filesDest, function(fileDest, index) {
+                            Promise.map(filesDest, function(fileDest, index) {
 
-                            filesDestTmp[fileDest.name] = index;
-                        })
-                        .then(function() {
+                                    filesDestTmp[fileDest.name] = index;
+                                })
+                                .then(function() {
 
-                            return walkSourceFiles();
-                        })
-                        .then(resolve)
-                        .catch(reject);
+                                    return walkSourceFiles();
+                                })
+                                .then(resolve)
+                                .catch(reject);
+                        });
+                    });
                 });
-            });
-            });
         });
 
 
         function walkSourceFiles() {
             return new Promise(function(resolve, reject) {
 
-                    fs.walk(pathSource)
+                    klaw(pathSource)
                         .on('data', function(item) {
 
                             if (item.stats.isFile()) {
@@ -132,6 +132,7 @@ module.exports = function(locals) {
                             }
 
                         })
+                        .on('error', reject)
                         .on('end', function() {
 
                             console.log();

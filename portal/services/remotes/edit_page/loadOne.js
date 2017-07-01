@@ -1,5 +1,5 @@
 const Promise = require('bluebird');
-const fs = require('fs-promise');
+const fs = require('fs-extra');
 const yaml = require('js-yaml');
 const path = require('path');
 const _ = require('lodash');

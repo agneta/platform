@@ -1,9 +1,9 @@
-var _ = require('lodash');
-var path = require('path');
-var cleanArray = require('clean-array');
-var prettyBytes = require('pretty-bytes');
-var Promise = require('bluebird');
-var fs = Promise.promisifyAll(require('fs-extra'));
+const _ = require('lodash');
+const path = require('path');
+const prettyBytes = require('pretty-bytes');
+const Promise = require('bluebird');
+const fs = require('fs-extra');
+const klaw = require('klaw');
 
 var ProgressBar = require('progress');
 
@@ -164,9 +164,9 @@ function sync(options) {
     }
 
     function walkSourceFiles(pathSource) {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function(resolve) {
 
-            fs.walk(pathSource)
+            klaw(pathSource)
                 .on('data', function(item) {
 
                     if (item.stats.isFile()) {

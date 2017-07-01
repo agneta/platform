@@ -1,11 +1,11 @@
-var page = require('../../pages/page');
-var path = require('path');
-var fs = require('fs-extra');
-var _ = require('lodash');
-var Promise = require('bluebird');
-var File = require('../../pages/file');
-var yaml = require('js-yaml');
-var replaceExt = require('replace-ext');
+const page = require('../../pages/page');
+const path = require('path');
+const _ = require('lodash');
+const Promise = require('bluebird');
+const File = require('../../pages/file');
+const yaml = require('js-yaml');
+const replaceExt = require('replace-ext');
+const klaw = require('klaw');
 
 module.exports = function(locals) {
 
@@ -24,7 +24,7 @@ module.exports = function(locals) {
             .then(function() {
                 return Promise.map(pageDirs, function(dir) {
 
-                    var walker = fs.walk(dir);
+                    var walker = klaw(dir);
                     var paths = [];
 
                     walker.on('data', function(item) {
