@@ -1,3 +1,5 @@
+require('sharp');
+
 switch (process.env.MODE) {
     case 'services':
         require('./server/services');

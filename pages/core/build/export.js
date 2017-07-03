@@ -47,6 +47,7 @@ module.exports = function(locals) {
                 });
         }
 
+        console.log(options);
         return Promise.reject(new Error('Not correct format for: ' + outputFilePath));
 
     }

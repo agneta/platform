@@ -1,12 +1,11 @@
-var path = require('path');
-var Promise = require('bluebird');
-var deleteEmpty = Promise.promisify(require('delete-empty'));
-var ProgressBar = require('progress');
+const Promise = require('bluebird');
+const deleteEmpty = Promise.promisify(require('delete-empty'));
+const ProgressBar = require('progress');
 
-var buildAssets = require('./assets');
-var buildPages = require('./pages');
-var deleteOld = require('./delete_old');
-var exportFile = require('./export');
+const buildAssets = require('./assets');
+const buildPages = require('./pages');
+const deleteOld = require('./delete_old');
+const exportFile = require('./export');
 
 module.exports = function(locals) {
 
