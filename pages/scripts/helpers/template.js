@@ -11,7 +11,9 @@ module.exports = function(locals) {
     Mustache.tags = ['${', '}'];
 
     project.extend.helper.register('render', function(template) {
-
+        if (!_.isString(template)) {
+            return template;
+        }
         return Mustache.render(template, this);
 
     });
