@@ -50,6 +50,7 @@
     "hexo-fs": "0.1.5",
     "hexo-pagination": "0.0.2",
     "hexo-util": "0.5.1",
+    "highlight.js": "^9.12.0",
     "html-minifier": "3.0.0",
     "html-to-text": "3.3.0",
     "htmlclean": "2.7.7",
