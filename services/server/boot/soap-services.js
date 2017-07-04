@@ -68,10 +68,26 @@ module.exports = function(app) {
                             var methodPromise = Promise.promisify(method);
                             var responses = {};
 
-                            client.on('response', function(result, incomingMessage, exchangeId) {
-                                var resContentType = incomingMessage.headers['content-type'];
+                            client.on('soapError', function() {
+                                console.log(arguments);
+                            });
 
+                            client.on('response', function(result, incomingMessage, exchangeId) {
+
+                                var responseParsed = responses[exchangeId];
+                                if (!responseParsed) {
+                                    return;
+                                }
+
+                                delete responses[exchangeId];
+
+                                if (!result) {
+                                    return responseParsed.reject('No incoming response. Check the log for errors');
+                                }
+
+                                var resContentType = incomingMessage.headers['content-type'];
                                 var attachments = [];
+
                                 Promise.resolve()
                                     .then(function() {
 
@@ -87,13 +103,6 @@ module.exports = function(app) {
 
                                     })
                                     .then(function() {
-
-                                        var responseParsed = responses[exchangeId];
-                                        if (!responseParsed) {
-                                            return;
-                                        }
-
-                                        delete responses[exchangeId];
 
                                         responseParsed.resolve({
                                             attachments: attachments,
@@ -114,7 +123,8 @@ module.exports = function(app) {
                                         var uuid = uuidV1();
 
                                         responses[uuid] = {
-                                            resolve: resolve
+                                            resolve: resolve,
+                                            reject: reject
                                         };
 
                                         method(query, function(err, result, raw, soapHeader) {
