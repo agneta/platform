@@ -104,6 +104,7 @@
     "socketio-auth": "0.1.0",
     "stacktrace-parser": "0.1.4",
     "stemmer": "1.0.0",
+    "sticky-session": "^1.1.2",
     "string": "3.3.3",
     "strip-indent": "1.0.1",
     "strong-error-handler": "2.1.0",

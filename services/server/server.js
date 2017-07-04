@@ -27,26 +27,6 @@ module.exports = function(options) {
     app.set('trust proxy', 1);
     app.set('views', path.resolve(__dirname, 'views'));
 
-    app.start = function() {
-
-        if (options.listenDisabled) {
-            return;
-        }
-
-        app.set('port', process.env.PORT || app.get('port'));
-
-        var httpServer = app.listen(app.get('port'), function() {
-            app.emit('started');
-            var baseUrl = app.get('url').replace(/\/$/, '');
-            console.log('Web server listening at: %s', baseUrl);
-        });
-
-        app.httpServer = httpServer;
-
-        return httpServer;
-
-    };
-
     options.app = app;
 
     return {
@@ -83,7 +63,6 @@ module.exports = function(options) {
                                 return;
                             }
                             app.indexes.updateDatasources(['db', 'db_prd']);
-                            app.start();
                             app.emit('booted');
                             resolve();
                         });
