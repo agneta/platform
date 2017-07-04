@@ -5,14 +5,9 @@ const cluster = require('cluster');
 const express = require('express');
 const config = require('./config');
 const sticky = require('sticky-session');
+const chalk = require('chalk');
 
 var workers = process.env.WEB_CONCURRENCY;
-
-cluster.on('online', function(worker) {
-    console.log('worker is online', worker.id);
-    console.log('workers', _.size(cluster.workers));
-});
-
 //-------------------------------------------------
 
 var app = express();
@@ -29,14 +24,28 @@ if (sticky.listen(server, port, {
     return;
 }
 
+console.log('Running in environment: "' + app.get('env') + '"');
+console.log();
+
 server.once('listening', function() {
     console.log('----------------------------------');
+    console.log(`Cluster: ${_.size(cluster.workers)} workers`);
     console.log('Listening to port: ', port);
     console.log('----------------------------------');
 });
 
 
+
+
 function start() {
+
+  var log = console.log;
+  console.log = function(){
+    var args = Array.prototype.slice.call(arguments);
+      log.apply(console,[chalk.cyan(`[worker:${cluster.worker.id}]`)].concat(args));
+  };
+
+  //--------------------------------
 
     var worker;
     switch (process.env.MODE) {

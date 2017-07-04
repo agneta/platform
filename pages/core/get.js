@@ -1,6 +1,7 @@
-var urljoin = require('url-join');
-var path = require('path');
+const urljoin = require('url-join');
+const path = require('path');
 const Promise = require('bluebird');
+const _ = require('lodash');
 
 module.exports = function(locals) {
 
@@ -34,7 +35,13 @@ module.exports = function(locals) {
 
         return Promise.resolve()
             .then(function() {
-                var language = project.site.languages[lang];
+
+                var languages = _.get(project, 'site.languages');
+                if (!languages) {
+                    return;
+                }
+
+                var language = languages[lang];
 
                 if (!language) {
                     throw new Error('Incorrect language ', lang);
@@ -66,7 +73,7 @@ module.exports = function(locals) {
             .then(function(data) {
 
                 if (!data) {
-                    throw new Error('No Data to render');
+                    throw 'No Data to render';
                 }
 
                 data.pathLang = dataPath;

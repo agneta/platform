@@ -42,8 +42,7 @@ module.exports = function(app, options) {
     };
 
     website.url = urljoin(website.host, website.root);
-
-    console.log('services:url_web',website.url);
+    //console.log('services:url_web',website.url);
 
     app.set('website', website);
 
@@ -74,8 +73,6 @@ module.exports = function(app, options) {
     }
 
     db.url = 'mongodb://' + user + db.host + ':' + db.port + '/' + db.database + ssl;
-
-    console.log('Running in environment: "' + app.get('env') + '"');
     //console.log('Mongod URL: "' + db.url + '"');
     //console.log('Website is:', app.get('website'));
 

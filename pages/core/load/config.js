@@ -60,7 +60,7 @@ module.exports = function(locals) {
                 project.site.host_web = hostPath;
                 project.site.url_web = urljoin(project.site.host_web, project.config.root);
 
-                console.log('pages:url_web', project.site.url_web);
+                //console.log('pages:url_web', project.site.url_web);
 
                 //---------------------
 
@@ -72,7 +72,7 @@ module.exports = function(locals) {
                 project.site.building = locals.buildOptions?true:false;
                 project.site.protocol = hostParsed.protocol;
                 project.config.root = locals.root || '/';
-                console.log('pages:project:env', project.site.env);
+                //console.log('pages:project:env', project.site.env);
 
                 //---------------------
 
@@ -121,7 +121,7 @@ module.exports = function(locals) {
                     }
 
                     project.site.url_services = servicesUrl;
-                    console.log('pages:url_services', project.site.url_services);
+                    //console.log('pages:url_services', project.site.url_services);
 
                 }
 

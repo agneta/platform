@@ -24,7 +24,7 @@ module.exports = function(options) {
     componentApp.set('title', title);
 
     function init() {
-        console.log('URL:', url);
+        //console.log('URL:', url);
         app.use(url, componentApp);
 
         if (component.init) {

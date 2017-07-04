@@ -2,7 +2,7 @@ var path = require('path');
 var config = require('./config');
 var appName = process.env.APP_NAME || 'website';
 
-console.log('Application folder:', appName);
+//console.log('Application folder:', appName);
 
 module.exports = {
     get: get,

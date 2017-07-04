@@ -7,6 +7,7 @@ const middleware = require('../middleware');
 const projectPaths = require('../paths').project;
 const chalk = require('chalk');
 const Build = require(path.join(projectPaths.framework, 'core/build'));
+const cluster = require('cluster');
 
 module.exports = function(options) {
 
@@ -211,13 +212,8 @@ module.exports = function(options) {
         ])
         .then(function() {
 
-            var portalSite = portalPages.locals.project.site;
+            console.log(chalk.bold.green('Application is available'));
 
-            console.log();
-            console.log('--------------------------------');
-            console.log(chalk.bold.blue('Your application is available at:'));
-            console.log(chalk.bold.blue(portalSite.url_web));
-            console.log('--------------------------------');
         });
 
 };
