@@ -1,18 +1,18 @@
 var loopback = require('loopback');
 var path = require('path');
 var boot = require('loopback-boot');
-var enforce = require('express-sslify');
 var modelDefinitions = require('./model-definitions');
 var bootGenerator = require('./boot-generator');
-var _ = require('lodash');
 
 module.exports = function(options) {
 
     options = options || {};
 
+    var app = options.app || loopback();
+    app.httpServer = options.server;
+    options.app = app;
+    
     require('../lib/moment');
-    var app = loopback();
-
     require('../lib/helpers')(app);
     require('../lib/log')(app);
     require('../lib/gis')(app);
@@ -20,14 +20,10 @@ module.exports = function(options) {
     /////////////////////////////////////////////////
     //
     /////////////////////////////////////////////////
-
-    app.httpServer = options.server;
     app.set('view engine', 'ejs');
     app.set('json spaces', 2);
     app.set('trust proxy', 1);
     app.set('views', path.resolve(__dirname, 'views'));
-
-    options.app = app;
 
     return {
         locals: options,

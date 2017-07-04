@@ -3,21 +3,35 @@ require('sharp');
 const _ = require('lodash');
 const cluster = require('cluster');
 const express = require('express');
+const loopback = require('loopback');
 const config = require('./config');
-const sticky = require('sticky-session');
+const clusterManager = require('./cluster-manager');
 const chalk = require('chalk');
 
 var workers = process.env.WEB_CONCURRENCY;
+var worker;
+var app;
+
 //-------------------------------------------------
 
-var app = express();
+switch (process.env.MODE) {
+    case 'services':
+        app = loopback();
+        worker = require('./server/services');
+        break;
+    default:
+        app = express();
+        worker = require('./server/portal');
+        break;
+}
+
+//-------------------------------------------------
+
 var port = config.port;
 var server = require('http').createServer(app);
-
-
 //-------------------------------------------------
 
-if (sticky.listen(server, port, {
+if (clusterManager.listen(server, port, {
         workers: workers
     })) {
     start();
@@ -34,28 +48,15 @@ server.once('listening', function() {
     console.log('----------------------------------');
 });
 
-
-
-
 function start() {
 
-  var log = console.log;
-  console.log = function(){
-    var args = Array.prototype.slice.call(arguments);
-      log.apply(console,[chalk.cyan(`[worker:${cluster.worker.id}]`)].concat(args));
-  };
+    var log = console.log;
+    console.log = function() {
+        var args = Array.prototype.slice.call(arguments);
+        log.apply(console, [chalk.cyan(`[worker:${cluster.worker.id}]`)].concat(args));
+    };
 
-  //--------------------------------
-
-    var worker;
-    switch (process.env.MODE) {
-        case 'services':
-            worker = require('./server/services');
-            break;
-        default:
-            worker = require('./server/portal');
-            break;
-    }
+    //--------------------------------
 
     worker({
         server: server,

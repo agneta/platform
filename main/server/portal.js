@@ -7,7 +7,6 @@ const middleware = require('../middleware');
 const projectPaths = require('../paths').project;
 const chalk = require('chalk');
 const Build = require(path.join(projectPaths.framework, 'core/build'));
-const cluster = require('cluster');
 
 module.exports = function(options) {
 

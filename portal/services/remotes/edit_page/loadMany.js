@@ -1,10 +1,7 @@
 var Promise = require('bluebird');
-var path = require('path');
-var _ = require('lodash');
 
 module.exports = function(Model, app) {
 
-    var webApp = app.get('options').web.app;
     var webPrj = app.get('options').web.project;
 
 

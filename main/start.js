@@ -1,15 +1,9 @@
-var _ = require('lodash');
-var express = require('express');
-var path = require('path');
-
-var chalk = require('chalk');
-var log = require('./log');
-var paths = require('./paths');
-
-var projectPaths = paths.project;
-var config = require('./config');
-
-var Promise = require('bluebird');
+const _ = require('lodash');
+const log = require('./log');
+const paths = require('./paths');
+const projectPaths = paths.project;
+const config = require('./config');
+const Promise = require('bluebird');
 
 var start = {
     init: function(subApps) {
@@ -28,11 +22,12 @@ var start = {
                 });
             });
     },
-    default: function(locals) {
+    default: function() {
 
         return start.pages({
             mode: 'default'
         });
+
     },
     portal: function(locals) {
 
