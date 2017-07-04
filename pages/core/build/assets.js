@@ -166,10 +166,20 @@ module.exports = function(locals, options) {
                             throw new Error(code.errors);
                         }
                         code = code.src;
-                        code = UglifyJS.minify(code, {
-                            fromString: true
-                        }).code;
+                        code = UglifyJS.minify(code);
+
+                        if(code.error){
+                          console.error(code.error);
+                          throw new Error(code.error.message);
+                        }
+
+                        code = code.code;
                     }
+                }
+
+                if(!code){
+                  console.log(options);
+                  throw new Error('Code is missing for ',options.source);
                 }
 
                 return exportAsset({

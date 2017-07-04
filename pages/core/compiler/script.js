@@ -31,11 +31,12 @@ module.exports = function(locals) {
 
         var file_content = fs.readFileSync(path_result, 'utf8');
 
-        return ejs.render.apply(this, [file_content,
+        var result =  ejs.render.apply(this, [file_content,
             _.extend(this, data, {
                 locals: data,
             })
         ]);
+        return result;
 
     }
 
@@ -92,7 +93,8 @@ module.exports = function(locals) {
         if (false && options.useBabel) {
             content = babel.transform(content,
                 _.extend({}, babelOptions, options.babel)
-            ).code;
+            );
+            content = content.code;
         }
 
         return content;
