@@ -83,7 +83,7 @@ module.exports = function(app) {
         });
 
         io.on('connection', function(connection) {
-            sessionId = _.get(connection, 'request.signedCookies.agneta_session');
+            var sessionId = _.get(connection, 'request.signedCookies.agneta_session');
 
             if (!sessionId) {
                 return;
