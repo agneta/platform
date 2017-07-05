@@ -1,4 +1,3 @@
-const loopback = require("loopback");
 const _ = require("lodash");
 const path = require("path");
 const S = require("string");
@@ -6,23 +5,26 @@ const Promise = require('bluebird');
 
 module.exports = function(app) {
 
+    _.omitDeep = function(collection, excludeKeys) {
+
+        function omitFn(value) {
+
+            if (value && typeof value === 'object') {
+                excludeKeys.forEach((key) => {
+                    delete value[key];
+                });
+            }
+        }
+
+        return _.cloneDeepWith(collection, omitFn);
+
+    };
+
     app.helpers = {
         mixin: function(name, Model) {
             require("../server/mixins/" + name)(Model);
         },
-        omitDeep: function(collection, excludeKeys) {
-
-            function omitFn(value) {
-
-                if (value && typeof value === 'object') {
-                    excludeKeys.forEach((key) => {
-                        delete value[key];
-                    });
-                }
-            }
-
-            return _.cloneDeepWith(collection, omitFn);
-        },
+        omitDeep: _.omitDeep,
         mediaType: function(mimeType) {
 
             var typeParsed = mimeType.split('/');

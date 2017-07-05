@@ -1,8 +1,6 @@
-var Promise = require('bluebird');
-var _ = require('lodash');
-var yaml = require('js-yaml');
 var path = require('path');
 var fs = require('fs-extra');
+var saveYaml = require('../edit/saveYaml');
 
 module.exports = function(Model, app) {
 
@@ -15,8 +13,7 @@ module.exports = function(Model, app) {
 
         return fs.access(filePath)
             .then(function() {
-                data = app.helpers.omitDeep(data, ['undefined', '$$hashKey']);
-                return fs.writeFile(filePath, yaml.safeDump(data));
+                return saveYaml(filePath, data);
             })
             .then(function() {
                 var relativePath = filePath.substring(webPrj.paths.base.length);

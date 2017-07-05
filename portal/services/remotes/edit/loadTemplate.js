@@ -1,19 +1,16 @@
-const Promise = require('bluebird');
 const fs = require('fs-extra');
 const yaml = require('js-yaml');
-const path = require('path');
 const _ = require('lodash');
 
 module.exports = function(options) {
 
     var web = options.app.get('options').web;
-    var webPrj = web.project;
     var webHelpers = web.app.locals;
 
     return fs.readFile(options.path)
         .then(function(content) {
 
-            template = yaml.safeLoad(content);
+            var template = yaml.safeLoad(content);
 
             function scan(collection) {
 

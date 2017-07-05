@@ -1,8 +1,6 @@
-var Promise = require('bluebird');
 var _ = require('lodash');
-var yaml = require('js-yaml');
 var path = require('path');
-var fs = require('fs-extra');
+var saveYaml = require('../edit/saveYaml');
 
 module.exports = function(Model, app) {
 
@@ -10,22 +8,17 @@ module.exports = function(Model, app) {
     var webPrj = web.project;
 
     Model.save = function(id, data, req) {
-        console.log(id);
+
         return Model.getPage(id)
             .then(function(page) {
-                console.log(page);
 
                 var source = path.join(webPrj.paths.base, page.full_source);
 
-                data = app.helpers.omitDeep(data, ['undefined', '$$hashKey']);
                 data = _.omit(data, Model.omitData);
-
-                var toSave = yaml.safeDump(data);
-
-                return fs.writeFile(source, toSave);
+                return saveYaml(source, data);
 
             })
-            .then(function(page) {
+            .then(function() {
 
                 var connection = app.portal.socket.currentConnection(req);
                 if (connection) {

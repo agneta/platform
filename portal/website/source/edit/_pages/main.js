@@ -173,23 +173,41 @@ $scope.push = function() {
 
 };
 
-$scope.save = function(autosave) {
+(function() {
 
-    $scope.clearHiddenData();
+    var pending = false;
 
-    if (!$scope.page) {
-        return;
-    }
+    $scope.save = function(autosave) {
 
-    Model.save({
-            id: $scope.page.id,
-            data: $scope.page.data
-        })
-        .$promise
-        .then(function(result) {
-            if (!autosave) {
-                toast(result.message || 'Changes saved');
-            }
-        });
+        if (!$scope.page) {
+            return;
+        }
 
-};
+        if (pending) {
+            return;
+        }
+
+        pending = true;
+
+        setTimeout(function() {
+
+            pending = false;
+
+            $scope.clearHiddenData();
+
+            Model.save({
+                    id: $scope.page.id,
+                    data: $scope.page.data
+                })
+                .$promise
+                .then(function(result) {
+                    if (!autosave) {
+                        toast(result.message || 'Changes saved');
+                    }
+                });
+
+        }, 1400);
+
+    };
+
+})();
