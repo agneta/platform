@@ -9,21 +9,14 @@ const chalk = require('chalk');
 const http = require('http');
 const socketio = require('socket.io');
 
-var workerCount = process.env.WEB_CONCURRENCY;
+//var workerCount = process.env.WEB_CONCURRENCY || 1;
+// TODO: Make more stable the multiple workers
+
+var workerCount = 1;
 var port = config.port;
 //-------------------------------------------------
 
 if (cluster.isMaster) {
-
-    var server = http.createServer(),
-        socketIO = socketio.listen(server),
-        redis = require('socket.io-redis');
-
-    socketIO.adapter(redis({
-        host: 'localhost',
-        port: 6379
-    }));
-
 
     clusterManager(workerCount);
     return;

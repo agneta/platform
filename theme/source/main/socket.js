@@ -19,10 +19,11 @@
             });
 
             socket.on('error', function(err) {
+              /*
                 error({
                     title: 'Socket Error',
                     content: err
-                });
+                });*/
             });
 
             function error(options) {
