@@ -10,9 +10,10 @@ module.exports = function(Model, app) {
     var webPrj = web.project;
 
     Model.save = function(id, data, req) {
-
+        console.log(id);
         return Model.getPage(id)
             .then(function(page) {
+                console.log(page);
 
                 var source = path.join(webPrj.paths.base, page.full_source);
 

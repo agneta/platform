@@ -6,6 +6,7 @@ var urljoin = require('url-join');
 var yaml = require('js-yaml');
 
 module.exports = function(app, options) {
+    options = options || {};
     var env = app.get('env');
     app.set('env', options.env || process.env.NODE_ENV || env);
     var baseDir = options.dir || process.env.PROJECT_DIR || process.cwd();

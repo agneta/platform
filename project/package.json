@@ -1,0 +1,13 @@
+{
+  "name": "",
+  "description": "",
+  "version": "0.0.1",
+  "dependencies": {
+    "agneta-platform": "^0.9.0",
+  },
+  "scripts": {
+    "start": "node node_modules/agneta-platform",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": ""
+}

@@ -1,13 +1,8 @@
 var Promise = require('bluebird');
-var nodegit = require('nodegit');
-var path = require('path');
-var _ = require('lodash');
-var yaml = require('js-yaml');
 
 module.exports = function(app) {
 
     var config = app.get('git');
-    var webPrj = app.get('options').web.project;
 
     app.git.log = function(options) {
 

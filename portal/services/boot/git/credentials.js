@@ -1,18 +1,15 @@
-var Promise = require('bluebird');
-var nodegit = require('nodegit');
-var path = require('path');
-var _ = require('lodash');
-var yaml = require('js-yaml');
+const nodegit = require('nodegit');
+const path = require('path');
 
 module.exports = function(app) {
 
-    var webPrj = app.get('options').web.project;
+    var base_dir = process.cwd();
 
-    var sshDir = path.join(webPrj.paths.project, 'ssh');
+    var sshDir = path.join(base_dir, 'ssh');
     var sshPublicKey = path.join(sshDir, "id_rsa.pub");
     var sshPrivateKey = path.join(sshDir, "id_rsa");
 
-    app.git.credentials = function(url,username) {
+    app.git.credentials = function(url, username) {
         return nodegit.Cred.sshKeyNew(username, sshPublicKey, sshPrivateKey, '');
     };
 
