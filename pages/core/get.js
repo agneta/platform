@@ -44,7 +44,7 @@ module.exports = function(locals) {
                 var language = languages[lang];
 
                 if (!language) {
-                    throw new Error('Incorrect language ', lang);
+                    return;
                 }
 
                 project.site.lang = lang;
@@ -73,7 +73,7 @@ module.exports = function(locals) {
             .then(function(data) {
 
                 if (!data) {
-                    throw 'No Data to render';
+                    return;
                 }
 
                 data.pathLang = dataPath;

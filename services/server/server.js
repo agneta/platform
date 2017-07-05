@@ -7,11 +7,10 @@ var bootGenerator = require('./boot-generator');
 module.exports = function(options) {
 
     options = options || {};
-
-    var app = options.app || loopback();
+    var app = loopback();
     app.httpServer = options.server;
     options.app = app;
-    
+
     require('../lib/moment');
     require('../lib/helpers')(app);
     require('../lib/log')(app);

@@ -208,11 +208,6 @@ module.exports = function(options) {
             portalServices,
             webPages,
             portalPages,
-        ])
-        .then(function() {
-
-            console.log(chalk.bold.green('Application is available'));
-
-        });
+        ]);
 
 };

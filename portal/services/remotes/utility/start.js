@@ -1,11 +1,6 @@
-var _ = require('lodash');
-var socket = require('socket.io');
 var Promise = require('bluebird');
 
-module.exports = function(Model, app) {
-
-    var locals = app.get('options').client;
-    var project = locals.project;
+module.exports = function(Model) {
 
     Model.start = function(name, options) {
         var instance;
@@ -35,7 +30,6 @@ module.exports = function(Model, app) {
                     .finally(function() {
                         instance.status.running = false;
                         utility.emit('status', instance.status);
-                        runPromise = null;
                     });
 
                 instance.promise = promise;

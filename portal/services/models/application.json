@@ -1,0 +1,25 @@
+{
+    "name": "Application",
+    "plural": "Applications",
+    "base": "Model",
+    "options": {},
+    "validations": [],
+    "acls": [{
+        "accessType": "*",
+        "principalType": "ROLE",
+        "principalId": "$everyone",
+        "permission": "DENY"
+    }, {
+        "accessType": "EXECUTE",
+        "principalType": "ROLE",
+        "principalId": "administrator",
+        "permission": "ALLOW"
+    }, {
+        "accessType": "EXECUTE",
+        "principalType": "ROLE",
+        "principalId": "editor",
+        "permission": "ALLOW",
+        "property": "restart"
+    }],
+    "methods": {}
+}

@@ -26,5 +26,9 @@ module.exports = {
     GIT: {
         dataSource: false,
         public: true
+    },
+    Application: {
+        dataSource: false,
+        public: true
     }
 };

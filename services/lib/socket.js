@@ -1,5 +1,6 @@
 var socketio = require('socket.io');
 var _ = require('lodash');
+const redis = require('socket.io-redis');
 
 module.exports = function(app) {
 
@@ -8,12 +9,11 @@ module.exports = function(app) {
     );
 
     var connectionsAll = {};
-
+    var mainApp = app.get('options').mainApp;
     function create(options) {
+        var io = mainApp.sockets.of(options.name);
 
-        var io = socketio(app.httpServer, {
-            path: '/socket/' + options.name
-        });
+      //  io.adapter(redis({ host: 'localhost', port: 6379 }));
 
         var connections = connectionsAll[options.name] = {};
 
