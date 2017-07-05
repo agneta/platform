@@ -3,6 +3,10 @@ module.exports = {
         dataSource: 'db',
         public: true
     },
+    Media_Private: {
+        dataSource: 'db',
+        public: true
+    },
     App_Page: {
         dataSource: 'db',
         public: true

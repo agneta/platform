@@ -4,7 +4,7 @@ module.exports = function(Model, app) {
 
     require('./media/main')(Model, app, {
         name: 'public',
-        bucket: config.buckets.media
+        bucket: config.buckets.private
     });
 
 };

@@ -5,14 +5,3 @@ description:
   en: "Upload, edit or event delete your images, videos, icons and other file types"
   gr: 'Ανεβάστε, επεξεργαστείτε ή διαγράψτε εικόνες, βίντεο, και άλλους τύπους αρχείων'
 icon: 'agneta/media'
-
-template: edit/media
-
-scripts:
-  - 'ui/paginator'
-  - 'media/file'
-
-angular_libs:
-  -
-    js: 'lib/ng-file-upload.min'
-    dep: 'ngFileUpload'
