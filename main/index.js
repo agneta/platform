@@ -19,6 +19,11 @@ if (cluster.isMaster) {
         socketIO = socketio.listen(server),
         redis = require('socket.io-redis');
 
+    socketIO.adapter(redis({
+        host: 'localhost',
+        port: 6379
+    }));
+
 
     clusterManager(workerCount);
     return;
@@ -61,15 +66,12 @@ process.on('message', function(msg) {
 
 var server = http.createServer(app);
 
-var sockets = socketio(server);
-app.sockets = sockets;
-
 worker({
         server: server,
         app: app
     })
     .then(function() {
-        app.listen(port, function(err) {
+        server.listen(port, function(err) {
             if (err) {
                 throw new Error(err);
             }

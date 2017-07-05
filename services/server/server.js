@@ -61,11 +61,8 @@ module.exports = function(options) {
                             app.emit('booted');
                             resolve();
                         });
-
                     });
-
                 });
-
         }
     };
 };

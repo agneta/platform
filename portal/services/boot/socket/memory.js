@@ -29,7 +29,7 @@ module.exports = function(app) {
             });
 
             memoryUsage();
-        }, 1000);
+        }, 5000);
     }
 
     memoryUsage();

@@ -1,6 +1,7 @@
 var socketio = require('socket.io');
 var _ = require('lodash');
-const redis = require('socket.io-redis');
+var mongoAdapter = require('socket.io-adapter-mongo');
+var redis = require('socket.io-redis');
 
 module.exports = function(app) {
 
@@ -9,11 +10,19 @@ module.exports = function(app) {
     );
 
     var connectionsAll = {};
-    var mainApp = app.get('options').mainApp;
-    function create(options) {
-        var io = mainApp.sockets.of(options.name);
 
-      //  io.adapter(redis({ host: 'localhost', port: 6379 }));
+
+
+    function create(options) {
+
+        var io = socketio.listen(app.httpServer, {
+            path: '/socket/' + options.name,
+            adapter: redis({
+                key: options.name,
+                host: 'localhost',
+                port: 6379
+            })
+        });
 
         var connections = connectionsAll[options.name] = {};
 
