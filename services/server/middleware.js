@@ -92,6 +92,9 @@ module.exports = function(app) {
             "./middleware/log-request": {
                 "params": [app.get("token")]
             },
+            "./middleware/media-private": {
+                "params": [app]
+            },
             "./middleware/page-views": {
                 "params": [app]
             },

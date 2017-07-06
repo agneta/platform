@@ -14,10 +14,26 @@ module.exports = function(locals) {
 
     var project = locals.project;
 
-    project.extend.helper.register('get_media', function() {
+    project.extend.helper.register('prv_media', function() {
+        return media.call(
+            this,
+            project.site.url_services,
+            'media',
+            urljoin.apply(this, arguments)
+        );
+    });
 
-        var pathMedia = urljoin.apply(this, arguments);
-        pathMedia = urljoin(project.site.servers.media, pathMedia);
+    project.extend.helper.register('get_media', function() {
+        return media.call(
+            this,
+            project.site.servers.media,
+            urljoin.apply(this, arguments)
+        );
+    });
+
+    function media(host, pathMedia) {
+
+        pathMedia = urljoin(host, pathMedia);
 
         if (!cache.get(pathMedia)) {
 
@@ -35,7 +51,7 @@ module.exports = function(locals) {
 
         return this.getVersion(pathMedia);
 
-    });
+    }
 
     project.extend.helper.register('page_media', function(path, page) {
         page = page || this.page;

@@ -1,5 +1,7 @@
 (function() {
 
+    var agneta = window.agneta;
+
     agneta.partial = function(name) {
         return agneta.langPath('partial', name);
     };
@@ -18,11 +20,18 @@
         return urljoin(args);
     };
 
+    agneta.prv_media = function() {
+        var args = Array.prototype.slice.call(arguments);
+        args.unshift(agneta.url_services);
+        args.unshift('media');
+        return urljoin(args);
+    };
+
     agneta.get_avatar = function(name) {
         return agneta.get_media(agneta.urljoin('avatars', name));
     };
 
-    agneta.get_lib = function(path) {
+    agneta.get_lib = function() {
         var args = Array.prototype.slice.call(arguments);
         args.unshift(agneta.server.lib);
         return urljoin(args);
