@@ -258,13 +258,7 @@
             onFile: function(file) {
                 console.log(file);
                 if (file.location) {
-                    switch (file.type) {
-                        case 'image':
-                            $scope.accept = 'image/*';
-                            $scope.preview_src = MediaPreview.getUrl(file, 'medium');
-                            break;
-                        default:
-                    }
+                    $scope.preview_src = MediaPreview.image(file, 'medium');
                 }
 
                 if (data.onFile) {

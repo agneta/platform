@@ -1,6 +1,6 @@
 <div class="preview">
-    <div class="preview container" layout="column" layout-align="center center">
-        <img class="image md-whiteframe-4dp" ng-if="preview_src" ng-src="{{preview_src}}">
+    <div class="container" layout="column" layout-align="center center">
+        <img class="image" ng-if="preview_src" ng-src="{{preview_src}}">
         <md-icon ng-if="!preview_src" md-svg-src="{{getIcon()}}"></md-icon>
     </div>
 </div>

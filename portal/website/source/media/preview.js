@@ -40,6 +40,7 @@
             preview.hasBackground = function(file) {
                 switch (file.type) {
                     case 'image':
+                    case 'icon':
                         return true;
                 }
             };
@@ -47,15 +48,24 @@
             //------------------------------------------------------------
 
             function backgroundImage(file, size) {
+                var url = image(file, size);
+                if(url){
+                  return "url(" + url + ')';
+                }
+            }
+
+            function image(file, size) {
                 size = size || 'square';
-                var result;
-                if (file.type == 'image') {
-                    result = "url(" + getUrl(file, size) + ')';
-                    return result;
+                switch (file.type) {
+                    case 'image':
+                        return getUrl(file, size);
+                    case 'icon':
+                        return getUrl(file);
                 }
             }
 
             preview.backgroundImage = backgroundImage;
+            preview.image = image;
 
             //------------------------------------------------------------
 
@@ -76,8 +86,8 @@
 
                 if (location) {
                     return getUrl({
-                      location: location,
-                      updatedAt: object.updatedAt
+                        location: location,
+                        updatedAt: object.updatedAt
                     });
                 }
 
@@ -88,9 +98,6 @@
             //------------------------------------------------------------
 
             function getIcon(object) {
-                if (object.type == 'icon') {
-                    return object.location;
-                }
 
                 var type = types[object.type];
                 if (type && type.icon) {
