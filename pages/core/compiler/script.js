@@ -31,7 +31,7 @@ module.exports = function(locals) {
 
         var file_content = fs.readFileSync(path_result, 'utf8');
 
-        var result =  ejs.render.apply(this, [file_content,
+        var result = ejs.render.apply(this, [file_content,
             _.extend(this, data, {
                 locals: data,
             })
@@ -45,8 +45,11 @@ module.exports = function(locals) {
             return locals.app.locals.get_path(req);
         },
         js: js,
-        configServices: function(prop){
-          return locals.services.get(prop);
+        configServices: function(prop) {
+            return locals.services.get(prop);
+        },
+        config: function(prop) {
+            return _.get(project.config, prop);
         },
         template: template
     };

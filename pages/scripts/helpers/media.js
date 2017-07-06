@@ -18,7 +18,7 @@ module.exports = function(locals) {
         return media.call(
             this,
             project.site.url_services,
-            'media',
+            project.config.media.base,
             urljoin.apply(this, arguments)
         );
     });

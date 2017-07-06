@@ -1,4 +1,3 @@
-const path = require('path');
 const _ = require('lodash');
 const Promise = require('bluebird');
 
@@ -7,6 +6,8 @@ module.exports = function(Model, app) {
     var configRoles = app.get('roles');
 
     Model.hasRoles = function(roles, req) {
+
+        roles = _.uniq(roles);
 
         return Promise.resolve()
             .then(function() {

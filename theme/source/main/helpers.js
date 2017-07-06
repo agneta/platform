@@ -23,7 +23,7 @@
     agneta.prv_media = function() {
         var args = Array.prototype.slice.call(arguments);
         args.unshift(agneta.url_services);
-        args.unshift('media');
+        args.unshift('<%-config("media.base")%>');
         return urljoin(args);
     };
 

@@ -1,5 +1,11 @@
 {
     "name": "Media_Private",
     "plural": "Media_Private",
-    "base": "Media"
+    "base": "Media",
+    "properties": {
+        "roles": {
+            "type": "array",
+            "required": false
+        }
+    }
 }
