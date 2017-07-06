@@ -30,7 +30,7 @@ module.exports = function(Model, app) {
 
             var parsed = path.parse(options.name);
             parsed.base += '/' + key;
-            var name = path.format(parsed);
+            var location = path.format(parsed);
 
             var operation = transformer.toBuffer()
                 .then(function(buffer) {
@@ -41,9 +41,12 @@ module.exports = function(Model, app) {
                     return {
                         file: readableStream,
                         size: buffer.length,
-                        name: name,
+                        name: key,
+                        location: location,
                         id: options.id,
-                        mimetype: options.mimetype
+                        mimetype: options.mimetype,
+                        type: options.type,
+                        isSize: true
                     };
 
                 });

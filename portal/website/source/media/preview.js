@@ -16,89 +16,102 @@
             }
         };
 
-        this.set = function(object) {
+        this.init = function(options) {
 
-            object.background = backgroundImage(object);
+            options = options || {};
 
-            if (!object.background) {
-                object.icon = objectIcon(object);
-                if (!object.icon) {
-                    object.extension = object.ext;
+            var preview = {};
+            var get_media = options.get_media || agneta.get_media;
+
+            preview.set = function(object) {
+
+                object.background = backgroundImage(object);
+
+                if (!object.background) {
+                    object.icon = objectIcon(object);
+                    if (!object.icon) {
+                        object.extension = object.ext;
+                    }
+                }
+
+                return object;
+            };
+
+            preview.hasBackground = function(file) {
+                switch (file.type) {
+                    case 'image':
+                        return true;
+                }
+            };
+
+            //------------------------------------------------------------
+
+            function backgroundImage(file, size) {
+                size = size || 'square';
+                var result;
+                if (file.type == 'image') {
+                    result = "url(" + getUrl(file, size) + ')';
+                    return result;
                 }
             }
 
-            return object;
+            preview.backgroundImage = backgroundImage;
+
+            //------------------------------------------------------------
+
+            function getUrl(file, size) {
+                var version = new Date(file.updatedAt).valueOf();
+                return get_media(file.location, size) + '?version=' + version;
+            }
+
+
+            preview.getUrl = getUrl;
+
+            //------------------------------------------------------------
+
+
+            function objectIcon(object) {
+
+                var location = getIcon(object);
+
+                if (location) {
+                    return getUrl({
+                      location: location,
+                      updatedAt: object.updatedAt
+                    });
+                }
+
+            }
+
+            preview.objectIcon = objectIcon;
+
+            //------------------------------------------------------------
+
+            function getIcon(object) {
+                if (object.type == 'icon') {
+                    return object.location;
+                }
+
+                var type = types[object.type];
+                if (type && type.icon) {
+                    return 'icons/' + type.icon;
+                }
+            }
+
+            preview.getIcon = getIcon;
+
+            preview.toScope = function(scope) {
+                scope.preview = scope.preview || {};
+                scope.preview.hasBackground = preview.hasBackground;
+                scope.preview.backgroundImage = preview.backgroundImage;
+                scope.preview.objectIcon = preview.objectIcon;
+                scope.preview.get = preview.get;
+            };
+
+            return preview;
+
         };
 
-        this.hasBackground = function(file) {
-            switch (file.type) {
-                case 'image':
-                    return true;
-            }
-        };
 
-        //------------------------------------------------------------
-
-        function backgroundImage(file, size) {
-            size = size || 'square';
-            var result;
-            if (file.type == 'image') {
-                result = "url(" + getUrl(file, size) + ')';
-                return result;
-            }
-        }
-
-        this.backgroundImage = backgroundImage;
-
-        //------------------------------------------------------------
-
-        function getUrl(file, size) {
-            var version = new Date(file.updatedAt).valueOf();
-            return agneta.get_media(file.location, size) + '?version=' + version;
-        }
-
-
-        this.getUrl = getUrl;
-
-        //------------------------------------------------------------
-
-
-        function objectIcon(object) {
-
-            var icon = getIcon(object);
-
-            if (icon) {
-                return agneta.get_media(icon);
-            }
-
-        }
-
-        this.objectIcon = objectIcon;
-
-        //------------------------------------------------------------
-
-        function getIcon(object) {
-            if (object.type == 'icon') {
-                return object.location;
-            }
-
-            var type = types[object.type];
-            if (type && type.icon) {
-                return 'icons/' + type.icon;
-            }
-        }
-
-        this.getIcon = getIcon;
-
-        //------------------------------------------------------------
-
-
-        this.toScope = function(scope) {
-            scope.preview = scope.preview || {};
-            scope.preview.hasBackground = this.hasBackground;
-            scope.preview.backgroundImage = this.backgroundImage;
-            scope.preview.objectIcon = this.objectIcon;
-            scope.preview.get = this.get;
-        };
     });
 })();

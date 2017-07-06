@@ -29,6 +29,10 @@
             var data = options.data;
             var Media = data.Media;
 
+            if (!data.apiMedia) {
+                throw new Error('API Media base-path is required');
+            }
+
             scope.config = data.config;
             scope.file = {
                 dir: data.dir
@@ -180,7 +184,7 @@
                 if (object) {
                     //console.log(scope.file.location);
                     Upload.upload({
-                        url: agneta.url('api/Media/upload-file'),
+                        url: agneta.url(data.apiMedia + 'upload-file'),
                         data: {
                             dir: scope.file.dir,
                             name: scope.file.name,
@@ -225,6 +229,8 @@
 
     app.controller('EditFile', function($scope, $controller, data, EditFile, MediaPreview) {
 
+        MediaPreview = data.MediaPreview || MediaPreview.init();
+
         angular.extend(this, $controller('DialogCtrl', {
             $scope: $scope
         }));
@@ -241,7 +247,7 @@
 
             var icon = MediaPreview.objectIcon($scope.file);
             if (!icon) {
-                icon = agneta.get_media('icons/agneta/media');
+                icon = MediaPreview.getUrl('icons/agneta/media');
             }
             return icon;
         };
@@ -266,6 +272,15 @@
                 }
             }
         });
+
+    });
+
+    app.controller('EditFilePrivate', function($scope, $controller, data, EditFile, MediaPreview) {
+
+        angular.extend(this, $controller('EditFile', {
+            $scope: $scope,
+            data: data
+        }));
 
     });
 

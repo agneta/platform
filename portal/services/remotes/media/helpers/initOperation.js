@@ -13,36 +13,65 @@ module.exports = function(Model, app) {
 
         return new Promise(function(resolve, reject) {
 
-            var writableStream = app.storage.upload({
-                container: Model.__bucket.name,
-                remote: options.name,
-                contentType: options.mimetype
+                var writableStream = app.storage.upload({
+                    container: Model.__bucket.name,
+                    remote: options.name,
+                    contentType: options.mimetype
+                });
+
+                writableStream.on('error', reject);
+                writableStream.on('success', resolve);
+
+                var uploadedSize = 0;
+
+                writableStream.on('data', function(buffer) {
+
+                    uploadedSize += buffer.length;
+
+                    options.onProgress(_.extend({
+                        uploadedSize: uploadedSize,
+                        fileSize: options.size,
+                        percentage: uploadedSize / options.size
+                    }, socketProps));
+
+                });
+
+                options.file.pipe(writableStream);
+
+                Model.io.emit('file:upload:operation:start', socketProps);
+
+            }).then(function() {
+
+                var fileProps = {
+                    name: options.name,
+                    location: options.location,
+                    isSize: options.isSize,
+                    size: options.size,
+                    type: options.type,
+                    contentType: options.mimetype
+                };
+
+                console.log(fileProps);
+
+                return Model.findOne({
+                        where: {
+                            location: options.location
+                        }
+                    })
+                    .then(function(fileInstance) {
+                        if (fileInstance) {
+                            //console.log('file update', fileProps);
+                            return fileInstance.updateAttributes(fileProps);
+                        } else {
+                            //console.log('file create', fileProps);
+                            return Model.create(fileProps);
+                        }
+                    });
+
+            })
+            .then(function() {
+                Model.io.emit('file:upload:operation:complete', socketProps);
             });
-
-            writableStream.on('error', reject);
-            writableStream.on('success', resolve);
-
-            var uploadedSize = 0;
-
-            writableStream.on('data', function(buffer) {
-
-                uploadedSize += buffer.length;
-
-                options.onProgress(_.extend({
-                    uploadedSize: uploadedSize,
-                    fileSize: options.size,
-                    percentage: uploadedSize / options.size
-                }, socketProps));
-
-            });
-
-            options.file.pipe(writableStream);
-
-            Model.io.emit('file:upload:operation:start', socketProps);
-
-        }).then(function() {
-            Model.io.emit('file:upload:operation:complete', socketProps);
-        });
 
     };
 };

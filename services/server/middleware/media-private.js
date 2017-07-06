@@ -13,6 +13,7 @@ module.exports = function(app) {
     return function(req, res, next) {
 
         var remotePath = req.path;
+        var Media_Private = app.models.Media_Private;
 
         if (remotePath.indexOf(basePath) !== 0) {
             return next();
@@ -20,16 +21,14 @@ module.exports = function(app) {
 
         remotePath = remotePath.substring(basePath.length);
         remotePath = path.normalize(remotePath);
-
-        var parsed = path.parse(remotePath);
-        parsed = path.parse(remotePath);
+        remotePath = Media_Private.__fixPath(remotePath);
+        console.log(remotePath);
 
         var params = {
             Bucket: bucket.private,
             Key: remotePath
         };
 
-        var Media_Private = app.models.Media_Private;
         var item;
 
         return Promise.resolve()
@@ -38,7 +37,7 @@ module.exports = function(app) {
                 //return app.storage.s3.headObjectAsync(params);
                 return Media_Private.findOne({
                     where: {
-                        location: Media_Private.__fixPath(remotePath)
+                        location: remotePath
                     }
                 });
 
@@ -75,9 +74,8 @@ module.exports = function(app) {
             })
             .then(function() {
 
-                res.set('Content-Length', item.size);
                 res.set('Content-Type', item.contentType);
-                res.set('Last-Modified', item.modified);
+                res.set('Last-Modified', item.updatedAt);
 
                 app.storage.s3.getObject(params)
                     .createReadStream()

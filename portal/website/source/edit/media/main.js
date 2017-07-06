@@ -6,12 +6,18 @@
 
         var apiMedia = 'api/Media/';
         var partialFile = 'file';
+        var get_media = agneta.get_media;
 
-        if ($rootScope.viewData.extra.private) {
+        if ($rootScope.viewData.extra && $rootScope.viewData.extra.private) {
             apiMedia = 'api/Media_Private/';
             partialFile = 'file-private';
             Media = Media_Private;
+            get_media = agneta.prv_media;
         }
+
+        MediaPreview = MediaPreview.init({
+          get_media: get_media
+        });
 
         Search_Engine.init({
             scope: $scope,

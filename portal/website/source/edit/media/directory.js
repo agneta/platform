@@ -54,9 +54,9 @@
                 }
             }
 
-            if(!this.toLoad_){
-              this.toLoad_ = 1;
-              return;
+            if (!this.toLoad_) {
+                this.toLoad_ = 1;
+                return;
             }
 
             if (this.toLoad_ < index) {
@@ -148,7 +148,9 @@
         $mdDialog.open({
             partial: partialFile,
             data: {
+                apiMedia: apiMedia,
                 Media: Media,
+                MediaPreview: MediaPreview,
                 location: object.location,
                 onChange: function(file) {
                     $scope.refresh();
@@ -165,7 +167,7 @@
 
         if (objects && objects.length) {
             Upload.upload({
-                url: agneta.url(apiMedia+'upload-files'),
+                url: agneta.url(apiMedia + 'upload-files'),
                 data: {
                     dir: $scope.dir.location,
                     objects: objects
