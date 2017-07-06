@@ -13,6 +13,7 @@
                 config: {
                     dirLock: true
                 },
+                Media: Media,
                 location: dataValue.location,
                 dir: getBasePath(field),
                 onApply: function(file) {

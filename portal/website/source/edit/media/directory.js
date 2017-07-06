@@ -146,8 +146,9 @@
 
     $scope.openObject = $scope.openObject || function(object) {
         $mdDialog.open({
-            partial: 'file',
+            partial: partialFile,
             data: {
+                Media: Media,
                 location: object.location,
                 onChange: function(file) {
                     $scope.refresh();
@@ -164,7 +165,7 @@
 
         if (objects && objects.length) {
             Upload.upload({
-                url: agneta.url('api/Media/upload-files'),
+                url: agneta.url(apiMedia+'upload-files'),
                 data: {
                     dir: $scope.dir.location,
                     objects: objects

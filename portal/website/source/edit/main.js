@@ -2,7 +2,8 @@
 
     var app = angular.module('MainApp');
 
-    app.controller("EditMainCtrl", function($scope, $rootScope, $routeParams,$parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, Media, MediaPreview) {
+    app.controller("EditMainCtrl", function($scope, $rootScope, $routeParams,$parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, Media, Media_Private, MediaPreview) {
+
         var fuse;
         var fuseOptions = {
             shouldSort: true,

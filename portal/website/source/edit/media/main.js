@@ -2,7 +2,16 @@
 
     var app = angular.module('MainApp');
 
-    app.controller('MediaCtrl', function($scope, $rootScope, Upload, Media, SocketIO, $timeout, $mdToast, $mdDialog, $location, $sce, $routeParams, MediaPreview, Search_Engine) {
+    app.controller('MediaCtrl', function($scope, $rootScope, Upload, Media, SocketIO, $timeout, $mdToast, $mdDialog, $location, $sce, $routeParams, Media_Private, MediaPreview, Search_Engine) {
+
+        var apiMedia = 'api/Media/';
+        var partialFile = 'file';
+
+        if ($rootScope.viewData.extra.private) {
+            apiMedia = 'api/Media_Private/';
+            partialFile = 'file-private';
+            Media = Media_Private;
+        }
 
         Search_Engine.init({
             scope: $scope,

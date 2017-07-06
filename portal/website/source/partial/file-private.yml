@@ -1,0 +1,2 @@
+controller: 'EditFilePrivate'
+template: 'partial/file'

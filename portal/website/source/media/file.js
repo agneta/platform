@@ -19,7 +19,7 @@
 
     <%-js('media/preview')%>
 
-    app.service('EditFile', function(Media, Upload, SocketIO, $timeout, $mdDialog) {
+    app.service('EditFile', function(Upload, SocketIO, $timeout, $mdDialog) {
 
         var socket = SocketIO.connect('media');
 
@@ -27,6 +27,7 @@
 
             var scope = options.scope;
             var data = options.data;
+            var Media = data.Media;
 
             scope.config = data.config;
             scope.file = {
@@ -95,7 +96,7 @@
                             return;
                         }
 
-                        angular.extend(scope.file,result);
+                        angular.extend(scope.file, result);
                         onFile();
                     })
                     .finally(function() {
@@ -133,6 +134,7 @@
                     nested: true,
                     partial: 'select',
                     data: {
+                        Media: Media,
                         file: scope.file,
                         onSelect: function(object) {
                             scope.file = object;
@@ -176,7 +178,7 @@
             scope.upload = function(object) {
 
                 if (object) {
-                    console.log(scope.file.location);
+                    //console.log(scope.file.location);
                     Upload.upload({
                         url: agneta.url('api/Media/upload-file'),
                         data: {
@@ -194,7 +196,7 @@
         };
     });
 
-    app.controller('MediaSelect', function($scope, $controller, data, Media, $mdDialog) {
+    app.controller('MediaSelect', function($scope, $controller, data, $mdDialog) {
 
         $scope.startingLocation = data.file.dir;
 
@@ -214,6 +216,7 @@
         };
 
         angular.extend(this, $controller('MediaCtrl', {
+            Media: data.Media,
             $scope: $scope
         }));
 

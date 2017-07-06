@@ -1,4 +1,5 @@
 {
     "name": "Media_Private",
+    "plural": "Media_Private",
     "base": "Media"
 }
