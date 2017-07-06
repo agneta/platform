@@ -1,13 +1,29 @@
 
-<div class="md-padding" layout="row" layout-sm="column" layout-wrap>
+<div class="md-padding" layout="row" layout-sm="column">
+  <%
+  var menu = get_data('menu');
+  var half = menu.length/2;
+  %>
+  <div layout="column" flex="100">
+         <%
+         for(var i=0;i<half;i++){
+           var item = menu[i];
+           %>
+           <%-template('ui/page-card',{data:item})%>
+           <%
+         }
+         %>
+   </div>
+<div layout="column" flex="100">
        <%
-       var menu = get_data('menu');
-       for(var item of menu){
+       for(var i=half;i<menu.length;i++){
+         var item = menu[i];
          %>
          <%-template('ui/page-card',{data:item})%>
          <%
        }
        %>
+ </div>
  </div>
 
  <md-content class="md-padding" layout="row" >

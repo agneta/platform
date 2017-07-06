@@ -28,6 +28,15 @@
       page: 'edit/pages'
     -
       page: 'edit/media'
+      menu:
+        -
+          title:
+            en: Public
+          page: 'edit/media/public'
+        -
+          title:
+            en: Private
+          page: 'edit/media/private'
     -
       page: 'edit/data'
 -
