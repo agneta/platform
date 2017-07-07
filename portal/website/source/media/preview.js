@@ -49,8 +49,8 @@
 
             function backgroundImage(file, size) {
                 var url = image(file, size);
-                if(url){
-                  return "url(" + url + ')';
+                if (url) {
+                    return "url(" + url + ')';
                 }
             }
 
@@ -119,6 +119,10 @@
 
         };
 
+        this.public = this.init();
+        this.private = this.init({
+            get_media: agneta.prv_media
+        });
 
     });
 })();

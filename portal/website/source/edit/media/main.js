@@ -2,22 +2,19 @@
 
     var app = angular.module('MainApp');
 
-    app.controller('MediaCtrl', function($scope, $rootScope, Upload, Media, SocketIO, $timeout, $mdToast, $mdDialog, $location, $sce, $routeParams, Media_Private, MediaPreview, Search_Engine) {
+    app.controller('MediaCtrl', function($scope, $rootScope, Upload, MediaOpt, SocketIO, $timeout, $mdToast, $mdDialog, $location, $sce, $routeParams, Search_Engine) {
 
-        var apiMedia = 'api/Media/';
-        var partialFile = 'file';
-        var get_media = agneta.get_media;
+        var apiMedia = MediaOpt.public.api;
+        var partialFile = MediaOpt.public.partial;
+        var Media = MediaOpt.public.model;
+        var MediaPreview = MediaOpt.public.preview;
 
         if ($rootScope.viewData.extra && $rootScope.viewData.extra.private) {
-            apiMedia = 'api/Media_Private/';
-            partialFile = 'file-private';
-            Media = Media_Private;
-            get_media = agneta.prv_media;
+            apiMedia = MediaOpt.private.api;
+            partialFile = MediaOpt.private.partial;
+            Media = MediaOpt.private.model;
+            MediaPreview = MediaOpt.private.preview;
         }
-
-        MediaPreview = MediaPreview.init({
-          get_media: get_media
-        });
 
         Search_Engine.init({
             scope: $scope,

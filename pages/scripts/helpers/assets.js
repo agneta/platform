@@ -28,7 +28,7 @@ module.exports = function(locals) {
 
         if (_.isObject(path_check)) {
             if (path_check.services) {
-                return urljoin(project.site.url_services, path_check.services);
+                return urljoin(project.site.services.url, path_check.services);
             }
         }
 

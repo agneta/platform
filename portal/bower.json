@@ -1,4 +1,5 @@
 {
+  "name": "agneta-portal",
   "private": true,
   "ignore": [
     "**/.*",

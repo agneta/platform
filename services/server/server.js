@@ -28,7 +28,13 @@ module.exports = function(options) {
         locals: options,
         init: function() {
             require('../lib/locals')(app, options);
-            require('../lib/socket')(app);
+            if (!options.disableSocket) {
+                require('../lib/socket')({
+                    worker: options.worker,
+                    app: app
+                });
+            }
+
             return Promise.resolve();
         },
         start: function() {

@@ -19,6 +19,24 @@
 
     <%-js('media/preview')%>
 
+    app.service('MediaOpt', function(Media, MediaPreview, Media_Private) {
+
+        this.public = {
+            api: '<%-config("media.api.public")%>',
+            partial: '<%-config("media.partial.public")%>',
+            model: Media,
+            preview: MediaPreview.public
+        };
+
+        this.private = {
+            api: '<%-config("media.api.private")%>',
+            partial: '<%-config("media.partial.private")%>',
+            model: Media_Private,
+            preview: MediaPreview.private
+        };
+
+    });
+
     app.service('EditFile', function(Upload, SocketIO, $timeout, $mdDialog) {
 
         var socket = SocketIO.connect('media');
@@ -229,7 +247,7 @@
 
     app.controller('EditFile', function($scope, $controller, data, EditFile, MediaPreview) {
 
-        MediaPreview = data.MediaPreview || MediaPreview.init();
+        MediaPreview = data.MediaPreview || MediaPreview.public;
 
         angular.extend(this, $controller('DialogCtrl', {
             $scope: $scope

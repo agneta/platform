@@ -2,7 +2,10 @@
 
     var app = angular.module('MainApp');
 
-    app.controller("EditMainCtrl", function($scope, $rootScope, $routeParams,$parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, Media, Media_Private, MediaPreview) {
+    app.controller("EditMainCtrl", function($scope, $rootScope, $routeParams, $parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, MediaOpt) {
+
+        var Media = MediaOpt.public.model;
+        var MediaPreview = MediaOpt.public.preview;
 
         var fuse;
         var fuseOptions = {

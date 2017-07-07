@@ -69,7 +69,7 @@ libraries:
 #-----------------------------------------------
 
 scripts:
-  - 'lib/socket.io'
+  - 'lib/socketcluster.min'
   - 'main/socket'
   - 'main/portal'
   - 'portal/main'

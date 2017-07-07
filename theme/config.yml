@@ -31,6 +31,12 @@ colors:
 
 media:
   base: 'view/media'
+  api:
+    public: 'api/Media/'
+    private: 'api/Media_Private/'
+  partial:
+    public: 'file'
+    private: 'file-private'
 
 #-----------------------------------------------
 

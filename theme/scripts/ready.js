@@ -13,7 +13,7 @@ module.exports = function(locals) {
             scripts.push('main/contact');
         }
 
-        if (project.site.url_services) {
+        if (project.site.services) {
 
             scripts.push('main/interceptors');
             scripts.push('main/account');
@@ -36,7 +36,7 @@ module.exports = function(locals) {
         }
         if (!project.site.building) {
 
-            scripts.push('lib/socket.io');
+            scripts.push('lib/socketcluster.min');
             scripts.push('main/socket');
             scripts.push('main/portal');
 

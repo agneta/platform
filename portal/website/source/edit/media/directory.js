@@ -64,10 +64,16 @@
 
                 $rootScope.loadingMain = true;
 
-                Media.list({
-                        dir: $scope.dir.location,
-                        marker: marker
-                    })
+                var params = {};
+
+                if ($scope.dir.location) {
+                    params.dir = $scope.dir.location;
+                }
+                if (marker) {
+                    params.marker = marker
+                }
+
+                Media.list(params)
                     .$promise
                     .then(function(result) {
 

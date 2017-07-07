@@ -9,7 +9,7 @@
 
     app.config(function(LoopBackResourceProvider) {
         LoopBackResourceProvider.setAuthHeader(tokenName);
-        var url = agneta.urljoin(agneta.url_services, 'api');
+        var url = agneta.urljoin(agneta.services.url, 'api');
         LoopBackResourceProvider.setUrlBase(url);
 
     });

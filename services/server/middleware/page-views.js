@@ -1,5 +1,4 @@
 const path = require('path');
-const fs = require('fs');
 const Promise = require('bluebird');
 const urljoin = require('url-join');
 const uaParser = require('ua-parser-js');
@@ -10,10 +9,8 @@ const moment = require('moment');
 module.exports = function(app) {
 
     var basePath = '/views/';
-    var sendFile;
     var website = app.get('website');
     var client = app.get('options').client;
-    var clientProject = client.project;
     var clientHelpers = client.app.locals;
 
     return function(req, res, next) {

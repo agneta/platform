@@ -17,7 +17,7 @@ module.exports = function(locals) {
     project.extend.helper.register('prv_media', function() {
         return media.call(
             this,
-            project.site.url_services,
+            project.site.services.url,
             project.config.media.base,
             urljoin.apply(this, arguments)
         );

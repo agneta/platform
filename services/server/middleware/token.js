@@ -56,14 +56,12 @@ module.exports = function(app) {
         if (req.accessToken === undefined) {
             Object.defineProperty(req, "accessToken", {
                 get: function() {
-                    var key = req.app.get('token').name;
+                  var key = req.app.get('token').name;
                     return req.accessTokens[key] || null;
                 }
             });
         }
-
         app.models.AccessToken.findForRequest(req, options, function(err, token) {
-
             if (err) {
                 return next(err);
             }
@@ -93,7 +91,7 @@ module.exports = function(app) {
                     req.accessTokens[name] = token || null;
                     rewriteUserLiteral(req, currentUserLiteral);
 
-                    next();
+                    next(null,token);
                 })
                 .catch(next);
         });

@@ -2,29 +2,35 @@ module.exports = function(Model) {
 
     Model._list = function(dir, limit, marker) {
 
-        marker = marker || 0;
-        dir = dir || '';
-
-        //---------------------------------------------------
-
-        dir = dir.split('/').join('\\/');
-        if (dir && dir.length) {
-            dir += '\\/';
-        }
-
-        var regexp = '/^' + dir + '[^\\/]+$/';
-
-        var whereFilter = {
-            location: {
-                regexp: regexp
-            }
-        };
         var objects = [];
-        return Model.find({
-                where: whereFilter,
-                limit: limit,
-                skip: marker,
-                order: ['type ASC', 'name ASC']
+        var whereFilter = [];
+
+        return Promise.resolve()
+            .then(function() {
+                marker = marker || 0;
+                dir = dir || '';
+
+                //---------------------------------------------------
+
+                dir = dir.split('/').join('\\/');
+                if (dir && dir.length) {
+                    dir += '\\/';
+                }
+
+                var regexp = '/^' + dir + '[^\\/]+$/';
+
+                whereFilter = {
+                    location: {
+                        regexp: regexp
+                    }
+                };
+                console.log('find', whereFilter);
+                return Model.find({
+                    where: whereFilter,
+                    limit: limit,
+                    skip: marker,
+                    order: ['type ASC', 'name ASC']
+                });
             })
             .then(function(_objects) {
 
@@ -34,18 +40,24 @@ module.exports = function(Model) {
 
                 objects = _objects;
 
+                console.log('count', whereFilter);
+
                 return Model.count(
                     whereFilter
                 );
             })
             .then(function(count) {
+
                 var truncated = (count - marker) > limit;
                 var nextMarker;
                 var nextLimit;
+
                 if (truncated) {
                     nextMarker = marker + limit;
                     nextLimit = Math.min(count - nextMarker, limit);
                 }
+                console.log('next', nextMarker, nextLimit);
+
                 return {
                     objects: objects,
                     nextMarker: nextMarker,
@@ -80,7 +92,7 @@ module.exports = function(Model) {
                 root: true
             },
             http: {
-                verb: 'get',
+                verb: 'post',
                 path: '/list'
             }
         }

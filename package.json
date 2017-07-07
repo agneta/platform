@@ -100,6 +100,7 @@
     "soap": "git://github.com/vpulim/node-soap.git#master",
     "socket.io": "2.0.3",
     "socket.io-redis": "^5.1.0",
+    "socketcluster": "^6.1.0",
     "socketio-auth": "0.1.0",
     "stacktrace-parser": "0.1.4",
     "stemmer": "1.0.0",

@@ -69,7 +69,7 @@ module.exports = function(locals) {
                 project.site.env = project.env;
                 project.site.port = hostParsed.port;
                 project.site.portal = locals.portal && !locals.building;
-                project.site.building = locals.buildOptions?true:false;
+                project.site.building = locals.buildOptions ? true : false;
                 project.site.protocol = hostParsed.protocol;
                 project.config.root = locals.root || '/';
                 //console.log('pages:project:env', project.site.env);
@@ -120,8 +120,13 @@ module.exports = function(locals) {
                             break;
                     }
 
-                    project.site.url_services = servicesUrl;
-                    //console.log('pages:url_services', project.site.url_services);
+                    var servicesParsed = url.parse(servicesUrl);
+
+                    project.site.services = {
+                        url: servicesUrl,
+                        host: servicesParsed.host
+                    };
+                    //console.log('pages:url_services', project.site.services.url);
 
                 }
 
@@ -130,7 +135,7 @@ module.exports = function(locals) {
                 var view_base;
 
                 if (locals.services && locals.track && locals.track.views) {
-                    view_base = urljoin(project.site.url_services, 'views');
+                    view_base = urljoin(project.site.services.url, 'views');
                 } else {
                     view_base = '/' + urljoin(project.config.root);
                 }

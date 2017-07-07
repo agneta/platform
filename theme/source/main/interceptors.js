@@ -18,7 +18,7 @@
                 request: function(config) {
 
                     // Check if it is an API call
-                    if (config.url.indexOf(agneta.url_services) === 0) {
+                    if (config.url.indexOf(agneta.services.url) === 0) {
 
                         var data;
 
@@ -42,7 +42,7 @@
                 },
                 response: function(response) {
 
-                    if (response.config.url.indexOf(agneta.url_services) !== 0) {
+                    if (response.config.url.indexOf(agneta.services.url) !== 0) {
                         return response;
                     }
 
@@ -74,7 +74,7 @@
                     if (
                         rejection.config &&
                         rejection.config.url &&
-                        rejection.config.url.indexOf(agneta.url_services) !== 0) {
+                        rejection.config.url.indexOf(agneta.services.url) !== 0) {
                         return;
                     }
 

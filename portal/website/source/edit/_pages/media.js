@@ -2,18 +2,29 @@
 
     var media = {};
 
-    media.edit = function(field, parent, key) {
+    media.editPrivate = function(field, parent, key) {
+
+        media.edit(field, parent, key, MediaOpt.private);
+
+    };
+
+
+    media.edit = function(field, parent, key, mediaOptions) {
 
         var parentValue = parent.__value;
         var dataValue = parentValue[key].__value;
 
+        mediaOptions = mediaOptions || MediaOpt.public;
+
         $mdDialog.open({
-            partial: 'file',
+            partial: mediaOptions.partial,
             data: {
                 config: {
                     dirLock: true
                 },
-                Media: Media,
+                apiMedia: mediaOptions.api,
+                Media: mediaOptions.model,
+                MediaPreview: mediaOptions.preview,
                 location: dataValue.location,
                 dir: getBasePath(field),
                 onApply: function(file) {

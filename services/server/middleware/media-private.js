@@ -22,7 +22,6 @@ module.exports = function(app) {
         remotePath = remotePath.substring(basePath.length);
         remotePath = path.normalize(remotePath);
         remotePath = Media_Private.__fixPath(remotePath);
-        console.log(remotePath);
 
         var params = {
             Bucket: bucket.private,

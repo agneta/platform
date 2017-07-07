@@ -3,10 +3,10 @@ controller: MediaSelect as media
 scripts:
   - 'ui/paginator'
   - 'media/file'
-  - 'edit/media'
+  - 'edit/media/main'
 
 styles:
-  - 'edit/media'
+  - 'edit/media/main'
 
 angular_libs:
   -

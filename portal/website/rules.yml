@@ -5,7 +5,6 @@
     scripts:
       - 'utility'
       - 'lib/bluebird.min'
-      - 'lib/socket.io'
   templates:
     - "utility"
 -

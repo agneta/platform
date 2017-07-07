@@ -5,7 +5,6 @@ const start = require('../start');
 const config = require('../config');
 const middleware = require('../middleware');
 const projectPaths = require('../paths').project;
-const chalk = require('chalk');
 const Build = require(path.join(projectPaths.framework, 'core/build'));
 
 module.exports = function(options) {
@@ -16,6 +15,7 @@ module.exports = function(options) {
 
     var commonOptions = _.extend({
         mainApp: app,
+        worker: options.worker,
         listenDisabled: true,
         appName: config.appName,
         server: server,
@@ -48,16 +48,6 @@ module.exports = function(options) {
         });
 
     }
-
-    //---------
-
-    var subApps = {};
-
-    function onApp(locals) {
-        var app = locals.app;
-        subApps[app.get('name')] = locals;
-    }
-
 
     //-----------------------------------------------------
 
@@ -109,6 +99,7 @@ module.exports = function(options) {
         root: 'services',
         name: 'services',
         id: 'web',
+        disableSocket: true,
         dir: projectPaths.project,
         website: {
             root: appRoots.preview
@@ -204,10 +195,10 @@ module.exports = function(options) {
     // Start using apps
 
     return start.init([
-            webServices,
-            portalServices,
-            webPages,
-            portalPages,
-        ]);
+        webServices,
+        portalServices,
+        webPages,
+        portalPages,
+    ]);
 
 };

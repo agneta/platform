@@ -9,15 +9,6 @@ module.exports = function(Model, app) {
     var locals = app.get('options').client;
     var project = locals.project;
 
-    var io = app.io.create({
-        name: 'utilities',
-        auth: {
-            allow: [
-                'administrator'
-            ]
-        }
-    });
-
     for (var key in project.utilities) {
 
         initUtility(
@@ -71,7 +62,7 @@ module.exports = function(Model, app) {
         utility.instance = instance;
 
         utility.emit = function(name, options) {
-            io.emit(utility.name + ':' + name, options);
+            Model.io.emit(utility.name + ':' + name, options);
         };
 
         utility.addLine = function(options) {

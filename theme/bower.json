@@ -1,4 +1,5 @@
 {
+  "name": "agneta-theme",
   "private": true,
   "ignore": [
     "**/.*",
@@ -35,7 +36,7 @@
     "string": "3.3.x",
     "stacktrace-js": "1.3.x",
     "es6-promise": "4.0.x",
-    "socket.io": "https://github.com/socketio/socket.io-client.git",
+    "socketcluster-client": "5.5.2",
     "bluebird": "3.4.x",
     "videogular": "1.4.x",
     "videogular-themes-default": "1.4.x",

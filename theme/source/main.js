@@ -9,7 +9,7 @@
 
         $sceDelegateProvider.resourceUrlWhitelist([
             'self',
-            agneta.url_services + '/**',
+            agneta.services.url + '/**',
             agneta.server.media + '/**',
             agneta.server.lib + '/**'
         ]);

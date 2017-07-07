@@ -5,13 +5,6 @@ module.exports = function(Model, app, options) {
     Model.__tempUploads = path.join('temp/uploads', options.name);
     Model.__bucket = options.bucket;
 
-    Model.io = app.io.create({
-        name: 'media',
-        auth: {
-            allow: ['editor']
-        }
-    });
-
     app.helpers.mixin("disableAllMethods", Model);
 
     //------------------------------------------------------------------

@@ -57,5 +57,8 @@ module.exports = _.extend(projectOptions, {
     host: host,
     protocol: protocol,
     env: env,
-    hostName: hostName
+    hostName: hostName,
+    socket: {
+        path: '/socket'
+    },
 });

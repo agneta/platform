@@ -1,77 +1,41 @@
 require('sharp');
 
-const cluster = require('cluster');
-const express = require('express');
-const loopback = require('loopback');
+const os = require('os');
 const config = require('./config');
-const clusterManager = require('./cluster-manager');
-const chalk = require('chalk');
-const http = require('http');
-const socketio = require('socket.io');
+const path = require('path');
+const SocketCluster = require('socketcluster').SocketCluster;
 
 //var workerCount = process.env.WEB_CONCURRENCY || 1;
 // TODO: Make more stable the multiple workers
 
 var workerCount = 1;
 var port = config.port;
-//-------------------------------------------------
-
-if (cluster.isMaster) {
-
-    clusterManager(workerCount);
-    return;
-}
 
 //-------------------------------------------------
 
-var worker;
-var app;
+workerCount = workerCount || os.cpus().length;
+console.log(`Starting ${workerCount} workers`);
 
-switch (process.env.MODE) {
-    case 'services':
-        app = loopback();
-        worker = require('./server/services');
+//-------------------------------------------------
+
+var environment = process.env.NODE_ENV;
+
+switch (environment) {
+    case 'production':
+        environment = 'prod';
         break;
     default:
-        app = express();
-        worker = require('./server/portal');
+        environment = 'dev';
         break;
 }
 
-//--------------------------------
-
-var log = console.log;
-
-console.log = function() {
-    var args = Array.prototype.slice.call(arguments);
-    log.apply(console, [chalk.cyan(`[worker:${cluster.worker.id}]`)].concat(args));
+var options = {
+    workers: workerCount,
+    port: port,
+    path: config.socket.path,
+    workerController: path.join(__dirname, 'cluster', 'worker'),
+    environment: environment
 };
 
-//--------------------------------
-
-process.on('message', function(msg) {
-    if (msg.exit) {
-        process.exit();
-    }
-});
-
-//--------------------------------
-
-var server = http.createServer(app);
-
-worker({
-        server: server,
-        app: app
-    })
-    .then(function() {
-        server.listen(port, function(err) {
-            if (err) {
-                throw new Error(err);
-            }
-            console.log(chalk.bold.green('Application is available'));
-            process.send({
-                started: true
-            });
-
-        });
-    });
+var socketCluster = new SocketCluster(options);
+require('./cluster/master').run(socketCluster);

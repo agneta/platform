@@ -40,8 +40,11 @@ window.agneta = {
     keywords: "<%-get_asset('generated/keywords_' + site.lang + '.json')%>"
   },
   <%}%>
-  <%if(site.url_services){%>
-    url_services: "<%-site.url_services%>",
+  <%if(site.services){%>
+    services: {
+      url: "<%-site.services.url%>",
+      host: "<%-site.services.host%>",
+    },
     <%}%>
     url_web: "<%-site.url_web%>",
     host: "<%-site.host_web%>",
