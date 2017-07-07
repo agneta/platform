@@ -5,5 +5,5 @@
   }
 %>
     <md-input-container class="type-inline" ng-if="field.type == 'value'">
-        <input aria-label="{{field.name}}" ng-model="<%-model%>" ng-change="onFieldChange(data)" ng-init="registerInput(data)" md-select-on-focus>
+        <input aria-label="{{field.name}}" ng-model="<%-model%>" ng-keypress="onFieldChange(data)" ng-init="registerInput(data)" md-select-on-focus>
     </md-input-container>

@@ -21,10 +21,22 @@ module.exports = function(options) {
     };
 
     function namespaceMethods(namespace, socket) {
-        var _socket = socket || server.exchange;
+        var _socket;
+        if (socket) {
+            _socket = socket.exchange || socket;
+        }
+        _socket = _socket || server.exchange;
 
         var result = {
             on: function(name, cb) {
+
+                switch (name) {
+                    case 'connection':
+                        return server.on(name, function(socket) {
+                            return cb(namespaceMethods(namespace, socket));
+                        });
+                }
+
                 var channel = _socket.subscribe(namespace + '.' + name);
                 return channel.watch(cb);
             },
@@ -33,11 +45,14 @@ module.exports = function(options) {
             }
         };
 
-        if (!socket) {
+        if (socket) {
+            result.request = socket.request;
+        } else {
             result.currentConnection = function(req) {
                 var sessionId = req.session.id;
                 return namespaceMethods(namespace, connections[sessionId]);
             };
+
         }
 
         return result;
@@ -46,8 +61,6 @@ module.exports = function(options) {
 
     server.addMiddleware(server.MIDDLEWARE_HANDSHAKE, function(req, next) {
 
-        var socket = req.socket;
-
         req.header = function(name) {
             return req.headers[name];
         };
@@ -55,7 +68,7 @@ module.exports = function(options) {
 
         cookieParser(req, null, function() {
 
-            app.token.middleware(req, null, function(err, token) {
+            app.token.middleware(req, null, function(err) {
 
                 if (err) {
                     return next(err);
