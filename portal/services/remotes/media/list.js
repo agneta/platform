@@ -24,7 +24,7 @@ module.exports = function(Model) {
                         regexp: regexp
                     }
                 };
-                console.log('find', whereFilter);
+
                 return Model.find({
                     where: whereFilter,
                     limit: limit,
@@ -40,8 +40,6 @@ module.exports = function(Model) {
 
                 objects = _objects;
 
-                console.log('count', whereFilter);
-
                 return Model.count(
                     whereFilter
                 );
@@ -56,7 +54,6 @@ module.exports = function(Model) {
                     nextMarker = marker + limit;
                     nextLimit = Math.min(count - nextMarker, limit);
                 }
-                console.log('next', nextMarker, nextLimit);
 
                 return {
                     objects: objects,

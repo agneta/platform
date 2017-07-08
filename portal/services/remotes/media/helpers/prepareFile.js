@@ -34,15 +34,23 @@ module.exports = function(Model, app) {
         return Model.__sendFile({
                 location: location,
                 type: type,
+                dir: dir,
                 size: file.size,
                 mimetype: file.mimetype,
                 name: name,
                 stream: stream
             })
-            .then(function(fileInstance) {
+            .then(function() {
                 return fs.unlinkAsync(file.path)
                     .then(function() {
-                        return fileInstance;
+                        return {
+                            location: location,
+                            type: type,
+                            dir: dir,
+                            size: file.size,
+                            contentType: file.mimetype,
+                            name: name,
+                        };
                     });
             })
             .catch(function(error) {

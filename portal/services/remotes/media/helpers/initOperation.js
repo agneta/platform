@@ -15,7 +15,7 @@ module.exports = function(Model, app) {
 
                 var writableStream = app.storage.upload({
                     container: Model.__bucket.name,
-                    remote: options.name,
+                    remote: options.location,
                     contentType: options.mimetype
                 });
 
@@ -50,8 +50,6 @@ module.exports = function(Model, app) {
                     type: options.type,
                     contentType: options.mimetype
                 };
-
-                console.log(fileProps);
 
                 return Model.findOne({
                         where: {

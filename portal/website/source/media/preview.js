@@ -81,7 +81,9 @@
 
 
             function objectIcon(object) {
-
+                if(!object){
+                  return;
+                }
                 var location = getIcon(object);
 
                 if (location) {

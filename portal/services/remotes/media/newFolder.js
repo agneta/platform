@@ -2,11 +2,23 @@ module.exports = function(Model) {
 
     Model.newFolder = function(name, dir) {
 
-        return Model.create({
-            name: name,
-            location: Model.__getMediaPath(dir, name),
-            type: 'folder'
-        });
+        var location = Model.__getMediaPath(dir, name);
+
+        return Model.findOrCreate({
+                where: {
+                    location: location
+                },
+                fields: {
+                    id: true
+                }
+            }, {
+                name: name,
+                location: location,
+                type: 'folder'
+            })
+            .then(function(res) {
+                return res[1];
+            });
 
     };
 

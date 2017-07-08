@@ -18,6 +18,7 @@ module.exports = function(Model, app, options) {
     require('./helpers/prepareFile')(Model, app);
     require('./helpers/prepareObject')(Model, app);
     require('./helpers/sendFile')(Model, app);
+    require('./helpers/checkFolders')(Model, app);
     require('./helpers/uploadData')(Model, app);
 
 

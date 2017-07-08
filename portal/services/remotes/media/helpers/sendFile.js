@@ -76,6 +76,11 @@ module.exports = function(Model) {
 
         return Promise.all(operations)
             .then(function() {
+                return Model.__checkFolders({
+                  dir: file.dir
+                });
+            })
+            .then(function() {
                 Model.io.emit('file:upload:progress', {
                     percentage: 100
                 });
