@@ -1,15 +1,11 @@
-var loopback = require('loopback');
-var fs = require('fs-extra');
-var path = require('path');
-var Promise = require('bluebird');
-var soap = require('soap');
-var S = require('string');
-var contentType = require('content-type');
-var _ = require('lodash');
-var uuidV1 = require('uuid/v1');
-var simpleParser = require('mailparser').simpleParser;
-var Request = require('request');
-var concatStream = require('concat-stream');
+const fs = require('fs-extra');
+const path = require('path');
+const Promise = require('bluebird');
+const soap = require('soap');
+const uuidV1 = require('uuid/v1');
+const simpleParser = require('mailparser').simpleParser;
+const Request = require('request');
+const concatStream = require('concat-stream');
 
 module.exports = function(app) {
 

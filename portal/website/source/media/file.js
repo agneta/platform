@@ -136,7 +136,7 @@
             scope.save = function() {
 
                 scope.loading = true;
-
+                console.log(scope.file);
                 Media.updateFile(scope.file)
                     .$promise
                     .then(function(result) {

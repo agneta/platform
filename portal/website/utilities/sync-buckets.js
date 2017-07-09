@@ -1,11 +1,5 @@
-var _ = require('lodash');
-var path = require('path');
-var cleanArray = require('clean-array');
 var prettyBytes = require('pretty-bytes');
 var Promise = require('bluebird');
-var fs = Promise.promisifyAll(require('fs-extra'));
-var db = require('mime-db')
-var mime = require('mime-type')(db)
 
 module.exports = function(util) {
 
@@ -33,7 +27,7 @@ module.exports = function(util) {
             })
             .then(function() {
                 var totalSize = 0;
-                return Promise.map(filesSource, function(fileDest, index) {
+                return Promise.map(filesSource, function(fileDest) {
                         totalSize += fileDest.Size;
                     })
                     .then(function() {

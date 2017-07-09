@@ -1,4 +1,4 @@
-<div layout="column" class="summary">
+<div layout="column" class="summary" flex="100">
 <md-input-container>
     <label>Name</label>
     <input ng-model="file.name">
@@ -9,21 +9,9 @@
     <input ng-disabled="config.dirLock" ng-model="file.dir">
 </md-input-container>
 
-<span flex></span>
+<md-input-container>
+    <label>Content Type</label>
+    <input ng-model="file.contentType">
+</md-input-container>
 
-<div layout="column" layout-align="left" align="left" class="actions">
-  <md-button ng-click="select()">
-      <md-icon md-svg-src="<%-get_icon('agneta/media')%>" aria-label="<%-lng('portal.media')%>"></md-icon>
-      <span><%-lng('portal.media')%></span>
-  </md-button>
-  <md-divider></md-divider>
-  <md-button class="md-no-style" type="file" ngf-accept="accept" ngf-select="upload($file)">
-      <md-icon md-svg-src="<%-get_icon('material/file-upload')%>" aria-label="upload"></md-icon>
-      <span>Upload</span>
-  </md-button>
-  <md-button ng-show="file.id" href="{{file.url}}" target="_blank" download="{{file.name}}">
-      <md-icon md-svg-src="<%-get_icon('material/file-download')%>" aria-label="Download"></md-icon>
-      <span>Download</span>
-  </md-button>
-</div>
 </div>

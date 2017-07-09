@@ -21,6 +21,8 @@
     </div>
 
     <%-template('ui/loader')%>
+    <%-template('partial/file/actions')%>
+
         <md-progress-linear ng-show="progress" md-mode="determinate" value="{{progress}}"></md-progress-linear>
 
         <md-dialog-actions ng-if="file.id" layout="row" md-whiteframe="2">

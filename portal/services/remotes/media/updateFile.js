@@ -1,14 +1,16 @@
 const Promise = require('bluebird');
 const path = require('path');
 const urljoin = require('url-join');
+const _ = require('lodash');
 
-module.exports = function(Model) {
+module.exports = function(Model, app) {
 
-    Model.updateFile = function(id, dir, name) {
+    Model.updateFile = function(id, dir, name, contentType) {
 
         var operations;
         var file;
         var target;
+        var attrs = {};
 
         return Model.findById(id)
             .then(function(_file) {
@@ -73,11 +75,29 @@ module.exports = function(Model) {
                         return Model.__moveObject(operation);
                     })
                     .then(function() {
-                        return file.updateAttributes({
-                            location: target,
-                            name: name
-                        });
+
+                        attrs.location = target;
+                        attrs.name = name;
+
                     });
+            })
+            .then(function() {
+
+                if (contentType) {
+                    attrs.contentType = contentType;
+                    attrs.type = app.helpers.mediaType(contentType);
+                }
+
+            })
+            .then(function() {
+
+                if (!_.size(attrs)) {
+                    return file;
+                }
+
+                return file.updateAttributes(attrs);
+
+
             })
             .then(function(object) {
                 Model.__prepareObject(object);
@@ -106,6 +126,10 @@ module.exports = function(Model) {
                 arg: 'name',
                 type: 'string',
                 required: true
+            }, {
+                arg: 'contentType',
+                type: 'string',
+                required: false
             }],
             returns: {
                 arg: 'result',

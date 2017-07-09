@@ -31,6 +31,8 @@ module.exports = function(Model, app) {
         var type = app.helpers.mediaType(file.mimetype);
         var stream = fs.createReadStream(file.path);
 
+        //-----------------------------------------------
+
         return Model.__sendFile({
                 location: location,
                 type: type,

@@ -47,8 +47,8 @@
             location = location.location || location;
 
             var dirs = location.split('/');
-            var result = [dirRoot];
             var locations = [];
+            var result = [dirRoot];
             for (var i in dirs) {
 
                 i /= 1;
@@ -61,24 +61,16 @@
 
                 locations.push(dir);
 
-                var value = {
+                result.push({
                     name: dir,
                     location: locations.join('/')
-                };
+                });
 
-                var tab = $scope.dirs[i + 1] || {};
-                if (tab.name != value.name) {
-                    $scope.dirs[i + 1] = value;
-                }
 
             }
-            var j = locations.length + 1;
-            while (j < $scope.dirs.length) {
-                $scope.dirs.pop();
-                j++;
-            }
 
-            $scope.selectDir($scope.dirs[locations.length]);
+            $scope.dirs = result;
+            $scope.selectDir($scope.dirs[result.length-1]);
 
         };
 
