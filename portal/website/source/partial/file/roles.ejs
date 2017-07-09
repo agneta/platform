@@ -13,12 +13,12 @@
     <md-autocomplete
     md-search-text="roles.searchText"
     md-items="item in roles.query(roles.searchText)"
-    md-item-text="item.name"
+    md-item-text="item"
     md-min-length="0"
     >
 
       <md-item-template>
-          <span md-highlight-text="roles.searchText" md-highlight-flags="^i">{{item.name}}</span>
+          <span md-highlight-text="roles.searchText" md-highlight-flags="^i">{{item}}</span>
         </md-item-template>
         <md-not-found>
           No role was found.
@@ -26,7 +26,7 @@
 
       </md-autocomplete>
      <md-chip-template>
-       <strong>{{$chip.name}}</strong>
+       <strong>{{$chip}}</strong>
      </md-chip-template>
 </md-chips>
 </div>

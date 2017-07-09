@@ -136,18 +136,24 @@
             scope.save = function() {
 
                 scope.loading = true;
-                console.log(scope.file);
-                Media.updateFile(scope.file)
+
+                Media.updateFile({
+                        id: scope.file.id,
+                        name: scope.file.name,
+                        contentType: scope.file.contentType,
+                        dir: scope.file.dir,
+                        roles: scope.file.roles
+                    })
                     .$promise
                     .then(function(result) {
                         scope.file = result.file;
                         onFile();
                         onApply();
+                        $mdDialog.hide();
                     })
                     .finally(function() {
                         onChange();
                         scope.loading = false;
-                        $mdDialog.hide();
                     });
             };
 
@@ -287,7 +293,7 @@
 
     });
 
-    app.controller('EditFilePrivate', function($scope, $controller, data, EditFile, MediaPreview) {
+    app.controller('EditFilePrivate', function($scope, $controller, data, Account) {
 
         var onFile = data.onFile;
 
@@ -297,21 +303,43 @@
                 onFile(file);
             }
         };
-        var items = [{name:'developer'},{name:'admin'}];
-        var fuse = new Fuse(items, {
-            shouldSort: true,
-            keys: ['name']
-        });
+        var items;
+        var fuse;
+        $scope.loading = true;
+        Account.roles()
+            .$promise
+            .then(function(result) {
+                $scope.loading = false;
+
+                console.log(result);
+
+                items = result;
+                fuse = new Fuse(items, {
+                    shouldSort: true,
+                    keys: ['name']
+                });
+
+            });
 
         var roles = {
-          items: items,
-          query: function(query){
-            var results = query ? fuse.search(query) : roles.items;
-            return results;
-          }
+            items: items,
+            query: function(query) {
+                if(!items){
+                  return;
+                }
+                var results = query ? fuse.search(query) : items;
+
+                var roles = [];
+                for (var key in results) {
+                    roles.push(results[key].name);
+                }
+
+                return roles;
+            }
         };
 
         $scope.roles = roles;
+
 
         angular.extend(this, $controller('EditFile', {
             $scope: $scope,

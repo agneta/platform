@@ -5,14 +5,28 @@ const _ = require('lodash');
 
 module.exports = function(Model, app) {
 
-    Model.updateFile = function(id, dir, name, contentType) {
+    var rolesConfig = app.get('roles');
+
+    Model.updateFile = function(id, dir, name, contentType, roles) {
 
         var operations;
         var file;
         var target;
-        var attrs = {};
 
-        return Model.findById(id)
+        roles = roles || [];
+
+        return Promise.map(roles, function(roleName) {
+                var role = rolesConfig[roleName];
+                if (!role) {
+                    return Promise.reject({
+                        statusCode: 400,
+                        message: `Role does not exist ${roleName}`
+                    });
+                }
+            })
+            .then(function() {
+                return Model.findById(id);
+            })
             .then(function(_file) {
 
                 file = _file;
@@ -31,10 +45,6 @@ module.exports = function(Model, app) {
                         target = urljoin(dir, name);
                     }
 
-                    if (target == file.location) {
-                        return;
-                    }
-
                     operations = [{
                         source: file.location,
                         target: target
@@ -51,7 +61,7 @@ module.exports = function(Model, app) {
                                     childDir.pop();
                                     childDir = childDir.join('/');
 
-                                    return Model.updateFile(object.id, childDir, object.name);
+                                    return Model.updateFile(object.id, childDir, object.name, null, roles);
                                 }, {
                                     concurrency: 6
                                 });
@@ -72,32 +82,36 @@ module.exports = function(Model, app) {
                 }
 
                 return Promise.map(operations, function(operation) {
+                        operation.contentType = contentType;
                         return Model.__moveObject(operation);
                     })
                     .then(function() {
 
+                        var attrs = {};
+
+                        if (contentType) {
+                            attrs.contentType = contentType;
+                            attrs.type = app.helpers.mediaType(contentType);
+                        }
+
                         attrs.location = target;
                         attrs.name = name;
+                        attrs.roles = _.uniq(roles);
+
+                        return Model.findOne({
+                                where: {
+                                    location: target
+                                }
+                            })
+                            .then(function(file) {
+                                if (file) {
+                                    console.log(attrs);
+                                    return file.updateAttributes(attrs);
+                                }
+                                console.warn('Could not find object to update:', target);
+                            });
 
                     });
-            })
-            .then(function() {
-
-                if (contentType) {
-                    attrs.contentType = contentType;
-                    attrs.type = app.helpers.mediaType(contentType);
-                }
-
-            })
-            .then(function() {
-
-                if (!_.size(attrs)) {
-                    return file;
-                }
-
-                return file.updateAttributes(attrs);
-
-
             })
             .then(function(object) {
                 Model.__prepareObject(object);
@@ -129,6 +143,10 @@ module.exports = function(Model, app) {
             }, {
                 arg: 'contentType',
                 type: 'string',
+                required: false
+            }, {
+                arg: 'roles',
+                type: 'array',
                 required: false
             }],
             returns: {
