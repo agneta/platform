@@ -1,0 +1,32 @@
+<div class="md-padding roles" layout="column">
+  <div class="header" layout="row">
+<md-icon md-svg-src="<%-get_icon('material/lock')%>"></md-icon>
+<p flex="auto" class="title">Roles allowed to access this object:</p>
+</div>
+<md-chips
+ placeholder="Add Role"
+ ng-model="file.roles"
+ md-require-match
+ md-removable
+ md-max-chips="10"
+ placeholder="Allow Roles">
+    <md-autocomplete
+    md-search-text="roles.searchText"
+    md-items="item in roles.query(roles.searchText)"
+    md-item-text="item.name"
+    md-min-length="0"
+    >
+
+      <md-item-template>
+          <span md-highlight-text="roles.searchText" md-highlight-flags="^i">{{item.name}}</span>
+        </md-item-template>
+        <md-not-found>
+          No role was found.
+        </md-not-found>
+
+      </md-autocomplete>
+     <md-chip-template>
+       <strong>{{$chip.name}}</strong>
+     </md-chip-template>
+</md-chips>
+</div>

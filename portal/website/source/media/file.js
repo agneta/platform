@@ -289,6 +289,30 @@
 
     app.controller('EditFilePrivate', function($scope, $controller, data, EditFile, MediaPreview) {
 
+        var onFile = data.onFile;
+
+        data.onFile = function(file) {
+            file.roles = file.roles || [];
+            if (onFile) {
+                onFile(file);
+            }
+        };
+        var items = [{name:'developer'},{name:'admin'}];
+        var fuse = new Fuse(items, {
+            shouldSort: true,
+            keys: ['name']
+        });
+
+        var roles = {
+          items: items,
+          query: function(query){
+            var results = query ? fuse.search(query) : roles.items;
+            return results;
+          }
+        };
+
+        $scope.roles = roles;
+
         angular.extend(this, $controller('EditFile', {
             $scope: $scope,
             data: data
