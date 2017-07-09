@@ -69,9 +69,10 @@
 
             //------------------------------------------------------------
 
-            function getUrl(file, size) {
+            function getUrl(file, size, media) {
+                media = media || get_media;
                 var version = new Date(file.updatedAt).valueOf();
-                return get_media(file.location, size) + '?version=' + version;
+                return media(file.location, size) + '?version=' + version;
             }
 
 
@@ -81,8 +82,8 @@
 
 
             function objectIcon(object) {
-                if(!object){
-                  return;
+                if (!object) {
+                    return;
                 }
                 var location = getIcon(object);
 
@@ -90,7 +91,7 @@
                     return getUrl({
                         location: location,
                         updatedAt: object.updatedAt
-                    });
+                    }, null, agneta.get_media);
                 }
 
             }
