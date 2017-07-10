@@ -28,7 +28,7 @@ module.exports = function(Model, app) {
 
             options.file.pipe(transformer);
 
-            var parsed = path.parse(options.name);
+            var parsed = path.parse(options.location);
             parsed.base += '/' + key;
             var location = path.format(parsed);
 

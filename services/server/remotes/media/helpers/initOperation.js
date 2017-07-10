@@ -48,7 +48,6 @@ module.exports = function(Model, app) {
                     type: options.type,
                     contentType: options.mimetype
                 };
-
                 return Model.findOne({
                         where: {
                             location: options.location
