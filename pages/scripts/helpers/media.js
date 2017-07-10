@@ -15,11 +15,12 @@ module.exports = function(locals) {
     var project = locals.project;
 
     project.extend.helper.register('prv_media', function() {
+        var args = Array.prototype.slice.call(arguments);
+        var mediaPath = urljoin.apply(this, [project.config.media.base].concat(args));
         return media.call(
             this,
             project.site.services.url,
-            project.config.media.base,
-            urljoin.apply(this, arguments)
+            mediaPath
         );
     });
 

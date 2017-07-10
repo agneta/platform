@@ -4,16 +4,25 @@
 
     app.controller('MediaCtrl', function($scope, $rootScope, Upload, MediaOpt, SocketIO, $timeout, $mdToast, $mdDialog, $location, $sce, $routeParams, Search_Engine) {
 
-        var apiMedia = MediaOpt.public.api;
-        var partialFile = MediaOpt.public.partial;
-        var Media = MediaOpt.public.model;
-        var MediaPreview = MediaOpt.public.preview;
+        var apiMedia = MediaOpt.api;
+        var partialFile = MediaOpt.partial;
+        var Media = MediaOpt.model;
+        var MediaPreview = MediaOpt.preview;
 
-        if ($rootScope.viewData.extra && $rootScope.viewData.extra.private) {
-            apiMedia = MediaOpt.private.api;
-            partialFile = MediaOpt.private.partial;
-            Media = MediaOpt.private.model;
-            MediaPreview = MediaOpt.private.preview;
+        if (MediaOpt.public) {
+            apiMedia = MediaOpt.public.api;
+            partialFile = MediaOpt.public.partial;
+            Media = MediaOpt.public.model;
+            MediaPreview = MediaOpt.public.preview;
+        }
+
+        if (MediaOpt.private) {
+            if ($rootScope.viewData.extra && $rootScope.viewData.extra.private) {
+                apiMedia = MediaOpt.private.api;
+                partialFile = MediaOpt.private.partial;
+                Media = MediaOpt.private.model;
+                MediaPreview = MediaOpt.private.preview;
+            }
         }
 
         Search_Engine.init({
@@ -70,7 +79,7 @@
             }
 
             $scope.dirs = result;
-            $scope.selectDir($scope.dirs[result.length-1]);
+            $scope.selectDir($scope.dirs[result.length - 1]);
 
         };
 

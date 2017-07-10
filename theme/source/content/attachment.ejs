@@ -2,7 +2,11 @@
 var href;
 get_values(data);
 if(data.media){
-  href = get_media(data.media.location);
+  if(data.media.private){
+    href = prv_media(data.media.location);
+  }else{
+    href = get_media(data.media.location);
+  }
 }
 if(data.url){
   href = data.url

@@ -45,9 +45,9 @@
 
             var scope = options.scope;
             var data = options.data;
-            var Media = data.Media;
+            var Media = data.media.model;
 
-            if (!data.apiMedia) {
+            if (!data.media.api) {
                 throw new Error('API Media base-path is required');
             }
 
@@ -162,7 +162,7 @@
                     nested: true,
                     partial: 'select',
                     data: {
-                        Media: Media,
+                        media: data.media,
                         file: scope.file,
                         onSelect: function(object) {
                             scope.file = object;
@@ -208,7 +208,7 @@
                 if (object) {
                     //console.log(scope.file.location);
                     Upload.upload({
-                        url: agneta.url(data.apiMedia + 'upload-file'),
+                        url: agneta.url(data.media.api + 'upload-file'),
                         data: {
                             dir: scope.file.dir,
                             name: scope.file.name,
@@ -244,22 +244,27 @@
         };
 
         angular.extend(this, $controller('MediaCtrl', {
-            Media: data.Media,
+            MediaOpt: data.media,
             $scope: $scope
         }));
 
 
     });
 
-    app.controller('EditFile', function($scope, $controller, data, EditFile, MediaPreview) {
-
-        MediaPreview = data.MediaPreview || MediaPreview.public;
+    app.controller('EditFile', function($scope, $controller, data, EditFile,MediaOpt) {
 
         angular.extend(this, $controller('DialogCtrl', {
             $scope: $scope
         }));
 
         data.config = data.config || {};
+
+        //-------------------------------------------------------------
+
+        data.media = data.media || MediaOpt.public;
+        var MediaPreview = data.media.preview;
+
+        //-------------------------------------------------------------
 
         if (data.location && !data.dir) {
             var dir = data.location.split('/');
@@ -293,9 +298,11 @@
 
     });
 
-    app.controller('EditFilePrivate', function($scope, $controller, data, Account) {
+    app.controller('EditFilePrivate', function($scope, $controller, data, MediaOpt, Account) {
 
         var onFile = data.onFile;
+        var items;
+        var fuse;
 
         data.onFile = function(file) {
             file.roles = file.roles || [];
@@ -303,8 +310,9 @@
                 onFile(file);
             }
         };
-        var items;
-        var fuse;
+
+        data.media = MediaOpt.private;
+
         $scope.loading = true;
         Account.roles()
             .$promise
@@ -322,8 +330,8 @@
         var roles = {
             items: items,
             query: function(query) {
-                if(!items){
-                  return;
+                if (!items) {
+                    return;
                 }
                 var results = query ? fuse.search(query) : items;
 
