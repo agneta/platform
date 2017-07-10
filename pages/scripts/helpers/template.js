@@ -2,19 +2,20 @@ const fs = require('fs-extra');
 const ejs = require('ejs');
 const _ = require('lodash');
 const path = require('path');
-const hash = require('object-hash');
-const Mustache = require('mustache');
 
 module.exports = function(locals) {
 
     var project = locals.project;
-    Mustache.tags = ['${', '}'];
+
+    _.templateSettings = {
+        interpolate: /\$\{(.+?)\}/g
+    };
 
     project.extend.helper.register('render', function(template) {
         if (!_.isString(template)) {
             return template;
         }
-        return Mustache.render(template, this);
+        return _.template(template)(this);
 
     });
 

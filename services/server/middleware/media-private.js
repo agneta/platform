@@ -1,6 +1,6 @@
+const mime = require('mime-types');
 const path = require('path');
 const Promise = require('bluebird');
-const _ = require('lodash');
 
 module.exports = function(app) {
 
@@ -65,7 +65,7 @@ module.exports = function(app) {
             })
             .then(function(result) {
                 if (!result.has) {
-                    console.log(result);
+                    //console.log(result);
                     return Promise.reject({
                         message: 'You are not authorized to access this media object'
                     });
@@ -73,8 +73,12 @@ module.exports = function(app) {
             })
             .then(function() {
 
+                var ext = mime.extension(item.contentType);
+                var filename = item.name + '.' + ext;
+
                 res.set('Content-Type', item.contentType);
                 res.set('Last-Modified', item.updatedAt);
+                res.set('Content-Disposition', `filename="${filename}"`);
 
                 app.storage.s3.getObject(params)
                     .createReadStream()

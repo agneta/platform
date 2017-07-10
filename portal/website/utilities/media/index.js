@@ -3,20 +3,17 @@ var _ = require('lodash');
 var Promise = require('bluebird');
 var path = require('path');
 
-
 module.exports = function(util) {
 
     var services = util.locals.services;
-    var project = util.locals.project;
 
     var configStorage = services.get('storage');
-    var bucket = configStorage.buckets.media;
 
-    var Media = services.models.Media;
+    var bucket;
+    var Media;
 
     var foundObjects;
     var foundFolders;
-    var lastKey;
 
     var barListAllKeys;
     var barDeleteUnused;
@@ -28,7 +25,7 @@ module.exports = function(util) {
             var storage = services.storage;
 
             return storage.s3.listObjectsAsync({
-                    Bucket: bucket.name,
+                    Bucket: bucket,
                     Marker: marker
                 })
                 .then(function(data) {
@@ -80,7 +77,7 @@ module.exports = function(util) {
                                                 if (!update) {
                                                     return;
                                                 }
-
+                                                //console.log('about to update', fields, Media.definition.name);
                                                 return objectDB.updateAttributes(fields)
                                                     .then(function(objectDB) {
                                                         util.log('Updated: ' + objectDB.location);
@@ -106,7 +103,7 @@ module.exports = function(util) {
 
                                     function getFields() {
                                         return storage.s3.headObjectAsync({
-                                                Bucket: bucket.name,
+                                                Bucket: bucket,
                                                 Key: storageObject.Key
                                             })
                                             .then(function(storageObjectHead) {
@@ -114,6 +111,7 @@ module.exports = function(util) {
                                                 return {
                                                     name: path.parse(storageObject.Key).name,
                                                     location: storageObject.Key,
+                                                    size: storageObjectHead.ContentLength,
                                                     contentType: storageObjectHead.ContentType,
                                                     type: services.helpers.mediaType(storageObjectHead.ContentType)
                                                 };
@@ -302,6 +300,21 @@ module.exports = function(util) {
 
             var allKeys;
 
+            //-----------------------------------------------------
+
+            var mediaBucket = configStorage.buckets.media;
+
+            if (parameters.options.private) {
+                bucket = mediaBucket.private;
+                Media = services.models.Media_Private;
+            } else {
+                bucket = mediaBucket.name;
+                Media = services.models.Media;
+            }
+
+
+            //-----------------------------------------------------
+
             return Promise.resolve()
                 .then(function() {
                     if (parameters.options.skipSync) {
@@ -344,9 +357,9 @@ module.exports = function(util) {
                 })
                 .then(function() {
 
-                  if (!parameters.options.generateKeywords) {
-                      return;
-                  }
+                    if (!parameters.options.generateKeywords) {
+                        return;
+                    }
 
                     return require('./search')(util, {
                         model: Media
@@ -362,6 +375,9 @@ module.exports = function(util) {
             title: 'Options',
             type: 'checkboxes',
             values: [{
+                name: 'private',
+                title: 'Private Media'
+            }, {
                 name: 'updateCheck',
                 title: 'Check for updates'
             }, {

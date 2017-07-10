@@ -30,7 +30,9 @@
         }
     },
     "mixins": {
-        "TimeStamp": true
+        "TimeStamp": {
+          "required" : false
+        }
     },
     "validations": [],
     "relations": {},

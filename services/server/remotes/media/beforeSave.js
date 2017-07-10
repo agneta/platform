@@ -14,16 +14,19 @@ module.exports = function(Model, app) {
                 }
 
                 if (!instance.size && !data.size) {
-                    return app.storage.s3.headObjectAsync({
-                            Bucket: Model.__bucket.name,
-                            Key: instance.location
-                        })
+
+                    var headParams = {
+                        Bucket: Model.__bucket.name,
+                        Key: instance.location
+                    };
+                    return app.storage.s3.headObjectAsync(headParams)
                         .then(function(storageObjectHead) {
                             data.size = storageObjectHead.ContentLength;
                             //console.log('size', instance.location);
                         })
                         .catch(function(err) {
-                            console.log('error', instance);
+                            console.log('error', instance, headParams);
+                            console.log(err);
                             throw err;
                         });
                 }

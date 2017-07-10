@@ -100,7 +100,7 @@ module.exports = function(Model, app) {
 
                         return Model.findOne({
                                 where: {
-                                    location: target
+                                    location: file.location
                                 }
                             })
                             .then(function(file) {

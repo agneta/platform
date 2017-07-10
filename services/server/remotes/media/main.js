@@ -23,7 +23,7 @@ module.exports = function(Model, app, options) {
 
 
     require('./add')(Model, app);
-    require('./beforeSave')(Model, app);
+    //require('./beforeSave')(Model, app);
     require('./deleteObject')(Model, app);
     require('./details')(Model, app);
     require('./list')(Model, app);
