@@ -15,6 +15,7 @@ module.exports = function(options) {
     require('../lib/helpers')(app);
     require('../lib/log')(app);
     require('../lib/gis')(app);
+    require('../lib/require')(app);
 
     /////////////////////////////////////////////////
     //

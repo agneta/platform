@@ -50,6 +50,7 @@ module.exports = {
         },
         cors: false
     },
+    media: require('./config/media'),
     activities: require('./config/activities'),
     legacyExplorer: false
 };

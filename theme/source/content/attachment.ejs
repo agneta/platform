@@ -15,6 +15,8 @@ if(data.url){
 var attr = '';
 if(data.new_tab){
   attr += 'target="_blank"';
+}else{
+  attr += 'target="_self"';
 }
 %>
     <a class="attachment" ng-href="<%-href%>" layout="row" layout-align="start center" <%-attr%>>

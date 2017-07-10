@@ -93,6 +93,14 @@ module.exports = function(app) {
         Session: {
             dataSource: "db",
             public: false
+        },
+        Media: {
+            dataSource: 'db',
+            public: false
+        },
+        Media_Private: {
+            dataSource: 'db',
+            public: false
         }
     };
 
