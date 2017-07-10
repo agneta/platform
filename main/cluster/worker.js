@@ -34,7 +34,7 @@ module.exports.run = function(worker) {
 
     app.use(function(req, res, next) {
         if (starting) {
-            return res.send('Starting the Application');
+            return res.send('Starting the Application. Try refreshing again in a couple of seconds.');
         }
         next();
     });

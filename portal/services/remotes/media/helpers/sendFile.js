@@ -77,13 +77,24 @@ module.exports = function(Model) {
         return Promise.all(operations)
             .then(function() {
                 return Model.__checkFolders({
-                  dir: file.dir
+                    dir: file.dir
                 });
             })
             .then(function() {
                 Model.io.emit('file:upload:progress', {
                     percentage: 100
                 });
+
+                return {
+                    id: options.objectId,
+                    location: file.location,
+                    type: file.type,
+                    dir: file.dir,
+                    size: file.size,
+                    contentType: file.mimetype,
+                    name: file.name,
+                };
+
             })
             .catch(function(err) {
                 console.error('File Upload error');

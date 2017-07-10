@@ -42,17 +42,10 @@ module.exports = function(Model, app) {
                 name: name,
                 stream: stream
             })
-            .then(function() {
+            .then(function(result) {
                 return fs.unlinkAsync(file.path)
                     .then(function() {
-                        return {
-                            location: location,
-                            type: type,
-                            dir: dir,
-                            size: file.size,
-                            contentType: file.mimetype,
-                            name: name,
-                        };
+                        return Model.__prepareObject(result);
                     });
             })
             .catch(function(error) {

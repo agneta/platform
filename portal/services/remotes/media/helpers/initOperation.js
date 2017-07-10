@@ -38,8 +38,6 @@ module.exports = function(Model, app) {
 
                 options.file.pipe(writableStream);
 
-                Model.io.emit('file:upload:operation:start', socketProps);
-
             }).then(function() {
 
                 var fileProps = {
@@ -67,8 +65,9 @@ module.exports = function(Model, app) {
                     });
 
             })
-            .then(function() {
-                Model.io.emit('file:upload:operation:complete', socketProps);
+            .then(function(dbObject) {
+                options.objectId = dbObject.id;
+                return dbObject;
             });
 
     };

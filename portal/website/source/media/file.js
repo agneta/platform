@@ -311,8 +311,6 @@
             .then(function(result) {
                 $scope.loading = false;
 
-                console.log(result);
-
                 items = result;
                 fuse = new Fuse(items, {
                     shouldSort: true,
