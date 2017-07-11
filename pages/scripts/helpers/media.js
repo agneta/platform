@@ -1,5 +1,3 @@
-const path = require('path');
-const url = require('url');
 const _ = require('lodash');
 const urljoin = require('url-join');
 const request = require('request-promise');
