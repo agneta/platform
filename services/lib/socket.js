@@ -3,6 +3,11 @@ const _ = require('lodash');
 module.exports = function(options) {
 
     var worker = options.worker;
+
+    if(!worker){
+      return;
+    }
+    
     var app = options.app;
     var server = worker.scServer;
     var cookieParser = require('cookie-parser')(
