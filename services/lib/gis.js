@@ -1,6 +1,4 @@
 const Promise = require('bluebird');
-const _ = require('lodash');
-const loopback = require('loopback');
 
 module.exports = function(app) {
 
@@ -14,8 +12,8 @@ module.exports = function(app) {
             options.geoModel = options.geoModel || Model.definition.name;
 
             var sources = {
-                local: require('./gis/local')(options),
-                esri: require('./gis/esri')(app, options)
+                local: require('./gis/local-tiles')(options),
+                esri: require('./gis/esri-tiles')(app, options)
             };
 
             //-----------------------------------------------------------------

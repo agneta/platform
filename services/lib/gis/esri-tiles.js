@@ -13,7 +13,7 @@ module.exports = function(app, options) {
         geometryPrecision: '6',
     };
 
-    function tile(geometry, req) {
+    function tile(geometry) {
 
         return Promise.resolve()
             .then(function() {
@@ -45,7 +45,7 @@ module.exports = function(app, options) {
                     geometry: JSON.stringify(geometry)
                 }, defaultQuery);
                 //console.log(query,req.query);
-                return app.esri.query(query);
+                return app.gis.esri.query(query);
 
             });
 
