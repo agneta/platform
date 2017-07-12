@@ -1,6 +1,7 @@
 module.exports = {
     restApiRoot: "/api",
     host: "locahost",
+    domain: 'locahost',
     token: {
         name: 'access_token'
     },

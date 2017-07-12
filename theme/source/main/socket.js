@@ -33,15 +33,24 @@
 
             return {
                 on: function(name, cb) {
-                    var channel = socket.subscribe(namespace + '.' + name);
+                    var channel = socket.subscribe(getName(name));
                     channel.watch(cb);
                 },
                 emit: function(name, data) {
-                    socket.publish(namespace + '.' + name, data);
+                    socket.publish(getName(name), data);
+                },
+                removeAllListeners: function(name) {
+                    socket.unsubscribe(getName(name));
                 }
             };
 
+            function getName(name) {
+                return namespace + '.' + name;
+            }
+
         }
+
+
 
         function error(options) {
 

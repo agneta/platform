@@ -1,6 +1,12 @@
 const path = require('path');
 const express = require('express');
 
+
+switch (process.env.MODE) {
+    case 'services':
+        return;
+}
+
 var app = express();
 
 var platformPath = path.join(__dirname, '../..');

@@ -31,7 +31,8 @@ module.exports = function(options) {
     var services = server({
         dir: projectPaths.project,
         client: webPages.locals,
-        server: options.server
+        server: options.server,
+        app: options.app
     });
 
     webPages.locals.services = services.locals.app;
