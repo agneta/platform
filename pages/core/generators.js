@@ -84,8 +84,6 @@ module.exports = function(locals, callback) {
             path: null
         };
 
-        var promises = [];
-
         return Promise.resolve()
             .then(function() {
 
@@ -96,7 +94,7 @@ module.exports = function(locals, callback) {
                 return run(_.extend({},
                     page,
                     pageBase, {
-                        view: true,
+                        isView: true,
                         path: nPath.join(page.path, 'view')
                     }));
             })
@@ -109,6 +107,7 @@ module.exports = function(locals, callback) {
                 return run(_.extend({},
                     page,
                     pageBase, {
+                        isViewData: true,
                         path: nPath.join(page.path, 'view-data'),
                         template: 'json/viewData'
                     }));

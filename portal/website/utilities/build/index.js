@@ -32,6 +32,9 @@ module.exports = function(util) {
             values: [{
                 name: 'local',
                 title: 'Local'
+            },{
+                name: 'staging',
+                title: 'Staging'
             }, {
                 name: 'production',
                 title: 'Production'

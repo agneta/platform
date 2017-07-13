@@ -15,7 +15,6 @@ module.exports = function(locals) {
 
         var themeConfig;
         var websiteConfig;
-        var projectConfig;
 
         return readFile(
                 path.join(project.paths.baseTheme, 'config.yml'),
@@ -134,8 +133,8 @@ module.exports = function(locals) {
 
                 var view_base;
 
-                if (locals.services && locals.track && locals.track.views) {
-                    view_base = urljoin(project.site.services.url, 'views');
+                if (locals.services) {
+                    view_base = urljoin(project.site.services.url, project.config.page.base);
                 } else {
                     view_base = '/' + urljoin(project.config.root);
                 }

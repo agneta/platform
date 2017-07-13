@@ -11,19 +11,22 @@ module.exports = function(options) {
     app.httpServer = options.server;
     options.app = app;
 
+    //-------------------------------------------------------
+
     require('../lib/moment');
     require('../lib/helpers')(app);
     require('../lib/log')(app);
     require('../lib/gis')(app);
     require('../lib/require')(app);
 
-    /////////////////////////////////////////////////
-    //
-    /////////////////////////////////////////////////
+    //-------------------------------------------------------
+
     app.set('view engine', 'ejs');
     app.set('json spaces', 2);
     app.set('trust proxy', 1);
     app.set('views', path.resolve(__dirname, 'views'));
+
+    //-------------------------------------------------------
 
     return {
         locals: options,
@@ -40,6 +43,10 @@ module.exports = function(options) {
         },
         start: function() {
 
+            if (options.building) {
+                return;
+            }
+
             var bootGenerated = bootGenerator(app, {
                 models: app.configurator.load('model-config'),
                 modelDefinitions: [],
@@ -49,7 +56,8 @@ module.exports = function(options) {
             return modelDefinitions(app, bootGenerated)
                 .then(function() {
                     return new Promise(function(resolve, reject) {
-                        boot(app, {
+
+                        var bootOptions = {
                             appRootDir: __dirname,
                             models: bootGenerated.models,
                             modelDefinitions: bootGenerated.modelDefinitions,
@@ -59,7 +67,9 @@ module.exports = function(options) {
                                 path.join(__dirname, 'boot'),
                                 path.join(app.get('services_dir'), 'boot')
                             ]
-                        }, function(err) {
+                        };
+
+                        boot(app, bootOptions, function(err) {
                             if (err) {
                                 reject(err);
                                 return;

@@ -8,39 +8,84 @@ const moment = require('moment');
 
 module.exports = function(app) {
 
-    var basePath = '/views/';
     var website = app.get('website');
     var client = app.get('options').client;
+    var clientProject = client.project;
     var clientHelpers = client.app.locals;
+
+    //-----------------------------------------------------------
+
+    var localView = {
+        base: '/' + clientProject.config.page.viewBase.local + '/'
+    };
+
+    var defaultView = {
+        base: '/' + clientProject.config.page.viewBase.default+'/'
+    };
+
+    switch (app.get('env')) {
+        case 'development':
+            defaultView.method = require('./page-private/preview')(app);
+            localView.method = require('./page-private/local')(app);
+            break;
+        default:
+            defaultView.method = require('./page-private/deployed')(app);
+    }
+
+    //-----------------------------------------------------------
 
     return function(req, res, next) {
 
-        var remotePath = req.path;
-
-        if (remotePath.indexOf(basePath) !== 0) {
-            return next();
-        }
-
-        remotePath = remotePath.substring(basePath.length);
-        remotePath = path.normalize(remotePath);
-
-        var parsed = path.parse(remotePath);
-        parsed = path.parse(remotePath);
-
-        var streamPath = urljoin(website.url, remotePath);
-        var page = clientHelpers.get_page(remotePath) || {};
+        var streamPath;
+        var data;
 
         return Promise.resolve()
             .then(function() {
 
-                if (page.authorization) {
+                checkBase(defaultView);
+                checkBase(localView);
+
+                function checkBase(view) {
+
+                    if (req.path.indexOf(view.base) !== 0) {
+                        return;
+                    }
+
+                    var remotePath = req.path;
+                    remotePath = remotePath.substring(view.base.length);
+                    remotePath = path.normalize(remotePath);
+
+                    var page = clientHelpers.get_page(remotePath) || {};
+                    var lang = remotePath.split('/')[0];
+                    data = {
+                        view: view,
+                        remotePath: remotePath,
+                        page: page,
+                        res: res,
+                        lang: lang
+                    };
+
+                }
+
+                if (!data) {
+                  console.log('not path');
+                    return Promise.reject({
+                        notfound: true
+                    });
+                }
+
+            })
+            .then(function() {
+
+                if (data.page.authorization) {
 
                     return app.models.Account.hasRoles(
-                            page.authorization,
+                            data.page.authorization,
                             req
                         )
                         .then(function(result) {
                             if (!result.has) {
+                                streamPath = urljoin(website.url, data.remotePath);
                                 streamPath = path.parse(streamPath);
                                 streamPath = urljoin(streamPath.dir, 'view-auth');
                             }
@@ -50,14 +95,29 @@ module.exports = function(app) {
             })
             .then(function() {
 
-                var stream = request({
-                    uri: streamPath
-                });
+                if (streamPath) {
 
-                req.pipe(stream).pipe(res);
+                    var stream = request({
+                        uri: streamPath
+                    });
+
+                    req.pipe(stream).pipe(res);
+                    return;
+
+                }
+
+                return data.view.method(data);
+            })
+
+            //---------------------------------------------------------
+            // ANALYTICS
+
+            .then(function() {
 
                 var accountId = (req.accessToken && req.accessToken.userId);
                 var ua = uaParser(req.dataParsed.agent);
+
+                var parsed = path.parse(data.remotePath);
                 var pagePath = app.helpers.fixPath(parsed.dir);
                 var feeds = [{
                     value: pagePath,
@@ -198,8 +258,13 @@ module.exports = function(app) {
 
                     });
 
+            })
+            .catch(function(err) {
+                if (err.notfound) {
+                    return next();
+                }
+                next(err);
             });
-
 
     };
 };

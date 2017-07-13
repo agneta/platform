@@ -115,11 +115,10 @@
         $rootScope.loadData = function(path) {
 
             var params = $route.current.params;
-
-            path = path || agneta.url(params.path);
+            path = path || params.path;
 
             var dataPath = agneta.urljoin({
-                path: [path, 'view-data'],
+                path: [agneta.view_base, path, 'view-data'],
                 query: {
                     version: agneta.page.version
                 }

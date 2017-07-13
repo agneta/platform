@@ -29,6 +29,11 @@ colors:
 
 #-----------------------------------------------
 
+page:
+  viewBase:
+    local: 'view/page-local'
+    default: 'view/page'
+
 media:
   base: 'view/media'
   api:
@@ -109,8 +114,6 @@ libraries:
   photoswipe:
     dir: 'photoswipe'
     include: '*.{css,min.js}'
-  socket.io:
-    include: 'socket.io.js'
 
 #-----------------------------------------------
 

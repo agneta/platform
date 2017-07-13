@@ -31,7 +31,6 @@ module.exports = function(locals) {
     });
 
     locals.app.renderPage = function(target, lang) {
-        var dataPath = lang + target;
 
         return Promise.resolve()
             .then(function() {
@@ -51,10 +50,22 @@ module.exports = function(locals) {
 
                 //-----------------------------------------------------------
 
-                var data = project.getPage(target).data;
+                var data;
+
+                if (_.isString(target)) {
+                    data = project.getPage(target).data;
+                } else if (_.isObject(target)) {
+                    data = target;
+                }
 
                 if (!data) {
                     throw new Error('No Data found for ' + target);
+                }
+
+                //-----------------------------------------------------------
+
+                if (data.isView || data.isViewData) {
+                    return;
                 }
 
                 //-----------------------------------------------------------
@@ -63,12 +74,6 @@ module.exports = function(locals) {
                     throw new Error('Page does not meet condition');
                 }
 
-                //-----------------------------------------------------------
-
-                return project.execFilter('before_post_render', data, {
-                    context: project
-                });
-
             })
             .then(function(data) {
 
@@ -76,7 +81,6 @@ module.exports = function(locals) {
                     return;
                 }
 
-                data.pathLang = dataPath;
                 return locals.renderData(data);
 
             });

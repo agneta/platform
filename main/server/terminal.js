@@ -1,10 +1,5 @@
-var fs = require('fs-extra');
-var Promise = require('bluebird');
 var projectPaths = require('../paths').project;
-var outputFile = Promise.promisify(fs.outputFile);
-var log = require('../log');
 var start = require('../start');
-var generator = require('loopback-sdk-angular');
 var path = require('path');
 var _ = require('lodash');
 
@@ -15,7 +10,6 @@ module.exports = function() {
     var webPortal = start.default();
 
     var commonOptions = {
-        listenDisabled: true,
         client: webPages.locals
     };
 

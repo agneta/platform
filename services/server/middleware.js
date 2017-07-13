@@ -95,7 +95,7 @@ module.exports = function(app) {
             "./middleware/media-private": {
                 "params": [app]
             },
-            "./middleware/page-views": {
+            "./middleware/page-private": {
                 "params": [app]
             },
             "loopback#rest": {

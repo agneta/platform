@@ -16,7 +16,6 @@ module.exports = function(options) {
     var commonOptions = _.extend({
         mainApp: app,
         worker: options.worker,
-        listenDisabled: true,
         appName: config.appName,
         server: server,
         portal: true
@@ -25,6 +24,7 @@ module.exports = function(options) {
     const appRoots = {
         preview: 'preview/real-time',
         local: 'preview/local',
+        private: 'preview/private',
         production: 'preview/production'
     };
 
@@ -51,7 +51,8 @@ module.exports = function(options) {
 
     //-----------------------------------------------------
 
-    app.use('/' + appRoots.local, staticMiddleware('local'));
+    app.use('/' + appRoots.local, staticMiddleware('local/public'));
+    app.use('/' + appRoots.private, staticMiddleware('local/private'));
     app.use('/', express.static(
         path.join(projectPaths.portalProject)
     ));
@@ -110,10 +111,7 @@ module.exports = function(options) {
         root: appRoots.preview,
         url_services: url_services,
         name: 'website',
-        title: 'Web Pages',
-        track: {
-            views: true
-        }
+        title: 'Web Pages'
     }, commonOptions));
 
     // Share apps
@@ -136,12 +134,10 @@ module.exports = function(options) {
         options.env = options.env || 'local';
 
         var websiteRoot = null;
-        var trackViews = true;
 
         switch (options.env) {
             case 'local':
                 websiteRoot = appRoots.local;
-                trackViews = false;
                 break;
             default:
         }
@@ -155,9 +151,6 @@ module.exports = function(options) {
                 buildOptions: {
                     assets: true,
                     pages: true
-                },
-                track: {
-                    views: trackViews
                 }
             })
         });
@@ -166,7 +159,7 @@ module.exports = function(options) {
             website: {
                 root: websiteRoot
             },
-            listenDisabled: true,
+            building: true,
             dir: projectPaths.portal,
             include: path.join(projectPaths.project, 'services')
         });

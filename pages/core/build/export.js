@@ -8,12 +8,10 @@ module.exports = function(locals) {
 
     function init(options) {
 
-        var filePath = options.path;
-
-        dictFile[filePath] = true;
-
+        var filePath = path.join(options.container, options.path);
         var outputFilePath = path.join(locals.build_dir, filePath);
 
+        dictFile[filePath] = true;
 
         if (options.data) {
             return fs.outputFile(

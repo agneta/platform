@@ -45,13 +45,41 @@ module.exports = function(util) {
 
             }
 
-            if (options.operations.build) {
+            if (options.operations.build_production) {
 
                 operations.push({
                     method: sync,
                     options: {
-                        source: path.join(webProject.paths.build, 'production'),
-                        target: storageConfig.buckets.app.production
+                        source: path.join(webProject.paths.build, 'production', 'public'),
+                        target: storageConfig.buckets.app.production.name
+                    }
+                });
+
+                operations.push({
+                    method: sync,
+                    options: {
+                        source: path.join(webProject.paths.build, 'production', 'private'),
+                        target: storageConfig.buckets.app.production.private
+                    }
+                });
+
+            }
+
+            if (options.operations.build_staging) {
+
+                operations.push({
+                    method: sync,
+                    options: {
+                        source: path.join(webProject.paths.build, 'staging', 'public'),
+                        target: storageConfig.buckets.app.name
+                    }
+                });
+
+                operations.push({
+                    method: sync,
+                    options: {
+                        source: path.join(webProject.paths.build, 'staging', 'private'),
+                        target: storageConfig.buckets.app.private
                     }
                 });
 
@@ -81,8 +109,11 @@ module.exports = function(util) {
                 name: 'lib',
                 title: 'Libraries'
             }, {
-                name: 'build',
+                name: 'build_production',
                 title: 'Production Build'
+            }, {
+                name: 'build_staging',
+                title: 'Staging Build'
             }]
         }]
     };

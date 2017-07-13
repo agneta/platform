@@ -1,8 +1,5 @@
-const ejs = require('ejs');
 const _ = require('lodash');
 const Promise = require('bluebird');
-const minify = require('html-minifier').minify;
-const fs = require('fs');
 const path = require('path');
 const Minimize = require('minimize');
 const htmlclean = require('htmlclean');
@@ -165,6 +162,16 @@ module.exports = function(locals, options) {
                         }
 
                         //----------------------------------
+
+                        var container;
+
+                        if (data.isView || data.isViewData) {
+                            container = 'private';
+                        } else {
+                            container = 'public';
+                        }
+
+                        //----------------------------------
                         // gzip
 
                         return gzip(
@@ -172,6 +179,7 @@ module.exports = function(locals, options) {
                             )
                             .then(function(html) {
                                 return exportFile({
+                                    container: container,
                                     path: outputPath,
                                     data: html
                                 });

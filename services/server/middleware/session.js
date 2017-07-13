@@ -1,8 +1,5 @@
-const moment = require("moment");
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-const _ = require('lodash');
-const Promise = require('bluebird');
 
 module.exports = function(app, _options) {
 
