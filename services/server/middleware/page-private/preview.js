@@ -4,7 +4,6 @@ module.exports = function(app) {
     var project = client.project;
 
     return function(data) {
-
         project.site.lang = data.lang;
         var content = client.renderData(data.page);
         if (content) {

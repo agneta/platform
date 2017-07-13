@@ -78,9 +78,8 @@ module.exports = function(locals) {
                                         // Partials
 
                                         if (data.path.indexOf('partial/') === 0) {
-
                                             data.barebones = true;
-
+                                            data.viewOnly = true;
                                         }
 
                                         //---------------------------------------

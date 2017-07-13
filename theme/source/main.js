@@ -116,7 +116,7 @@
 
             var params = $route.current.params;
             path = path || params.path;
-
+            console.log(path);
             var dataPath = agneta.urljoin({
                 path: [agneta.services.view, path, 'view-data'],
                 query: {

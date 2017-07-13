@@ -1,24 +1,9 @@
 var common = require('./common');
-var Promise = require('bluebird');
 var pathFn = require('path');
-var _ = require('lodash');
-var fs = require('hexo-fs');
 var util = require('hexo-util');
-var slugize = util.slugize;
 var Pattern = util.Pattern;
-var Permalink = util.Permalink;
 var postDir = 'source/';
 var draftDir = '_drafts/';
-var permalink;
-
-var preservedKeys = {
-    title: true,
-    year: true,
-    month: true,
-    day: true,
-    i_month: true,
-    i_day: true
-};
 
 function startsWith(str, prefix) {
     return str.substring(0, prefix.length) === prefix;
@@ -59,9 +44,6 @@ function processPost(data) {
     /* jshint validthis: true */
     var Page = this.model('Page');
     var self = this;
-    var config = this.config;
-    var timezone = config.timezone;
-    var promise;
     var path = parseFilename(data.path);
 
     var doc = Page.findOne({

@@ -46,7 +46,6 @@ module.exports = function(locals) {
             })
         ]);
 
-
         if (cache) {
             memCache.set(path_partial, content);
             //console.log('cache', memCache.length, memCache.itemCount);

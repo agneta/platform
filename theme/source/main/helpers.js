@@ -3,7 +3,7 @@
     var agneta = window.agneta;
 
     agneta.partial = function(name) {
-        return agneta.langPath('partial', name);
+        return agneta.urljoin(agneta.services.view, agneta.lang, 'partial', name, 'view');
     };
 
     agneta.get_icon = function(name) {

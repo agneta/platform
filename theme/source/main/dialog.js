@@ -24,7 +24,7 @@
             }
 
             var locals = {};
-            var path = agneta.partial(options.partial);
+            var path = agneta.urljoin(agneta.lang,'partial',options.partial);
 
             if (options.data) {
                 locals.data = options.data;
@@ -41,7 +41,7 @@
                     var dialogOptions = {
                         onRemoving: options.onRemoving,
                         clickOutsideToClose: true,
-                        templateUrl: path,
+                        templateUrl: agneta.partial(options.partial),
                         locals: locals
                     };
 

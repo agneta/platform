@@ -21,7 +21,7 @@ module.exports = function(app) {
 
         data.res.set('Content-Encoding','gzip');
         data.res.set('Content-Type','text/html; charset=utf-8');
-        
+
         readStream.pipe(data.res);
 
     };

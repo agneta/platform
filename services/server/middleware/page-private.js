@@ -50,8 +50,9 @@ module.exports = function(app) {
             remotePath = remotePath.substring(view.base.length);
             remotePath = path.normalize(remotePath);
 
-            var page = clientHelpers.get_page(remotePath) || {};
+            var page = clientHelpers.get_page(remotePath);
             var lang = remotePath.split('/')[0];
+
             data = {
                 view: view,
                 remotePath: remotePath,
@@ -64,6 +65,10 @@ module.exports = function(app) {
         }
 
         if (!data) {
+            return next();
+        }
+
+        if (!data.page) {
             return next();
         }
 

@@ -3,7 +3,6 @@ var _ = require('lodash');
 var nPath = require('path');
 var Rules = require('./rules');
 var pageProcessor = require('../pages/page');
-var replaceExt = require('replace-ext');
 
 module.exports = function(locals, callback) {
 
@@ -42,18 +41,21 @@ module.exports = function(locals, callback) {
                             return Promise.resolve()
                                 .then(function() {
 
-                                    if (excludeConfig.pages) {
+                                    if (excludeConfig.pages || page.viewOnly) {
+                                        page.path = pageProcessor.parseFilename(page.path);
                                         return generate(page);
                                     }
-                                    return pageProcessor.process.call(project, page);
-                                })
-                                .then(function(doc) {
-                                    if (!doc) {
-                                        return;
-                                    }
-                                    //console.log(page.path);
-                                    return generate(page);
+
+                                    return pageProcessor.process.call(project, page)
+                                        .then(function(doc) {
+                                            if (!doc) {
+                                                return;
+                                            }
+                                            //console.log(page.path);
+                                            return generate(page);
+                                        });
                                 });
+
 
                         }, {
                             concurrency: 1
@@ -83,6 +85,7 @@ module.exports = function(locals, callback) {
             barebones: true,
             path: null
         };
+
 
         return Promise.resolve()
             .then(function() {

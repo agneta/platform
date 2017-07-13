@@ -69,7 +69,7 @@ module.exports = function(locals) {
         helper.register = function(name, callback) {
 
             appLocals[name] = function() {
-                return callback.apply(_.extend(this, appLocals), arguments);
+                return callback.apply(_.extend({},this, appLocals), arguments);
             };
 
         };
