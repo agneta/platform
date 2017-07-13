@@ -18,7 +18,17 @@
         en: Local Build
         gr: Τοπικό Build
       href_full: '/preview/local'
-      icon: material/playlist-add-check
+      icon: material/location-on
+    -
+      title:
+        en: Staging Build
+      href_full: '//${config_prj.domain.staging}'
+      icon: material/publish
+    -
+      title:
+        en: Production Build
+      href_full: '//${config_prj.domain.production}'
+      icon: material/public
     -
       page: 'preview/email'
 -

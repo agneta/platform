@@ -49,7 +49,7 @@ for(item of list){
   }
   %>
 
-    <%if(!item.hidden){%>
+    <%if(!item.hidden && locals.itemPath){%>
         <%-template(locals.itemPath,{
     item: item,
     href:href,

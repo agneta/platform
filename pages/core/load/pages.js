@@ -2,14 +2,10 @@ var _ = require('lodash');
 
 module.exports = function(locals) {
 
-    var project = locals.project;
-
     locals.renderData = function(data) {
 
         var data_render = _.extend({
-            page: data,
-            config: project.config,
-            site: project.site
+            page: data
         });
 
         var body = locals.app.locals.template('body', data_render);

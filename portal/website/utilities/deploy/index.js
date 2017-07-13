@@ -5,8 +5,6 @@ const path = require('path');
 
 module.exports = function(util) {
 
-    var project = util.locals.project;
-
     var webProject = util.locals.web.project;
     var services = util.locals.services;
 

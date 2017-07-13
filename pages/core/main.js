@@ -1,14 +1,11 @@
-var fs = require('fs-extra');
-var url = require('url');
-var path = require('path');
-var urljoin = require('url-join');
-var yaml = require('js-yaml');
-var _ = require('lodash');
-var extend = require('../pages/extend');
-var database = require('./database');
-var Promise = require('bluebird');
-var Loader = require('./load');
-var Cache = require('./cache');
+const fs = require('fs-extra');
+const path = require('path');
+const _ = require('lodash');
+const extend = require('../pages/extend');
+const database = require('./database');
+const Promise = require('bluebird');
+const Loader = require('./load');
+const Cache = require('./cache');
 
 module.exports = function(locals) {
 
@@ -67,21 +64,26 @@ module.exports = function(locals) {
         // HELPERS
 
         var helper = project.extend.helper = {};
+        var appLocals = locals.app.locals;
 
         helper.register = function(name, callback) {
 
-            locals.app.locals[name] = function() {
-                return callback.apply(_.extend({
-                    config: project.config
-                }, this, locals.app.locals), arguments);
+            appLocals[name] = function() {
+                return callback.apply(_.extend(this, appLocals), arguments);
             };
 
         };
 
-        locals.app.locals.mode = locals.mode;
-        locals.app.locals.agneta = locals.project;
-        locals.app.locals.path = path;
-        locals.app.locals.fs = fs;
+        appLocals.mode = locals.mode;
+        appLocals.path = path;
+        appLocals.fs = fs;
+        appLocals._ = _;
+        appLocals.config = project.config;
+        appLocals.site = project.site;
+
+        if (locals.web) {
+            appLocals.config_prj = locals.web.project.config;
+        }
 
         function deepMerge(object, source) {
             return _.mergeWith(object, source,
@@ -93,7 +95,6 @@ module.exports = function(locals) {
                 });
         }
         _.deepMerge = deepMerge;
-        locals.app.locals._ = _;
 
         //////////////////////////////////////////////////
 

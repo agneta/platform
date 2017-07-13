@@ -2,13 +2,11 @@ const path = require('path');
 const Promise = require('bluebird');
 const urljoin = require('url-join');
 const uaParser = require('ua-parser-js');
-const request = require('request');
 const _ = require('lodash');
 const moment = require('moment');
 
 module.exports = function(app) {
 
-    var website = app.get('website');
     var client = app.get('options').client;
     var web = app.get('options').web;
     var clientProject = client.project;
@@ -37,7 +35,6 @@ module.exports = function(app) {
 
     return function(req, res, next) {
 
-        var streamPath;
         var data;
 
         checkBase(defaultView);
@@ -60,7 +57,8 @@ module.exports = function(app) {
                 remotePath: remotePath,
                 page: page,
                 res: res,
-                lang: lang
+                lang: lang,
+                next: next
             };
 
         }
@@ -87,7 +85,7 @@ module.exports = function(app) {
                                 if (data.page.isView) {
                                     name = 'view-auth';
                                 }
-                                
+
                                 if (data.page.isViewData) {
                                     name = 'view-auth-data';
                                 }
