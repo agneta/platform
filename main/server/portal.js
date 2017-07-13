@@ -23,7 +23,6 @@ module.exports = function(options) {
     const appRoots = {
         preview: 'preview/real-time',
         local: 'preview/local',
-        private: 'preview/private',
         production: 'preview/production'
     };
 
@@ -51,7 +50,6 @@ module.exports = function(options) {
     //-----------------------------------------------------
 
     app.use('/' + appRoots.local, staticMiddleware('local/public'));
-    app.use('/' + appRoots.private, staticMiddleware('local/private'));
     app.use('/', express.static(
         path.join(projectPaths.portalProject)
     ));
