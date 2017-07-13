@@ -101,11 +101,18 @@ module.exports = function(locals) {
                 if (project.config.services) {
 
                     var servicesUrl;
-
+                    var viewPath;
+                    switch (locals.env) {
+                        case 'local':
+                            viewPath = project.config.page.viewBase.local;
+                            break;
+                        default:
+                            viewPath = project.config.page.viewBase.default;
+                            break;
+                    }
                     switch (locals.env) {
                         case 'development':
                         case 'local':
-
                             servicesUrl = urljoin(hostPath, locals.url_services);
                             break;
                         default:
@@ -123,23 +130,13 @@ module.exports = function(locals) {
 
                     project.site.services = {
                         url: servicesUrl,
-                        host: servicesParsed.host
+                        host: servicesParsed.host,
+                        view: urljoin(servicesUrl, viewPath)
                     };
                     //console.log('pages:url_services', project.site.services.url);
 
                 }
 
-                //---------------------
-
-                var view_base;
-
-                if (locals.services) {
-                    view_base = urljoin(project.site.services.url, project.config.page.base);
-                } else {
-                    view_base = '/' + urljoin(project.config.root);
-                }
-
-                project.site.view_base = view_base;
 
             });
 

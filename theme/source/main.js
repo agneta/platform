@@ -118,7 +118,7 @@
             path = path || params.path;
 
             var dataPath = agneta.urljoin({
-                path: [agneta.view_base, path, 'view-data'],
+                path: [agneta.services.view, path, 'view-data'],
                 query: {
                     version: agneta.page.version
                 }

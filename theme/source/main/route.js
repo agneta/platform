@@ -7,7 +7,7 @@
         function versionURL(path) {
 
             return agneta.urljoin({
-                path: [agneta.view_base, path, 'view'],
+                path: [agneta.services.view, path, 'view'],
                 query: {
                     version: agneta.page.version
                 }

@@ -30,7 +30,6 @@ window.agneta = {
     lib: "<%-site.servers.lib%>",
     media: "<%-site.servers.media%>"
   },
-  view_base: "<%-site.view_base%>",
   keys:{
     googleAPI: "<%-services_config('google').apiKey%>",
     recaptcha: "<%-services_config('recaptcha').siteKey%>"
@@ -44,6 +43,7 @@ window.agneta = {
     services: {
       url: "<%-site.services.url%>",
       host: "<%-site.services.host%>",
+      view: "<%-site.services.view%>"
     },
     <%}%>
     url_web: "<%-site.url_web%>",

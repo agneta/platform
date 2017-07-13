@@ -17,8 +17,7 @@ module.exports = function(options) {
         mainApp: app,
         worker: options.worker,
         appName: config.appName,
-        server: server,
-        portal: true
+        server: server
     }, config);
 
     const appRoots = {
@@ -91,9 +90,7 @@ module.exports = function(options) {
         dir: projectPaths.portalWebsite,
         name: 'portal',
         title: 'Portal Pages'
-    }, commonOptions, {
-        portal: false
-    }));
+    }, commonOptions));
 
     var webServices = middleware(_.extend({
         title: 'Web Services',

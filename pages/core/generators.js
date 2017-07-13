@@ -119,12 +119,26 @@ module.exports = function(locals, callback) {
                 }
 
                 if (page.authorization) {
+
                     return run(_.extend({},
-                        page,
-                        pageBase, {
-                            path: nPath.join(page.path, 'view-auth'),
-                            template: 'authorization'
-                        }));
+                            page,
+                            pageBase, {
+                                isView: true,
+                                path: nPath.join(page.path, 'view-auth'),
+                                template: 'authorization'
+                            }))
+                        .then(function() {
+
+                            return run(_.extend({},
+                                page,
+                                pageBase, {
+                                    isViewData: true,
+                                    path: nPath.join(page.path, 'view-auth-data'),
+                                    template: 'json/viewAuthData'
+                                }));
+
+                        });
+
                 }
             })
             .then(function() {

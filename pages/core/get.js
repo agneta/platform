@@ -74,16 +74,10 @@ module.exports = function(locals) {
                     throw new Error('Page does not meet condition');
                 }
 
-            })
-            .then(function(data) {
-
-                if (!data) {
-                    return;
-                }
-
+                //-----------------------------------------------------------
                 return locals.renderData(data);
 
-            });
+            })
     };
 
 };

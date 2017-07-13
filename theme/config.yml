@@ -31,11 +31,11 @@ colors:
 
 page:
   viewBase:
-    local: 'view/page-local'
-    default: 'view/page'
+    local: 'private/page-local'
+    default: 'private/page'
 
 media:
-  base: 'view/media'
+  base: 'private/media'
   api:
     public: 'api/Media/'
     private: 'api/Media_Private/'

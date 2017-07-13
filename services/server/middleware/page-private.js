@@ -10,6 +10,7 @@ module.exports = function(app) {
 
     var website = app.get('website');
     var client = app.get('options').client;
+    var web = app.get('options').web;
     var clientProject = client.project;
     var clientHelpers = client.app.locals;
 
@@ -39,42 +40,36 @@ module.exports = function(app) {
         var streamPath;
         var data;
 
+        checkBase(defaultView);
+        checkBase(localView);
+
+        function checkBase(view) {
+
+            if (req.path.indexOf(view.base) !== 0) {
+                return;
+            }
+
+            var remotePath = req.path;
+            remotePath = remotePath.substring(view.base.length);
+            remotePath = path.normalize(remotePath);
+
+            var page = clientHelpers.get_page(remotePath) || {};
+            var lang = remotePath.split('/')[0];
+            data = {
+                view: view,
+                remotePath: remotePath,
+                page: page,
+                res: res,
+                lang: lang
+            };
+
+        }
+
+        if (!data) {
+            return next();
+        }
+
         return Promise.resolve()
-            .then(function() {
-
-                checkBase(defaultView);
-                checkBase(localView);
-
-                function checkBase(view) {
-
-                    if (req.path.indexOf(view.base) !== 0) {
-                        return;
-                    }
-
-                    var remotePath = req.path;
-                    remotePath = remotePath.substring(view.base.length);
-                    remotePath = path.normalize(remotePath);
-
-                    var page = clientHelpers.get_page(remotePath) || {};
-                    var lang = remotePath.split('/')[0];
-                    data = {
-                        view: view,
-                        remotePath: remotePath,
-                        page: page,
-                        res: res,
-                        lang: lang
-                    };
-
-                }
-
-                if (!data) {
-                  console.log('not path');
-                    return Promise.reject({
-                        notfound: true
-                    });
-                }
-
-            })
             .then(function() {
 
                 if (data.page.authorization) {
@@ -85,27 +80,27 @@ module.exports = function(app) {
                         )
                         .then(function(result) {
                             if (!result.has) {
-                                streamPath = urljoin(website.url, data.remotePath);
-                                streamPath = path.parse(streamPath);
-                                streamPath = urljoin(streamPath.dir, 'view-auth');
+
+                                var authPath = path.parse(data.remotePath);
+                                var name;
+
+                                if (data.page.isView) {
+                                    name = 'view-auth';
+                                }
+                                
+                                if (data.page.isViewData) {
+                                    name = 'view-auth-data';
+                                }
+
+                                authPath = urljoin(authPath.dir, name);
+                                data.remotePath = authPath;
+                                data.page = clientHelpers.get_page(data.remotePath);
                             }
                         });
                 }
 
             })
             .then(function() {
-
-                if (streamPath) {
-
-                    var stream = request({
-                        uri: streamPath
-                    });
-
-                    req.pipe(stream).pipe(res);
-                    return;
-
-                }
-
                 return data.view.method(data);
             })
 
@@ -113,6 +108,10 @@ module.exports = function(app) {
             // ANALYTICS
 
             .then(function() {
+
+                if (web) {
+                    return;
+                }
 
                 var accountId = (req.accessToken && req.accessToken.userId);
                 var ua = uaParser(req.dataParsed.agent);
