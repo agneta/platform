@@ -5,6 +5,9 @@ var requestPromise = require('request-promise');
 module.exports = function(app) {
 
     var config = app.get('esri');
+    if (!config) {
+        return;
+    }
     var credentials = config.credentials;
     var endpoint = urljoin(config.endpoint, 'rest/services', config.app, 'FeatureServer/0/query');
     var access;
@@ -60,7 +63,7 @@ module.exports = function(app) {
     }
 
     app.gis.esri = {
-      query: query
+        query: query
     };
 
     return generateToken();

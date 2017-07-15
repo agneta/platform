@@ -44,10 +44,15 @@ module.exports = function(app) {
     return Promise.map(templatePaths, function(pathTemplates) {
 
             var templateDirs = fs.readdirSync(pathTemplates);
+            var dataPath = path.join(pathTemplates, '_data.yml');
 
-            _.merge(dataMain,
-                yaml.safeLoad(fs.readFileSync(path.join(pathTemplates, '_data.yml'), 'utf8'))
-            );
+            if (fs.existsSync(dataPath)) {
+
+                _.merge(dataMain,
+                    yaml.safeLoad(fs.readFileSync(dataPath, 'utf8'))
+                );
+
+            }
 
             var helpers = {
                 partial: function(path_partial, data) {
