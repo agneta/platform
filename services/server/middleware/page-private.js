@@ -60,7 +60,6 @@ module.exports = function(app) {
                 lang: lang,
                 next: next
             };
-            console.log(data);
         }
 
         if (!data) {
