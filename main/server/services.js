@@ -19,7 +19,6 @@ module.exports = function(options) {
                     },
                     exclude: {
                         pages: true,
-                        viewData: true,
                         sidebar: true
                     }
                 }

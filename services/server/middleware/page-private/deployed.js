@@ -15,21 +15,30 @@ module.exports = function(app) {
 
     return function(data) {
 
-        var key = urljoin(data.remotePath,'index.html');
+        var key = urljoin(data.remotePath, 'index.html');
         var params = {
             Bucket: bucket,
             Key: key
         };
-
-        data.res.set('Content-Encoding', 'gzip');
-        data.res.set('Content-Type', 'text/html; charset=utf-8');
-
-        return app.storage.s3.getObject(params)
-            .createReadStream()
-            .on('error', function(err) {
-                data.next(err);
+        return app.storage.s3.headObjectAsync({
+                Bucket: bucket,
+                Key: key
             })
-            .pipe(data.res);
+            .then(function(storageObjectHead) {
+
+                data.res.set('Content-Encoding', storageObjectHead.ContentEncoding);
+                data.res.set('Content-Type', storageObjectHead.ContentType);
+                data.res.set('Content-Length', storageObjectHead.ContentLength);
+                data.res.set('Last-Modified', storageObjectHead.LastModified);
+
+                return app.storage.s3.getObject(params)
+                    .createReadStream()
+                    .on('error', function(err) {
+                        data.next(err);
+                    })
+                    .pipe(data.res);
+
+            });
 
     };
 

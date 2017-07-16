@@ -21,7 +21,6 @@ module.exports = function(app) {
     var defaultView = {
         base: '/' + clientProject.config.page.viewBase.default+'/'
     };
-
     switch (app.get('env')) {
         case 'development':
             defaultView.method = require('./page-private/preview')(app);
@@ -61,7 +60,7 @@ module.exports = function(app) {
                 lang: lang,
                 next: next
             };
-
+            console.log(data);
         }
 
         if (!data) {
