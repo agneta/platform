@@ -9,7 +9,7 @@ module.exports = function(locals) {
 
         var scripts = project.config.scripts;
 
-        if (project.config.contact) {
+        if (project.config.contact_form) {
             scripts.push('main/contact');
         }
 
