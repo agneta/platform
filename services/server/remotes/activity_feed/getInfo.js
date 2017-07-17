@@ -63,25 +63,18 @@ module.exports = function(Model, app) {
 
     //----------------------------------------------
 
-    var formServices;
-
-    if (clientHelpers.has_data('form/services')) {
-        formServices = clientHelpers.get_data('form/services');
-    }
-
     Model.registerInfo('form', function(feed, req) {
 
-        if (!formServices) {
+        if (!app.models.Form.formServices) {
             return;
         }
 
-        var formMethod = _.find(formServices.methods, {
-            'name': feed.value
-        });
+        var formMethod = app.models.Form.formServices.methods[feed.value];
+
         if (!formMethod) {
             return;
         }
-        var form = clientHelpers.get_data(formMethod.data);
+        var form = formMethod.data;
         if (!form) {
             return;
         }

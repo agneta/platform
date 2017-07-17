@@ -16,7 +16,9 @@
             })
             .$promise
             .then(function(result) {
-
+                if (!result.data.formId) {
+                    return result;
+                }
                 return Model.load({
                         id: result.data.formId
                     })
@@ -24,6 +26,7 @@
 
             })
             .then(function(result) {
+                result.time = result.time || result.createAt;
                 $scope.activity = result;
             })
             .finally(function() {

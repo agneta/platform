@@ -1,7 +1,39 @@
 var _ = require('lodash');
-var Promise = require('bluebird');
 
 module.exports = function(Model, app) {
+
+    Model.prepareFields = function(options) {
+
+        var data = options.data;
+        var form;
+
+        for (var key in data.fields) {
+            var field = data.fields[key];
+
+            if (_.isObject(field)) {
+                field = _.pick(field, ['title', 'value']);
+                if (_.isObject(field.title)) {
+                    field.title = app.lng(field.title, options.language || options.req);
+                }
+                data.fields[key] = field;
+                continue;
+            }
+
+            if (!form) {
+                form = app.models.Form.formServices.methods[options.form];
+            }
+
+            var fieldConfig = form.remote.fields[key];
+            if (fieldConfig) {
+                data.fields[key] = {
+                    title: app.lng(fieldConfig.title, options.language || options.req),
+                    value: field
+                };
+            }
+
+        }
+
+    };
 
     Model.new = function(options) {
 
@@ -20,12 +52,7 @@ module.exports = function(Model, app) {
             'language',
         ]);
 
-        for (var key in result.data.fields) {
-            var field = result.data.fields[key];
-            field = _.pick(field, ['title', 'value']);
-            field.title = app.lng(field.title, options.language);
-            result.data.fields[key] = field;
-        }
+        Model.prepareFields = (result.data, options.language);
 
         return Model.create(result);
 

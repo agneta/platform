@@ -3,12 +3,23 @@ var Promise = require('bluebird');
 
 module.exports = function(Model, app) {
 
-    var formServices = Model.clientHelpers.get_data('form/services');
     var emails = app.get('email').contacts;
 
-    formServices.methods.forEach(function(formMethod) {
+    _.keys(Model.formServices.methods).forEach(function(name) {
 
+        var formMethod = Model.formServices.methods[name];
+
+        formMethod.name = name;
+
+        if(_.isString(formMethod.data)){
+          formMethod.data = Model.clientHelpers.get_data(formMethod.data);
+        }
         var result = Model.newMethod(formMethod);
+        formMethod.remote = result;
+
+        if (formMethod.hidden) {
+            return;
+        }
 
         Model[formMethod.name] = function() {
             return result.method(arguments)
@@ -107,7 +118,7 @@ module.exports = function(Model, app) {
                     //----------------------------------------------------------------
 
                     return Promise.resolve({
-                        success: app.lng(formServices.success, req)
+                        success: app.lng(Model.formServices.success, req)
                     });
 
                 });

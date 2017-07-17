@@ -16,8 +16,8 @@
     <md-content>
 
         <div class="time">
-          <p class="date"> {{activity.createdAt | amUtc | amLocal | amDateFormat:'DD MMMM YYYY HH:mm:ss'}}</p>
-          <p class="ago" am-time-ago="activity.createdAt"></p>
+          <p class="date"> {{activity.time | amUtc | amLocal | amDateFormat:'DD MMMM YYYY HH:mm:ss'}}</p>
+          <p class="ago" am-time-ago="activity.time"></p>
           </div>
 
           <div layout="column" class="fields">

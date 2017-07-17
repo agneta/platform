@@ -1,9 +1,7 @@
-var _ = require('lodash');
-var Promise = require('bluebird');
 
-module.exports = function(Model, app) {
+module.exports = function(Model) {
 
-    Model.load = function(id, req) {
+    Model.load = function(id) {
         return Model.findById(id);
     };
 

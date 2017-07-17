@@ -1,15 +1,12 @@
 var _ = require('lodash');
-var ejs = require('ejs');
 var Promise = require('bluebird');
 
 module.exports = function(Model, app) {
 
-    var formServices = Model.clientHelpers.get_data('form/services');
-
     Model.newMethod = function(formMethod) {
 
         var formFields = {};
-        var form = Model.clientHelpers.get_data(formMethod.data);
+        var form = formMethod.data;
 
         var accepts = [{
             arg: 'req',
@@ -20,6 +17,11 @@ module.exports = function(Model, app) {
         }];
 
         function scanFields(data) {
+
+            if (_.isString(data)) {
+                data = Model.clientHelpers.get_data(data);
+            }
+
             for (var field of data.fields) {
 
                 field = Model.clientHelpers.form_field(field, formMethod);

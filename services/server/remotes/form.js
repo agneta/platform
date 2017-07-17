@@ -1,6 +1,3 @@
-var _ = require('lodash');
-var ejs = require('ejs');
-var Promise = require('bluebird');
 
 module.exports = function(Model, app) {
 
@@ -19,6 +16,7 @@ module.exports = function(Model, app) {
         return;
     }
 
+    Model.formServices = formServices;
     Model.clientHelpers = clientHelpers;
 
     require('./form/checkProperties')(Model, app);

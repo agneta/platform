@@ -4,7 +4,7 @@ var nPath = require('path');
 var Rules = require('./rules');
 var pageProcessor = require('../pages/page');
 
-module.exports = function(locals, callback) {
+module.exports = function(locals) {
 
     var app = locals.app;
     var project = locals.project;
