@@ -23,7 +23,7 @@
     <div class="header" layout="row">
       <%if(item.icon){%>
         <div>
-        <md-icon class="card-icon" md-svg-src="<%-get_icon(item.icon)%>">
+        <md-icon aria-label="<%-lng(item.title)%>" class="card-icon" md-svg-src="<%-get_icon(item.icon)%>">
         </md-icon>
         </div>
         <%}%>
@@ -96,7 +96,7 @@
 
                 <div layout="row" layout-align="end center">
                   <md-button class="md-primary" <%-itemAttr%> ng-href="<%-url%>" >
-                    <md-icon md-svg-src="<%-get_icon('material/add')%>">
+                    <md-icon aria-label="more" md-svg-src="<%-get_icon('material/add')%>">
                     </md-icon>
                     <span>More</span>
                   </md-button>
