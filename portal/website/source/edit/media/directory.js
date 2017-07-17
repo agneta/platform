@@ -3,6 +3,7 @@
     var socket = SocketIO.connect('media');
     var objects = [];
     var lastResult = null;
+    var loadmoreCount = 20;
 
     function readdir() {
 
@@ -59,8 +60,17 @@
                 return;
             }
 
+            if (!this.toLoad_) {
+                this.toLoad_ = 1;
+                return;
+            }
+
+            if (this.toLoad_ - this.numLoaded_ > loadmoreCount) {
+                return;
+            }
+
             if (this.toLoad_ < index) {
-                this.toLoad_ += 20;
+                this.toLoad_ += loadmoreCount;
 
                 $rootScope.loadingMain = true;
 
@@ -72,6 +82,9 @@
                 if (marker) {
                     params.marker = marker
                 }
+
+                console.warn('fetchMoreItems_', index, this.numLoaded_, this.toLoad_);
+
 
                 Media.list(params)
                     .$promise
