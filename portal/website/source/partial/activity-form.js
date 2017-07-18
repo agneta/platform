@@ -26,7 +26,7 @@
 
             })
             .then(function(result) {
-                result.time = result.time || result.createAt;
+                result.time = result.time || result.createdAt;
                 $scope.activity = result;
             })
             .finally(function() {

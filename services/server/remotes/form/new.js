@@ -52,7 +52,10 @@ module.exports = function(Model, app) {
             'language',
         ]);
 
-        Model.prepareFields = (result.data, options.language);
+        Model.prepareFields({
+            data: result.data,
+            language: options.language
+        });
 
         return Model.create(result);
 
