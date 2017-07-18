@@ -60,11 +60,6 @@
                 return;
             }
 
-            if (!this.toLoad_) {
-                this.toLoad_ = 1;
-                return;
-            }
-
             if (this.toLoad_ - this.numLoaded_ > loadmoreCount) {
                 return;
             }
