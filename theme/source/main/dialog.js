@@ -12,6 +12,7 @@
             options.clickOutsideToClose = true;
             options.preserveScope = true;
             options.autoWrap = true;
+            options.parent = angular.element(document.body);
             return $mdDialog._show(options);
 
         };
