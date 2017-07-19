@@ -8,6 +8,9 @@ const _ = require('lodash');
 var sourcePaths = [];
 var template;
 
+var copyrightStart = '/*   Copyright 2017 Agneta';
+var copyrightEnd = ' */\n';
+
 return Promise.resolve()
     .then(function() {
 
@@ -17,7 +20,12 @@ return Promise.resolve()
 
     })
     .then(function(content) {
-
+        if (content.indexOf(copyrightStart) !== 0) {
+            return Promise.reject(`Copyright must start with '${copyrightStart}'`);
+        }
+        if (content.indexOf(copyrightEnd) !== content.length - copyrightEnd.length) {
+            return Promise.reject(`Copyright must end with '${copyrightEnd}'`);
+        }
         template = _.template(content);
 
     })
@@ -77,20 +85,25 @@ return Promise.resolve()
                 })
                 .then(function(content) {
 
+                    var indexStart = content.indexOf(copyrightStart);
+                    if (indexStart === 0) {
+                        var indexEnd = content.indexOf(copyrightEnd);
+                        if (indexEnd < 0) {
+                            return Promise.reject('Could not find end of copyright');
+                        }
+                        content = content.slice(indexEnd + copyrightEnd.length);
+                    }
+
                     var header = template({
                         path: sourcePath.relative
                     });
 
                     content = header + content;
 
-                    var indexStart = content.indexOf('/*   Copyright 2017 Agneta');
-
-                    console.log(content);
-                    throw '';
-
+                    fs.writeFile(sourcePath.absolute, content);
                     bar.tick();
                 });
         }, {
-            concurrency: 10
+            concurrency: 1
         });
     });
