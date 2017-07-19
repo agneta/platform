@@ -16,8 +16,8 @@
  */
 module.exports = function(locals) {
 
-    locals.cache = {};
+  locals.cache = {};
 
-    require('./data')(locals);
-    require('./templates')(locals);
+  require('./data')(locals);
+  require('./templates')(locals);
 };

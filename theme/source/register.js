@@ -16,19 +16,19 @@
  */
 (function() {
 
-    angular.module('MainApp').controller("RegisterCtrl", function($scope, Account, $mdDialog) {
+  angular.module('MainApp').controller('RegisterCtrl', function($scope, Account, $mdDialog) {
 
-        $scope.registerAccount = function() {
+    $scope.registerAccount = function() {
 
-            $scope.loading = true;
+      $scope.loading = true;
 
-            Account.register($scope.registerFields)
-                .$promise
-                .finally(function() {
-                    $scope.loading = false;
-                });
-        };
+      Account.register($scope.registerFields)
+        .$promise
+        .finally(function() {
+          $scope.loading = false;
+        });
+    };
 
-    });
+  });
 
 })();

@@ -18,104 +18,104 @@ const Promise = require('bluebird');
 
 module.exports = function(app) {
 
-    app.gis = {
-        remoteNetwork: function(options) {
+  app.gis = {
+    remoteNetwork: function(options) {
 
-            options = options || {};
+      options = options || {};
 
-            var Model = options.model;
-            var name = options.name;
-            options.geoModel = options.geoModel || Model.definition.name;
+      var Model = options.model;
+      var name = options.name;
+      options.geoModel = options.geoModel || Model.definition.name;
 
-            var sources = {
-                local: require('./gis/local-tiles')(options),
-                esri: require('./gis/esri-tiles')(app, options)
-            };
+      var sources = {
+        local: require('./gis/local-tiles')(options),
+        esri: require('./gis/esri-tiles')(app, options)
+      };
 
-            //-----------------------------------------------------------------
+      //-----------------------------------------------------------------
 
-            Model[name] = function(geometry, req) {
+      Model[name] = function(geometry, req) {
 
-                if (!geometry) {
-                    return Promise.resolve({
-                        message: 'No geometry given'
-                    });
-                }
+        if (!geometry) {
+          return Promise.resolve({
+            message: 'No geometry given'
+          });
+        }
 
-                geometry = {
-                    xmin: parseFloat(geometry.xmin),
-                    xmax: parseFloat(geometry.xmax),
-                    ymin: parseFloat(geometry.ymin),
-                    ymax: parseFloat(geometry.ymax)
-                };
+        geometry = {
+          xmin: parseFloat(geometry.xmin),
+          xmax: parseFloat(geometry.xmax),
+          ymin: parseFloat(geometry.ymin),
+          ymax: parseFloat(geometry.ymax)
+        };
 
-                return sources[options.source](geometry,req);
-            };
+        return sources[options.source](geometry,req);
+      };
 
-            //-----------------------------------------------------------------
+      //-----------------------------------------------------------------
 
-            Model.remoteMethod(
-                name, {
-                    description: 'Geometry network',
-                    accepts: [{
-                            arg: 'geometry',
-                            type: 'object',
-                            required: false
-                        },
-                        {
-                            arg: 'req',
-                            type: 'object',
-                            'http': {
-                                source: 'req'
-                            }
-                        }
-                    ],
-                    returns: {
-                        arg: 'result',
-                        type: 'string',
-                        root: true
-                    },
-                    http: {
-                        verb: 'get',
-                        path: '/' + name
-                    },
-                }
-            );
+      Model.remoteMethod(
+        name, {
+          description: 'Geometry network',
+          accepts: [{
+            arg: 'geometry',
+            type: 'object',
+            required: false
+          },
+          {
+            arg: 'req',
+            type: 'object',
+            'http': {
+              source: 'req'
+            }
+          }
+          ],
+          returns: {
+            arg: 'result',
+            type: 'string',
+            root: true
+          },
+          http: {
+            verb: 'get',
+            path: '/' + name
+          },
+        }
+      );
 
-            //-----------------------------------------------------------------
+      //-----------------------------------------------------------------
 
-            Model.beforeRemote(name, function(context, account, next) {
+      Model.beforeRemote(name, function(context, account, next) {
 
-                var geometry = context.req.query.geometry;
+        var geometry = context.req.query.geometry;
 
-                if (geometry) {
+        if (geometry) {
 
-                    try {
-                        geometry = JSON.parse(geometry);
-                    } catch (e) {
-                        return next({
-                            message: 'Could not parse the geometry field'
-                        });
-                    }
+          try {
+            geometry = JSON.parse(geometry);
+          } catch (e) {
+            return next({
+              message: 'Could not parse the geometry field'
+            });
+          }
 
-                    if (!geometry.xmin ||
+          if (!geometry.xmin ||
                         !geometry.xmax ||
                         !geometry.ymin ||
                         !geometry.ymax
-                    ) {
-                        return next({
-                            message: 'Not a valid geometry object.'
-                        });
-                    }
-
-                }
-
-
-                next();
-
+          ) {
+            return next({
+              message: 'Not a valid geometry object.'
             });
+          }
 
         }
-    };
+
+
+        next();
+
+      });
+
+    }
+  };
 
 };

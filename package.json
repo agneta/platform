@@ -5,7 +5,8 @@
   "main": "main",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "audit": "nsp check"
+    "audit": "nsp check",
+    "lint": "eslint --fix --ignore-path .gitignore ./ --ext .js"
   },
   "author": "",
   "license": "Apache-2.0",

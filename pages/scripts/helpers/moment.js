@@ -16,105 +16,105 @@
  */
 var moment = require('moment');
 var langs = {
-    en: "en",
-    gr: "el"
-}
+  en: 'en',
+  gr: 'el'
+};
 
 module.exports = function(locals) {
 
-    var project = locals.project;
+  var project = locals.project;
 
-    function init(date, format) {
+  function init(date, format) {
 
-        if (date.toISOString) {
-            date = date.toISOString();
-        }
-
-        var localLocale = moment(date);
-        localLocale.locale(langs[project.site.lang] || "en");
-
-        return localLocale.format(format);
+    if (date.toISOString) {
+      date = date.toISOString();
     }
 
-    ////////////////////////////////////////////////////////
-    //
-    ////////////////////////////////////////////////////////
+    var localLocale = moment(date);
+    localLocale.locale(langs[project.site.lang] || 'en');
 
-    project.extend.helper.register('moment', function(date, format) {
+    return localLocale.format(format);
+  }
 
-        return init(date, format);
+  ////////////////////////////////////////////////////////
+  //
+  ////////////////////////////////////////////////////////
 
-    });
+  project.extend.helper.register('moment', function(date, format) {
 
-    ////////////////////////////////////////////////////////
-    //
-    ////////////////////////////////////////////////////////
+    return init(date, format);
 
-    project.extend.helper.register('dateFormat', function(options) {
+  });
 
-        var mDate = moment();
+  ////////////////////////////////////////////////////////
+  //
+  ////////////////////////////////////////////////////////
 
-        if (options.date) {
-            mDate.date(options.date);
-        }
+  project.extend.helper.register('dateFormat', function(options) {
 
-        if (options.month) {
-            mDate.month(options.month);
-        }
+    var mDate = moment();
 
-        if (options.year) {
-            mDate.year(options.year);
-        }
+    if (options.date) {
+      mDate.date(options.date);
+    }
 
-        return init(mDate, options.format);
-    });
+    if (options.month) {
+      mDate.month(options.month);
+    }
 
-    ////////////////////////////////////////////////////////
-    //
-    ////////////////////////////////////////////////////////
+    if (options.year) {
+      mDate.year(options.year);
+    }
 
-    project.extend.helper.register('time_now', function() {
-        return moment().format();
-    });
+    return init(mDate, options.format);
+  });
 
-    ////////////////////////////////////////////////////////
-    //
-    ////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////
+  //
+  ////////////////////////////////////////////////////////
 
-    project.extend.helper.register('get_date', function(date) {
-        return init(date, 'LL');
-    });
+  project.extend.helper.register('time_now', function() {
+    return moment().format();
+  });
 
-    ////////////////////////////////////////////////////////
-    //
-    ////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////
+  //
+  ////////////////////////////////////////////////////////
 
-    project.extend.helper.register('get_month', function(date) {
-        return init(date, 'MMM');
-    });
+  project.extend.helper.register('get_date', function(date) {
+    return init(date, 'LL');
+  });
 
-    ////////////////////////////////////////////////////////
-    //
-    ////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////
+  //
+  ////////////////////////////////////////////////////////
 
-    project.extend.helper.register('month_f', function(date) {
-        return init(date, 'MMMM');
-    });
+  project.extend.helper.register('get_month', function(date) {
+    return init(date, 'MMM');
+  });
 
-    ////////////////////////////////////////////////////////
-    //
-    ////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////
+  //
+  ////////////////////////////////////////////////////////
 
-    project.extend.helper.register('day_f', function(date) {
-        return init(date, 'dddd');
-    });
+  project.extend.helper.register('month_f', function(date) {
+    return init(date, 'MMMM');
+  });
 
-    ////////////////////////////////////////////////////////
-    //
-    ////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////
+  //
+  ////////////////////////////////////////////////////////
 
-    project.extend.helper.register('day_n', function(date) {
-        return init(date, 'DD');
-    });
+  project.extend.helper.register('day_f', function(date) {
+    return init(date, 'dddd');
+  });
 
-}
+  ////////////////////////////////////////////////////////
+  //
+  ////////////////////////////////////////////////////////
+
+  project.extend.helper.register('day_n', function(date) {
+    return init(date, 'DD');
+  });
+
+};

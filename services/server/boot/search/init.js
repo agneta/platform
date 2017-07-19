@@ -14,23 +14,23 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var Promise = require("bluebird");
-var _ = require("lodash");
+var Promise = require('bluebird');
+var _ = require('lodash');
 
 module.exports = function(app) {
 
-    return function(options) {
+  return function(options) {
 
-        var models = {
-            source: app.models[options.models.source],
-            field: app.models[options.models.field],
-            keyword: app.models[options.models.keyword],
-            position: app.models[options.models.position]
-        };
-
-        require('./methods_keyword')(models.keyword,app,models);
-        require('./methods_source')(models.source,app,models);
-
+    var models = {
+      source: app.models[options.models.source],
+      field: app.models[options.models.field],
+      keyword: app.models[options.models.keyword],
+      position: app.models[options.models.position]
     };
+
+    require('./methods_keyword')(models.keyword,app,models);
+    require('./methods_source')(models.source,app,models);
+
+  };
 
 };

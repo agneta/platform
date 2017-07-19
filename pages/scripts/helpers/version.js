@@ -23,30 +23,30 @@ var chalk = require('chalk');
 
 module.exports = function(locals) {
 
-    var project = locals.project;
-    var defaultTime = new Date();
+  var project = locals.project;
+  var defaultTime = new Date();
 
-    project.extend.helper.register('getVersion', function(url, time) {
+  project.extend.helper.register('getVersion', function(url, time) {
 
-        time = time || defaultTime;
+    time = time || defaultTime;
 
-        if (_.isString(time)) {
-            version = time;
-        }
+    if (_.isString(time)) {
+      version = time;
+    }
 
-        if (time.valueOf) {
-            version = time.valueOf();
-        }
+    if (time.valueOf) {
+      version = time.valueOf();
+    }
 
-        if (!url) {
-            return version;
-        }
+    if (!url) {
+      return version;
+    }
 
-        return urljoin(
-            url,
-            '?version=' + version
-        );
+    return urljoin(
+      url,
+      '?version=' + version
+    );
 
-    });
+  });
 
 };

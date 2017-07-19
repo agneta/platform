@@ -21,58 +21,58 @@ const klaw = require('klaw');
 
 module.exports = function(locals) {
 
-    var project = locals.project;
+  var project = locals.project;
 
-    return function() {
+  return function() {
 
-        ////////////////////////////////////////////////////////
-        // LOAD THEME SCRIPTS
-        ////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////
+    // LOAD THEME SCRIPTS
+    ////////////////////////////////////////////////////////
 
-        var scriptDirs = [
-            project.paths.scripts,
-            project.paths.scriptsFramework,
-            project.paths.scriptsTheme
-        ];
+    var scriptDirs = [
+      project.paths.scripts,
+      project.paths.scriptsFramework,
+      project.paths.scriptsTheme
+    ];
 
-        return Promise.map(scriptDirs, function(scriptDir) {
+    return Promise.map(scriptDirs, function(scriptDir) {
 
-            fs.ensureDirSync(scriptDir);
+      fs.ensureDirSync(scriptDir);
 
-            var walker = klaw(scriptDir, {
-                followLinks: false
-            });
+      var walker = klaw(scriptDir, {
+        followLinks: false
+      });
 
-            walker.on('data', function(item) {
+      walker.on('data', function(item) {
 
-                if (item.stats.isDirectory()) {
-                    return;
-                }
+        if (item.stats.isDirectory()) {
+          return;
+        }
 
-                var path_parsed = path.parse(item.path);
+        var path_parsed = path.parse(item.path);
 
-                if (path_parsed.ext != '.js') {
-                    return;
-                }
+        if (path_parsed.ext != '.js') {
+          return;
+        }
 
-                require(item.path)(locals);
-            });
+        require(item.path)(locals);
+      });
 
-            ////////////////////////////////////////////////////////
-            // LOAD PROCESS PROJECT DATA - SETUP
-            ////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////
+      // LOAD PROCESS PROJECT DATA - SETUP
+      ////////////////////////////////////////////////////////
 
 
-            return new Promise(function(resolve, reject) {
+      return new Promise(function(resolve, reject) {
 
-                walker.on('end', function() {
-                    resolve();
-                });
-
-                walker.on('error', reject);
-
-            });
+        walker.on('end', function() {
+          resolve();
         });
 
-    };
+        walker.on('error', reject);
+
+      });
+    });
+
+  };
 };

@@ -22,24 +22,24 @@ const progress = require('../progress');
 
 module.exports = function() {
 
-    terminal()
-        .then(function(servers) {
-            var utilityPath = path.join(
-                projectPaths.portalWebsite, 'utilities/dependencies'
-            );
+  terminal()
+    .then(function(servers) {
+      var utilityPath = path.join(
+        projectPaths.portalWebsite, 'utilities/dependencies'
+      );
 
-            require(utilityPath)({
-                    locals: servers.webPortal.locals,
-                    log: console.log,
-                    progress: progress
-                })
-                .run()
-                .then(function() {
-                    log.success('Success!');
-                });
-
-        })
+      require(utilityPath)({
+        locals: servers.webPortal.locals,
+        log: console.log,
+        progress: progress
+      })
+        .run()
         .then(function() {
-            log.success('Dependencies are loaded');
+          log.success('Success!');
         });
+
+    })
+    .then(function() {
+      log.success('Dependencies are loaded');
+    });
 };

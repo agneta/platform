@@ -17,8 +17,8 @@
 var path = require('path');
 
 module.exports = function(paths){
-var pages;
-var services;
+  var pages;
+  var services;
   try{
     pages = require(path.join(paths.framework,'package.json')).version;
   }catch(e){

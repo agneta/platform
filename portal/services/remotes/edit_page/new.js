@@ -22,60 +22,60 @@ var fs = require('fs-extra');
 
 module.exports = function(Model, app) {
 
-    var web = app.get('options').web;
-    var webPrj = web.project;
+  var web = app.get('options').web;
+  var webPrj = web.project;
 
-    Model.new = function(title, filePath, template, req) {
+  Model.new = function(title, filePath, template, req) {
 
-        var source = path.join(webPrj.paths.pages, filePath + '.yml');
+    var source = path.join(webPrj.paths.pages, filePath + '.yml');
 
-        var yamlTitle = {};
-        yamlTitle[app.getLng(req)] = title;
+    var yamlTitle = {};
+    yamlTitle[app.getLng(req)] = title;
 
-        return app.git.createYaml(source, {
-                title: yamlTitle,
-                template: template
-            })
-            .then(function() {
-                return {
-                    id: filePath
-                };
-            });
+    return app.git.createYaml(source, {
+      title: yamlTitle,
+      template: template
+    })
+      .then(function() {
+        return {
+          id: filePath
+        };
+      });
 
-    };
+  };
 
-    Model.remoteMethod(
-        'new', {
-            description: 'Create new page',
-            accepts: [{
-                arg: 'title',
-                type: 'string',
-                required: true
-            }, {
-                arg: 'path',
-                type: 'string',
-                required: true
-            }, {
-                arg: 'template',
-                type: 'string',
-                required: true
-            }, {
-                arg: 'req',
-                type: 'object',
-                'http': {
-                    source: 'req'
-                }
-            }],
-            returns: {
-                arg: 'result',
-                type: 'object',
-                root: true
-            },
-            http: {
-                verb: 'post',
-                path: '/new'
-            },
+  Model.remoteMethod(
+    'new', {
+      description: 'Create new page',
+      accepts: [{
+        arg: 'title',
+        type: 'string',
+        required: true
+      }, {
+        arg: 'path',
+        type: 'string',
+        required: true
+      }, {
+        arg: 'template',
+        type: 'string',
+        required: true
+      }, {
+        arg: 'req',
+        type: 'object',
+        'http': {
+          source: 'req'
         }
-    );
+      }],
+      returns: {
+        arg: 'result',
+        type: 'object',
+        root: true
+      },
+      http: {
+        verb: 'post',
+        path: '/new'
+      },
+    }
+  );
 
 };

@@ -22,12 +22,12 @@ const yaml = require('js-yaml');
 
 module.exports = function(app) {
 
-    app.git.readFile = function(options) {
+  app.git.readFile = function(options) {
 
-        var file = app.git.getPath(options.file);
-        var command = `${options.commit}:${file}`;
+    var file = app.git.getPath(options.file);
+    var command = `${options.commit}:${file}`;
 
-        return app.git.native.show([command]);
-    };
+    return app.git.native.show([command]);
+  };
 
 };

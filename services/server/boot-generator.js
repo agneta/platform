@@ -16,24 +16,24 @@
  */
 module.exports = function(app, config) {
 
-    var searchModels = require('./boot/search/models')(app);
+  var searchModels = require('./boot/search/models')(app);
 
-    for (var item of searchModels) {
+  for (var item of searchModels) {
 
-        var name = item.model.name;
-        var fileName = name.toLowerCase() + '.json';
+    var name = item.model.name;
+    var fileName = name.toLowerCase() + '.json';
 
-        //console.log(fileName,item.model);
-        //console.log('----------------------------------');
+    //console.log(fileName,item.model);
+    //console.log('----------------------------------');
 
-        config._definitions[fileName] = {
-          definition: item.model
-        };
+    config._definitions[fileName] = {
+      definition: item.model
+    };
 
-        config.models[name] = item.config;
+    config.models[name] = item.config;
 
-    }
+  }
 
 
-    return config;
+  return config;
 };

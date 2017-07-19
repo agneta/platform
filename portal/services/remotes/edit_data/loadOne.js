@@ -23,70 +23,70 @@ var loadTemplate = require('../edit/loadTemplate');
 
 module.exports = function(Model, app) {
 
-    Model.loadOne = function(id, req) {
+  Model.loadOne = function(id, req) {
 
-        var template;
-        var log;
-        var parsedId = Model.parseId(id);
+    var template;
+    var log;
+    var parsedId = Model.parseId(id);
 
-        return loadTemplate({
-                path: path.join(Model.editConfigDir, parsedId.templateId + '.yml'),
-                req: req,
-                app: app
-            }).then(function(_template) {
+    return loadTemplate({
+      path: path.join(Model.editConfigDir, parsedId.templateId + '.yml'),
+      req: req,
+      app: app
+    }).then(function(_template) {
 
-                template = _template;
-                template.id = parsedId.templateId;
+      template = _template;
+      template.id = parsedId.templateId;
 
-                return app.git.log({
-                    file: parsedId.source
-                });
-            })
-            .then(function(_log) {
-                log = _log;
-                return readFile(parsedId.source);
-            })
-            .then(function(content) {
+      return app.git.log({
+        file: parsedId.source
+      });
+    })
+      .then(function(_log) {
+        log = _log;
+        return readFile(parsedId.source);
+      })
+      .then(function(content) {
 
-                var data = yaml.safeLoad(content);
+        var data = yaml.safeLoad(content);
 
-                return {
-                    page: {
-                        id: id,
-                        data: data,
-                        log: log,
-                        path: '/' + parsedId.fileName
-                    },
-                    template: template
-                };
+        return {
+          page: {
+            id: id,
+            data: data,
+            log: log,
+            path: '/' + parsedId.fileName
+          },
+          template: template
+        };
 
-            });
-    };
+      });
+  };
 
-    Model.remoteMethod(
-        'loadOne', {
-            description: 'Load Project Data with specified ID',
-            accepts: [{
-                arg: 'id',
-                type: 'string',
-                required: true
-            }, {
-                arg: 'req',
-                type: 'object',
-                'http': {
-                    source: 'req'
-                }
-            }],
-            returns: {
-                arg: 'result',
-                type: 'object',
-                root: true
-            },
-            http: {
-                verb: 'get',
-                path: '/load-one'
-            },
+  Model.remoteMethod(
+    'loadOne', {
+      description: 'Load Project Data with specified ID',
+      accepts: [{
+        arg: 'id',
+        type: 'string',
+        required: true
+      }, {
+        arg: 'req',
+        type: 'object',
+        'http': {
+          source: 'req'
         }
-    );
+      }],
+      returns: {
+        arg: 'result',
+        type: 'object',
+        root: true
+      },
+      http: {
+        verb: 'get',
+        path: '/load-one'
+      },
+    }
+  );
 
 };

@@ -14,22 +14,22 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var moment = require("moment");
+var moment = require('moment');
 
 moment.prototype.hourOfYear = function(value) {
 
-    if (value) {
-        var dayOfYear = Math.ceil(value / 24);
-        var hour = value % 24;
-        if (hour === 0) {
-            dayOfYear += 1;
-        }
-        this.dayOfYear(dayOfYear);
-        this.hour(hour);
-        return this;
+  if (value) {
+    var dayOfYear = Math.ceil(value / 24);
+    var hour = value % 24;
+    if (hour === 0) {
+      dayOfYear += 1;
     }
+    this.dayOfYear(dayOfYear);
+    this.hour(hour);
+    return this;
+  }
 
-    return ((this.dayOfYear() - 1) * 24) + this.hour();
+  return ((this.dayOfYear() - 1) * 24) + this.hour();
 
 };
 

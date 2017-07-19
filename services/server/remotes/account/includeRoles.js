@@ -24,17 +24,17 @@ const urljoin = require('urljoin');
 
 module.exports = function(Model, app) {
 
-    var roles = app.get('roles');
-    var roleKeys = _.keys(roles);
+  var roles = app.get('roles');
+  var roleKeys = _.keys(roles);
 
-    Model.includeRoles = _.map(roleKeys, function(name) {
-        var role = roles[name];
-        return {
-            relation: name,
-            scope: {
-                include: role.include
-            }
-        };
-    });
+  Model.includeRoles = _.map(roleKeys, function(name) {
+    var role = roles[name];
+    return {
+      relation: name,
+      scope: {
+        include: role.include
+      }
+    };
+  });
 
 };

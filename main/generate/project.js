@@ -19,9 +19,9 @@ var log = require('../log');
 var path = require('path');
 
 module.exports = function() {
-    fs.copy(path.join(__dirname, '../..', 'project'), process.cwd(), {
-        clobber: false
-    }, function() {
-        log.success('Creation Complete');
-    });
+  fs.copy(path.join(__dirname, '../..', 'project'), process.cwd(), {
+    clobber: false
+  }, function() {
+    log.success('Creation Complete');
+  });
 };

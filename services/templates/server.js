@@ -62,4 +62,4 @@ app.get('/:lang/:template', function(req, res, next)
 var port = 8181;
 app.listen(port);
 
-console.log("Listening on port: " + port);
+console.log('Listening on port: ' + port);

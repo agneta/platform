@@ -21,79 +21,79 @@ const _ = require('lodash');
 
 module.exports = function(locals) {
 
-    var project = locals.project;
+  var project = locals.project;
 
-    locals.app.get("/", function(req, res, next) {
-        var url = '/' + urljoin(project.config.root, project.config.language.default.key);
-        url = path.normalize(url);
-        res.redirect(url);
-    });
+  locals.app.get('/', function(req, res, next) {
+    var url = '/' + urljoin(project.config.root, project.config.language.default.key);
+    url = path.normalize(url);
+    res.redirect(url);
+  });
 
-    locals.app.get("/:lang*", function(req, res, next) {
+  locals.app.get('/:lang*', function(req, res, next) {
 
-        var target = req.params[0];
-        var lang = req.params.lang;
-        locals.app.renderPage(target, lang)
-            .then(function(content) {
+    var target = req.params[0];
+    var lang = req.params.lang;
+    locals.app.renderPage(target, lang)
+      .then(function(content) {
 
-                if (!content) {
-                    return next();
-                }
+        if (!content) {
+          return next();
+        }
 
-                res.send(content);
+        res.send(content);
 
-            })
-            .catch(next);
-    });
+      })
+      .catch(next);
+  });
 
-    locals.app.renderPage = function(target, lang) {
+  locals.app.renderPage = function(target, lang) {
 
-        return Promise.resolve()
-            .then(function() {
+    return Promise.resolve()
+      .then(function() {
 
-                var languages = _.get(project, 'site.languages');
-                if (!languages) {
-                    return;
-                }
+        var languages = _.get(project, 'site.languages');
+        if (!languages) {
+          return;
+        }
 
-                var language = languages[lang];
+        var language = languages[lang];
 
-                if (!language) {
-                    return;
-                }
+        if (!language) {
+          return;
+        }
 
-                project.site.lang = lang;
+        project.site.lang = lang;
 
-                //-----------------------------------------------------------
+        //-----------------------------------------------------------
 
-                var data;
+        var data;
 
-                if (_.isString(target)) {
-                    data = project.getPage(target).data;
-                } else if (_.isObject(target)) {
-                    data = target;
-                }
+        if (_.isString(target)) {
+          data = project.getPage(target).data;
+        } else if (_.isObject(target)) {
+          data = target;
+        }
 
-                if (!data) {
-                    throw new Error('No Data found for ' + target);
-                }
+        if (!data) {
+          throw new Error('No Data found for ' + target);
+        }
 
-                //-----------------------------------------------------------
+        //-----------------------------------------------------------
 
-                if (data.isView || data.isViewData) {
-                    return;
-                }
+        if (data.isView || data.isViewData) {
+          return;
+        }
 
-                //-----------------------------------------------------------
+        //-----------------------------------------------------------
 
-                if (data.if && !project.config[data.if]) {
-                    throw new Error('Page does not meet condition');
-                }
+        if (data.if && !project.config[data.if]) {
+          throw new Error('Page does not meet condition');
+        }
 
-                //-----------------------------------------------------------
-                return locals.renderData(data);
+        //-----------------------------------------------------------
+        return locals.renderData(data);
 
-            })
-    };
+      });
+  };
 
 };

@@ -20,17 +20,17 @@ var hljs = require('highlight.js');
 
 module.exports = function(locals) {
 
-    var project = locals.project;
+  var project = locals.project;
 
-    hljs.configure({
-      classPrefix: 'hljs-'
-    });
+  hljs.configure({
+    classPrefix: 'hljs-'
+  });
 
-    project.extend.helper.register('code', function(name, value) {
+  project.extend.helper.register('code', function(name, value) {
 
-        var result = hljs.highlight(name, value);
-        result = '<div class="hljs">' + result.value + '</div>';
-        return result;
-    });
+    var result = hljs.highlight(name, value);
+    result = '<div class="hljs">' + result.value + '</div>';
+    return result;
+  });
 
 };

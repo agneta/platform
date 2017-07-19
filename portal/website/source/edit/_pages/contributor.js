@@ -16,102 +16,102 @@
  */
 (function() {
 
-    $scope.contributors = {};
+  $scope.contributors = {};
 
-    function loadContributor(id) {
+  function loadContributor(id) {
 
-        if ($scope.contributors[id].info) {
-            return;
-        }
-
-        Account.get({
-                id: id
-            })
-            .$promise
-            .then(function(result) {
-                //console.log(result);
-                $scope.contributors[id].info = result;
-            });
-
+    if ($scope.contributors[id].info) {
+      return;
     }
 
-    $scope.contributorInitials = function(id) {
-        var result = $scope.contributors[id];
-        if (!result) {
-            return;
-        }
-        result = result.info;
-        if (!result) {
-            return;
-        }
-        result = result.name || result.username || result.email;
-        return result[0];
-    };
+    Account.get({
+      id: id
+    })
+      .$promise
+      .then(function(result) {
+        //console.log(result);
+        $scope.contributors[id].info = result;
+      });
 
-    var lastEdit = {};
+  }
 
-    $scope.onFieldChange = function(child) {
+  $scope.contributorInitials = function(id) {
+    var result = $scope.contributors[id];
+    if (!result) {
+      return;
+    }
+    result = result.info;
+    if (!result) {
+      return;
+    }
+    result = result.name || result.username || result.email;
+    return result[0];
+  };
 
-        var value = child.__value;
+  var lastEdit = {};
 
-        if (angular.isObject(value)) {
-          value = value[$scope.edit.lang];
-        }
-        console.log('emit');
-        if (lastEdit.id == child.__id && lastEdit.value == value) {
-            return;
-        }
+  $scope.onFieldChange = function(child) {
 
-        Portal.socket.emit('content-change', {
-            id: child.__id,
-            path: $scope.pagePath,
-            lang: $scope.edit.lang,
-            value: value
-        });
+    var value = child.__value;
 
-    };
+    if (angular.isObject(value)) {
+      value = value[$scope.edit.lang];
+    }
+    console.log('emit');
+    if (lastEdit.id == child.__id && lastEdit.value == value) {
+      return;
+    }
 
-    $scope.registerInput = function(child) {
+    Portal.socket.emit('content-change', {
+      id: child.__id,
+      path: $scope.pagePath,
+      lang: $scope.edit.lang,
+      value: value
+    });
 
-        var listener = 'content-change:' + $scope.pagePath + ':' + child.__id;
-        Portal.socket.on(listener, function(data) {
+  };
+
+  $scope.registerInput = function(child) {
+
+    var listener = 'content-change:' + $scope.pagePath + ':' + child.__id;
+    Portal.socket.on(listener, function(data) {
 
 
-            if (child.__value[data.lang] == data.value) {
-                return;
-            }
+      if (child.__value[data.lang] == data.value) {
+        return;
+      }
 
-            if(!$scope.edit.realtime){
-              return;
-            }
+      if(!$scope.edit.realtime){
+        return;
+      }
 
-            lastEdit.id = child.__id;
-            lastEdit.value = data.value;
+      lastEdit.id = child.__id;
+      lastEdit.value = data.value;
 
-            if (data.actor != $rootScope.account.id) {
-                child.__value[data.lang] = data.value;
-            }
+      if (data.actor != $rootScope.account.id) {
+        child.__value[data.lang] = data.value;
+      }
 
-            child.$$contributors = child.$$contributors || {};
+      child.$$contributors = child.$$contributors || {};
 
-            var contribution = $scope.contributors[data.actor];
-            if (contribution) {
-                delete contribution.data.$$contributors[data.actor];
-            }
+      var contribution = $scope.contributors[data.actor];
+      if (contribution) {
+        delete contribution.data.$$contributors[data.actor];
+      }
 
-            var contributor = child.$$contributors[data.actor] =
+      var contributor = child.$$contributors[data.actor] =
                 $scope.contributors[data.actor] =
                 $scope.contributors[data.actor] || {};
 
-            contributor.data = child;
+      contributor.data = child;
 
-            loadContributor(data.actor);
+      loadContributor(data.actor);
 
-            $timeout(function () {
+      $timeout(function () {
 
-            }, 10);
-        });
+      }, 10);
+    });
 
-    };
+  };
 
 })();

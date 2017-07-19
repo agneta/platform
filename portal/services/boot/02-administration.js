@@ -19,10 +19,10 @@
 
 module.exports = function(app) {
 
-    var admin = app.get('admin');
-    if (admin) {
-        var Administrator = app.models.Role_Administrator;
-        return Administrator.new(admin);
-    }
+  var admin = app.get('admin');
+  if (admin) {
+    var Administrator = app.models.Role_Administrator;
+    return Administrator.new(admin);
+  }
 
 };

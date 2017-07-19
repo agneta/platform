@@ -23,12 +23,12 @@ var yaml = require('js-yaml');
 
 module.exports = function(app) {
 
-    app.git.readYaml = function(options) {
+  app.git.readYaml = function(options) {
 
-        return app.git.readFile(options)
-            .then(function(content) {
-                return yaml.safeLoad(content);
-            });
+    return app.git.readFile(options)
+      .then(function(content) {
+        return yaml.safeLoad(content);
+      });
 
-    };
+  };
 };

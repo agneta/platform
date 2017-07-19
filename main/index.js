@@ -37,20 +37,20 @@ console.log(`Starting ${workerCount} workers`);
 var environment = process.env.NODE_ENV;
 
 switch (environment) {
-    case 'production':
-        environment = 'prod';
-        break;
-    default:
-        environment = 'dev';
-        break;
+case 'production':
+  environment = 'prod';
+  break;
+default:
+  environment = 'dev';
+  break;
 }
 
 var options = {
-    workers: workerCount,
-    port: port,
-    path: config.socket.path,
-    workerController: path.join(__dirname, 'cluster', 'worker'),
-    environment: environment
+  workers: workerCount,
+  port: port,
+  path: config.socket.path,
+  workerController: path.join(__dirname, 'cluster', 'worker'),
+  environment: environment
 };
 
 var socketCluster = new SocketCluster(options);

@@ -23,26 +23,26 @@ const Keywords = require('./lib/keywords');
 
 module.exports = function(util) {
 
-    Keywords(util, {
-        model: {
-            keyword: 'Search_Keyword',
-            source: 'Search_Page'
-        },
-        filename: function(options) {
-            return 'keywords_' + options.language;
-        },
-        title: 'path'
-    });
+  Keywords(util, {
+    model: {
+      keyword: 'Search_Keyword',
+      source: 'Search_Page'
+    },
+    filename: function(options) {
+      return 'keywords_' + options.language;
+    },
+    title: 'path'
+  });
 
-    var result;
+  var result;
 
-    return {
-        run: function() {
+  return {
+    run: function() {
 
-            return require('./lib/generate')(util);
+      return require('./lib/generate')(util);
 
-        }
-    };
+    }
+  };
 
 
 };

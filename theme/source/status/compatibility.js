@@ -24,8 +24,8 @@
   //console.log(browser);
 
   if (window.isCompatible()) {
-    document.getElementById('message-compatible').className = "message";
+    document.getElementById('message-compatible').className = 'message';
   }else{
-    document.getElementById('message-incompatible').className = "message";
+    document.getElementById('message-incompatible').className = 'message';
   }
 })();

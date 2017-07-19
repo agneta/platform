@@ -15,26 +15,26 @@
  *   limitations under the License.
  */
 (function() {
-    app.controller('ResendVrfCtrl', function($scope, Account, $controller, $mdDialog, data) {
+  app.controller('ResendVrfCtrl', function($scope, Account, $controller, $mdDialog, data) {
 
-        angular.extend(this, $controller('DialogCtrl', {
-            $scope: $scope
-        }));
+    angular.extend(this, $controller('DialogCtrl', {
+      $scope: $scope
+    }));
 
-        $scope.data = {
-            title: 'Warning',
-            content: data.html,
-            action: {
-                title: 'Resend Verification'
-            }
-        };
+    $scope.data = {
+      title: 'Warning',
+      content: data.html,
+      action: {
+        title: 'Resend Verification'
+      }
+    };
 
-        $scope.action = function() {
-            $scope.loading = true;
-            Account.resendVerification({
-                email: data.email
-            });
-        };
+    $scope.action = function() {
+      $scope.loading = true;
+      Account.resendVerification({
+        email: data.email
+      });
+    };
 
-    });
+  });
 })();

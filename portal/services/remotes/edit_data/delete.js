@@ -20,29 +20,29 @@ var fs = require('fs-extra');
 
 module.exports = function(Model, app) {
 
-    Model.delete = function(id) {
-        var parsedId = Model.parseId(id);
-        return fs.remove(parsedId.source);
-    };
+  Model.delete = function(id) {
+    var parsedId = Model.parseId(id);
+    return fs.remove(parsedId.source);
+  };
 
-    Model.remoteMethod(
-        'delete', {
-            description: 'Delete a file',
-            accepts: [{
-                arg: 'id',
-                type: 'string',
-                required: true
-            }],
-            returns: {
-                arg: 'result',
-                type: 'object',
-                root: true
-            },
-            http: {
-                verb: 'post',
-                path: '/delete'
-            },
-        }
-    );
+  Model.remoteMethod(
+    'delete', {
+      description: 'Delete a file',
+      accepts: [{
+        arg: 'id',
+        type: 'string',
+        required: true
+      }],
+      returns: {
+        arg: 'result',
+        type: 'object',
+        root: true
+      },
+      http: {
+        verb: 'post',
+        path: '/delete'
+      },
+    }
+  );
 
 };

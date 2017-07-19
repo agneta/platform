@@ -24,17 +24,17 @@ var fs = require('fs-extra');
 
 module.exports = function(app) {
 
-    app.git.createYaml = function(filePath, data) {
+  app.git.createYaml = function(filePath, data) {
 
-        if (fs.existsSync(filePath)) {
-            return Promise.reject({
-                statusCode: 400,
-                message: 'File already exists'
-            });
-        }
+    if (fs.existsSync(filePath)) {
+      return Promise.reject({
+        statusCode: 400,
+        message: 'File already exists'
+      });
+    }
 
-        return fs.writeFile(filePath, yaml.safeDump(data));
+    return fs.writeFile(filePath, yaml.safeDump(data));
 
-    };
+  };
 
 };

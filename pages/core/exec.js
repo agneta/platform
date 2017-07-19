@@ -29,62 +29,62 @@ const childProcess = require('child_process');
  */
 
 function Main(opts){
-    this.opts = opts;
+  this.opts = opts;
 }
 
 Main.prototype.run = function(cmd, std) {
 
-    var opts = this.opts || (this.opts = {});
+  var opts = this.opts || (this.opts = {});
 
-    return new Promise(function(resolve, reject) {
+  return new Promise(function(resolve, reject) {
 
-        //console.log(cmd);
+    //console.log(cmd);
 
-        var child = childProcess.exec(cmd, opts, function(err, stdout, stderr) {
+    var child = childProcess.exec(cmd, opts, function(err, stdout, stderr) {
 
-            if (err) {
-                reject(err);
-                return;
-            }
+      if (err) {
+        reject(err);
+        return;
+      }
 
-            if (std) {
-                std({
-                    stdout: stdout,
-                    stderr: stderr
-                });
-            }
+      if (std) {
+        std({
+          stdout: stdout,
+          stderr: stderr
         });
-
-        if (opts.stdout) {
-            child.stdout.pipe(opts.stdout);
-        }
-
-        if (opts.stderr) {
-            child.stderr.pipe(opts.stderr);
-        }
-
-        var killChild = function() {
-            console.warn(`Killing child process ${child.pid}`);
-            child.kill();
-        };
-
-        var result = '';
-
-        child.stdout.on('data', function(data) {
-            result += data.toString();
-        });
-
-        process.on('exit', killChild);
-
-        child.on('exit', function() {
-
-            resolve(result);
-
-            process.removeListener('exit', killChild);
-        });
+      }
     });
-}
+
+    if (opts.stdout) {
+      child.stdout.pipe(opts.stdout);
+    }
+
+    if (opts.stderr) {
+      child.stderr.pipe(opts.stderr);
+    }
+
+    var killChild = function() {
+      console.warn(`Killing child process ${child.pid}`);
+      child.kill();
+    };
+
+    var result = '';
+
+    child.stdout.on('data', function(data) {
+      result += data.toString();
+    });
+
+    process.on('exit', killChild);
+
+    child.on('exit', function() {
+
+      resolve(result);
+
+      process.removeListener('exit', killChild);
+    });
+  });
+};
 
 module.exports = function(opts) {
-    return new Main(opts);
+  return new Main(opts);
 };

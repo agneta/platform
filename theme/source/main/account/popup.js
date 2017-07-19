@@ -15,30 +15,30 @@
  *   limitations under the License.
  */
 (function() {
-    app.controller('PopupLoginCtrl', function($rootScope, $scope, $mdDialog, $controller) {
+  app.controller('PopupLoginCtrl', function($rootScope, $scope, $mdDialog, $controller) {
 
-        angular.extend(this, $controller('DialogCtrl', {
-            $scope: $scope
-        }));
+    angular.extend(this, $controller('DialogCtrl', {
+      $scope: $scope
+    }));
 
-        $scope.submit = function() {
+    $scope.submit = function() {
 
-            var email = $scope.formLoginFields.email;
-            var password = $scope.formLoginFields.password;
+      var email = $scope.formLoginFields.email;
+      var password = $scope.formLoginFields.password;
 
-            $scope.loading = true;
+      $scope.loading = true;
 
-            $rootScope.signIn({
-                    email: email,
-                    password: password
-                },
-                function() {
+      $rootScope.signIn({
+        email: email,
+        password: password
+      },
+      function() {
 
-                    $scope.loading = false;
-                    $mdDialog.hide();
+        $scope.loading = false;
+        $mdDialog.hide();
 
-                });
-        };
+      });
+    };
 
-    });
+  });
 })();
