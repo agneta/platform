@@ -43,14 +43,10 @@ module.exports = function(Model, app) {
 
         upload.on('httpUploadProgress', function(progress) {
 
-          console.log(progress);
-          return;
-          uploadedSize += buffer.length;
-
           options.onProgress(_.extend({
-            uploadedSize: uploadedSize,
+            uploadedSize: progress.loaded,
             fileSize: options.size,
-            percentage: uploadedSize / options.size
+            percentage: progress.loaded / options.size
           }, socketProps));
         });
 

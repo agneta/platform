@@ -33,6 +33,7 @@ module.exports = function(app) {
   });
 
   var s3 = new AWS.S3();
+  s3 = Promise.promisifyAll(s3);
 
   app.storage = {
     s3: s3
@@ -44,9 +45,9 @@ module.exports = function(app) {
 
     function listAllKeys(marker) {
       return s3.listObjectsAsync({
-        Bucket: options.bucket,
-        Marker: marker
-      })
+          Bucket: options.bucket,
+          Marker: marker
+        })
         .then(function(data) {
 
           var promise = options.onData(data.Contents) || Promise.resolve();
