@@ -65,6 +65,10 @@
                 return;
             }
 
+            if(!$scope.edit.realtime){
+              return;
+            }
+
             lastEdit.id = child.__id;
             lastEdit.value = data.value;
 
