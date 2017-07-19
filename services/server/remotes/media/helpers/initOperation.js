@@ -29,10 +29,11 @@ module.exports = function(Model, app) {
 
         return new Promise(function(resolve, reject) {
 
-                var writableStream = app.storage.upload({
-                    container: Model.__bucket.name,
-                    remote: options.location,
-                    contentType: options.mimetype
+                var writableStream = app.storage.s3.upload({
+                    Bucket: Model.__bucket.name,
+                    Key: options.location,
+                    ContentType: options.mimetype,
+                    Body: options.file
                 });
 
                 writableStream.on('error', reject);
@@ -51,8 +52,6 @@ module.exports = function(Model, app) {
                     }, socketProps));
 
                 });
-
-                options.file.pipe(writableStream);
 
             }).then(function() {
 
