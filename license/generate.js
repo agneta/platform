@@ -3,10 +3,24 @@ const Promise = require('bluebird');
 const path = require('path');
 const fs = require('fs-extra');
 const progress = require('progress');
+const _ = require('lodash');
 
 var sourcePaths = [];
+var template;
 
 return Promise.resolve()
+    .then(function() {
+
+        return fs.readFile(path.join(__dirname, 'template.ejs'), {
+            encoding: 'utf8'
+        });
+
+    })
+    .then(function(content) {
+
+        template = _.template(content);
+
+    })
     .then(function() {
 
         var pathSources = path.join(__dirname, '..');
@@ -35,7 +49,10 @@ return Promise.resolve()
             switch (path_parsed.ext) {
                 case '.js':
                     console.log(path_rel);
-                    sourcePaths.push(item.path);
+                    sourcePaths.push({
+                        absolute: item.path,
+                        relative: path_rel
+                    });
                     break;
             }
 
@@ -55,10 +72,22 @@ return Promise.resolve()
 
         return Promise.map(sourcePaths, function(sourcePath) {
 
-            return fs.readFile(sourcePath, {
+            return fs.readFile(sourcePath.absolute, {
                     encoding: 'utf8'
                 })
                 .then(function(content) {
+
+                    var header = template({
+                        path: sourcePath.relative
+                    });
+
+                    content = header + content;
+
+                    var indexStart = content.indexOf('/*   Copyright 2017 Agneta');
+
+                    console.log(content);
+                    throw '';
+
                     bar.tick();
                 });
         }, {
