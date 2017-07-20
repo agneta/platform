@@ -36,12 +36,15 @@ module.exports = function(options) {
   });
 
   describe('Portal Editor', function() {
+
+    var pagePath = '/_test/new-file';
+
     it('should create a new page', function() {
       return options.agent
         .post('/api/Edit_Pages/new')
         .send({
           language: 'en',
-          path: '/_test/new-file',
+          path: pagePath,
           template: 'content',
           title: 'New test page'
         })
@@ -49,6 +52,19 @@ module.exports = function(options) {
           res.should.have.status(200);
         });
     });
+
+    it('should remove a page', function() {
+      return options.agent
+        .post('/api/Edit_Pages/delete')
+        .send({
+          language: 'en',
+          id: pagePath
+        })
+        .then(function(res) {
+          res.should.have.status(200);
+        });
+    });
+
   });
 
 };
