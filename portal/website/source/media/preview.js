@@ -16,132 +16,132 @@
  */
 (function() {
 
-    app.service('MediaPreview', function() {
-        var types = {
-            file: {
-                icon: 'material/insert-drive-file',
-            },
-            video: {
-                icon: 'material/videocam',
-            },
-            image: {
-                icon: 'material/photo',
-            },
-            folder: {
-                icon: 'material/folder',
-            }
-        };
+  app.service('MediaPreview', function() {
+    var types = {
+      file: {
+        icon: 'material/insert-drive-file',
+      },
+      video: {
+        icon: 'material/videocam',
+      },
+      image: {
+        icon: 'material/photo',
+      },
+      folder: {
+        icon: 'material/folder',
+      }
+    };
 
-        this.init = function(options) {
+    this.init = function(options) {
 
-            options = options || {};
+      options = options || {};
 
-            var preview = {};
-            var get_media = options.get_media || agneta.get_media;
+      var preview = {};
+      var get_media = options.get_media || agneta.get_media;
 
-            preview.set = function(object) {
+      preview.set = function(object) {
 
-                object.background = backgroundImage(object);
+        object.background = backgroundImage(object);
 
-                if (!object.background) {
-                    object.icon = objectIcon(object);
-                    if (!object.icon) {
-                        object.extension = object.ext;
-                    }
-                }
+        if (!object.background) {
+          object.icon = objectIcon(object);
+          if (!object.icon) {
+            object.extension = object.ext;
+          }
+        }
 
-                return object;
-            };
+        return object;
+      };
 
-            preview.hasBackground = function(file) {
-                switch (file.type) {
-                    case 'image':
-                    case 'icon':
-                        return true;
-                }
-            };
+      preview.hasBackground = function(file) {
+        switch (file.type) {
+          case 'image':
+          case 'icon':
+            return true;
+        }
+      };
 
-            //------------------------------------------------------------
+      //------------------------------------------------------------
 
-            function backgroundImage(file, size) {
-                var url = image(file, size);
-                if (url) {
-                    return "url(" + url + ')';
-                }
-            }
+      function backgroundImage(file, size) {
+        var url = image(file, size);
+        if (url) {
+          return 'url(' + url + ')';
+        }
+      }
 
-            function image(file, size) {
-                size = size || 'square';
-                switch (file.type) {
-                    case 'image':
-                        return getUrl(file, size);
-                    case 'icon':
-                        return getUrl(file);
-                }
-            }
+      function image(file, size) {
+        size = size || 'square';
+        switch (file.type) {
+          case 'image':
+            return getUrl(file, size);
+          case 'icon':
+            return getUrl(file);
+        }
+      }
 
-            preview.backgroundImage = backgroundImage;
-            preview.image = image;
+      preview.backgroundImage = backgroundImage;
+      preview.image = image;
 
-            //------------------------------------------------------------
+      //------------------------------------------------------------
 
-            function getUrl(file, size, media) {
-                media = media || get_media;
-                var version = new Date(file.updatedAt).valueOf();
-                return media(file.location, size) + '?version=' + version;
-            }
-
-
-            preview.getUrl = getUrl;
-
-            //------------------------------------------------------------
+      function getUrl(file, size, media) {
+        media = media || get_media;
+        var version = new Date(file.updatedAt).valueOf();
+        return media(file.location, size) + '?version=' + version;
+      }
 
 
-            function objectIcon(object) {
-                if (!object) {
-                    return;
-                }
-                var location = getIcon(object);
+      preview.getUrl = getUrl;
 
-                if (location) {
-                    return getUrl({
-                        location: location,
-                        updatedAt: object.updatedAt
-                    }, null, agneta.get_media);
-                }
+      //------------------------------------------------------------
 
-            }
 
-            preview.objectIcon = objectIcon;
+      function objectIcon(object) {
+        if (!object) {
+          return;
+        }
+        var location = getIcon(object);
 
-            //------------------------------------------------------------
+        if (location) {
+          return getUrl({
+            location: location,
+            updatedAt: object.updatedAt
+          }, null, agneta.get_media);
+        }
 
-            function getIcon(object) {
+      }
 
-                var type = types[object.type];
-                if (type && type.icon) {
-                    return 'icons/' + type.icon;
-                }
-            }
+      preview.objectIcon = objectIcon;
 
-            preview.getIcon = getIcon;
+      //------------------------------------------------------------
 
-            preview.toScope = function(scope) {
-                scope.preview = scope.preview || {};
-                scope.preview.hasBackground = preview.hasBackground;
-                scope.preview.backgroundImage = preview.backgroundImage;
-                scope.preview.objectIcon = preview.objectIcon;
-                scope.preview.get = preview.get;
-            };
+      function getIcon(object) {
 
-            return preview;
+        var type = types[object.type];
+        if (type && type.icon) {
+          return 'icons/' + type.icon;
+        }
+      }
 
-        };
+      preview.getIcon = getIcon;
 
-        this.public = this.init();
-        this.private = this.init({
-            get_media: agneta.prv_media
-        });
+      preview.toScope = function(scope) {
+        scope.preview = scope.preview || {};
+        scope.preview.hasBackground = preview.hasBackground;
+        scope.preview.backgroundImage = preview.backgroundImage;
+        scope.preview.objectIcon = preview.objectIcon;
+        scope.preview.get = preview.get;
+      };
 
+      return preview;
+
+    };
+
+    this.public = this.init();
+    this.private = this.init({
+      get_media: agneta.prv_media
     });
+
+  });
 })();

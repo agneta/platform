@@ -22,22 +22,22 @@ var outputJson = Promise.promisify(fs.outputJson);
 
 module.exports = function(util, options) {
 
-    var webProject = util.locals.web.project;
+  var webProject = util.locals.web.project;
 
-    return function(data) {
+  return function(data) {
 
-        data = data || {};
+    data = data || {};
 
-        var lang = data.language;
-        var keywords = _.keys(util.keywords.dict);
-        var filename = options.filename({
-            language: lang
-        }) + '.json';
-        var filePath = path.join(options.outputJson || webProject.paths.generated, filename);
+    var lang = data.language;
+    var keywords = _.keys(util.keywords.dict);
+    var filename = options.filename({
+      language: lang
+    }) + '.json';
+    var filePath = path.join(options.outputJson || webProject.paths.generated, filename);
 
-        return outputJson(filePath, keywords)
-            .then(function() {
-                util.success(keywords.length + ' keywords are written to: ' + filePath);
-            });
-    };
+    return outputJson(filePath, keywords)
+      .then(function() {
+        util.success(keywords.length + ' keywords are written to: ' + filePath);
+      });
+  };
 };

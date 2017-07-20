@@ -14,144 +14,144 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var Promise = require("bluebird");
-var _ = require("lodash");
+var Promise = require('bluebird');
+var _ = require('lodash');
 var S = require('string');
 
 module.exports = function(Model, app) {
 
-    require("../mixins/disableAllMethods")(Model);
+  require('../mixins/disableAllMethods')(Model);
 
-    Model.validatesUniquenessOf('path');
+  Model.validatesUniquenessOf('path');
 
-    Model.add = function(data) {
+  Model.add = function(data) {
 
-        var attributes = {
-            //
-            title: data.title.value,
-            title_keywords: Model._getKeywords(data.title.positions),
-            //
-            path: data.path,
-            lang: data.language
-        };
-
-        var fields = [].concat(data.title);
-
-        if (data.description) {
-            attributes.description = data.description.value;
-            attributes.description_keywords = Model._getKeywords(data.description.positions);
-
-            fields = fields.concat(data.description);
-        }
-
-        if (data.content) {
-
-            var content = _.map(data.content, 'value');
-            var content_keywords = _.reduce(data.content, function(result, value) {
-                return result.concat(value.positions);
-            }, []);
-
-            content_keywords = Model._getKeywords(content_keywords);
-
-            attributes.content = content;
-            attributes.content_keywords = content_keywords;
-
-            fields = fields.concat(data.content);
-        }
-
-        return Model._add({
-            where: {
-                path: data.path
-            },
-            fields: fields,
-            attributes: attributes,
-            language: data.language
-        });
-
+    var attributes = {
+      //
+      title: data.title.value,
+      title_keywords: Model._getKeywords(data.title.positions),
+      //
+      path: data.path,
+      lang: data.language
     };
 
-    Model.search = function(text, keywords, req) {
+    var fields = [].concat(data.title);
 
-        var result;
-        return Model.engine.find({
-                keywords: keywords,
-                language: req.query.language,
-                fields: {
-                    title_keywords: false,
-                    description_keywords: false,
-                    content: false,
-                    content_keywords: false
-                }
-            })
-            .then(function(_result) {
+    if (data.description) {
+      attributes.description = data.description.value;
+      attributes.description_keywords = Model._getKeywords(data.description.positions);
 
-                result = _result;
+      fields = fields.concat(data.description);
+    }
 
-                if (!result.items) {
-                    return;
-                }
+    if (data.content) {
 
-                var pages = result.items;
+      var content = _.map(data.content, 'value');
+      var content_keywords = _.reduce(data.content, function(result, value) {
+        return result.concat(value.positions);
+      }, []);
 
-                if (!req.session) {
-                    return;
-                }
+      content_keywords = Model._getKeywords(content_keywords);
 
-                var feeds = [];
+      attributes.content = content;
+      attributes.content_keywords = content_keywords;
 
-                //console.log(req.session);
+      fields = fields.concat(data.content);
+    }
 
-                req.session.searchPages = req.session.searchPages || {};
+    return Model._add({
+      where: {
+        path: data.path
+      },
+      fields: fields,
+      attributes: attributes,
+      language: data.language
+    });
 
-                for (var page of pages) {
-                    var value = app.helpers.fixPath(page.path);
-                    if (req.session.searchPages[value]) {
-                        continue;
-                    }
-                    req.session.searchPages[value] = true;
-                    feeds.push({
-                        value: value,
-                        type: 'search_page'
-                    });
-                }
+  };
 
-                // Keywords
+  Model.search = function(text, keywords, req) {
 
-                req.session.searchKeywords = req.session.searchKeywords || {};
+    var result;
+    return Model.engine.find({
+      keywords: keywords,
+      language: req.query.language,
+      fields: {
+        title_keywords: false,
+        description_keywords: false,
+        content: false,
+        content_keywords: false
+      }
+    })
+      .then(function(_result) {
 
-                for (var keyword of keywords) {
-                    var value = keyword.value || keyword;
-                    if (req.session.searchKeywords[value]) {
-                        continue;
-                    }
-                    req.session.searchKeywords[value] = true;
-                    feeds.push({
-                        value: value,
-                        type: 'search_keyword'
-                    });
-                }
+        result = _result;
 
-                if (feeds.length) {
+        if (!result.items) {
+          return;
+        }
 
-                    //console.log('About to create', feeds);
+        var pages = result.items;
 
-                    var options = {
-                        feeds: feeds,
-                        action: 'search',
-                        req: req,
-                        data: {
-                            text: text
-                        }
-                    };
+        if (!req.session) {
+          return;
+        }
 
-                    app.models.Activity_Item.new(options);
+        var feeds = [];
 
-                }
-            })
-            .then(function() {
-                return result;
-            });
-    };
+        //console.log(req.session);
+
+        req.session.searchPages = req.session.searchPages || {};
+
+        for (var page of pages) {
+          var value = app.helpers.fixPath(page.path);
+          if (req.session.searchPages[value]) {
+            continue;
+          }
+          req.session.searchPages[value] = true;
+          feeds.push({
+            value: value,
+            type: 'search_page'
+          });
+        }
+
+        // Keywords
+
+        req.session.searchKeywords = req.session.searchKeywords || {};
+
+        for (var keyword of keywords) {
+          var value = keyword.value || keyword;
+          if (req.session.searchKeywords[value]) {
+            continue;
+          }
+          req.session.searchKeywords[value] = true;
+          feeds.push({
+            value: value,
+            type: 'search_keyword'
+          });
+        }
+
+        if (feeds.length) {
+
+          //console.log('About to create', feeds);
+
+          var options = {
+            feeds: feeds,
+            action: 'search',
+            req: req,
+            data: {
+              text: text
+            }
+          };
+
+          app.models.Activity_Item.new(options);
+
+        }
+      })
+      .then(function() {
+        return result;
+      });
+  };
 
 
 };

@@ -14,39 +14,42 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var yaml = require('js-yaml');
-var path = require('path');
 var fs = require('fs-extra');
 
-module.exports = function(Model, app) {
+module.exports = function(Model) {
 
-    Model.delete = function(id) {
-        return Model.getPage(id)
-            .then(function(page) {
-                var source = Model.pageSource(page);
-                console.log(source);
-                return fs.remove(source);
-            });
-    };
+  Model.delete = function(id) {
+    return Model.getPage(id)
+      .then(function(page) {
+        var source = Model.pageSource(page);
+        //console.log(source);
+        return fs.remove(source);
+      })
+      .then(function() {
+        return {
+          message: 'Page deleted'
+        };
+      });
+  };
 
-    Model.remoteMethod(
-        'delete', {
-            description: 'Delete a file',
-            accepts: [{
-                arg: 'id',
-                type: 'string',
-                required: true
-            }],
-            returns: {
-                arg: 'result',
-                type: 'object',
-                root: true
-            },
-            http: {
-                verb: 'post',
-                path: '/delete'
-            },
-        }
-    );
+  Model.remoteMethod(
+    'delete', {
+      description: 'Delete a file',
+      accepts: [{
+        arg: 'id',
+        type: 'string',
+        required: true
+      }],
+      returns: {
+        arg: 'result',
+        type: 'object',
+        root: true
+      },
+      http: {
+        verb: 'post',
+        path: '/delete'
+      },
+    }
+  );
 
 };

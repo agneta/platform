@@ -14,18 +14,18 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
- var _ = require('lodash');
+var _ = require('lodash');
 
- module.exports = function(app) {
+module.exports = function(app) {
 
-     var db = app.get('db');
+  var db = app.get('db');
 
-     result = {
-         db: _.extend({
-             name: "db",
-             connector: "mongodb"
-         }, db)
-     };
+  result = {
+    db: _.extend({
+      name: 'db',
+      connector: 'mongodb'
+    }, db)
+  };
 
-     return result;
- };
+  return result;
+};

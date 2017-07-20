@@ -16,10 +16,10 @@
  */
 module.exports = function(app) {
 
-    app.git.addAll = function() {
+  app.git.addAll = function() {
 
-        return app.git.native.add('./*');
+    return app.git.native.add('./*');
 
-    };
+  };
 
 };

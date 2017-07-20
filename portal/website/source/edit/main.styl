@@ -10,12 +10,31 @@
 	@import('./_page/contributor')
 	@import('./_page/push-changes')
 
+	.top-bar{
+		.settings{
+			.md-icon-button{
+				height: 100%;
+			}
+		}
+		md-select{
+			margin: 0;
+		}
+	}
+
 	.page-main{
+
 		opacity: 0;
 		transition: opacity 400ms;
 		background: rgb(236, 236, 236);
+
 		&.active{
 			opacity: 1;
+		}
+
+		>.path{
+			text-align: center;
+			color: grey;
+			margin: 0;
 		}
 	}
 

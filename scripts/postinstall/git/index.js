@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: hooks/preinstall/git/index.js
+ *   Source file: scripts/postinstall/git/index.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
  */
 module.exports = function(app) {
 
-    app.git = {
-        name: '.git'
-    };
+  app.git = {
+    name: '.git'
+  };
 
-    app.requirePortal('services/boot/git/addAll')(app);
-    app.requirePortal('services/boot/git/update')(app);
-    app.requirePortal('services/boot/git/credentials')(app);
+  app.requirePortal('services/boot/git/addAll')(app);
+  app.requirePortal('services/boot/git/update')(app);
+  app.requirePortal('services/boot/git/credentials')(app);
 
-    require('./init')(app);
+  require('./init')(app);
 };

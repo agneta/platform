@@ -14,9 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var loopback = require("loopback");
-var Promise = require("bluebird");
-var _ = require("lodash");
+var loopback = require('loopback');
+var Promise = require('bluebird');
+var _ = require('lodash');
 
 module.exports = function(Model, app) {
 

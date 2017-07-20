@@ -25,159 +25,159 @@ var bower = require('../bower');
 
 module.exports = function(util, dir) {
 
-    var projectPaths = util.locals.web.project.paths;
+  var projectPaths = util.locals.web.project.paths;
 
-    try {
-        fs.statSync(path.join(dir.root, 'bower.json'));
-    } catch (e) {
-        util.log('No Bower Compoments found at ' + dir.name + ' dir.');
-        return;
-    }
+  try {
+    fs.statSync(path.join(dir.root, 'bower.json'));
+  } catch (e) {
+    util.log('No Bower Compoments found at ' + dir.name + ' dir.');
+    return;
+  }
 
-    //-----------------------------------------------------------------
+  //-----------------------------------------------------------------
 
-    var ignoreDefault = [
-        'src/**'
-    ];
+  var ignoreDefault = [
+    'src/**'
+  ];
 
-    var libs = [];
-    var totalFiles = 0;
+  var libs = [];
+  var totalFiles = 0;
 
-    dir.modules = path.join(dir.root, 'bower_components');
+  dir.modules = path.join(dir.root, 'bower_components');
 
-    util.log();
-    util.log('-----------------------------------');
-    util.log('Searching for Libraries at ' + dir.name + ' dir...');
+  util.log();
+  util.log('-----------------------------------');
+  util.log('Searching for Libraries at ' + dir.name + ' dir...');
 
-    var rules = {};
+  var rules = {};
 
 
-    return bower(util, dir.root)
-        .then(function(content) {
+  return bower(util, dir.root)
+    .then(function(content) {
 
-            return Promise.promisify(fs.readFile)(
-                path.join(dir.base, 'config.yml'),
-                'utf8'
-            );
+      return Promise.promisify(fs.readFile)(
+        path.join(dir.base, 'config.yml'),
+        'utf8'
+      );
 
-        })
-        .then(function(content) {
+    })
+    .then(function(content) {
 
-            var config = yaml.safeLoad(content);
-            rules = config.libraries;
+      var config = yaml.safeLoad(content);
+      rules = config.libraries;
 
-            return Promise.promisify(fs.readdir)(dir.modules);
+      return Promise.promisify(fs.readdir)(dir.modules);
 
-        })
-        .then(function(libraries) {
+    })
+    .then(function(libraries) {
 
-            return Promise.map(libraries, function(library) {
+      return Promise.map(libraries, function(library) {
 
-                var rule = rules[library] || {};
-                var searchDir = path.join(dir.modules, library);
+        var rule = rules[library] || {};
+        var searchDir = path.join(dir.modules, library);
 
-                rule.include = _.isArray(rule.include) ? rule.include : [rule.include];
+        rule.include = _.isArray(rule.include) ? rule.include : [rule.include];
 
-                try {
-                    fs.lstatSync(searchDir);
-                } catch (err) {
+        try {
+          fs.lstatSync(searchDir);
+        } catch (err) {
 
-                    if (err) {
-                        throw new Error('Module does not exist: ' + library);
-                    }
-                }
+          if (err) {
+            throw new Error('Module does not exist: ' + library);
+          }
+        }
 
-                var ignore;
-                rule.ignore = rule.ignore || [];
+        var ignore;
+        rule.ignore = rule.ignore || [];
 
-                if (rule.ignoreDefaults) {
-                    ignore = [].concat(rule.ignore);
-                } else {
-                    ignore = ignoreDefault.concat(rule.ignore);
-                }
+        if (rule.ignoreDefaults) {
+          ignore = [].concat(rule.ignore);
+        } else {
+          ignore = ignoreDefault.concat(rule.ignore);
+        }
 
-                var moduleFiles = [];
+        var moduleFiles = [];
 
-                return Promise.map(rule.include, function(include) {
+        return Promise.map(rule.include, function(include) {
 
-                        return Promise.promisify(glob)(include || "*.min.{js,css}", {
-                                cwd: searchDir,
-                                ignore: ignore,
-                                nodir: false,
-                                nosort: true,
-                                matchBase: true,
-                                stat: false
-                            })
-                            .then(function(result) {
-                                moduleFiles = moduleFiles.concat(result);
-                            });
-
-                    })
-                    .then(function() {
-
-                        if (!moduleFiles.length) {
-                            util.log('No files found for library: ' + library);
-                            return;
-                        }
-
-                        totalFiles += moduleFiles.length;
-
-                        libs.push({
-                            dir: searchDir,
-                            files: moduleFiles
-                        });
-                    });
+          return Promise.promisify(glob)(include || '*.min.{js,css}', {
+            cwd: searchDir,
+            ignore: ignore,
+            nodir: false,
+            nosort: true,
+            matchBase: true,
+            stat: false
+          })
+            .then(function(result) {
+              moduleFiles = moduleFiles.concat(result);
             });
 
         })
-        .then(function() {
-            if (false) { // perhaps remove on bundle install?
-                return Promise.promisify(fs.remove)(projectPaths.lib);
+          .then(function() {
+
+            if (!moduleFiles.length) {
+              util.log('No files found for library: ' + library);
+              return;
             }
-        })
-        .then(function() {
 
-            bar = util.progress(totalFiles, {
-                title: 'Dependencies for ' + dir.name
+            totalFiles += moduleFiles.length;
+
+            libs.push({
+              dir: searchDir,
+              files: moduleFiles
+            });
+          });
+      });
+
+    })
+    .then(function() {
+      if (false) { // perhaps remove on bundle install?
+        return Promise.promisify(fs.remove)(projectPaths.lib);
+      }
+    })
+    .then(function() {
+
+      bar = util.progress(totalFiles, {
+        title: 'Dependencies for ' + dir.name
+      });
+
+      return Promise.map(libs, function(lib) {
+
+        var parsedDir = path.parse(lib.dir);
+        var rule = rules[parsedDir.name] || {};
+
+        return Promise.map(lib.files, function(file) {
+
+          var parsed = path.parse(file);
+
+          var sourcePath = path.join(lib.dir, file);
+          var destPath = path.join(
+            projectPaths.lib,
+            rule.dir || '',
+            parsed.base);
+
+          return promiseCopy(sourcePath, destPath)
+            .then(function() {
+              bar.tick({
+                title: path.join(rule.dir || '', parsed.base)
+              });
             });
 
-            return Promise.map(libs, function(lib) {
-
-                var parsedDir = path.parse(lib.dir);
-                var rule = rules[parsedDir.name] || {};
-
-                return Promise.map(lib.files, function(file) {
-
-                    var parsed = path.parse(file);
-
-                    var sourcePath = path.join(lib.dir, file);
-                    var destPath = path.join(
-                        projectPaths.lib,
-                        rule.dir || '',
-                        parsed.base);
-
-                    return promiseCopy(sourcePath, destPath)
-                        .then(function() {
-                            bar.tick({
-                                title: path.join(rule.dir || '', parsed.base)
-                            });
-                        });
-
-                }, {
-                    concurrency: 3
-                });
-
-            }, {
-                concurrency: 1
-            });
-        })
-        .then(function() {
-            if (totalFiles) {
-                util.log('Success: ' + totalFiles + ' files were transfered');
-            } else {
-                util.log('No Libraries were found');
-            }
-            util.log('-----------------------------------');
-            util.log();
+        }, {
+          concurrency: 3
         });
+
+      }, {
+        concurrency: 1
+      });
+    })
+    .then(function() {
+      if (totalFiles) {
+        util.log('Success: ' + totalFiles + ' files were transfered');
+      } else {
+        util.log('No Libraries were found');
+      }
+      util.log('-----------------------------------');
+      util.log();
+    });
 };

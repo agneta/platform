@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: hooks/preinstall/index.js
+ *   Source file: docs/index.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,27 +14,10 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const path = require('path');
-const express = require('express');
+var documentation = require('documentation');
 
-
-switch (process.env.MODE) {
-    case 'services':
-        return;
-}
-
-var app = express();
-
-var platformPath = path.join(__dirname, '../..');
-
-app.requirePortal = function(reqPath) {
-    return require(path.join(platformPath, 'portal', reqPath));
-};
-
-app.requireServices = function(reqPath) {
-    return require(path.join(platformPath, 'services', reqPath));
-};
-
-app.requireServices('lib/locals')(app);
-
-require('./git')(app);
+documentation.build(['index.js'])
+  .then(documentation.formats.json)
+  .then(function(output) {
+    console.log(output);
+  });

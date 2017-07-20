@@ -13,6 +13,11 @@
     }, {
         "accessType": "EXECUTE",
         "principalType": "ROLE",
+        "principalId": "administrator",
+        "permission": "ALLOW"
+    }, {
+        "accessType": "EXECUTE",
+        "principalType": "ROLE",
         "principalId": "editor",
         "permission": "ALLOW"
     }],

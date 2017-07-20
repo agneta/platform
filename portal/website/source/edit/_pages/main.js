@@ -15,215 +15,215 @@
  *   limitations under the License.
  */
 $scope.getPage = function(obj) {
-    var id = obj.id || obj;
-    $rootScope.loadingMain = true;
-    return Model.loadOne({
-            id: id
-        })
-        .$promise
-        .then(function(result) {
+  var id = obj.id || obj;
+  $rootScope.loadingMain = true;
+  return Model.loadOne({
+    id: id
+  })
+    .$promise
+    .then(function(result) {
 
-            var data = result.page.data;
+      var data = result.page.data;
 
-            if ($scope.template) {
-                for (var i in $scope.template.fields) {
-                    var field = $scope.template.fields[i];
-                    data[field.name] = data[field.name] || fieldValue(field);
-                }
-            }
+      if ($scope.template) {
+        for (var i in $scope.template.fields) {
+          var field = $scope.template.fields[i];
+          data[field.name] = data[field.name] || fieldValue(field);
+        }
+      }
 
-            $scope.template = result.template;
-            $scope.pagePath = result.page.path;
-            structureData($scope.template, data);
+      $scope.template = result.template;
+      $scope.pagePath = result.page.path;
+      structureData($scope.template, data);
 
-            $location.search({
-                id: id,
-            });
+      $location.search({
+        id: id,
+      });
 
-            if (!$scope.pages) {
-                $scope.selectTemplate($scope.template);
-            }
+      if (!$scope.pages) {
+        $scope.selectTemplate($scope.template);
+      }
 
-            $scope.work = null;
-            $scope.page = null;
+      $scope.work = null;
+      $scope.page = null;
 
-            $timeout(function() {
-                $scope.page = result.page;
-            }, 300);
+      $timeout(function() {
+        $scope.page = result.page;
+      }, 300);
 
-        })
-        .finally(function() {
-            $rootScope.loadingMain = false;
-        });
+    })
+    .finally(function() {
+      $rootScope.loadingMain = false;
+    });
 };
 
 
 $scope.pageActive = function(id) {
 
-    if ($scope.page) {
-        return (id == $scope.page.id) ? 'active' : null;
-    }
+  if ($scope.page) {
+    return (id == $scope.page.id) ? 'active' : null;
+  }
 
 };
 
 $scope.pageDelete = function() {
 
-    var confirm = $mdDialog.confirm()
-        .title('Deleting Page')
-        .textContent('Are you sure you want to delete this page?')
-        .ok('Yes')
-        .cancel('Cancel');
+  var confirm = $mdDialog.confirm()
+    .title('Deleting Page')
+    .textContent('Are you sure you want to delete this page?')
+    .ok('Yes')
+    .cancel('Cancel');
 
-    $mdDialog.show(confirm).then(function() {
-        Model.delete({
-                id: $scope.page.id,
-            })
-            .$promise
-            .then(function() {
-                toast('File deleted');
-                Portal.socket.once('page-reload', function() {
-                    $timeout(function() {
-                        $scope.page = null;
-                        $scope.selectTemplate();
-                    }, 10);
-                });
-            });
-    });
+  $mdDialog.show(confirm).then(function() {
+    Model.delete({
+      id: $scope.page.id,
+    })
+      .$promise
+      .then(function() {
+        toast('File deleted');
+        Portal.socket.once('page-reload', function() {
+          $timeout(function() {
+            $scope.page = null;
+            $scope.selectTemplate();
+          }, 10);
+        });
+      });
+  });
 
 };
 
 $scope.pageAdd = function() {
-    $mdDialog.open({
-        partial: 'page-add',
-        controller: function($scope, $controller) {
+  $mdDialog.open({
+    partial: 'page-add',
+    controller: function($scope, $controller) {
 
-            angular.extend(this, $controller('DialogCtrl', {
-                $scope: $scope
-            }));
+      angular.extend(this, $controller('DialogCtrl', {
+        $scope: $scope
+      }));
 
-            var defaultPath = scopeEdit.page.path || '/default';
-            defaultPath = defaultPath.split('/');
-            defaultPath.pop();
-            defaultPath = defaultPath.join('/');
-            defaultPath = agneta.urljoin(defaultPath, 'new-file-name');
+      var defaultPath = scopeEdit.page.path || '/default';
+      defaultPath = defaultPath.split('/');
+      defaultPath.pop();
+      defaultPath = defaultPath.join('/');
+      defaultPath = agneta.urljoin(defaultPath, 'new-file-name');
 
-            if (defaultPath[0] != '/')
-                defaultPath = '/' + defaultPath;
+      if (defaultPath[0] != '/')
+        defaultPath = '/' + defaultPath;
 
-            $scope.formSubmitFields = {
-                path: defaultPath
-            };
+      $scope.formSubmitFields = {
+        path: defaultPath
+      };
 
-            $scope.template = scopeEdit.template;
+      $scope.template = scopeEdit.template;
 
-            $scope.submit = function() {
+      $scope.submit = function() {
 
-                var fields = $scope.formSubmitFields;
-                $scope.loading = true;
+        var fields = $scope.formSubmitFields;
+        $scope.loading = true;
 
-                Model.new({
-                        title: fields.title,
-                        path: fields.path,
-                        template: $scope.template.id
-                    })
-                    .$promise
-                    .then(function(result) {
-                        toast(result.message || 'File created');
+        Model.new({
+          title: fields.title,
+          path: fields.path,
+          template: $scope.template.id
+        })
+          .$promise
+          .then(function(result) {
+            toast(result.message || 'File created');
 
-                        Portal.socket.once('page-reload', function() {
-                            return scopeEdit.getPage(result.id)
-                                .then(function() {
-                                    $scope.close();
-                                    return scopeEdit.selectTemplate();
-                                })
-                                .finally(function() {
-                                    $scope.loading = false;
-                                });
-                        });
+            Portal.socket.once('page-reload', function() {
+              return scopeEdit.getPage(result.id)
+                .then(function() {
+                  $scope.close();
+                  return scopeEdit.selectTemplate();
+                })
+                .finally(function() {
+                  $scope.loading = false;
+                });
+            });
 
-                    });
+          });
 
-            };
-        }
-    });
+      };
+    }
+  });
 };
 
 $scope.push = function() {
 
-    $mdDialog.open({
-        partial: 'push-changes',
-        controller: function($scope, $controller) {
+  $mdDialog.open({
+    partial: 'push-changes',
+    controller: function($scope, $controller) {
 
-            angular.extend(this, $controller('DialogCtrl', {
-                $scope: $scope
-            }));
+      angular.extend(this, $controller('DialogCtrl', {
+        $scope: $scope
+      }));
 
-            $scope.loading = true;
-            GIT.status()
-                .$promise
-                .then(function(result) {
-                    //console.log(result);
-                    $scope.files = result.files;
-                })
-                .finally(function() {
-                    $scope.loading = false;
-                });
+      $scope.loading = true;
+      GIT.status()
+        .$promise
+        .then(function(result) {
+          //console.log(result);
+          $scope.files = result.files;
+        })
+        .finally(function() {
+          $scope.loading = false;
+        });
 
-            $scope.submit = function() {
-                $scope.loading = true;
-                GIT.push({
-                        message: $scope.formSubmitFields.message
-                    })
-                    .$promise
-                    .then(function() {
-                        $scope.close();
-                        toast('Changes are pushed to repository');
-                    })
-                    .finally(function() {
-                        $scope.loading = false;
-                    });
-            };
+      $scope.submit = function() {
+        $scope.loading = true;
+        GIT.push({
+          message: $scope.formSubmitFields.message
+        })
+          .$promise
+          .then(function() {
+            $scope.close();
+            toast('Changes are pushed to repository');
+          })
+          .finally(function() {
+            $scope.loading = false;
+          });
+      };
 
-        }
-    });
+    }
+  });
 
 };
 
 (function() {
 
-    var pending = false;
+  var pending = false;
 
-    $scope.save = function(autosave) {
+  $scope.save = function(autosave) {
 
-        if (!$scope.page) {
-            return;
-        }
+    if (!$scope.page) {
+      return;
+    }
 
-        if (pending) {
-            return;
-        }
+    if (pending) {
+      return;
+    }
 
-        pending = true;
+    pending = true;
 
-        setTimeout(function() {
+    setTimeout(function() {
 
-            pending = false;
+      pending = false;
 
-            $scope.clearHiddenData();
+      $scope.clearHiddenData();
 
-            Model.save({
-                    id: $scope.page.id,
-                    data: $scope.page.data
-                })
-                .$promise
-                .then(function(result) {
-                    if (!autosave) {
-                        toast(result.message || 'Changes saved');
-                    }
-                });
+      Model.save({
+        id: $scope.page.id,
+        data: $scope.page.data
+      })
+        .$promise
+        .then(function(result) {
+          if (!autosave) {
+            toast(result.message || 'Changes saved');
+          }
+        });
 
-        }, 1400);
+    }, 1400);
 
-    };
+  };
 
 })();

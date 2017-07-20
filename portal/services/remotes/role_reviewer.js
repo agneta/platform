@@ -16,6 +16,6 @@
  */
 module.exports = function(Model, app) {
 
-    app.helpers.mixin("disableAllMethods", Model);
+  app.helpers.mixin('disableAllMethods', Model);
 
 };

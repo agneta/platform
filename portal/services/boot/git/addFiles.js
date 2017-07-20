@@ -23,29 +23,29 @@ var fs = require('fs-extra');
 
 module.exports = function(app) {
 
-    app.git.addFiles = function(files) {
+  app.git.addFiles = function(files) {
 
-        var repo = app.git.repository;
+    var repo = app.git.repository;
 
-        return repo.refreshIndex()
-            .then(function(index) {
+    return repo.refreshIndex()
+      .then(function(index) {
 
-                if (!files) {
-                    files = [];
-                }
+        if (!files) {
+          files = [];
+        }
 
-                return Promise.map(files, function(file) {
-                        file = app.git.getPath(file);
-                        return index.addByPath(file);
-                    })
-                    .then(function() {
-                        return index.write();
-                    })
-                    .then(function() {
-                        return index.writeTree();
-                    });
-            });
+        return Promise.map(files, function(file) {
+          file = app.git.getPath(file);
+          return index.addByPath(file);
+        })
+          .then(function() {
+            return index.write();
+          })
+          .then(function() {
+            return index.writeTree();
+          });
+      });
 
-    };
+  };
 
 };

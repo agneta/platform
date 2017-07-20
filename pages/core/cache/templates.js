@@ -14,22 +14,22 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const LRU = require("lru-cache");
+const LRU = require('lru-cache');
 
 module.exports = function(locals) {
 
-    var cache = LRU({
-        max: 500 * 1000,
-        maxAge: 10 * 60 * 1000,
-        length: function(item) {
-            return item.length;
-        }
-    });
+  var cache = LRU({
+    max: 500 * 1000,
+    maxAge: 10 * 60 * 1000,
+    length: function(item) {
+      return item.length;
+    }
+  });
 
-    cache.invalidate = function() {
-        cache.reset();
-    };
+  cache.invalidate = function() {
+    cache.reset();
+  };
 
-    locals.cache.templates = cache;
+  locals.cache.templates = cache;
 
 };

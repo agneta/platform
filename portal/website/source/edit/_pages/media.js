@@ -16,93 +16,93 @@
  */
 (function() {
 
-    var media = {};
+  var media = {};
 
-    media.editPrivate = function(field, parent, key) {
+  media.editPrivate = function(field, parent, key) {
 
-        media.edit(field, parent, key, true);
+    media.edit(field, parent, key, true);
 
-    };
+  };
 
 
-    media.edit = function(field, parent, key, isPrivate) {
+  media.edit = function(field, parent, key, isPrivate) {
 
-        var parentValue = parent.__value;
-        var dataValue = parentValue[key].__value;
-        var mediaOptions = MediaOpt.public;
+    var parentValue = parent.__value;
+    var dataValue = parentValue[key].__value;
+    var mediaOptions = MediaOpt.public;
 
-        if (dataValue.private) {
-            isPrivate = true;
-        }
-
-        if (isPrivate) {
-            console.log('isPrivate');
-            dataValue.private = true;
-            mediaOptions = MediaOpt.private;
-
-        } else {
-            delete dataValue.private;
-        }
-
-        $mdDialog.open({
-            partial: mediaOptions.partial,
-            data: {
-                config: {
-                    dirLock: true
-                },
-                media: mediaOptions,
-                location: dataValue.location,
-                dir: getBasePath(field),
-                onApply: function(file) {
-                    dataValue.type = file.type;
-                    dataValue.updatedAt = file.updatedAt;
-                    setFilePath(dataValue, file.location);
-                    $scope.save();
-                },
-                onDelete: function() {
-                    $scope.removeValue(key, parentValue);
-                    $scope.save();
-                }
-            }
-        });
-
-    };
-
-    function getMedia(data) {
-        if (data.private) {
-            return MediaOpt.private;
-        }
-
-        return MediaOpt.public;
+    if (dataValue.private) {
+      isPrivate = true;
     }
 
-    media.backgroundImage = function(child) {
+    if (isPrivate) {
+      console.log('isPrivate');
+      dataValue.private = true;
+      mediaOptions = MediaOpt.private;
 
-        var data = dataValue(child);
-        var media = getMedia(data);
+    } else {
+      delete dataValue.private;
+    }
 
-        if (data.location && !data.icon && data.type) {
-            data.icon = media.preview.getIcon(data);
+    $mdDialog.open({
+      partial: mediaOptions.partial,
+      data: {
+        config: {
+          dirLock: true
+        },
+        media: mediaOptions,
+        location: dataValue.location,
+        dir: getBasePath(field),
+        onApply: function(file) {
+          dataValue.type = file.type;
+          dataValue.updatedAt = file.updatedAt;
+          setFilePath(dataValue, file.location);
+          $scope.save();
+        },
+        onDelete: function() {
+          $scope.removeValue(key, parentValue);
+          $scope.save();
         }
+      }
+    });
 
-        if (data.location && data.type) {
-            return media.preview.backgroundImage(data);
-        }
+  };
 
-    };
+  function getMedia(data) {
+    if (data.private) {
+      return MediaOpt.private;
+    }
 
-    media.getIcon = function(child) {
-        var data = dataValue(child);
-        var media = getMedia(data);
-        return media.preview.objectIcon(data);
-    };
+    return MediaOpt.public;
+  }
 
-    media.hasBackground = function(child) {
-        var data = dataValue(child);
-        var media = getMedia(data);
-        return media.preview.hasBackground(data);
-    };
+  media.backgroundImage = function(child) {
 
-    $scope.media = media;
+    var data = dataValue(child);
+    var media = getMedia(data);
+
+    if (data.location && !data.icon && data.type) {
+      data.icon = media.preview.getIcon(data);
+    }
+
+    if (data.location && data.type) {
+      return media.preview.backgroundImage(data);
+    }
+
+  };
+
+  media.getIcon = function(child) {
+    var data = dataValue(child);
+    var media = getMedia(data);
+    return media.preview.objectIcon(data);
+  };
+
+  media.hasBackground = function(child) {
+    var data = dataValue(child);
+    var media = getMedia(data);
+    return media.preview.hasBackground(data);
+  };
+
+  $scope.media = media;
 
 })();

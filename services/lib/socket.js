@@ -18,169 +18,169 @@ const _ = require('lodash');
 
 module.exports = function(options) {
 
-    var worker = options.worker;
+  var worker = options.worker;
 
-    if(!worker){
-      return;
-    }
+  if(!worker){
+    return;
+  }
     
-    var app = options.app;
-    var server = worker.scServer;
-    var cookieParser = require('cookie-parser')(
-        app.get("cookie_secret")
-    );
+  var app = options.app;
+  var server = worker.scServer;
+  var cookieParser = require('cookie-parser')(
+    app.get('cookie_secret')
+  );
 
-    var connections = {};
-    var namespaces = {};
-    var socket = {};
+  var connections = {};
+  var namespaces = {};
+  var socket = {};
 
-    socket.namespace = function(options) {
+  socket.namespace = function(options) {
 
-        namespaces[options.name] = options;
-        return namespaceMethods(options.name);
+    namespaces[options.name] = options;
+    return namespaceMethods(options.name);
 
+  };
+
+  function namespaceMethods(namespace, socket) {
+    var _socket;
+    if (socket) {
+      _socket = socket.exchange || socket;
+    }
+    _socket = _socket || server.exchange;
+
+    var result = {
+      on: function(name, cb) {
+
+        switch (name) {
+          case 'connection':
+            return server.on(name, function(socket) {
+              return cb(namespaceMethods(namespace, socket));
+            });
+        }
+
+        var channel = _socket.subscribe(namespace + '.' + name);
+        return channel.watch(cb);
+      },
+      emit: function(name, data) {
+        return _socket.publish(namespace + '.' + name, data);
+      }
     };
 
-    function namespaceMethods(namespace, socket) {
-        var _socket;
-        if (socket) {
-            _socket = socket.exchange || socket;
-        }
-        _socket = _socket || server.exchange;
-
-        var result = {
-            on: function(name, cb) {
-
-                switch (name) {
-                    case 'connection':
-                        return server.on(name, function(socket) {
-                            return cb(namespaceMethods(namespace, socket));
-                        });
-                }
-
-                var channel = _socket.subscribe(namespace + '.' + name);
-                return channel.watch(cb);
-            },
-            emit: function(name, data) {
-                return _socket.publish(namespace + '.' + name, data);
-            }
-        };
-
-        if (socket) {
-            result.request = socket.request;
-        } else {
-            result.currentConnection = function(req) {
-                var sessionId = req.session.id;
-                return namespaceMethods(namespace, connections[sessionId]);
-            };
-
-        }
-
-        return result;
+    if (socket) {
+      result.request = socket.request;
+    } else {
+      result.currentConnection = function(req) {
+        var sessionId = req.session.id;
+        return namespaceMethods(namespace, connections[sessionId]);
+      };
 
     }
 
-    server.addMiddleware(server.MIDDLEWARE_HANDSHAKE, function(req, next) {
+    return result;
 
-        req.header = function(name) {
-            return req.headers[name];
-        };
-        req.app = app;
+  }
 
-        cookieParser(req, null, function() {
+  server.addMiddleware(server.MIDDLEWARE_HANDSHAKE, function(req, next) {
 
-            app.token.middleware(req, null, function(err) {
+    req.header = function(name) {
+      return req.headers[name];
+    };
+    req.app = app;
 
-                if (err) {
-                    return next(err);
-                }
+    cookieParser(req, null, function() {
 
-            });
+      app.token.middleware(req, null, function(err) {
 
-        });
+        if (err) {
+          return next(err);
+        }
 
+      });
 
-        next();
     });
 
-    server.addMiddleware(server.MIDDLEWARE_SUBSCRIBE, function(req, next) {
 
-        var socket = req.socket;
-        var request = req.socket.request;
-        var parts = req.channel.split('.');
-        var name = parts[0];
+    next();
+  });
 
-        if (name) {
+  server.addMiddleware(server.MIDDLEWARE_SUBSCRIBE, function(req, next) {
 
-            var namespace = namespaces[name];
+    var socket = req.socket;
+    var request = req.socket.request;
+    var parts = req.channel.split('.');
+    var name = parts[0];
 
-            if (namespace) {
-                var auth = namespace.auth;
+    if (name) {
 
-                if (auth) {
-                    if (auth.allow) {
+      var namespace = namespaces[name];
 
-                        var authenticated = false;
+      if (namespace) {
+        var auth = namespace.auth;
 
-                        var allow = _.zipObject(
-                            auth.allow,
-                            _.map(auth.allow, function() {
-                                return true;
-                            })
-                        );
+        if (auth) {
+          if (auth.allow) {
 
-                        var token = request.accessToken;
+            var authenticated = false;
 
-                        if (token) {
+            var allow = _.zipObject(
+              auth.allow,
+              _.map(auth.allow, function() {
+                return true;
+              })
+            );
 
-                            for (var key in allow) {
-                                if (token.roles[key]) {
-                                    authenticated = true;
-                                    break;
-                                }
-                            }
+            var token = request.accessToken;
 
-                        }
+            if (token) {
 
-                        if (!authenticated) {
-                            socket.emit('unauthorized', {
-                                channel: req.channel
-                            });
-                            return next(`You are not able to access this channel (${req.channel}).`);
-                        }
-
-                    }
+              for (var key in allow) {
+                if (token.roles[key]) {
+                  authenticated = true;
+                  break;
                 }
-
-
+              }
 
             }
+
+            if (!authenticated) {
+              socket.emit('unauthorized', {
+                channel: req.channel
+              });
+              return next(`You are not able to access this channel (${req.channel}).`);
+            }
+
+          }
         }
 
-        next();
 
 
+      }
+    }
+
+    next();
+
+
+  });
+
+  server.on('connection', function(socket) {
+
+    var client = server.clients[socket.id];
+    client.headers = socket.request.headers;
+
+    var sessionId = _.get(socket, 'request.signedCookies.agneta_session');
+
+    if (!sessionId) {
+      return;
+    }
+
+    connections[sessionId] = socket;
+
+    socket.on('disconnect', function() {
+      delete connections[sessionId];
     });
+  });
 
-    server.on('connection', function(socket) {
-
-        var client = server.clients[socket.id];
-        client.headers = socket.request.headers;
-
-        var sessionId = _.get(socket, 'request.signedCookies.agneta_session');
-
-        if (!sessionId) {
-            return;
-        }
-
-        connections[sessionId] = socket;
-
-        socket.on('disconnect', function() {
-            delete connections[sessionId];
-        });
-    });
-
-    socket.server = server;
-    app.socket = socket;
+  socket.server = server;
+  app.socket = socket;
 
 };

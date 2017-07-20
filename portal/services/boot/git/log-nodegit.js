@@ -22,99 +22,99 @@ var yaml = require('js-yaml');
 
 module.exports = function(app) {
 
-    var config = app.get('git');
+  var config = app.get('git');
 
-    app.git.log = function(options) {
+  app.git.log = function(options) {
 
-        var filePath;
-        if (options.file) {
-            filePath = app.git.getPath(options.file);
-        }
+    var filePath;
+    if (options.file) {
+      filePath = app.git.getPath(options.file);
+    }
 
-        return app.git.repository.getBranchCommit(app.git.branch)
-            .then(function(commit) {
+    return app.git.repository.getBranchCommit(app.git.branch)
+      .then(function(commit) {
 
-                return new Promise(function(resolve, reject) {
+        return new Promise(function(resolve, reject) {
 
-                    var history = [];
-                    var eventEmitter = commit.history();
+          var history = [];
+          var eventEmitter = commit.history();
 
-                    eventEmitter.on('commit', onCommit);
-                    eventEmitter.on('end', function() {
-                        resolve(history);
-                    });
+          eventEmitter.on('commit', onCommit);
+          eventEmitter.on('end', function() {
+            resolve(history);
+          });
 
-                    eventEmitter.on('error', reject);
-                    eventEmitter.start();
+          eventEmitter.on('error', reject);
+          eventEmitter.start();
 
-                    function onCommit(commit) {
+          function onCommit(commit) {
 
-                        return Promise.resolve()
-                            .then(function() {
+            return Promise.resolve()
+              .then(function() {
 
-                                if (filePath) {
+                if (filePath) {
 
-                                    return commit.getDiff()
-                                        .then(function(diffList) {
+                  return commit.getDiff()
+                    .then(function(diffList) {
 
-                                            return Promise.reduce(diffList, function(prevVal, diff) {
+                      return Promise.reduce(diffList, function(prevVal, diff) {
 
-                                                return diff.patches()
-                                                    .then(function(patches) {
+                        return diff.patches()
+                          .then(function(patches) {
 
-                                                        var newVal = patches.reduce(function(prevValDiff, patch) {
-                                                            var result =
+                            var newVal = patches.reduce(function(prevValDiff, patch) {
+                              var result =
                                                                 prevValDiff ||
                                                                 !!~patch.oldFile().path().indexOf(filePath) ||
                                                                 !!~patch.newFile().path().indexOf(filePath);
-                                                            return result;
-                                                        }, false);
+                              return result;
+                            }, false);
 
-                                                        return prevVal || newVal;
-                                                    });
+                            return prevVal || newVal;
+                          });
 
-                                            }, false);
+                      }, false);
 
 
-                                        });
-                                }
+                    });
+                }
 
-                                return true;
+                return true;
 
-                            })
-                            .then(function(addCommit) {
+              })
+              .then(function(addCommit) {
 
-                                if (addCommit) {
+                if (addCommit) {
 
-                                    var author = commit.author();
+                  var author = commit.author();
 
-                                    history.push({
-                                        sha: commit.sha(),
-                                        message: commit.message(),
-                                        summary: commit.summary(),
-                                        date: commit.date(),
-                                        author: {
-                                            name: author.name(),
-                                            email: author.email()
-                                        },
-                                        body: commit.body(),
-                                    });
+                  history.push({
+                    sha: commit.sha(),
+                    message: commit.message(),
+                    summary: commit.summary(),
+                    date: commit.date(),
+                    author: {
+                      name: author.name(),
+                      email: author.email()
+                    },
+                    body: commit.body(),
+                  });
 
-                                    if (history.length == 20) {
-                                        eventEmitter.emit('end');
-                                    }
+                  if (history.length == 20) {
+                    eventEmitter.emit('end');
+                  }
 
-                                }
+                }
 
-                            });
-                    }
+              });
+          }
 
-                });
-            });
+        });
+      });
 
-        promise.done();
-        return promise;
+    promise.done();
+    return promise;
 
-    }
+  };
 
 };

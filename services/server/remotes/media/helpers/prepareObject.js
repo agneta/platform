@@ -19,31 +19,31 @@ const prettyBytes = require('pretty-bytes');
 
 module.exports = function(Model, app) {
 
-    var prjHelpers = app.get('options').client.app.locals;
+  var prjHelpers = app.get('options').client.app.locals;
 
-    Model.__prepareObject = function(object) {
+  Model.__prepareObject = function(object) {
 
-        if (!object) {
-            return;
-        }
+    if (!object) {
+      return;
+    }
 
-        var dir = object.location.split('/');
-        dir.pop();
-        dir = dir.join('/');
+    var dir = object.location.split('/');
+    dir.pop();
+    dir = dir.join('/');
 
-        object.dir = dir;
+    object.dir = dir;
 
-        switch (object.type) {
-            case 'folder':
-                return object;
-        }
-
-        object.url = prjHelpers.prv_media(object.location);
-        object.size = object.size ? prettyBytes(parseFloat(object.size)) : null;
-        object.type = app.helpers.mediaType(object.contentType);
-        object.ext = mime.extension(object.contentType);
-
+    switch (object.type) {
+      case 'folder':
         return object;
-    };
+    }
+
+    object.url = prjHelpers.prv_media(object.location);
+    object.size = object.size ? prettyBytes(parseFloat(object.size)) : null;
+    object.type = app.helpers.mediaType(object.contentType);
+    object.ext = mime.extension(object.contentType);
+
+    return object;
+  };
 
 };

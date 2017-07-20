@@ -20,174 +20,174 @@ var _ = require('lodash');
 
 module.exports = function(locals) {
 
-    var project = locals.project;
+  var project = locals.project;
 
-    project.extend.helper.register('viewBasicData', function() {
+  project.extend.helper.register('viewBasicData', function() {
 
-        var data = {};
-        var site = this.site;
-        var page = this.page;
+    var data = {};
+    var site = this.site;
+    var page = this.page;
 
-        data.title = this.get_title(page);
-        data.path = page.pathSource;
-        data.scripts = [];
-        data.styles = [];
-        data.languages = [];
+    data.title = this.get_title(page);
+    data.path = page.pathSource;
+    data.scripts = [];
+    data.styles = [];
+    data.languages = [];
 
-        //-----------------------------------------------------
-        // languages
+    //-----------------------------------------------------
+    // languages
 
-        for (var lang_short in site.languages) {
+    for (var lang_short in site.languages) {
 
-            if (page.title && !page.title[lang_short]) {
-                continue;
-            }
+      if (page.title && !page.title[lang_short]) {
+        continue;
+      }
 
-            var lang_full = site.languages[lang_short];
+      var lang_full = site.languages[lang_short];
 
-            var url = page.pathSource;
-            url = url.split('/');
-            url.unshift(lang_short);
-            url = url.join('/');
-            url = this.url_for(url);
+      var url = page.pathSource;
+      url = url.split('/');
+      url.unshift(lang_short);
+      url = url.join('/');
+      url = this.url_for(url);
 
-            var linkClass = (lang_short == site.lang) ? "selected" : "";
+      var linkClass = (lang_short == site.lang) ? 'selected' : '';
 
-            data.languages.push({
-                name: lang_full,
-                href: url,
-                linkClass: linkClass
-            });
-        }
+      data.languages.push({
+        name: lang_full,
+        href: url,
+        linkClass: linkClass
+      });
+    }
 
-        //----------------------------------------
+    //----------------------------------------
 
-        if (page.parent) {
-            var parent = project.site.pages.findOne({
-                parentName: page.parent
-            });
-            if (parent) {
-                data.parentPath = this.get_path(parent);
-            }
-        }
+    if (page.parent) {
+      var parent = project.site.pages.findOne({
+        parentName: page.parent
+      });
+      if (parent) {
+        data.parentPath = this.get_path(parent);
+      }
+    }
 
-        if (!data.parentPath) {
-            data.parentPath = this.get_path('/');
-        }
+    if (!data.parentPath) {
+      data.parentPath = this.get_path('/');
+    }
 
-        if (page.templateSource == 'home') {
-            data.parentPath = null;
-        }
+    if (page.templateSource == 'home') {
+      data.parentPath = null;
+    }
 
-        //----------------------------------------
+    //----------------------------------------
 
-        data.layoutClass = [
-            'page-' + page.templateSource.split('/').join('-')
-        ];
-        if (page.class) {
-            data.layoutClass.push(page.class);
-        }
-        data.layoutClass = data.layoutClass.join(' ');
+    data.layoutClass = [
+      'page-' + page.templateSource.split('/').join('-')
+    ];
+    if (page.class) {
+      data.layoutClass.push(page.class);
+    }
+    data.layoutClass = data.layoutClass.join(' ');
 
-        //----------------------------------------------------
+    //----------------------------------------------------
 
-        var templateStyle = this.layout_style({
-            source: true,
-            template: page.templateSource
-        });
-
-        if (templateStyle) {
-            data.styles.push(templateStyle);
-        }
-
-        //----------------------------------------
-
-        var templateScript = this.layout_script({
-            source: true,
-            template: page.templateSource
-        });
-
-        if (templateScript) {
-            data.scripts.push(templateScript);
-        }
-
-
-        return data;
-
-
+    var templateStyle = this.layout_style({
+      source: true,
+      template: page.templateSource
     });
 
+    if (templateStyle) {
+      data.styles.push(templateStyle);
+    }
 
-    project.extend.helper.register('viewAuthData', function() {
+    //----------------------------------------
 
-        var data = this.viewBasicData();
-        return JSON.stringify(data);
-
+    var templateScript = this.layout_script({
+      source: true,
+      template: page.templateSource
     });
 
+    if (templateScript) {
+      data.scripts.push(templateScript);
+    }
 
-    project.extend.helper.register('viewData', function() {
 
-        var data = this.viewBasicData();
+    return data;
 
-        var page = this.page;
-        var config = this.config;
-        var self = this;
 
-        data.authorization = page.authorization;
-        data.keypress = page.keypress;
-        data.controller = page.controller;
-        data.menuLock = config.lockSidebar || page.menuLock;
-        data.extra = this.lngScan(page.viewData);
+  });
 
-        //----------------------------------------
 
-        if (page.toolbar && this.has_template(path.join('partials', page.toolbar))) {
-            data.toolbar = this.get_path(urljoin('partial', page.toolbar));
+  project.extend.helper.register('viewAuthData', function() {
+
+    var data = this.viewBasicData();
+    return JSON.stringify(data);
+
+  });
+
+
+  project.extend.helper.register('viewData', function() {
+
+    var data = this.viewBasicData();
+
+    var page = this.page;
+    var config = this.config;
+    var self = this;
+
+    data.authorization = page.authorization;
+    data.keypress = page.keypress;
+    data.controller = page.controller;
+    data.menuLock = config.lockSidebar || page.menuLock;
+    data.extra = this.lngScan(page.viewData);
+
+    //----------------------------------------
+
+    if (page.toolbar && this.has_template(path.join('partials', page.toolbar))) {
+      data.toolbar = this.get_path(urljoin('partial', page.toolbar));
+    }
+
+    //----------------------------------------
+
+    var sidebarName = page.templateSource + '.sidebar';
+    if (this.has_template(sidebarName)) {
+      data.sidebar = this.get_path(urljoin(this.pagePath(page), 'sidebar'));
+    }
+
+    //----------------------------------------
+
+    if (page.angular_libs) {
+      data.dependencies = _.map(page.angular_libs, function(value) {
+        return {
+          dep: value.dep,
+          js: self.get_asset(value.js + '.js')
+        };
+      });
+    }
+
+    //----------------------------------------
+
+    if (page.scripts) {
+      var pageScripts = this.lngScan(page.scripts);
+      for (var y in pageScripts) {
+        var script = pageScripts[y];
+        if (_.isString(script)) {
+          script += '.js';
         }
-
-        //----------------------------------------
-
-        var sidebarName = page.templateSource + '.sidebar';
-        if (this.has_template(sidebarName)) {
-            data.sidebar = this.get_path(urljoin(this.pagePath(page), 'sidebar'));
+        var asset = this.get_asset(script);
+        if (asset) {
+          data.scripts.push(asset);
         }
+      }
+    }
 
-        //----------------------------------------
+    if (page.styles) {
+      for (var style of page.styles) {
+        data.styles.push(this.get_asset(style + '.css'));
+      }
+    }
 
-        if (page.angular_libs) {
-            data.dependencies = _.map(page.angular_libs, function(value) {
-                return {
-                    dep: value.dep,
-                    js: self.get_asset(value.js + '.js')
-                };
-            });
-        }
+    return JSON.stringify(data);
 
-        //----------------------------------------
-
-        if (page.scripts) {
-            var pageScripts = this.lngScan(page.scripts);
-            for (var y in pageScripts) {
-                var script = pageScripts[y];
-                if (_.isString(script)) {
-                    script += '.js';
-                }
-                var asset = this.get_asset(script);
-                if (asset) {
-                    data.scripts.push(asset);
-                }
-            }
-        }
-
-        if (page.styles) {
-            for (var style of page.styles) {
-                data.styles.push(this.get_asset(style + '.css'));
-            }
-        }
-
-        return JSON.stringify(data);
-
-    });
+  });
 
 };

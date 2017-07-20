@@ -24,48 +24,48 @@ const urljoin = require('urljoin');
 
 module.exports = function(Model, app) {
 
-    Model.signOutAll = function(req) {
+  Model.signOutAll = function(req) {
 
-        var AccessToken = app.models.AccessToken;
-        return AccessToken.destroyAll({
-                userId: req.accessToken.userId
-            })
-            .then(function() {
+    var AccessToken = app.models.AccessToken;
+    return AccessToken.destroyAll({
+      userId: req.accessToken.userId
+    })
+      .then(function() {
 
-                Model.activity({
-                    req: req,
-                    action: "logout_all"
-                });
+        Model.activity({
+          req: req,
+          action: 'logout_all'
+        });
 
-                return {
-                    success: 'Cleared all access tokens'
-                };
-            });
+        return {
+          success: 'Cleared all access tokens'
+        };
+      });
 
-    };
+  };
 
-    Model.remoteMethod(
-        'signOutAll', {
-            description: 'Clear all tokens from this account',
-            accepts: [{
-                arg: 'req',
-                type: 'object',
-                'http': {
-                    source: 'req'
-                }
-            }],
-            returns: {
-                arg: 'result',
-                type: 'object',
-                root: true
-            },
-            http: {
-                verb: 'get',
-                path: '/sign-out-all'
-            }
+  Model.remoteMethod(
+    'signOutAll', {
+      description: 'Clear all tokens from this account',
+      accepts: [{
+        arg: 'req',
+        type: 'object',
+        'http': {
+          source: 'req'
         }
-    );
+      }],
+      returns: {
+        arg: 'result',
+        type: 'object',
+        root: true
+      },
+      http: {
+        verb: 'get',
+        path: '/sign-out-all'
+      }
+    }
+  );
 
-    Model.afterRemote('signOutAll', Model.removeLoginCookie);
+  Model.afterRemote('signOutAll', Model.removeLoginCookie);
 
 };

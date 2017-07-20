@@ -21,43 +21,43 @@ var _ = require('lodash');
 
 module.exports = function(locals) {
 
-    var project = locals.project;
-    var webPrj = locals.web.project;
-    var editConfigDir = path.join(webPrj.paths.project, 'edit', 'data');
+  var project = locals.project;
+  var webPrj = locals.web.project;
+  var editConfigDir = path.join(webPrj.paths.project, 'edit', 'data');
 
-    project.on('ready', function() {
+  project.on('ready', function() {
 
-        if (!fs.existsSync(editConfigDir)) {
+    if (!fs.existsSync(editConfigDir)) {
 
-            project.editDataConfig = [];
-            return;
+      project.editDataConfig = [];
+      return;
 
-        }
+    }
 
-        var files = fs.readdirSync(editConfigDir);
-        var result = [];
+    var files = fs.readdirSync(editConfigDir);
+    var result = [];
 
-        for (var filename of files) {
+    for (var filename of files) {
 
-            var filenameParsed = path.parse(filename);
-            if (filenameParsed.ext != '.yml') {
-                continue;
-            }
+      var filenameParsed = path.parse(filename);
+      if (filenameParsed.ext != '.yml') {
+        continue;
+      }
 
-            var config = _.extend({
-                    name: filenameParsed.name
-                },
-                yaml.safeLoad(
-                    fs.readFileSync(
-                        path.join(editConfigDir, filename)
-                    )
-                )
-            );
+      var config = _.extend({
+        name: filenameParsed.name
+      },
+      yaml.safeLoad(
+        fs.readFileSync(
+          path.join(editConfigDir, filename)
+        )
+      )
+      );
 
-            result.push(config);
-        }
+      result.push(config);
+    }
 
-        project.editDataConfig = result;
-    });
+    project.editDataConfig = result;
+  });
 
 };

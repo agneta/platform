@@ -14,47 +14,47 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var _ = require("lodash");
+var _ = require('lodash');
 
 module.exports = function(app) {
 
-    var client = app.get('options').client;
-    var helpers = client.app.locals;
+  var client = app.get('options').client;
+  var helpers = client.app.locals;
 
-    app.getLng = function(req) {
-        if (req.query && req.query.language) {
-            return req.query.language;
-        }
+  app.getLng = function(req) {
+    if (req.query && req.query.language) {
+      return req.query.language;
+    }
 
-        if (req.body && req.body.language) {
-            return req.body.language;
-        }
+    if (req.body && req.body.language) {
+      return req.body.language;
+    }
 
-        return 'en';
-    };
+    return 'en';
+  };
 
-    app.lng = function(obj, lng) {
+  app.lng = function(obj, lng) {
 
-        if (_.isObject(lng)) {
-            lng = app.getLng(lng);
-        }
+    if (_.isObject(lng)) {
+      lng = app.getLng(lng);
+    }
 
-        if (_.isObject(obj)) {
-            obj = obj.__value || obj;
-        }
+    if (_.isObject(obj)) {
+      obj = obj.__value || obj;
+    }
 
-        var result = lng ? obj[lng] : null;
+    var result = lng ? obj[lng] : null;
 
-        return result || obj.en || obj.gr;
-    };
+    return result || obj.en || obj.gr;
+  };
 
-    app.lngScan = function(obj, lng) {
+  app.lngScan = function(obj, lng) {
 
-        if (_.isObject(lng)) {
-            lng = app.getLng(lng);
-        }
+    if (_.isObject(lng)) {
+      lng = app.getLng(lng);
+    }
 
-        return helpers.lngScan(obj, lng);
-    };
+    return helpers.lngScan(obj, lng);
+  };
 
 };

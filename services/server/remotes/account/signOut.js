@@ -24,46 +24,46 @@ const urljoin = require('urljoin');
 
 module.exports = function(Model, app) {
 
-    Model.signOut = function(req) {
+  Model.signOut = function(req) {
 
-        return Model.logout(req.accessToken.id)
-            .then(function() {
+    return Model.logout(req.accessToken.id)
+      .then(function() {
 
-                Model.activity({
-                    req: req,
-                    action: "logout"
-                });
+        Model.activity({
+          req: req,
+          action: 'logout'
+        });
 
-                return {
-                    message: 'Logged out'
-                };
+        return {
+          message: 'Logged out'
+        };
 
-            });
+      });
 
-    };
+  };
 
-    Model.remoteMethod(
-        'signOut', {
-            description: 'Logout a user',
-            accepts: [{
-                arg: 'req',
-                type: 'object',
-                'http': {
-                    source: 'req'
-                }
-            }],
-            returns: {
-                arg: 'result',
-                type: 'object',
-                root: true
-            },
-            http: {
-                verb: 'get',
-                path: '/sign-out'
-            }
+  Model.remoteMethod(
+    'signOut', {
+      description: 'Logout a user',
+      accepts: [{
+        arg: 'req',
+        type: 'object',
+        'http': {
+          source: 'req'
         }
-    );
+      }],
+      returns: {
+        arg: 'result',
+        type: 'object',
+        root: true
+      },
+      http: {
+        verb: 'get',
+        path: '/sign-out'
+      }
+    }
+  );
 
-    Model.afterRemote('signOut', Model.removeLoginCookie);
+  Model.afterRemote('signOut', Model.removeLoginCookie);
 
 };

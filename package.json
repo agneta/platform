@@ -4,11 +4,14 @@
   "description": "Agneta Platform - Integrate and customize business applications",
   "main": "main",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "audit": "nsp check",
+    "license": "node scripts/license",
+    "lint": "node node_modules/eslint/bin/eslint --fix --ignore-path .gitignore ./ --ext .js"
   },
   "author": "",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "dependencies": {
+    "aws-sdk": "2.86.0",
     "babel-core": "6.25.0",
     "babel-plugin-transform-remove-strict-mode": "0.0.2",
     "basic-auth": "1.1.0",
@@ -22,7 +25,7 @@
     "clean-array": "1.0.0",
     "clean-css": "4.1.5",
     "color": "2.0.0",
-    "compression": "^1.6.2",
+    "compression": "1.6.2",
     "concat-stream": "1.6.0",
     "connect-mongo": "1.3.2",
     "content-type": "1.0.2",
@@ -54,7 +57,7 @@
     "image-size": "0.6.0",
     "js-yaml": "3.8.4",
     "klaw": "2.0.0",
-    "lockfile": "^1.0.3",
+    "lockfile": "1.0.3",
     "lodash": "4.17.4",
     "loopback": "3.8.0",
     "loopback-boot": "2.25.0",
@@ -85,7 +88,6 @@
     "nodegit": "0.19.0",
     "object-hash": "1.1.8",
     "pdf-image": "1.1.0",
-    "pkgcloud": "1.4.0",
     "pretty-bytes": "4.0.2",
     "progress": "2.0.0",
     "randomcolor": "0.5.3",
@@ -97,8 +99,7 @@
     "shortid": "2.2.8",
     "simple-git": "1.73.0",
     "soap": "git://github.com/vpulim/node-soap.git#master",
-    "socketcluster": "^6.1.0",
-    "socketio-auth": "0.1.0",
+    "socketcluster": "6.1.0",
     "stacktrace-parser": "0.1.4",
     "stemmer": "1.0.0",
     "string": "3.3.3",
@@ -117,9 +118,9 @@
   "devDependencies": {
     "chai": "4.0.2",
     "chai-http": "3.0.0",
+    "documentation": "4.0.0-rc.1",
     "eslint": "4.1.1",
     "eslint-config-loopback": "8.0.0",
-    "mocha": "3.4.2",
     "nsp": "2.6.3"
   }
 }

@@ -22,83 +22,83 @@ var _ = require('lodash');
 
 module.exports = function(options) {
 
-    options.mode = options.mode || 'default';
-    var locals = options.locals || {};
+  options.mode = options.mode || 'default';
+  var locals = options.locals || {};
 
-    //--------------------------------------------
-    // Loading Config
+  //--------------------------------------------
+  // Loading Config
 
-    locals.load = _.extend({
-        scripts: true,
-        data: true,
-        media: true,
-        pages: true
-    }, locals.load || {});
+  locals.load = _.extend({
+    scripts: true,
+    data: true,
+    media: true,
+    pages: true
+  }, locals.load || {});
 
-    //-----------------------------------------------------------------
-
-
-    locals.project = {
-        theme: {},
-        extend: {},
-        env: locals.env || 'development',
-        config: {
-            permalink: '/:title/',
-            new_post_name: ':title.yml',
-            root: '/'
-        },
-        site: {},
-        locals: {
-            cache: {
-                data: {}
-            }
-        },
-        paths: options.paths,
-        render: {}
-    };
-
-    Object.defineProperty(locals, 'agneta', {
-        get: function() {
-            var stack = new Error().stack;
-            console.warn('Deprecated method "agneta", will be removed');
-            console.log(stack);
-            return locals.project;
-        }
-    });
-
-    //-----------------------------------------------------------------
-    // Require main script based on selected mode
-
-    locals.mode = locals.mode || {};
-    locals.mode[options.mode] = locals.mode[options.mode] || {};
+  //-----------------------------------------------------------------
 
 
-    require(path.join(options.paths.framework, 'core/main'))(locals);
-    var mode = require(path.join(options.paths.framework, 'main', options.mode))(locals);
+  locals.project = {
+    theme: {},
+    extend: {},
+    env: locals.env || 'development',
+    config: {
+      permalink: '/:title/',
+      new_post_name: ':title.yml',
+      root: '/'
+    },
+    site: {},
+    locals: {
+      cache: {
+        data: {}
+      }
+    },
+    paths: options.paths,
+    render: {}
+  };
 
-    //-----------------------------------------------------------------
-    return {
-        locals: locals,
-        init: function() {
+  Object.defineProperty(locals, 'agneta', {
+    get: function() {
+      var stack = new Error().stack;
+      console.warn('Deprecated method "agneta", will be removed');
+      console.log(stack);
+      return locals.project;
+    }
+  });
 
-            locals.project.env = locals.env || 'development';
-            locals.build_dir = path.join(options.paths.build, locals.project.env);
+  //-----------------------------------------------------------------
+  // Require main script based on selected mode
 
-            return locals.main.init()
-                .then(function() {
-                    return locals;
-                });
-        },
-        start: function() {
-            return locals.main.start()
-                .then(function() {
-                    if (_.isFunction(mode)) {
-                        return mode();
-                    }
-                })
-                .then(function() {
-                    return locals;
-                });
-        }
-    };
+  locals.mode = locals.mode || {};
+  locals.mode[options.mode] = locals.mode[options.mode] || {};
+
+
+  require(path.join(options.paths.framework, 'core/main'))(locals);
+  var mode = require(path.join(options.paths.framework, 'main', options.mode))(locals);
+
+  //-----------------------------------------------------------------
+  return {
+    locals: locals,
+    init: function() {
+
+      locals.project.env = locals.env || 'development';
+      locals.build_dir = path.join(options.paths.build, locals.project.env);
+
+      return locals.main.init()
+        .then(function() {
+          return locals;
+        });
+    },
+    start: function() {
+      return locals.main.start()
+        .then(function() {
+          if (_.isFunction(mode)) {
+            return mode();
+          }
+        })
+        .then(function() {
+          return locals;
+        });
+    }
+  };
 };

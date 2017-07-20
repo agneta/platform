@@ -16,26 +16,26 @@
  */
 $scope.onSearch = function(value) {
 
-    var scopeName;
+  var scopeName;
 
-    if ($scope.pages) {
-        scopeName = 'pages';
-    }
-    if ($scope.templates) {
-        scopeName = 'templates';
-    }
+  if ($scope.pages) {
+    scopeName = 'pages';
+  }
+  if ($scope.templates) {
+    scopeName = 'templates';
+  }
 
-    if (!value) {
+  if (!value) {
 
 
-        $scope[scopeName] = null;
-        $timeout(function() {
-            $scope[scopeName] = itemsLoaded;
-        }, 100);
+    $scope[scopeName] = null;
+    $timeout(function() {
+      $scope[scopeName] = itemsLoaded;
+    }, 100);
 
-        return;
-    }
+    return;
+  }
     
-    var result = fuse.search(value).slice(0, 6);
-    $scope[scopeName] = result;
+  var result = fuse.search(value).slice(0, 6);
+  $scope[scopeName] = result;
 };

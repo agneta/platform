@@ -20,48 +20,48 @@ const _ = require('lodash');
 
 module.exports = function(options) {
 
-    var web = options.app.get('options').web;
-    var webHelpers = web.app.locals;
+  var web = options.app.get('options').web;
+  var webHelpers = web.app.locals;
 
-    return fs.readFile(options.path)
-        .then(function(content) {
+  return fs.readFile(options.path)
+    .then(function(content) {
 
-            var template = yaml.safeLoad(content);
+      var template = yaml.safeLoad(content);
 
-            function scan(collection) {
+      function scan(collection) {
 
-                for (var key in collection) {
-                    var field = collection[key];
+        for (var key in collection) {
+          var field = collection[key];
 
-                    if (_.isString(field)) {
-                        var name = field;
-                        field = getField(field);
-                        field.name = name;
-                        collection[key] = field;
-                    }
+          if (_.isString(field)) {
+            var name = field;
+            field = getField(field);
+            field.name = name;
+            collection[key] = field;
+          }
 
-                    if (_.isObject(field)) {
-                        if (field.extend) {
-                            _.defaults(field, getField(field.extend));
-                            field.name = field.extend;
-                            delete field.extend;
-                        }
-                    }
-
-                    if (field.fields) {
-                        scan(field.fields);
-                    }
-                }
+          if (_.isObject(field)) {
+            if (field.extend) {
+              _.defaults(field, getField(field.extend));
+              field.name = field.extend;
+              delete field.extend;
             }
+          }
 
-            function getField(field) {
-                return webHelpers.get_data('edit/fields/' + field);
-            }
+          if (field.fields) {
+            scan(field.fields);
+          }
+        }
+      }
 
-            scan(template.fields);
-            template.title = options.app.lng(template.title, options.req);
-            return template;
+      function getField(field) {
+        return webHelpers.get_data('edit/fields/' + field);
+      }
 
-        });
+      scan(template.fields);
+      template.title = options.app.lng(template.title, options.req);
+      return template;
+
+    });
 
 };

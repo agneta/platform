@@ -15,5 +15,5 @@
  *   limitations under the License.
  */
 module.exports = function(locals) {
-    require('./local')(locals);
+  require('./local')(locals);
 };

@@ -23,35 +23,43 @@ const Promise = require('bluebird');
 chai.should();
 chai.use(chaiHttp);
 
-return Promise.resolve()
-    .then(function() {
-        require('./portal')();
-    })
-    .then(function() {
+it('Starting the server', function() {
 
-        var pathTests = path.join('test');
-        var walker = klaw(pathTests);
+  this.timeout(12000);
 
-        walker.on('data', function(item) {
+  return require('../main/index')
+    .then(function(data) {
+      var domain = 'http://localhost:' + data.port;
 
-            if (item.stats.isDirectory()) {
-                return;
-            }
+      var options = {
+        domain: domain,
+        agent: chai.request.agent(domain),
+        account: data.result.portalSettings.account
+      };
 
-            var path_parsed = path.parse(item.path);
+      var pathTests = path.join(__dirname, 'api');
+      var walker = klaw(pathTests);
 
-            switch (path_parsed.ext) {
-                case '.js':
-                    //require(item.path)(options);
-                    break;
-            }
+      walker.on('data', function(item) {
 
+        if (item.stats.isDirectory()) {
+          return;
+        }
 
-        });
+        var path_parsed = path.parse(item.path);
 
-        return new Promise(function(resolve, reject) {
-            walker.on('end', resolve);
-            walker.on('error', reject);
-        });
+        switch (path_parsed.ext) {
+          case '.js':
+            require(item.path)(options);
+            break;
+        }
+
+      });
+
+      return new Promise(function(resolve, reject) {
+        walker.on('end', resolve);
+        walker.on('error', reject);
+      });
 
     });
+});

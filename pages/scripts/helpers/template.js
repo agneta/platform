@@ -21,68 +21,68 @@ const path = require('path');
 
 module.exports = function(locals) {
 
-    var project = locals.project;
+  var project = locals.project;
 
-    _.templateSettings = {
-        interpolate: /\$\{(.+?)\}/g
-    };
+  _.templateSettings = {
+    interpolate: /\$\{(.+?)\}/g
+  };
 
-    project.extend.helper.register('render', function(template) {
-        if (!_.isString(template)) {
-            return template;
-        }
-        return _.template(template)(this);
+  project.extend.helper.register('render', function(template) {
+    if (!_.isString(template)) {
+      return template;
+    }
+    return _.template(template)(this);
 
-    });
+  });
 
-    project.extend.helper.register('template', function(path_partial, data, cache) {
+  project.extend.helper.register('template', function(path_partial, data, cache) {
 
-        var content;
-        var memCache = locals.cache.templates;
+    var content;
+    var memCache = locals.cache.templates;
 
-        if (cache) {
+    if (cache) {
 
-            content = memCache.get(path_partial);
+      content = memCache.get(path_partial);
 
-            if (content) {
-                //console.log('serving cached:', path_partial);
-                return content;
-            }
-        }
-
-        var file_path = project.theme.getTemplateFile(path_partial + '.ejs');
-        if (!file_path) {
-            throw new Error('Could not find template: ' + path_partial);
-        }
-
-        content = fs.readFileSync(file_path, 'utf8');
-        content = ejs.render.apply(this, [content,
-            _.extend(this, data, {
-                locals: data || {}
-            })
-        ]);
-
-        if (cache) {
-            memCache.set(path_partial, content);
-            //console.log('cache', memCache.length, memCache.itemCount);
-        }
-
+      if (content) {
+        //console.log('serving cached:', path_partial);
         return content;
-    });
+      }
+    }
 
-    project.extend.helper.register('has_template', function(req) {
-        var path_partial = path.join(project.paths.base, "source", req + ".ejs");
+    var file_path = project.theme.getTemplateFile(path_partial + '.ejs');
+    if (!file_path) {
+      throw new Error('Could not find template: ' + path_partial);
+    }
 
-        var res = this.is_file(path_partial);
+    content = fs.readFileSync(file_path, 'utf8');
+    content = ejs.render.apply(this, [content,
+      _.extend(this, data, {
+        locals: data || {}
+      })
+    ]);
 
-        if (res) {
-            return true;
-        }
+    if (cache) {
+      memCache.set(path_partial, content);
+      //console.log('cache', memCache.length, memCache.itemCount);
+    }
 
-        path_partial = path.join(project.paths.baseTheme, "source", req + ".ejs");
+    return content;
+  });
 
-        return this.is_file(path_partial);
+  project.extend.helper.register('has_template', function(req) {
+    var path_partial = path.join(project.paths.base, 'source', req + '.ejs');
 
-    });
+    var res = this.is_file(path_partial);
+
+    if (res) {
+      return true;
+    }
+
+    path_partial = path.join(project.paths.baseTheme, 'source', req + '.ejs');
+
+    return this.is_file(path_partial);
+
+  });
 
 };

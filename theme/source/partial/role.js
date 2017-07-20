@@ -16,46 +16,46 @@
  */
 (function() {
 
-    var app = window.angular.module('MainApp');
+  var app = window.angular.module('MainApp');
 
-    app.controller('FormRole', function($scope, $controller, data, Account) {
+  app.controller('FormRole', function($scope, $controller, data, Account) {
 
-        angular.extend(this, $controller('DialogCtrl', {
-            $scope: $scope
-        }));
+    angular.extend(this, $controller('DialogCtrl', {
+      $scope: $scope
+    }));
 
-        $scope.loading = true;
-        $scope.formRoleFields = {};
+    $scope.loading = true;
+    $scope.formRoleFields = {};
 
-        function load() {
+    function load() {
 
-            Account.roleGet({
-                    accountId: data.accountId,
-                    roleName: data.roleName
-                })
-                .$promise
-                .then(function(role) {
-                    for (var key in role) {
-                        $scope.formRoleFields[key] = role[key];
-                    }
-                })
-                .finally(function() {
-                    $scope.loading = false;
-                });
+      Account.roleGet({
+        accountId: data.accountId,
+        roleName: data.roleName
+      })
+        .$promise
+        .then(function(role) {
+          for (var key in role) {
+            $scope.formRoleFields[key] = role[key];
+          }
+        })
+        .finally(function() {
+          $scope.loading = false;
+        });
 
-        }
+    }
 
-        load();
+    load();
 
-        $scope.update = function() {
-            $scope.loading = true;
-            Account.roleEdit({
-                accountId: data.accountId,
-                roleName: data.roleName,
-                data: $scope.formRoleFields
-            });
-        };
+    $scope.update = function() {
+      $scope.loading = true;
+      Account.roleEdit({
+        accountId: data.accountId,
+        roleName: data.roleName,
+        data: $scope.formRoleFields
+      });
+    };
 
-    });
+  });
 
 })();

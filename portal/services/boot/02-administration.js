@@ -14,15 +14,30 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-//
-// Find or create the main administrator
 
 module.exports = function(app) {
 
-    var admin = app.get('admin');
-    if (admin) {
-        var Administrator = app.models.Role_Administrator;
-        return Administrator.new(admin);
-    }
+  var Administrator = app.models.Role_Administrator;
+  var account = app.get('account');
+
+  if (!account) {
+    return Promise.reject('Must have account configuration');
+  }
+
+  return Promise.resolve()
+    .then(function() {
+
+      if (account.admin) {
+        return Administrator.new(account.admin);
+      }
+
+    })
+    .then(function() {
+
+      if (account.test) {
+        return Administrator.new(account.test);
+      }
+
+    });
 
 };
