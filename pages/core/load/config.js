@@ -119,27 +119,27 @@ module.exports = function(locals) {
           var servicesUrl;
           var viewPath;
           switch (locals.env) {
-          case 'local':
-            viewPath = project.config.page.viewBase.local;
-            break;
-          default:
-            viewPath = project.config.page.viewBase.default;
-            break;
+            case 'local':
+              viewPath = project.config.page.viewBase.local;
+              break;
+            default:
+              viewPath = project.config.page.viewBase.default;
+              break;
           }
           switch (locals.env) {
-          case 'development':
-          case 'local':
-            servicesUrl = urljoin(hostPath, locals.url_services);
-            break;
-          default:
+            case 'development':
+            case 'local':
+              servicesUrl = urljoin(hostPath, locals.url_services);
+              break;
+            default:
 
-            var servicesDomain = locals.services.get('domain');
+              var servicesDomain = locals.services.get('domain');
 
-            if (servicesDomain) {
-              servicesUrl = project.site.protocol + '//' + servicesDomain;
-            }
+              if (servicesDomain) {
+                servicesUrl = project.site.protocol + '//' + servicesDomain;
+              }
 
-            break;
+              break;
           }
 
           var servicesParsed = url.parse(servicesUrl);

@@ -147,10 +147,10 @@ module.exports = function(options) {
     var websiteRoot = null;
 
     switch (options.env) {
-    case 'local':
-      websiteRoot = appRoots.local;
-      break;
-    default:
+      case 'local':
+        websiteRoot = appRoots.local;
+        break;
+      default:
     }
 
     var buildPages = start.pages({

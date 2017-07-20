@@ -121,18 +121,18 @@ module.exports = function(Model, app) {
     var period = ctx.req.query.period;
 
     switch (period) {
-    case 'year':
-    case 'month':
-    case 'week':
-    case 'dayOfYear':
-      break;
-    default:
+      case 'year':
+      case 'month':
+      case 'week':
+      case 'dayOfYear':
+        break;
+      default:
 
-      var err = new Error('Entered an invalid period');
-      err.statusCode = 400;
-      err.code = 'INVALID_PERIOD';
+        var err = new Error('Entered an invalid period');
+        err.statusCode = 400;
+        err.code = 'INVALID_PERIOD';
 
-      return next(err);
+        return next(err);
 
     }
 

@@ -160,9 +160,9 @@
         var offset = 0;
 
         switch (res.unit) {
-        case 'hourOfYear':
-          offset += timeOffset;
-          break;
+          case 'hourOfYear':
+            offset += timeOffset;
+            break;
         }
 
         for (var index in counts) {
@@ -326,43 +326,43 @@
       var i;
 
       switch ($scope.page.periodSelected) {
-      case 'year':
-        for (i = 0; i < 10; i++) {
-          var id = now.year() - i;
-          values.push({
-            id: id,
-            label: id
-          });
-        }
-        value = now.year();
-        break;
-      case 'month':
-        for (i = 0; i < 12; i++) {
+        case 'year':
+          for (i = 0; i < 10; i++) {
+            var id = now.year() - i;
+            values.push({
+              id: id,
+              label: id
+            });
+          }
+          value = now.year();
+          break;
+        case 'month':
+          for (i = 0; i < 12; i++) {
 
-          values.push({
-            id: i,
-            label: tmp.month(i).format('MMMM')
-          });
+            values.push({
+              id: i,
+              label: tmp.month(i).format('MMMM')
+            });
 
-        }
-        value = now.month();
-        break;
+          }
+          value = now.month();
+          break;
 
-      case 'dayOfYear':
+        case 'dayOfYear':
 
-        var start = tmp.date(1).dayOfYear();
-        var end = tmp.endOf('month').dayOfYear() + 1;
+          var start = tmp.date(1).dayOfYear();
+          var end = tmp.endOf('month').dayOfYear() + 1;
 
-        for (i = start; i < end; i++) {
+          for (i = start; i < end; i++) {
 
-          values.push({
-            id: i,
-            label: tmp.dayOfYear(i).format('DD dddd')
-          });
+            values.push({
+              id: i,
+              label: tmp.dayOfYear(i).format('DD dddd')
+            });
 
-        }
-        value = now.dayOfYear();
-        break;
+          }
+          value = now.dayOfYear();
+          break;
 
       }
 

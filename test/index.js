@@ -19,17 +19,29 @@ const chaiHttp = require('chai-http');
 const klaw = require('klaw');
 const path = require('path');
 const Promise = require('bluebird');
+const urljoin = require('url-join');
 
 chai.should();
 chai.use(chaiHttp);
 
 Promise.resolve()
   .then(function() {
-    require('./portal')();
+    return require('../main/index');
   })
-  .then(function() {
+  .then(function(result) {
 
-    var pathTests = path.join('test');
+    var domain = 'http://localhost:' + result.port;
+
+    var options = {
+      portal: {},
+      client: {}
+    };
+
+    options.portal.api = urljoin(domain, 'api');
+
+    console.log('Start testing');
+
+    var pathTests = path.join(__dirname, 'api');
     var walker = klaw(pathTests);
 
     walker.on('data', function(item) {
@@ -41,11 +53,10 @@ Promise.resolve()
       var path_parsed = path.parse(item.path);
 
       switch (path_parsed.ext) {
-      case '.js':
-          //require(item.path)(options);
-        break;
+        case '.js':
+          require(item.path)(options);
+          break;
       }
-
 
     });
 

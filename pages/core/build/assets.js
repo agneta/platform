@@ -83,9 +83,9 @@ module.exports = function(locals, options) {
       var path_parsed = path.parse(item.path);
 
       switch (path_parsed.ext) {
-      case '.yml':
-      case '.ejs':
-        return;
+        case '.yml':
+        case '.ejs':
+          return;
       }
 
       sourcePaths[key] = {
@@ -148,88 +148,88 @@ module.exports = function(locals, options) {
     }
 
     switch (relativeParsed.ext) {
-    case '.js':
+      case '.js':
 
-      var min_parsed = path.parse(relativeParsed.name);
+        var min_parsed = path.parse(relativeParsed.name);
 
-      if (min_parsed.ext == '.min') {
-        return copy();
-      }
-
-      var code = scriptCompiler.compile(source_file_path, {
-        useBabel: true,
-        babel: {
-          comments: false
+        if (min_parsed.ext == '.min') {
+          return copy();
         }
-      });
 
-      if (minifyJS) {
-        var exclude = false;
-        if (minifyJS.exclude) {
-          var match = micromatch([options.relative], minifyJS.exclude);
-          if (match && match.length) {
-            exclude = true;
+        var code = scriptCompiler.compile(source_file_path, {
+          useBabel: true,
+          babel: {
+            comments: false
+          }
+        });
+
+        if (minifyJS) {
+          var exclude = false;
+          if (minifyJS.exclude) {
+            var match = micromatch([options.relative], minifyJS.exclude);
+            if (match && match.length) {
+              exclude = true;
+            }
+          }
+          if (!exclude) {
+
+            code = ngAnnotate(code,{
+              add: true,
+              remove: true
+            });
+            if (code.errors) {
+              console.error(code.errors);
+              throw new Error(code.errors);
+            }
+            code = code.src;
+            code = UglifyJS.minify(code);
+
+            if(code.error){
+              console.error(code.error);
+              throw new Error(code.error.message);
+            }
+
+            code = code.code;
           }
         }
-        if (!exclude) {
 
-          code = ngAnnotate(code,{
-            add: true,
-            remove: true
-          });
-          if (code.errors) {
-            console.error(code.errors);
-            throw new Error(code.errors);
-          }
-          code = code.src;
-          code = UglifyJS.minify(code);
-
-          if(code.error){
-            console.error(code.error);
-            throw new Error(code.error.message);
-          }
-
-          code = code.code;
+        if(!code){
+          console.log(options);
+          throw new Error('Code is missing for ',options.source);
         }
-      }
 
-      if(!code){
-        console.log(options);
-        throw new Error('Code is missing for ',options.source);
-      }
+        return exportAsset({
+          path: outputFilePath,
+          data: code
+        });
 
-      return exportAsset({
-        path: outputFilePath,
-        data: code
-      });
-
-    case '.css':
+      case '.css':
 
       /////////////////////////////////////////////////
       // MINIFY STYLES - CSS
       /////////////////////////////////////////////////
 
-      if (!(project.config.minify && project.config.minify.css)) {
-        return copy();
-      }
+        if (!(project.config.minify && project.config.minify.css)) {
+          return copy();
+        }
 
-      return exportCSS(
-        fs.readFileSync(source_file_path, {
+        return exportCSS(
+          fs.readFileSync(source_file_path, {
+            encoding: 'utf8'
+          })
+        );
+      case '.styl':
+
+        var str = fs.readFileSync(source_file_path, {
           encoding: 'utf8'
-        })
-      );
-    case '.styl':
+        });
 
-      var str = fs.readFileSync(source_file_path, {
-        encoding: 'utf8'
-      });
-
-      return exportCSS(
-        stylusCompiler(str, source_file_path)
-          .render()
-      );
-    default:
-      return copy();
+        return exportCSS(
+          stylusCompiler(str, source_file_path)
+            .render()
+        );
+      default:
+        return copy();
     }
 
     function exportCSS(css) {

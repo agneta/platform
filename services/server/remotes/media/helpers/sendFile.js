@@ -45,12 +45,12 @@ module.exports = function(Model) {
     operations.push(options);
 
     switch (file.type) {
-    case 'pdf':
+      case 'pdf':
       //TODO: Make PDF preview images
-      break;
-    case 'image':
-      Model.__images.onUpload(options, operations);
-      break;
+        break;
+      case 'image':
+        Model.__images.onUpload(options, operations);
+        break;
     }
 
     var operationProgress = [];

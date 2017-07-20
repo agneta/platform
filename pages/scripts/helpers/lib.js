@@ -36,12 +36,12 @@ module.exports = function(locals) {
     var local;
 
     switch (project.env) {
-    case 'development':
-      if (!locals.web && process.env.LIB_LOCAL) {
-        local = true;
-        basePath = this.url_for('lib');
-      }
-      break;
+      case 'development':
+        if (!locals.web && process.env.LIB_LOCAL) {
+          local = true;
+          basePath = this.url_for('lib');
+        }
+        break;
     }
 
     if (!basePath) {

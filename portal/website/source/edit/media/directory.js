@@ -156,12 +156,12 @@
   $scope.objectClick = function(object) {
 
     switch (object.type) {
-    case 'folder':
-      $scope.openFolder(object);
-      break;
-    default:
-      $scope.openObject(object);
-      break;
+      case 'folder':
+        $scope.openFolder(object);
+        break;
+      default:
+        $scope.openObject(object);
+        break;
 
     }
   };

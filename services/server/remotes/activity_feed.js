@@ -299,18 +299,18 @@ module.exports = function(Model, app) {
             var parentType;
 
             switch (options.type) {
-            case 'hourOfYear':
-              parentType = 'dayOfYear';
-              break;
-            case 'dayOfYear':
-              parentType = 'week';
-              break;
-            case 'week':
-              parentType = 'month';
-              break;
-            case 'month':
-              parentType = 'year';
-              break;
+              case 'hourOfYear':
+                parentType = 'dayOfYear';
+                break;
+              case 'dayOfYear':
+                parentType = 'week';
+                break;
+              case 'week':
+                parentType = 'month';
+                break;
+              case 'month':
+                parentType = 'year';
+                break;
             }
 
             if (parentType) {

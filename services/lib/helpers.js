@@ -50,27 +50,27 @@ module.exports = function(app) {
       var type = mimetype;
 
       switch (mimetype) {
-      case 'image':
-        switch (mediatype) {
-        case 'jpeg':
-        case 'png':
-          type = 'image';
+        case 'image':
+          switch (mediatype) {
+            case 'jpeg':
+            case 'png':
+              type = 'image';
+              break;
+            case 'svg+xml':
+              type = 'icon';
+              break;
+            default:
+
+          }
           break;
-        case 'svg+xml':
-          type = 'icon';
+        case 'application':
+          switch (mediatype) {
+            case 'pdf':
+              type = 'pdf';
+              break;
+          }
           break;
         default:
-
-        }
-        break;
-      case 'application':
-        switch (mediatype) {
-        case 'pdf':
-          type = 'pdf';
-          break;
-        }
-        break;
-      default:
 
       }
 

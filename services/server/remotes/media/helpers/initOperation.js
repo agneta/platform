@@ -64,10 +64,10 @@ module.exports = function(Model, app) {
           contentType: options.mimetype
         };
         return Model.findOne({
-            where: {
-              location: options.location
-            }
-          })
+          where: {
+            location: options.location
+          }
+        })
           .then(function(fileInstance) {
             if (fileInstance) {
               //console.log('file update', fileProps);

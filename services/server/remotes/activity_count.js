@@ -195,15 +195,15 @@ module.exports = function(Model, app) {
     var unit;
 
     switch (period) {
-    case 'year':
-      unit = 'month';
-      break;
-    case 'month':
-      unit = 'dayOfYear';
-      break;
-    case 'dayOfYear':
-      unit = 'hourOfYear';
-      break;
+      case 'year':
+        unit = 'month';
+        break;
+      case 'month':
+        unit = 'dayOfYear';
+        break;
+      case 'dayOfYear':
+        unit = 'hourOfYear';
+        break;
     }
 
     var result = {
@@ -233,47 +233,47 @@ module.exports = function(Model, app) {
 
     switch (unit) {
 
-    case 'month':
-      switch (period) {
-      case 'year':
-        range = _.range(12);
-        break;
-
-      default:
-      }
-
-      subUnit = 'dayOfYear';
-      break;
-
-    case 'dayOfYear':
-
-      switch (period) {
       case 'month':
-        var start = utc.month(value).date(1).dayOfYear();
-        var length = utc.month(value).daysInMonth();
+        switch (period) {
+          case 'year':
+            range = _.range(12);
+            break;
 
-        range = _.range(start, start + length);
+          default:
+        }
+
+        subUnit = 'dayOfYear';
         break;
 
-      default:
-      }
-
-      subUnit = 'hourOfYear';
-      break;
-
-    case 'hourOfYear':
-
-      switch (period) {
       case 'dayOfYear':
-        var start = utc.dayOfYear(value).hour(0).hourOfYear();
-        var length = 24;
 
-        range = _.range(start, start + length);
+        switch (period) {
+          case 'month':
+            var start = utc.month(value).date(1).dayOfYear();
+            var length = utc.month(value).daysInMonth();
+
+            range = _.range(start, start + length);
+            break;
+
+          default:
+        }
+
+        subUnit = 'hourOfYear';
         break;
 
-      default:
-      }
-      break;
+      case 'hourOfYear':
+
+        switch (period) {
+          case 'dayOfYear':
+            var start = utc.dayOfYear(value).hour(0).hourOfYear();
+            var length = 24;
+
+            range = _.range(start, start + length);
+            break;
+
+          default:
+        }
+        break;
     }
 
     result.subUnit = subUnit;

@@ -112,14 +112,14 @@ module.exports = function(locals) {
       }
 
       switch (name) {
-      case 'pattern':
-        name = 'ng-pattern';
-        value = '/' + messages[value].pattern + '/';
-        break;
-      case 'compareTo':
-        name = 'compare-to';
-        value = field.parent + '.' + value;
-        break;
+        case 'pattern':
+          name = 'ng-pattern';
+          value = '/' + messages[value].pattern + '/';
+          break;
+        case 'compareTo':
+          name = 'compare-to';
+          value = field.parent + '.' + value;
+          break;
       }
 
       validators += name;

@@ -66,12 +66,12 @@ module.exports = function(app) {
       .then(function(result) {
         if (result.error) {
           switch (result.error.code) {
-          case 498:
-          case 499:
-            return generateToken()
-              .then(esriQuery);
-          default:
-            throw result.error;
+            case 498:
+            case 499:
+              return generateToken()
+                .then(esriQuery);
+            default:
+              throw result.error;
           }
         }
         return result;

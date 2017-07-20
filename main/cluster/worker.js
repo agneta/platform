@@ -25,14 +25,14 @@ module.exports.run = function(worker) {
   var server;
 
   switch (process.env.MODE) {
-  case 'services':
-    app = loopback();
-    server = require('../server/services');
-    break;
-  default:
-    app = express();
-    server = require('../server/portal');
-    break;
+    case 'services':
+      app = loopback();
+      server = require('../server/services');
+      break;
+    default:
+      app = express();
+      server = require('../server/portal');
+      break;
   }
 
   //--------------------------------
@@ -64,9 +64,10 @@ module.exports.run = function(worker) {
       starting = false;
       console.log(chalk.bold.green('Application is available'));
 
-      process.send({
+      worker.sendToMaster({
         started: true
       });
+
     });
 
 };

@@ -161,12 +161,12 @@ module.exports = function(locals, options) {
             var path_parsed = path.parse(data_path);
 
             switch (path_parsed.ext) {
-            case '':
-              outputPath = path.join(data_path, 'index.html');
-              break;
-            default:
-              outputPath = path.join(path_parsed.dir, path_parsed.base);
-              break;
+              case '':
+                outputPath = path.join(data_path, 'index.html');
+                break;
+              default:
+                outputPath = path.join(path_parsed.dir, path_parsed.base);
+                break;
             }
 
             if (!data._rootPath) {

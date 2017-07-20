@@ -93,46 +93,46 @@ module.exports = function(app) {
       var params = path.parse(pathFile);
 
       switch (params.ext) {
-      case '.yml':
+        case '.yml':
 
-        var promise = locals.main.load.pages();
+          var promise = locals.main.load.pages();
 
-        if (
-          params.dir.indexOf(project.paths.dataTheme) === 0 ||
+          if (
+            params.dir.indexOf(project.paths.dataTheme) === 0 ||
                         params.dir.indexOf(project.paths.data) === 0
-        ) {
-          locals.cache.data.invalidate(pathFile);
-        }
+          ) {
+            locals.cache.data.invalidate(pathFile);
+          }
 
-        if (
-          pathFile.indexOf(project.paths.configTheme) === 0 ||
+          if (
+            pathFile.indexOf(project.paths.configTheme) === 0 ||
                         pathFile.indexOf(project.paths.config) === 0
-        ) {
-          promise = promise.then(locals.main.load.config());
-        }
+          ) {
+            promise = promise.then(locals.main.load.config());
+          }
 
-        return promise
-          .then(function() {
-            project.call_listeners('ready');
-          })
-          .delay(100)
-          .then(function() {
-            reload();
-          })
-          .catch(function(error) {
-            console.error(error);
-          });
+          return promise
+            .then(function() {
+              project.call_listeners('ready');
+            })
+            .delay(100)
+            .then(function() {
+              reload();
+            })
+            .catch(function(error) {
+              console.error(error);
+            });
 
-      case '.styl':
-        reload();
-        break;
-      case '.js':
-        reload();
-        break;
-      case '.ejs':
-        locals.cache.templates.invalidate(pathFile);
-        reload();
-        break;
+        case '.styl':
+          reload();
+          break;
+        case '.js':
+          reload();
+          break;
+        case '.ejs':
+          locals.cache.templates.invalidate(pathFile);
+          reload();
+          break;
       }
 
       function reload() {

@@ -71,13 +71,13 @@ Promise.resolve()
       }
 
       switch (path_parsed.ext) {
-      case '.js':
-        console.log(path_rel);
-        sourcePaths.push({
-          absolute: item.path,
-          relative: path_rel
-        });
-        break;
+        case '.js':
+          console.log(path_rel);
+          sourcePaths.push({
+            absolute: item.path,
+            relative: path_rel
+          });
+          break;
       }
 
     });

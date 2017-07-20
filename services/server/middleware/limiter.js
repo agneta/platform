@@ -61,10 +61,10 @@ module.exports = function(app, config) {
     var message = messages.limitReached;
     var lng = app.getLng(req);
     switch (lng) {
-    case 'gr':
-      lng = 'el';
-      break;
-    default:
+      case 'gr':
+        lng = 'el';
+        break;
+      default:
 
     }
     moment.locale(lng);

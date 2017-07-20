@@ -55,48 +55,48 @@ function newPostPathFilter(data, replace){
 
   if (path){
     switch (layout){
-    case 'page':
-      target = pathFn.join(sourceDir, path);
-      break;
+      case 'page':
+        target = pathFn.join(sourceDir, path);
+        break;
 
-    case 'draft':
-      target = pathFn.join(draftDir, path);
-      break;
+      case 'draft':
+        target = pathFn.join(draftDir, path);
+        break;
 
-    default:
-      target = pathFn.join(postDir, path);
+      default:
+        target = pathFn.join(postDir, path);
     }
   } else if (slug){
     switch (layout){
-    case 'page':
-      target = pathFn.join(sourceDir, slug, 'index');
-      break;
+      case 'page':
+        target = pathFn.join(sourceDir, slug, 'index');
+        break;
 
-    case 'draft':
-      target = pathFn.join(draftDir, slug);
-      break;
+      case 'draft':
+        target = pathFn.join(draftDir, slug);
+        break;
 
-    default:
-      var date = moment(data.date || Date.now());
-      var keys = Object.keys(data);
-      var key = '';
+      default:
+        var date = moment(data.date || Date.now());
+        var keys = Object.keys(data);
+        var key = '';
 
-      var filenameData = {
-        year: date.format('YYYY'),
-        month: date.format('MM'),
-        i_month: date.format('M'),
-        day: date.format('DD'),
-        i_day: date.format('D'),
-        title: slug
-      };
+        var filenameData = {
+          year: date.format('YYYY'),
+          month: date.format('MM'),
+          i_month: date.format('M'),
+          day: date.format('DD'),
+          i_day: date.format('D'),
+          title: slug
+        };
 
-      for (var i = 0, len = keys.length; i < len; i++){
-        key = keys[i];
-        if (!reservedKeys[key]) filenameData[key] = data[key];
-      }
+        for (var i = 0, len = keys.length; i < len; i++){
+          key = keys[i];
+          if (!reservedKeys[key]) filenameData[key] = data[key];
+        }
 
-      target = pathFn.join(postDir, permalink.stringify(
-        _.defaults(filenameData, permalinkDefaults)));
+        target = pathFn.join(postDir, permalink.stringify(
+          _.defaults(filenameData, permalinkDefaults)));
     }
   } else {
     return Promise.reject(new TypeError('Either data.path or data.slug is required!'));

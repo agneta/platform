@@ -283,11 +283,11 @@ module.exports = function(Model, app) {
     var unit = ctx.req.query.unit;
 
     switch (unit) {
-    case 'year':
-    case 'month':
-    case 'dayOfYear':
-    case 'hourOfYear':
-      return next();
+      case 'year':
+      case 'month':
+      case 'dayOfYear':
+      case 'hourOfYear':
+        return next();
     }
 
     var err = new Error('Entered an invalid unit');

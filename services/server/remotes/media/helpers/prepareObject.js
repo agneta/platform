@@ -34,8 +34,8 @@ module.exports = function(Model, app) {
     object.dir = dir;
 
     switch (object.type) {
-    case 'folder':
-      return object;
+      case 'folder':
+        return object;
     }
 
     object.url = prjHelpers.prv_media(object.location);

@@ -84,20 +84,20 @@ module.exports = function(locals) {
     var parsedPath = path.parse(req.path);
 
     switch (parsedPath.ext) {
-    case '.js':
+      case '.js':
 
-      var path_partial = project.theme.getFile(path.join('source', req.path));
+        var path_partial = project.theme.getFile(path.join('source', req.path));
 
-      if (path_partial) {
-        var content = compile(req.path, {
-          useBabel: true
-        });
-        res.setHeader('content-type', 'application/javascript');
-        res.end(content);
-        return;
-      }
-      break;
-    default:
+        if (path_partial) {
+          var content = compile(req.path, {
+            useBabel: true
+          });
+          res.setHeader('content-type', 'application/javascript');
+          res.end(content);
+          return;
+        }
+        break;
+      default:
     }
     next();
   }

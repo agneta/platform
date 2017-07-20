@@ -179,10 +179,10 @@ module.exports = function(locals) {
     var pathParsed = path.parse(pathFile);
 
     switch (pathParsed.ext) {
-    case '.css':
-      pathParsed.base = pathParsed.name + '.styl';
-      return this.has_file(path.format(pathParsed));
-    default:
+      case '.css':
+        pathParsed.base = pathParsed.name + '.styl';
+        return this.has_file(path.format(pathParsed));
+      default:
 
     }
 

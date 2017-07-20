@@ -72,20 +72,20 @@ module.exports = function(Model, app) {
               //----------------------------------------------------------------
               // Recaptcha
 
-            case 'recaptcha':
-              return new Promise(function(resolve, reject) {
-                app.recaptcha.verify(param, function(response) {
-                  if (!response.success) {
-                    errors.push({
-                      code: 'RECAPTCHA_ERROR',
-                      message: 'The recaptcha you sent is invalid',
-                      data: response
-                    });
-                  }
-                  resolve();
-                });
+              case 'recaptcha':
+                return new Promise(function(resolve, reject) {
+                  app.recaptcha.verify(param, function(response) {
+                    if (!response.success) {
+                      errors.push({
+                        code: 'RECAPTCHA_ERROR',
+                        message: 'The recaptcha you sent is invalid',
+                        data: response
+                      });
+                    }
+                    resolve();
+                  });
 
-              });
+                });
 
             }
 
@@ -122,39 +122,39 @@ module.exports = function(Model, app) {
 
               switch (name) {
 
-              case 'pattern':
-                message = fieldMessages[value];
-                var match = param.match(message.pattern);
-                match = match !== null && param == match[0];
+                case 'pattern':
+                  message = fieldMessages[value];
+                  var match = param.match(message.pattern);
+                  match = match !== null && param == match[0];
 
-                if (!match) {
-                  error();
-                }
-                break;
-              case 'min':
-                if (param < value) {
-                  error();
-                }
-                break;
-              case 'max':
-                if (param > value) {
-                  error();
-                }
-                break;
-              case 'minlength':
-                if (_.isString(param)) {
-                  if (param.length < value) {
+                  if (!match) {
                     error();
                   }
-                }
-                break;
-              case 'maxlength':
-                if (_.isString(param)) {
-                  if (param.length > value) {
+                  break;
+                case 'min':
+                  if (param < value) {
                     error();
                   }
-                }
-                break;
+                  break;
+                case 'max':
+                  if (param > value) {
+                    error();
+                  }
+                  break;
+                case 'minlength':
+                  if (_.isString(param)) {
+                    if (param.length < value) {
+                      error();
+                    }
+                  }
+                  break;
+                case 'maxlength':
+                  if (_.isString(param)) {
+                    if (param.length > value) {
+                      error();
+                    }
+                  }
+                  break;
               }
 
             });

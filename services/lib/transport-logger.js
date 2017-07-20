@@ -98,8 +98,8 @@ module.exports = function(app) {
     }
 
     switch (action) {
-    case 'AUTHORIZATION_REQUIRED':
-      return;
+      case 'AUTHORIZATION_REQUIRED':
+        return;
     }
 
     var accountId = data.uid;

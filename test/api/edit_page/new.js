@@ -16,11 +16,11 @@
  */
 const chai = require('chai');
 
-module.exports = function() {
+module.exports = function(options) {
 
   describe('/GET book', () => {
     it('it should GET all the books', (done) => {
-      chai.request('http://')
+      chai.request(options.portal.api)
         .get('/book')
         .end((err, res) => {
           res.should.have.status(200);

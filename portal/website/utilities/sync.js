@@ -155,9 +155,9 @@ module.exports = function(util) {
 
                     if (type) {
                       switch (type.ext) {
-                      case 'gz':
-                        contentEncoding = 'gzip';
-                        break;
+                        case 'gz':
+                          contentEncoding = 'gzip';
+                          break;
                       }
                     }
 

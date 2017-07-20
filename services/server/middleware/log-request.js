@@ -36,12 +36,12 @@ module.exports = function(token) {
 
     var params = {};
     switch (req.method) {
-    case 'GET':
-      params = req.query;
-      break;
-    case 'POST':
-      params = req.body;
-      break;
+      case 'GET':
+        params = req.query;
+        break;
+      case 'POST':
+        params = req.body;
+        break;
     }
 
     params = _.extend({},params);

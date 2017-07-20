@@ -52,10 +52,10 @@ module.exports = function(options) {
       on: function(name, cb) {
 
         switch (name) {
-        case 'connection':
-          return server.on(name, function(socket) {
-            return cb(namespaceMethods(namespace, socket));
-          });
+          case 'connection':
+            return server.on(name, function(socket) {
+              return cb(namespaceMethods(namespace, socket));
+            });
         }
 
         var channel = _socket.subscribe(namespace + '.' + name);

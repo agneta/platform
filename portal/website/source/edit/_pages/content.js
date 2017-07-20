@@ -66,20 +66,20 @@ $scope.addValue = function(field, parent, key) {
   function pushValue(value) {
 
     switch (field.type) {
-    case 'array':
-      var length = parentValue.length;
-      parentValue.push(value);
-      return length;
-    case 'object':
-    case 'media':
-      if (!key) {
-        console.error('Must provide key for object', field);
-      }
-      parentValue[key] = value;
-      return key;
-    default:
-      console.error('Cannot add value to an unrecognised type: ', field.type);
-      break;
+      case 'array':
+        var length = parentValue.length;
+        parentValue.push(value);
+        return length;
+      case 'object':
+      case 'media':
+        if (!key) {
+          console.error('Must provide key for object', field);
+        }
+        parentValue[key] = value;
+        return key;
+      default:
+        console.error('Cannot add value to an unrecognised type: ', field.type);
+        break;
     }
 
   }

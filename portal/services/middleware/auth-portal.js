@@ -28,21 +28,21 @@ module.exports = function(app) {
     var urlParts = reqPath.split('/');
 
     switch (reqPath) {
-    case '/private/page/en/login/view/':
-    case '/private/page/en/login/view-data/':
-    case '/main/compatibility.js':
-    case '/generated/services.js':
-    case '/images/backgrounds/green-field.jpg':
-    case '/login.css':
-    case '/theme.css':
-    case '/style.css':
-    case '/main.js':
-    case '/main/account.js':
-    case '/main/socket.js':
-    case '/main/portal.js':
-    case '/main/interceptors.js':
-    case '/portal/main.js':
-      return next();
+      case '/private/page/en/login/view/':
+      case '/private/page/en/login/view-data/':
+      case '/main/compatibility.js':
+      case '/generated/services.js':
+      case '/images/backgrounds/green-field.jpg':
+      case '/login.css':
+      case '/theme.css':
+      case '/style.css':
+      case '/main.js':
+      case '/main/account.js':
+      case '/main/socket.js':
+      case '/main/portal.js':
+      case '/main/interceptors.js':
+      case '/portal/main.js':
+        return next();
     }
 
     if (reqPath.indexOf(apiAllow) === 0) {

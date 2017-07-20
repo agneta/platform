@@ -42,10 +42,10 @@ module.exports = function(app) {
   //------------------------------------------------------
 
   switch (env) {
-  case 'development':
-  case 'local':
-    app.set('web_url', locals.host);
-    break;
+    case 'development':
+    case 'local':
+      app.set('web_url', locals.host);
+      break;
   }
 
   //console.log('Running on env:',env);

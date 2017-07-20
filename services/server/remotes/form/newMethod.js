@@ -59,9 +59,9 @@ module.exports = function(Model, app) {
         var type = field.valueType || 'string';
 
         switch (field.type) {
-        case 'number':
-          type = 'number';
-          break;
+          case 'number':
+            type = 'number';
+            break;
         }
 
         accepts.push({

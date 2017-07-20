@@ -123,11 +123,11 @@ module.exports = function(locals) {
       var parser;
 
       switch (nameParsed.ext) {
-      case '.yml':
-        parser = yaml.safeLoad;
-        break;
-      default:
-        return;
+        case '.yml':
+          parser = yaml.safeLoad;
+          break;
+        default:
+          return;
       }
 
       if (!parser) {

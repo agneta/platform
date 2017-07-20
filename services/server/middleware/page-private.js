@@ -38,12 +38,12 @@ module.exports = function(app) {
     base: '/' + clientProject.config.page.viewBase.default+'/'
   };
   switch (app.get('env')) {
-  case 'development':
-    defaultView.method = require('./page-private/preview')(app);
-    localView.method = require('./page-private/local')(app);
-    break;
-  default:
-    defaultView.method = require('./page-private/deployed')(app);
+    case 'development':
+      defaultView.method = require('./page-private/preview')(app);
+      localView.method = require('./page-private/local')(app);
+      break;
+    default:
+      defaultView.method = require('./page-private/deployed')(app);
   }
 
   //-----------------------------------------------------------

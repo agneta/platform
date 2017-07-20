@@ -60,23 +60,23 @@ function fieldValue(field) {
   var value;
 
   switch (field.type) {
-  case 'select':
-  case 'value':
-    return '';
-  case 'text':
-  case 'text-rich':
-  case 'text-single':
-    return {
-      en: ''
-    };
-  case 'boolean':
-    return false;
-  case 'media':
-    return {};
-  case 'array':
-    return [];
-  case 'object':
-    return {};
+    case 'select':
+    case 'value':
+      return '';
+    case 'text':
+    case 'text-rich':
+    case 'text-single':
+      return {
+        en: ''
+      };
+    case 'boolean':
+      return false;
+    case 'media':
+      return {};
+    case 'array':
+      return [];
+    case 'object':
+      return {};
   }
 
   console.error('unrecognised type: ', field.type || field);

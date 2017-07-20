@@ -55,9 +55,9 @@
 
       preview.hasBackground = function(file) {
         switch (file.type) {
-        case 'image':
-        case 'icon':
-          return true;
+          case 'image':
+          case 'icon':
+            return true;
         }
       };
 
@@ -73,10 +73,10 @@
       function image(file, size) {
         size = size || 'square';
         switch (file.type) {
-        case 'image':
-          return getUrl(file, size);
-        case 'icon':
-          return getUrl(file);
+          case 'image':
+            return getUrl(file, size);
+          case 'icon':
+            return getUrl(file);
         }
       }
 

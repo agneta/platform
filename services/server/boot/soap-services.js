@@ -66,12 +66,12 @@ module.exports = function(app) {
             }
 
             switch (config.credentials.scheme) {
-            case 'BasicAuth':
-              client.setSecurity(new soap.BasicAuthSecurity(
-                config.credentials.username,
-                config.credentials.password));
-              break;
-            default:
+              case 'BasicAuth':
+                client.setSecurity(new soap.BasicAuthSecurity(
+                  config.credentials.username,
+                  config.credentials.password));
+                break;
+              default:
 
             }
 

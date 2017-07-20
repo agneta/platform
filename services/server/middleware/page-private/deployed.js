@@ -22,11 +22,11 @@ module.exports = function(app) {
   var bucket = config.buckets.app;
 
   switch (app.get('env')) {
-  case 'production':
-    bucket = bucket.production.private;
-    break;
-  default:
-    bucket = bucket.private;
+    case 'production':
+      bucket = bucket.production.private;
+      break;
+    default:
+      bucket = bucket.private;
   }
 
   return function(data) {
