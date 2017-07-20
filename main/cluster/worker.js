@@ -18,6 +18,7 @@ const cluster = require('cluster');
 const express = require('express');
 const loopback = require('loopback');
 const chalk = require('chalk');
+const morgan = require('morgan');
 
 module.exports.run = function(worker) {
 
@@ -32,6 +33,16 @@ module.exports.run = function(worker) {
     default:
       app = express();
       server = require('../server/portal');
+      break;
+  }
+
+  //--------------------------------
+
+  switch (process.env.NODE_ENV) {
+    case 'production':
+      break;
+    default:
+      app.use(morgan('combined'));
       break;
   }
 
@@ -60,12 +71,13 @@ module.exports.run = function(worker) {
     server: httpServer,
     app: app
   })
-    .then(function() {
+    .then(function(result) {
       starting = false;
       console.log(chalk.bold.green('Application is available'));
 
       worker.sendToMaster({
-        started: true
+        started: true,
+        result: result
       });
 
     });

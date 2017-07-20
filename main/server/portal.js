@@ -20,7 +20,8 @@ const path = require('path');
 const start = require('../start');
 const config = require('../config');
 const middleware = require('../middleware');
-const projectPaths = require('../paths').project;
+const projectPaths = require('../paths')
+  .project;
 const Build = require(path.join(projectPaths.framework, 'core/build'));
 
 module.exports = function(options) {
@@ -125,7 +126,7 @@ module.exports = function(options) {
     title: 'Web Pages'
   }, commonOptions));
 
-    // Share apps
+  // Share apps
 
   portalServices.locals.client = portalPages.locals;
   portalServices.locals.web = webPages.locals;
@@ -203,6 +204,13 @@ module.exports = function(options) {
     portalServices,
     webPages,
     portalPages,
-  ]);
+  ])
+    .then(function() {
+      return {
+        portalSettings: _.pick(portalServices.locals.app.settings,[
+          'account'
+        ])
+      };
+    });
 
 };

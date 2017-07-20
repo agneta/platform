@@ -18,6 +18,8 @@ const cluster = require('cluster');
 
 module.exports.run = function(socketCluster) {
 
+  console.log('NODE_ENV', process.env.NODE_ENV);
+
   return new Promise(function(resolve) {
 
     socketCluster.on('ready', function() {
@@ -26,7 +28,7 @@ module.exports.run = function(socketCluster) {
 
     socketCluster.on('workerMessage', function(workerId, msg) {
       if (msg.started) {
-        resolve();
+        resolve(msg.result);
       }
       if (msg.restart) {
         console.log('TODO: restart apps');

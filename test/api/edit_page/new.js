@@ -14,19 +14,39 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const chai = require('chai');
 
 module.exports = function(options) {
 
-  describe('/GET book', () => {
-    it('it should GET all the books', (done) => {
-      chai.request(options.portal.api)
-        .get('/book')
-        .end((err, res) => {
+  describe('Account', function() {
+
+    var account = options.account.test;
+
+    it('should login', function() {
+      return options.agent
+        .post('/api/Accounts/sign-in')
+        .send({
+          email: account.email,
+          password: account.password
+        })
+        .then(function(res) {
+          res.should.have.cookie('access_portal');
+        });
+    });
+
+  });
+
+  describe('Portal Editor', function() {
+    it('should create a new page', function() {
+      return options.agent
+        .post('/api/Edit_Pages/new')
+        .send({
+          language: 'en',
+          path: '/_test/new-file',
+          template: 'content',
+          title: 'New test page'
+        })
+        .then(function(res) {
           res.should.have.status(200);
-          res.body.should.be.a('array');
-          res.body.length.should.be.eql(0);
-          done();
         });
     });
   });

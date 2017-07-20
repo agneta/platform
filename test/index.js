@@ -19,50 +19,47 @@ const chaiHttp = require('chai-http');
 const klaw = require('klaw');
 const path = require('path');
 const Promise = require('bluebird');
-const urljoin = require('url-join');
 
 chai.should();
 chai.use(chaiHttp);
 
-Promise.resolve()
-  .then(function() {
-    return require('../main/index');
-  })
-  .then(function(result) {
+it('Starting the server', function() {
 
-    var domain = 'http://localhost:' + result.port;
+  this.timeout(12000);
 
-    var options = {
-      portal: {},
-      client: {}
-    };
+  return require('../main/index')
+    .then(function(data) {
+      var domain = 'http://localhost:' + data.port;
 
-    options.portal.api = urljoin(domain, 'api');
+      var options = {
+        domain: domain,
+        agent: chai.request.agent(domain),
+        account: data.result.portalSettings.account
+      };
 
-    console.log('Start testing');
+      var pathTests = path.join(__dirname, 'api');
+      var walker = klaw(pathTests);
 
-    var pathTests = path.join(__dirname, 'api');
-    var walker = klaw(pathTests);
+      walker.on('data', function(item) {
 
-    walker.on('data', function(item) {
+        if (item.stats.isDirectory()) {
+          return;
+        }
 
-      if (item.stats.isDirectory()) {
-        return;
-      }
+        var path_parsed = path.parse(item.path);
 
-      var path_parsed = path.parse(item.path);
+        switch (path_parsed.ext) {
+          case '.js':
+            require(item.path)(options);
+            break;
+        }
 
-      switch (path_parsed.ext) {
-        case '.js':
-          require(item.path)(options);
-          break;
-      }
+      });
+
+      return new Promise(function(resolve, reject) {
+        walker.on('end', resolve);
+        walker.on('error', reject);
+      });
 
     });
-
-    return new Promise(function(resolve, reject) {
-      walker.on('end', resolve);
-      walker.on('error', reject);
-    });
-
-  });
+});

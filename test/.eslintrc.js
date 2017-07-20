@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/boot/02-administration.js
+ *   Source file: .eslintrc.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,29 +15,8 @@
  *   limitations under the License.
  */
 
-module.exports = function(app) {
-
-  var Administrator = app.models.Role_Administrator;
-  var account = app.get('account');
-
-  if (!account) {
-    return Promise.reject('Must have account configuration');
+module.exports = {
+  "env": {
+    "mocha": true
   }
-
-  return Promise.resolve()
-    .then(function() {
-
-      if (account.admin) {
-        return Administrator.new(account.admin);
-      }
-
-    })
-    .then(function() {
-
-      if (account.test) {
-        return Administrator.new(account.test);
-      }
-
-    });
-
 };

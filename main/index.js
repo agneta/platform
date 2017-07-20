@@ -58,8 +58,9 @@ var options = {
 var socketCluster = new SocketCluster(options);
 module.exports = require('./cluster/master')
   .run(socketCluster)
-  .then(function(){
+  .then(function(result){
     return {
-      port: port
+      port: port,
+      result: result
     };
   });
