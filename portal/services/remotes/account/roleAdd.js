@@ -14,14 +14,13 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var _ = require('lodash');
 
-module.exports = function(Model, app) {
+module.exports = function(Model) {
 
   Model.roleAdd = function(id, name) {
 
     return Model._roleAdd(id, name)
-      .then(function(result) {
+      .then(function() {
         return {
           success: 'The role was added'
         };

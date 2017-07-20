@@ -15,12 +15,8 @@
  *   limitations under the License.
  */
 var Promise = require('bluebird');
-var nodegit = require('nodegit');
-var path = require('path');
-var _ = require('lodash');
 var yaml = require('js-yaml');
 var fs = require('fs-extra');
-
 
 module.exports = function(app) {
 
@@ -33,7 +29,7 @@ module.exports = function(app) {
       });
     }
 
-    return fs.writeFile(filePath, yaml.safeDump(data));
+    return fs.outputFile(filePath, yaml.safeDump(data));
 
   };
 

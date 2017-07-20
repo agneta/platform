@@ -57,7 +57,6 @@ function get(options) {
   paths.scriptsTheme = path.join(paths.baseTheme, 'scripts');
   paths.sourceTheme = path.join(paths.baseTheme, 'source');
   paths.assetsTheme = path.join(paths.sourceTheme, 'assets');
-  paths.pagesTheme = path.join(paths.sourceTheme, 'pages');
   paths.configTheme = path.join(paths.baseTheme, 'config.yml');
 
   paths.config = path.join(paths.base, 'config.yml');
@@ -66,7 +65,6 @@ function get(options) {
   paths.build = path.join(paths.base, 'build');
   paths.template = path.join(paths.base, 'templates');
   paths.source = path.join(paths.base, 'source');
-  paths.pages = path.join(paths.source, 'pages');
   paths.assets = path.join(paths.source, 'assets');
   paths.generated = path.join(paths.source, 'generated');
   paths.tmp = path.join(paths.base, 'tmp');

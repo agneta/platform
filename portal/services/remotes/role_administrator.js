@@ -14,7 +14,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var _ = require('lodash');
 
 module.exports = function(Model, app) {
 
@@ -88,13 +87,8 @@ module.exports = function(Model, app) {
       })
       .then(function(account) {
 
-        return Model.findOrCreate({
-          where: {
-            accountId: account.id
-          }
-        }, {
-          accountId: account.id
-        });
+        return Account._roleAdd(account.id,'administrator');
+
       });
 
   };

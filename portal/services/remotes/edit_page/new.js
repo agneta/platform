@@ -14,11 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var Promise = require('bluebird');
-var _ = require('lodash');
-var yaml = require('js-yaml');
 var path = require('path');
-var fs = require('fs-extra');
 
 module.exports = function(Model, app) {
 
@@ -27,7 +23,7 @@ module.exports = function(Model, app) {
 
   Model.new = function(title, filePath, template, req) {
 
-    var source = path.join(webPrj.paths.pages, filePath + '.yml');
+    var source = path.join(webPrj.paths.source, filePath + '.yml');
 
     var yamlTitle = {};
     yamlTitle[app.getLng(req)] = title;

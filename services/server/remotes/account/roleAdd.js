@@ -67,7 +67,10 @@ module.exports = function(Model, app) {
           return result[1];
         }
 
-        throw new Error('Role already exists');
+        return {
+          alreadyExists: true,
+          message: 'Role already exists'
+        };
       });
 
   };
