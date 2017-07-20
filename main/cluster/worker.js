@@ -18,7 +18,6 @@ const cluster = require('cluster');
 const express = require('express');
 const loopback = require('loopback');
 const chalk = require('chalk');
-const morgan = require('morgan');
 
 module.exports.run = function(worker) {
 
@@ -33,16 +32,6 @@ module.exports.run = function(worker) {
     default:
       app = express();
       server = require('../server/portal');
-      break;
-  }
-
-  //--------------------------------
-
-  switch (process.env.NODE_ENV) {
-    case 'production':
-      break;
-    default:
-      app.use(morgan('combined'));
       break;
   }
 
