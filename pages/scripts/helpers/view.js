@@ -64,7 +64,8 @@ module.exports = function(locals) {
     //----------------------------------------
 
     data.layoutClass = [
-      'page-' + page.templateSource.split('/').join('-')
+      'page-' + page.templateSource.split('/')
+      .join('-')
     ];
     if (page.class) {
       data.layoutClass.push(page.class);
@@ -130,10 +131,7 @@ module.exports = function(locals) {
 
     //----------------------------------------
 
-    var sidebarName = page.templateSource + '.sidebar';
-    if (this.has_template(sidebarName)) {
-      data.sidebar = this.get_path(urljoin(this.pagePath(page), 'sidebar'));
-    }
+    data.sidebar = this.get_path(urljoin(this.pagePath(page), 'sidebar'));
 
     //----------------------------------------
 

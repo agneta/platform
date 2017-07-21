@@ -175,18 +175,17 @@ module.exports = function(locals) {
           return;
         }
 
-        var sidebarPath = page.template + '.sidebar';
-        if (app.locals.has_template(sidebarPath)) {
-
-          return run(_.extend({},
-            page,
-            pageBase, {
-              template: sidebarPath,
-              path: nPath.join(page.path, 'sidebar')
-            }));
+        var template = page.template + '.sidebar';
+        if (!app.locals.has_template(template)) {
+          template = 'sidebar';
         }
 
-        return Promise.resolve();
+        return run(_.extend({},
+          page,
+          pageBase, {
+            template: template,
+            path: nPath.join(page.path, 'sidebar')
+          }));
 
       });
   }

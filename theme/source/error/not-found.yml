@@ -8,3 +8,4 @@ description:
 
 template: 'error/not-found'
 searchDisabled: true
+menuHide: true 

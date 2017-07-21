@@ -1,0 +1,7 @@
+<%if(!item.menuHide){%>
+<a ng-href="<%-get_path(item)%>" class="md-padding item" layout="row" layout-align="start center">
+  <span><%-lng(item.title)%></span>
+  <span flex="auto"></span>
+  <md-icon md-svg-src="<%-get_icon('material/keyboard-arrow-right')%>"></md-icon>
+</a>
+<%}%>

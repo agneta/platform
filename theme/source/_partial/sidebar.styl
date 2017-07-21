@@ -2,10 +2,10 @@ md-sidenav {
 
   .toolbar{
     .title{
-          white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 18px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 18px;
     }
   }
   md-list-item {
@@ -25,4 +25,23 @@ md-sidenav {
 
 md-backdrop.md-sidenav-backdrop {
   z-index: 55;
+}
+
+.sidebar-default{
+  .heading{
+    background: color-primary;
+    color: white;
+  }
+  .item{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: pointer;
+    &:hover{
+      background: rgb(231, 231, 231);
+    }
+    &.active {
+      pointer-events: none;
+      background: color-accent;
+    }
+  }
 }
