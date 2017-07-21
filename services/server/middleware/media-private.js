@@ -49,7 +49,7 @@ module.exports = function(app) {
     return Promise.resolve()
       .then(function() {
 
-        //return app.storage.s3.headObjectAsync(params);
+        //return app.storage.headObject(params);
         return Media_Private.findOne({
           where: {
             location: remotePath
@@ -96,8 +96,7 @@ module.exports = function(app) {
         res.set('Last-Modified', item.updatedAt);
         res.set('Content-Disposition', `filename="${filename}"`);
 
-        app.storage.s3.getObject(params)
-          .createReadStream()
+        app.storage.getObjectStream(params)
           .on('error', function(err) {
             next(err);
           }).pipe(res);

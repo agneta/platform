@@ -30,27 +30,19 @@ module.exports = function(Model, app) {
           id: options.id
         };
 
-
-        var upload = app.storage.s3.upload({
+        return app.storage.upload({
           Bucket: Model.__bucket.name,
           Key: options.location,
           ContentType: options.mimetype,
-          Body: options.file
+          Body: options.file,
+          onProgress: function(progress){
+            options.onProgress(_.extend({
+              uploadedSize: progress.loaded,
+              fileSize: options.size,
+              percentage: progress.loaded / options.size
+            }, socketProps));
+          }
         });
-
-
-        var uploadedSize = 0;
-
-        upload.on('httpUploadProgress', function(progress) {
-
-          options.onProgress(_.extend({
-            uploadedSize: progress.loaded,
-            fileSize: options.size,
-            percentage: progress.loaded / options.size
-          }, socketProps));
-        });
-
-        return upload.promise();
 
       })
       .then(function() {

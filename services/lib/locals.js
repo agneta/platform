@@ -14,29 +14,30 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var _ = require('lodash');
-var path = require('path');
-var fs = require('fs');
-var url = require('url');
-var urljoin = require('url-join');
-var yaml = require('js-yaml');
+const _ = require('lodash');
+const path = require('path');
+const urljoin = require('url-join');
 
 module.exports = function(app, options) {
-  options = options || {};
-  var env = app.get('env');
-  app.set('env', options.env || process.env.NODE_ENV || env);
-  var baseDir = options.dir || process.env.PROJECT_DIR || process.cwd();
 
-  app.set('website_dir', path.join(baseDir, 'website'));
-  app.set('services_dir', path.join(baseDir, 'services'));
-  app.set('options', options);
+  options = options || {};
+
+  var env = options.env || process.env.NODE_ENV || app.get('env');
+  var baseDir = options.dir || process.env.PROJECT_DIR || process.cwd();
 
   if (options.include && !_.isArray(options.include)) {
     options.include = [options.include];
   }
 
+  app.set('env', env);
+  app.set('website_dir', path.join(baseDir, 'website'));
+  app.set('services_dir', path.join(baseDir, 'services'));
+  app.set('options', options);
   app.set('services_include', options.include || []);
   app.set('root', options.root);
+
+  //---------------------------------------------
+  // Merge Config
 
   var configurator = require('./configurator')(app);
   var config = configurator.load('config');
@@ -50,7 +51,8 @@ module.exports = function(app, options) {
     app.set(key, data);
   }
 
-  //
+  //---------------------------------------------
+  // Website URL
 
   var webOpts = options.website || {};
   var website = {
@@ -63,7 +65,8 @@ module.exports = function(app, options) {
 
   app.set('website', website);
 
-  /////
+  //-------------------------------------------
+  // Origins
 
   var allowOrigins = [
     website.host
@@ -71,7 +74,47 @@ module.exports = function(app, options) {
 
   app.set('allowOrigins', allowOrigins);
 
-  ////////////////
+  //-------------------------------------------
+  // Storage
+
+  var storageConfig = app.get('storage');
+  var domain = options.web || options.client;
+  domain = domain.project.config.domain.production;
+
+  var buckets = {
+    media: {
+      name: `media-staging.${domain}`,
+      host: `media-staging.${domain}`,
+      private: `media-private.${domain}`,
+      production: `media.${domain}`
+    },
+    lib: {
+      name: `lib-staging.${domain}`,
+      host: `lib-staging.${domain}`,
+      production: `lib.${domain}`,
+    },
+    app: {
+      name: `staging.${domain}`,
+      host: `staging.${domain}`,
+      private: `staging-private.${domain}`,
+      production: {
+        name: `${domain}`,
+        private: `private.${domain}`,
+      }
+    }
+  };
+
+  switch (env) {
+    case 'production':
+      buckets.media.host = buckets.media.production;
+      buckets.lib.host = buckets.lib.production;
+      break;
+  }
+
+  storageConfig.buckets = buckets;
+
+  //-------------------------------------------
+  // Database
 
   var db = app.get('db');
   var user = '';

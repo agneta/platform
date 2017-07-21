@@ -27,15 +27,15 @@ module.exports = function(locals) {
 
   var project = locals.project;
 
-  return function() {
+  function preInit() {
 
     var themeConfig;
     var websiteConfig;
 
     return readFile(
-      path.join(project.paths.baseTheme, 'config.yml'),
-      'utf8'
-    )
+        path.join(project.paths.baseTheme, 'config.yml'),
+        'utf8'
+      )
       .then(function(content) {
 
         themeConfig = yaml.safeLoad(content);
@@ -62,8 +62,14 @@ module.exports = function(locals) {
 
         }
 
-        //------------------------------------------
-        //
+      });
+
+  }
+
+  function init() {
+
+    return Promise.resolve()
+      .then(function() {
 
         var hostPath = locals.services.get('website') || {};
         hostPath = hostPath.host || locals.host;
@@ -79,7 +85,7 @@ module.exports = function(locals) {
 
         //---------------------
         var packageAgneta = require(
-          path.join(project.paths.agneta,'package.json')
+          path.join(project.paths.agneta, 'package.json')
         );
 
         project.site.version = {
@@ -114,7 +120,8 @@ module.exports = function(locals) {
 
         //---------------------
 
-        var servers = locals.services.get('storage').buckets;
+        var servers = locals.services.get('storage')
+          .buckets;
 
         project.site.servers = {};
         for (var key in servers) {
@@ -164,8 +171,19 @@ module.exports = function(locals) {
 
         }
 
-
       });
 
+  }
+
+  return {
+    init: init,
+    preInit: preInit,
+    load: function() {
+      return preInit()
+        .then(function() {
+          return init();
+        });
+    }
   };
+
 };

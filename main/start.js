@@ -23,12 +23,20 @@ const Promise = require('bluebird');
 
 var start = {
   init: function(subApps) {
+
     return Promise.each(subApps, function(component) {
-      log.info('Initiating: ' + component.locals.app.get('title'));
-      if (component.init) {
-        return component.init();
-      }
-    })
+        if (component.preInit) {
+          return component.preInit();
+        }
+      })
+      .then(function() {
+        return Promise.each(subApps, function(component) {
+          log.info('Initiating: ' + component.locals.app.get('title'));
+          if (component.init) {
+            return component.init();
+          }
+        });
+      })
       .then(function() {
         return Promise.each(subApps, function(component) {
           log.info('Starting: ' + component.locals.app.get('title'));

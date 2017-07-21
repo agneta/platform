@@ -22,8 +22,6 @@ module.exports = function(util) {
   var services = util.locals.services;
   var storage = services.storage;
 
-  var s3 = storage.s3;
-
   function sync(options) {
 
     var bucketTarget = options.target;
@@ -35,7 +33,7 @@ module.exports = function(util) {
     var filesCopied = [];
     var filesSkipped = [];
 
-    return s3.listAllObjects({
+    return storage.listAllObjects({
       bucket: bucketSource,
       onData: function(files) {
         filesSource = filesSource.concat(files);
@@ -58,7 +56,7 @@ module.exports = function(util) {
         util.log('Source Total Size:', prettyBytes(totalSize));
         util.log('------------------------------------------');
 
-        return s3.listAllObjects({
+        return storage.listAllObjects({
           bucket: bucketTarget,
           onData: function(files) {
             filesTarget = filesTarget.concat(files);
@@ -103,7 +101,7 @@ module.exports = function(util) {
 
               var keyEncoded = encodeURI(file.Key);
 
-              return s3.copyObjectAsync({
+              return storage.copyObject({
                 Bucket: bucketTarget,
                 CopySource: bucketSource + '/' + keyEncoded,
                 Key: file.Key,

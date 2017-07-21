@@ -15,8 +15,6 @@
  *   limitations under the License.
  */
 var start = require('./start');
-var log = require('./log');
-var Promise = require('bluebird');
 
 module.exports = function(options) {
 
@@ -55,6 +53,7 @@ module.exports = function(options) {
 
   return {
     init: init,
+    preInit: component.preInit,
     start: component.start,
     locals: component.locals
   };

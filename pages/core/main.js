@@ -85,7 +85,7 @@ module.exports = function(locals) {
     helper.register = function(name, callback) {
 
       appLocals[name] = function() {
-        return callback.apply(_.extend({},this, appLocals), arguments);
+        return callback.apply(_.extend({}, this, appLocals), arguments);
       };
 
     };
@@ -136,7 +136,8 @@ module.exports = function(locals) {
   locals.main = {
     init: init,
     start: start,
-    load: load
+    load: load,
+    preInit: load.preInit
   };
 
   return locals.main;

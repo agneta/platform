@@ -20,7 +20,7 @@ const Promise = require('bluebird');
 module.exports = function(Model, app) {
 
   Model.__moveObject = function(operation) {
-    return app.storage.s3.copyObjectAsync({
+    return app.storage.copyObject({
       Bucket: Model.__bucket.name,
       CopySource: urljoin(Model.__bucket.name, operation.source),
       Key: operation.target,
@@ -40,7 +40,7 @@ module.exports = function(Model, app) {
         if (operation.source == operation.target) {
           return;
         }
-        return app.storage.s3.deleteObjectAsync({
+        return app.storage.deleteObject({
           Bucket: Model.__bucket.name,
           Key: operation.source
         });

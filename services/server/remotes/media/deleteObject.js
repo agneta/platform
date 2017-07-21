@@ -63,7 +63,7 @@ module.exports = function(Model, app) {
       })
       .then(function() {
 
-        return app.storage.s3.deleteObjectsAsync({
+        return app.storage.deleteObjects({
           Bucket: Model.__bucket.name,
           Delete: {
             Objects: files

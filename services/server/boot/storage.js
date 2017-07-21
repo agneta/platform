@@ -16,7 +16,6 @@
  */
 const Promise = require('bluebird');
 const _ = require('lodash');
-var AWS = require('aws-sdk');
 
 module.exports = function(app) {
 
@@ -26,28 +25,21 @@ module.exports = function(app) {
     return;
   }
 
-  AWS.config.update({
-    accessKeyId: config.id,
-    secretAccessKey: config.secret,
-    region: config.region
-  });
+  app.storage = require('./storage/amazon')(app,config);
 
-  var s3 = new AWS.S3();
-  s3 = Promise.promisifyAll(s3);
+  if(!app.storage){
+    app.storage = require('./storage/local')(app);
+  }
 
-  app.storage = {
-    s3: s3
-  };
-
-  s3.listAllObjects = function(options) {
+  app.storage.listAllObjects = function(options) {
 
     var promises = [];
 
     function listAllKeys(marker) {
-      return s3.listObjectsAsync({
-        Bucket: options.bucket,
-        Marker: marker
-      })
+      return app.storage.listObjects({
+          Bucket: options.bucket,
+          Marker: marker
+        })
         .then(function(data) {
 
           var promise = options.onData(data.Contents) || Promise.resolve();

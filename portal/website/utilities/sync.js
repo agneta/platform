@@ -30,7 +30,6 @@ module.exports = function(util) {
 
   var services = util.locals.services;
   var storage = services.storage;
-  var s3 = storage.s3;
 
   function sync(options) {
 
@@ -46,7 +45,7 @@ module.exports = function(util) {
     var filesSkipped = [];
     var filesDeleted = [];
 
-    return s3.listAllObjects({
+    return storage.listAllObjects({
       bucket: containerName,
       onData: function(files) {
         filesDest = filesDest.concat(files);
@@ -165,7 +164,7 @@ module.exports = function(util) {
                       path.parse(fileSource.pathAbs).ext
                     );
 
-                    return s3.uploadAsync({
+                    return storage.upload({
                       Bucket: containerName,
                       Key: fileSource.path,
                       Body: readStream,
@@ -203,7 +202,7 @@ module.exports = function(util) {
 
             var fileDelete = filesDest[index];
 
-            return s3.deleteObjectAsync({
+            return storage.deleteObject({
               Bucket: containerName,
               Key: fileDelete.Key
             })

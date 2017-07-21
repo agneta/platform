@@ -36,10 +36,10 @@ module.exports = function(app) {
       Bucket: bucket,
       Key: key
     };
-    return app.storage.s3.headObjectAsync({
-      Bucket: bucket,
-      Key: key
-    })
+    return app.storage.headObject({
+        Bucket: bucket,
+        Key: key
+      })
       .then(function(storageObjectHead) {
 
         data.res.set('Content-Encoding', storageObjectHead.ContentEncoding);
@@ -47,8 +47,7 @@ module.exports = function(app) {
         data.res.set('Content-Length', storageObjectHead.ContentLength);
         data.res.set('Last-Modified', storageObjectHead.LastModified);
 
-        return app.storage.s3.getObject(params)
-          .createReadStream()
+        return app.storage.getObjectStream(params)
           .on('error', function(err) {
             data.next(err);
           })

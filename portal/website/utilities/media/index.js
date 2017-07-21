@@ -40,7 +40,7 @@ module.exports = function(util) {
     function list(marker) {
       var storage = services.storage;
 
-      return storage.s3.listObjectsAsync({
+      return storage.listObjects({
         Bucket: bucket,
         Marker: marker
       })
@@ -118,7 +118,7 @@ module.exports = function(util) {
                 //-------------------------------------------------
 
                 function getFields() {
-                  return storage.s3.headObjectAsync({
+                  return storage.headObject({
                     Bucket: bucket,
                     Key: storageObject.Key
                   })

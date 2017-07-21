@@ -15,9 +15,6 @@
  *   limitations under the License.
  */
 var path = require('path');
-var fs = require('fs-extra');
-var childProcess = require('child_process');
-var Promise = require('bluebird');
 var _ = require('lodash');
 
 module.exports = function(options) {
@@ -59,7 +56,8 @@ module.exports = function(options) {
 
   Object.defineProperty(locals, 'agneta', {
     get: function() {
-      var stack = new Error().stack;
+      var stack = new Error()
+        .stack;
       console.warn('Deprecated method "agneta", will be removed');
       console.log(stack);
       return locals.project;
@@ -79,6 +77,7 @@ module.exports = function(options) {
   //-----------------------------------------------------------------
   return {
     locals: locals,
+    preInit: locals.main.preInit,
     init: function() {
 
       locals.project.env = locals.env || 'development';

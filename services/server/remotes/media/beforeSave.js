@@ -35,7 +35,7 @@ module.exports = function(Model, app) {
             Bucket: Model.__bucket.name,
             Key: instance.location
           };
-          return app.storage.s3.headObjectAsync(headParams)
+          return app.storage.headObject(headParams)
             .then(function(storageObjectHead) {
               data.size = storageObjectHead.ContentLength;
               //console.log('size', instance.location);

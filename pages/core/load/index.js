@@ -14,8 +14,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var Promise = require('bluebird');
-
 
 module.exports = function(locals) {
 
@@ -23,29 +21,31 @@ module.exports = function(locals) {
   var scripts = require('./scripts')(locals);
   var pages = require('./pages')(locals);
 
+  var loadConfig = locals.load;
+
   return {
     pages: pages,
-    config: config,
+    config: config.load,
     scripts: scripts,
+    preInit: config.preInit,
     init: function() {
-      var loadConfig = locals.load;
-      return config()
+
+      return config.init()
         .then(function() {
           if (loadConfig.scripts) {
             return scripts();
           }
         });
+
     },
     start: function() {
 
-      var promise = Promise.resolve();
-      var loadConfig = locals.load;
-
-      if (loadConfig.pages) {
-        promise = promise.then(pages);
-      }
-
-      return promise;
+      return Promise.resolve()
+        .then(function() {
+          if (loadConfig.pages) {
+            return pages();
+          }
+        });
 
     }
   };
