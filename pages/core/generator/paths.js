@@ -12,7 +12,7 @@ module.exports = function(locals) {
           parentName: page.parent
         });
         if (parent) {
-          page.parentPath = helpers.get_path(parent);
+          page.parentPath = parent.path;
         }
       }
 
@@ -24,14 +24,14 @@ module.exports = function(locals) {
       if (basePage) {
         basePage = helpers.get_page(basePage);
         if (basePage) {
-          page.parentPath = helpers.get_path(basePage);
+          page.parentPath = basePage.path;
         }
       }
 
       //-----------------------------------------
 
       if (!page.parentPath) {
-        page.parentPath = helpers.get_path('/');
+        page.parentPath = '/';
       }
 
       if (page.templateSource == 'home') {

@@ -210,6 +210,8 @@
         $scope.get_avatar = agneta.get_avatar;
         $scope.get_asset = agneta.get_asset;
         $scope.get_icon = agneta.get_icon;
+        $scope.get_path = agneta.langPath;
+
 
         $scope.url = agneta.url;
         $scope.lng = agneta.lng;
