@@ -23,50 +23,38 @@ var yaml = require('js-yaml');
 module.exports = function(locals) {
 
   var project = locals.project;
-  var templates;
+  var templates = {};
 
-  function run() {
+  var dataPathTheme = path.join(project.paths.baseTheme, 'rules.yml');
+  var dataPath = path.join(project.paths.base, 'rules.yml');
 
-    //console.log('Get rules..');
+  fs.ensureFileSync(dataPathTheme);
+  var dataTheme = yaml.safeLoad(fs.readFileSync(dataPathTheme, 'utf8'));
 
-    templates = {};
+  fs.ensureFileSync(dataPath);
+  var data = yaml.safeLoad(fs.readFileSync(dataPath, 'utf8'));
 
-    var dataPathTheme = path.join(project.paths.baseTheme, 'rules.yml');
-    var dataPath = path.join(project.paths.base, 'rules.yml');
+  _.mergeWith(data, dataTheme, mergeFn);
 
-    fs.ensureFileSync(dataPathTheme);
-    var dataTheme = yaml.safeLoad(fs.readFileSync(dataPathTheme, 'utf8'));
+  if (data) {
 
-    fs.ensureFileSync(dataPath);
-    var data = yaml.safeLoad(fs.readFileSync(dataPath, 'utf8'));
+    for (var props of data) {
 
-    _.mergeWith(data, dataTheme, mergeFn);
+      if (props.templates) {
 
-    if (data) {
+        for (var name of props.templates) {
 
-      for (var props of data) {
-
-        if (props.templates) {
-
-          for (var name of props.templates) {
-
-            var template = templates[name] || {
-              scripts: [],
-              styles: []
-            };
-            _.mergeWith(template, props.data, mergeFn);
-            templates[name] = template;
-          }
+          var template = templates[name] || {
+            scripts: [],
+            styles: []
+          };
+          _.mergeWith(template, props.data, mergeFn);
+          templates[name] = template;
         }
       }
     }
-
-    return project.site.pages.map(function(page) {
-      processData(page);
-      return page.save();
-    });
-
   }
+
 
   function mergeFn(objValue, srcValue) {
     if (_.isArray(objValue) || _.isArray(srcValue)) {
@@ -77,7 +65,7 @@ module.exports = function(locals) {
     }
   }
 
-  function processData(data) {
+  function run(data) {
 
     data.styles = data.styles || [];
     data.scripts = data.scripts || [];

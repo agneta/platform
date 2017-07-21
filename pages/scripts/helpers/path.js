@@ -74,14 +74,16 @@ module.exports = function(locals) {
 
   project.extend.helper.register('get_page', function(path_request) {
 
-    return getPage(path_request).data;
+    return getPage(path_request)
+      .data;
   });
 
   //.......................................................
 
   project.extend.helper.register('has_path', function(path_request) {
 
-    return getPage(path_request).data ? true : false;
+    return getPage(path_request)
+      .data ? true : false;
 
   });
 
@@ -96,7 +98,7 @@ module.exports = function(locals) {
     path_request = clean_path(path_request);
     var tmp = path_request.split('/');
 
-    if (project.site.languages[tmp[0]]) {
+    if (_.get(project, 'site.languages.' + tmp[0])) {
       tmp.shift();
     }
 
@@ -109,8 +111,8 @@ module.exports = function(locals) {
   //----------------------------------------------------------------------
 
   project.extend.helper.register('full_path', function(path_request) {
-    console.log(project.site.url_web,path_request);
-    return urljoin(project.site.url_web,path_request);
+    console.log(project.site.url_web, path_request);
+    return urljoin(project.site.url_web, path_request);
   });
 
   //----------------------------------------------------------------------
@@ -147,7 +149,7 @@ module.exports = function(locals) {
     var result = this.get_path(path_request);
     result = this.clean_path(result);
     if (project.config.root &&
-            result.indexOf(project.config.root) === 0
+      result.indexOf(project.config.root) === 0
     ) {
       result = result.substring(project.config.root.length + 1);
     }

@@ -17,14 +17,17 @@
 var Promise = require('bluebird');
 var _ = require('lodash');
 var nPath = require('path');
-var Rules = require('./rules');
+var Rules = require('./generator/rules');
+var Paths = require('./generator/paths');
 var pageProcessor = require('../pages/page');
 
 module.exports = function(locals) {
 
   var app = locals.app;
   var project = locals.project;
+
   var rules = Rules(locals);
+  var paths = Paths(locals);
 
   var Page = project.model('Page');
 
@@ -83,7 +86,13 @@ module.exports = function(locals) {
 
     })
     .then(function() {
-      return rules.run();
+
+      return project.site.pages.map(function(page) {
+        rules.run(page);
+        paths.run(page);
+        page.save();
+      });
+
     });
 
 
@@ -140,12 +149,12 @@ module.exports = function(locals) {
         if (page.authorization) {
 
           return run(_.extend({},
-            page,
-            pageBase, {
-              isView: true,
-              path: nPath.join(page.path, 'view-auth'),
-              template: 'authorization'
-            }))
+              page,
+              pageBase, {
+                isView: true,
+                path: nPath.join(page.path, 'view-auth'),
+                template: 'authorization'
+              }))
             .then(function() {
 
               return run(_.extend({},

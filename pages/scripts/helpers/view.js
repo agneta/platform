@@ -30,6 +30,7 @@ module.exports = function(locals) {
 
     data.title = this.get_title(page);
     data.path = page.pathSource;
+    data.parentPath = page.parentPath;
     data.scripts = [];
     data.styles = [];
     data.languages = [];
@@ -58,25 +59,6 @@ module.exports = function(locals) {
         href: url,
         linkClass: linkClass
       });
-    }
-
-    //----------------------------------------
-
-    if (page.parent) {
-      var parent = project.site.pages.findOne({
-        parentName: page.parent
-      });
-      if (parent) {
-        data.parentPath = this.get_path(parent);
-      }
-    }
-
-    if (!data.parentPath) {
-      data.parentPath = this.get_path('/');
-    }
-
-    if (page.templateSource == 'home') {
-      data.parentPath = null;
     }
 
     //----------------------------------------

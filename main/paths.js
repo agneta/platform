@@ -15,7 +15,6 @@
  *   limitations under the License.
  */
 var path = require('path');
-var config = require('./config');
 var appName = process.env.APP_NAME || 'website';
 
 //console.log('Application folder:', appName);
@@ -31,12 +30,13 @@ function get(options) {
 
   paths.project = process.cwd();
 
-  var projectModules = path.join(paths.project, 'node_modules', 'agneta-platform');
+  var agneta = path.join(paths.project, 'node_modules', 'agneta-platform');
 
-  paths.services = path.join(projectModules, 'services');
-  paths.portal = path.join(projectModules, 'portal');
-  paths.framework = path.join(projectModules, 'pages');
-  paths.baseTheme = path.join(projectModules, 'theme');
+  paths.agneta = agneta;
+  paths.services = path.join(agneta, 'services');
+  paths.portal = path.join(agneta, 'portal');
+  paths.framework = path.join(agneta, 'pages');
+  paths.baseTheme = path.join(agneta, 'theme');
 
   paths.api = path.join(paths.project, 'services');
   paths.portalWebsite = path.join(paths.portal, 'website');

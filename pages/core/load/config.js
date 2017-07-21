@@ -78,6 +78,17 @@ module.exports = function(locals) {
         //console.log('pages:url_web', project.site.url_web);
 
         //---------------------
+        var packageAgneta = require(
+          path.join(project.paths.agneta,'package.json')
+        );
+
+        project.site.version = {
+          node: packageAgneta.engines.node,
+          npm: packageAgneta.engines.npm,
+          agneta: packageAgneta.version
+        };
+
+        //---------------------
 
         var hostParsed = url.parse(project.site.host_web);
 
