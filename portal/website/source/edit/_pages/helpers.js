@@ -62,6 +62,7 @@ function fieldValue(field) {
   switch (field.type) {
     case 'select':
     case 'value':
+    case 'text-value':
       return '';
     case 'text':
     case 'text-rich':

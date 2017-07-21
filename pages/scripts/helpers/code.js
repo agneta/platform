@@ -14,8 +14,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var path = require('path');
-var _ = require('lodash');
 var hljs = require('highlight.js');
 
 module.exports = function(locals) {
@@ -27,7 +25,8 @@ module.exports = function(locals) {
   });
 
   project.extend.helper.register('code', function(name, value) {
-
+    name = name || 'javascript';
+    value = value || '';
     var result = hljs.highlight(name, value);
     result = '<div class="hljs">' + result.value + '</div>';
     return result;

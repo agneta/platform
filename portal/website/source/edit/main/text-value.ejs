@@ -1,0 +1,4 @@
+<md-input-container ng-if="field.type == 'text-value'" class="field text">
+  <label></label>
+  <textarea aria-label="{{field.name}}" ng-model="data.__value" placeholder="{{data.__value}}" ng-keypress="onFieldChange(data)" ng-init="registerInput(data)" md-select-on-focus></textarea>
+</md-input-container>

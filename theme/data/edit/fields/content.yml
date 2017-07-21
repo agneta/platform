@@ -12,3 +12,4 @@ fields:
   - 'attachment'
   - 'table'
   - 'template'
+  - 'code'

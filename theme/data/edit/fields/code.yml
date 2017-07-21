@@ -1,0 +1,15 @@
+icon: material/code
+title:
+  en: 'Code'
+type: 'object'
+fields:
+  -
+    name: 'type'
+    title:
+      en: 'Type'
+    type: 'value'
+  -
+    name: 'value'
+    title:
+      en: 'Value'
+    type: 'text-value'
