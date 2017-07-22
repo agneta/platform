@@ -14,12 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var path = require('path');
-var url = require('url');
 var _ = require('lodash');
 var urljoin = require('url-join');
-var request = require('request-promise');
-var chalk = require('chalk');
 
 module.exports = function(locals) {
 
@@ -28,6 +24,7 @@ module.exports = function(locals) {
 
   project.extend.helper.register('getVersion', function(url, time) {
 
+    var version;
     time = time || defaultTime;
 
     if (_.isString(time)) {

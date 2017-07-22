@@ -72,101 +72,134 @@ color-bar = #fbfbfb;
     }
   }
 
-  .md-virtual-repeat-container .md-virtual-repeat-offsetter{
-    bottom: 0;
-  }
+  .drop-box{
+    position: relative;
 
-  .media-tile{
-
-    cursor: pointer;
-    margin: 4px 0;
-
-    &:hover{
-      background: #f3f3f3;
-    }
-
-    md-icon{
-      color: #7e7d7d;
-    }
-
-    .preview{
-      min-width: 50px;
-      max-width: 50px;
-      min-height: 50px;
-      max-height: 50px;
-      margin: 0;
-      margin-left: 10px;
-
-      background: rgb(232, 231, 231);
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
-
-    .info{
-      white-space: nowrap;
-      .title{
-        font-size: 1.1em;
-      }
-      .description{
-        font-size: 0.9em;
-        color: #808080;
-        background: #ececec;
-        padding: 4px 10px;
-        padding-left: 2px;
-        border-radius: 3px;
-        .entry{
-          &:before{
-            content: " ";
-            width: 8px;
-            height: 8px;
-            background: color-primary;
-            margin: 0 7px;
-            border-radius: 100%;
-            display: inline-block;
-          }
-        }
-        .highlighted{
-          font-weight: bold;
-          color: black;
-        }
-      }
-    }
-
-    .toolset{
-      height: 20px;
+    .drop-cover{
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      color: white;
+      background: alpha(darken(color-primary,10),0.67);
+      transition: opacity 300ms ease;
 
       md-icon{
-        color: #aeaeae;
+        color: white;
+        margin: 10px;
+        width: 100px;
+        height: 100px;
       }
     }
 
-    &.selected{
-      figure{
-        border: solid 9px white;
-        box-shadow: 0 6px 16px grey;
-        z-index: 10;
-      }
-    }
-  }
-
-  .media-tile-footer{
-    background: rgba(0, 0, 0, 0.46);
-  }
-
-  md-tabs{
-
-    &[md-border-bottom]{
-      md-tabs-wrapper{
-        background: #f6f6f6;
+    &.dragover{
+      .drop-cover{
+        opacity: 1;
       }
     }
 
-    md-ink-bar{
-      color: color-primary;
-      background: color-primary;
-      height: 3px;
-    }
   }
 
+  .md-virtual-repeat-container{
+
+    .md-virtual-repeat-offsetter{
+      bottom: 0;
+    }
+
+    .media-tile{
+
+      cursor: pointer;
+      margin: 4px 0;
+
+      &:hover{
+        background: #f3f3f3;
+      }
+
+      md-icon{
+        color: #7e7d7d;
+      }
+
+      .preview{
+        min-width: 50px;
+        max-width: 50px;
+        min-height: 50px;
+        max-height: 50px;
+        margin: 0;
+        margin-left: 10px;
+
+        background: rgb(232, 231, 231);
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      .info{
+        white-space: nowrap;
+        .title{
+          font-size: 1.1em;
+        }
+        .description{
+          font-size: 0.9em;
+          color: #808080;
+          background: #ececec;
+          padding: 4px 10px;
+          padding-left: 2px;
+          border-radius: 3px;
+          .entry{
+            &:before{
+              content: " ";
+              width: 8px;
+              height: 8px;
+              background: color-primary;
+              margin: 0 7px;
+              border-radius: 100%;
+              display: inline-block;
+            }
+          }
+          .highlighted{
+            font-weight: bold;
+            color: black;
+          }
+        }
+      }
+
+      .toolset{
+        height: 20px;
+
+        md-icon{
+          color: #aeaeae;
+        }
+      }
+
+      &.selected{
+        figure{
+          border: solid 9px white;
+          box-shadow: 0 6px 16px grey;
+          z-index: 10;
+        }
+      }
+    }
+
+    .media-tile-footer{
+      background: rgba(0, 0, 0, 0.46);
+    }
+
+    md-tabs{
+
+      &[md-border-bottom]{
+        md-tabs-wrapper{
+          background: #f6f6f6;
+        }
+      }
+
+      md-ink-bar{
+        color: color-primary;
+        background: color-primary;
+        height: 3px;
+      }
+    }
+  }
 }

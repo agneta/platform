@@ -33,7 +33,12 @@
   agneta.get_media = function() {
     var args = Array.prototype.slice.call(arguments);
     args.unshift(agneta.server.media);
-    return urljoin(args);
+    return agneta.urljoin({
+      query: {
+        version: agneta.page.version
+      },
+      path: args
+    });
   };
 
   agneta.prv_media = function() {
@@ -90,7 +95,8 @@
   window.colorLuminance = function ColorLuminance(hex, lum) {
 
     // validate hex string
-    hex = String(hex).replace(/[^0-9a-f]/gi, '');
+    hex = String(hex)
+      .replace(/[^0-9a-f]/gi, '');
     if (hex.length < 6) {
       hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
     }
@@ -101,8 +107,10 @@
       c, i;
     for (i = 0; i < 3; i++) {
       c = parseInt(hex.substr(i * 2, 2), 16);
-      c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
-      rgb += ('00' + c).substr(c.length);
+      c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255))
+        .toString(16);
+      rgb += ('00' + c)
+        .substr(c.length);
     }
 
     return rgb;
@@ -111,27 +119,26 @@
   function url_for(path) {
     path = urljoin([agneta.root, path]);
 
-    if (path[0] != '/')
+    if (path[0] != '/') {
       path = '/' + path;
+    }
 
     return path;
   }
 
   function urljoin(args) {
 
+    var params = [];
+
     if (angular.isObject(args[0])) {
       var options = args[0];
       args = options.path;
       if (options.query) {
-        var params = [];
         for (var key in options.query) {
           var param = options.query[key];
           if (param) {
             params.push(key + '=' + param);
           }
-        }
-        if (params.length) {
-          args.push('?' + params.join('&'));
         }
       }
     }
@@ -161,6 +168,10 @@
       result = protocol + '://' + result;
     } else if (args[0] && args[0][0] == '/') {
       result = '/' + result;
+    }
+
+    if (params.length) {
+      result += '?' + params.join('&');
     }
 
     return result;

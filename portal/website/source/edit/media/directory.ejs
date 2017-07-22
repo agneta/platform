@@ -1,20 +1,24 @@
-<md-virtual-repeat-container ng-hide="searchResults || count===0" class="media-tiles" flex="100">
-  <div
-  md-virtual-repeat="object in objectsOnDemand"
-  md-on-demand
-  ng-click="objectClick(object)"
-  ng-class="{selected:object.selected}"
-  ng-mouseover="object.hovered = true"
-  ng-mouseleave="object.hovered = false"
-  >
-<%-template('edit/media/item')%>
-<div class="md-padding"  ng-if="isLoadingMore(object)" layout="row" layout-sm="column" layout-align="space-around">
+<div ngf-drop="uploadFiles($files)" class="drop-box" ngf-drag-over-class="'dragover'" ngf-multiple="true" flex="100" layout="column">
+  <md-virtual-repeat-container ng-hide="searchResults || count===0" class="media-tiles" flex="100">
 
-  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-</div>
+    <div md-virtual-repeat="object in objectsOnDemand" md-on-demand ng-click="objectClick(object)" ng-class="{selected:object.selected}" ng-mouseover="object.hovered = true" ng-mouseleave="object.hovered = false">
+
+      <%-template('edit/media/item')%>
+
+      <div class="md-padding" ng-if="isLoadingMore(object)" layout="row" layout-sm="column" layout-align="space-around">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+      </div>
+
+    </div>
+
+  </md-virtual-repeat-container>
+
+  <div class="drop-cover" layout="column" layout-align="center center">
+    <md-icon md-svg-src="<%-get_icon('material/file-upload')%>"></md-icon>
+    <p class="message">Drop files to instantly upload here.</p>
+  </div>
 
 </div>
-</md-virtual-repeat-container>
 
 <div ng-show="count===0" layout="column" class="empty-folder" flex="100" layout-align="center center">
   <p class="title">Empty Folder</p>
