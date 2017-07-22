@@ -43,7 +43,9 @@ module.exports = function(app, config) {
     },
     upload: function(options) {
       var upload = s3.upload.apply(s3, arguments);
-      upload.on('httpUploadProgress', options.onProgress);
+      if(options.onProgress){
+        upload.on('httpUploadProgress', options.onProgress);
+      }
       return upload.promise();
     },
 
