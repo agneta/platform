@@ -17,12 +17,10 @@
 var path = require('path');
 var _ = require('lodash');
 var Promise = require('bluebird');
-var path = require('path');
 
 module.exports = function(util) {
 
   var services = util.locals.services;
-
   var configStorage = services.get('storage');
 
   var bucket;

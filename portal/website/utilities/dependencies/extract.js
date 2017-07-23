@@ -21,7 +21,7 @@ var fs = require('fs-extra');
 var Promise = require('bluebird');
 var promiseCopy = Promise.promisify(fs.copy);
 var yaml = require('js-yaml');
-var bower = require('../bower');
+var bower = require('../lib/bower');
 
 module.exports = function(util, dir) {
 

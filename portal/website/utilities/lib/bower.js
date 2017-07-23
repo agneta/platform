@@ -29,7 +29,7 @@ module.exports = function(util, path) {
   });
 
   return new Promise(function(resolve, reject) {
-    var renderer = cli.getRenderer('install', logger.json, bower.config);
+    cli.getRenderer('install', logger.json, bower.config);
 
     logger.once('end', function(data) {
       resolve(data);

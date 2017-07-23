@@ -14,8 +14,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const _ = require('lodash');
-const Promise = require('bluebird');
 const S = require('string');
 const GreekUtils = require('greek-utils');
 
@@ -67,7 +65,6 @@ module.exports = function(util, options) {
     };
 
     var position = 0;
-    var index = 0;
 
     for (var word of words) {
 
@@ -75,8 +72,6 @@ module.exports = function(util, options) {
 
       position += word.length;
       position++;
-
-      index++;
     }
 
     function processWord(word) {

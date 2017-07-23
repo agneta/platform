@@ -22,7 +22,8 @@
 
     var socket = socketCluster.connect({
       host: agneta.services.host,
-      path: '/socket'
+      path: '/socket',
+      autoReconnect: true
     });
 
     socket.on('connect', function() {
@@ -65,8 +66,6 @@
       }
 
     }
-
-
 
     function error(options) {
 

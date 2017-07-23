@@ -5,4 +5,11 @@ title:
 description:
   en: 'Sync your media, libraries, and pages to your Amazon S3 storage service.'
 
+features:
+  -
+    title:
+      gr: Search
+    description:
+      gr: 'Collect the content from the web-pages and generate the keywords, mapping-fields, etc. The search engine is real-time with auto-correction capabilities.'
+
 icon: material/cloud-upload

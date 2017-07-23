@@ -18,7 +18,7 @@ module.exports = function(util) {
 
   var webProject = util.locals.web.project;
   var services = util.locals.services;
-  var sync = require('../sync')(util);
+  var sync = require('../lib/sync/files')(util);
 
   var storageConfig = services.get('storage');
 

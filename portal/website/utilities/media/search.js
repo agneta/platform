@@ -14,9 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const _ = require('lodash');
 const Promise = require('bluebird');
-const Keywords = require('../search/lib/keywords');
+const Keywords = require('../lib/keywords');
 
 module.exports = function(util, options) {
 
@@ -35,7 +34,7 @@ module.exports = function(util, options) {
       keyword: 'Media_Keyword',
       source: 'Media'
     },
-    filename: function(options) {
+    filename: function() {
       return 'keywords_media';
     },
     title: 'location.value',
@@ -67,7 +66,7 @@ module.exports = function(util, options) {
 
         });
       })
-      .then(function(result) {
+      .then(function() {
         var _skip = skip + limit;
         if (count <= _skip) {
           return;

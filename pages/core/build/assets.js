@@ -33,11 +33,9 @@ module.exports = function(locals, options) {
   var project = locals.project;
 
   var minifyJS;
-  var minifyCSS;
 
   if (project.config.minify) {
     minifyJS = project.config.minify.js;
-    minifyCSS = project.config.minify.css;
   }
 
   //----------------------------------------------------------
@@ -173,7 +171,7 @@ module.exports = function(locals, options) {
           }
           if (!exclude) {
 
-            code = ngAnnotate(code,{
+            code = ngAnnotate(code, {
               add: true,
               remove: true
             });
@@ -184,7 +182,7 @@ module.exports = function(locals, options) {
             code = code.src;
             code = UglifyJS.minify(code);
 
-            if(code.error){
+            if (code.error) {
               console.error(code.error);
               throw new Error(code.error.message);
             }
@@ -193,9 +191,9 @@ module.exports = function(locals, options) {
           }
         }
 
-        if(!code){
+        if (!code) {
           console.log(options);
-          throw new Error('Code is missing for ',options.source);
+          throw new Error('Code is missing for ', options.source);
         }
 
         return exportAsset({
@@ -205,9 +203,9 @@ module.exports = function(locals, options) {
 
       case '.css':
 
-      /////////////////////////////////////////////////
-      // MINIFY STYLES - CSS
-      /////////////////////////////////////////////////
+        /////////////////////////////////////////////////
+        // MINIFY STYLES - CSS
+        /////////////////////////////////////////////////
 
         if (!(project.config.minify && project.config.minify.css)) {
           return copy();
@@ -225,8 +223,7 @@ module.exports = function(locals, options) {
         });
 
         return exportCSS(
-          stylusCompiler(str, source_file_path)
-            .render()
+          stylusCompiler(str, source_file_path).render()
         );
       default:
         return copy();
@@ -234,7 +231,8 @@ module.exports = function(locals, options) {
 
     function exportCSS(css) {
 
-      var minified = new CleanCSS().minify(css);
+      var minified = new CleanCSS()
+        .minify(css);
       var file_path = path.join(outputPath, relativeParsed.name + '.css');
 
       if (minified.errors.length) {

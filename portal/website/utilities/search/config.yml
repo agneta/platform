@@ -1,9 +1,0 @@
-title:
-  en: Search
-
-description:
-  en: 'Collect the content from the web-pages and generate the keywords, mapping-fields, etc. The search engine is real-time with auto-correction capabilities.'
-
-utilController: 'UtilSearchCtrl'
-
-icon: material/search

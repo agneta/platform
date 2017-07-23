@@ -50,7 +50,9 @@ module.exports = function(locals) {
       }
 
       var configPath = path.join(utilPath, 'config.yml');
-
+      if (!fs.existsSync(configPath)) {
+        return;
+      }
       var config = yaml.safeLoad(fs.readFileSync(configPath,
         'utf8'
       ));
@@ -69,21 +71,22 @@ module.exports = function(locals) {
 
   var utilPages = [];
 
-  _.values(utilities).forEach(function(utility) {
+  _.values(utilities)
+    .forEach(function(utility) {
 
-    var pageData = _.extend({
-      name: utility.name,
-      builtin: utility.builtin,
-      path: 'utility/' + utility.name,
-      template: 'utility',
-      viewData: {
-        name: utility.name
-      }
-    }, utility.config);
+      var pageData = _.extend({
+        name: utility.name,
+        builtin: utility.builtin,
+        path: 'utility/' + utility.name,
+        template: 'utility',
+        viewData: {
+          name: utility.name
+        }
+      }, utility.config);
 
-    utilPages.push(pageData);
+      utilPages.push(pageData);
 
-  });
+    });
 
   project.site.utilities = utilPages;
 

@@ -23,7 +23,7 @@ module.exports = function(options) {
   if(!worker){
     return;
   }
-    
+
   var app = options.app;
   var server = worker.scServer;
   var cookieParser = require('cookie-parser')(
@@ -130,7 +130,6 @@ module.exports = function(options) {
             );
 
             var token = request.accessToken;
-
             if (token) {
 
               for (var key in allow) {

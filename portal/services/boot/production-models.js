@@ -44,6 +44,7 @@ module.exports = function(app) {
   //--------------------------------------------------
 
   addInstruction('Form');
+  addInstruction('Page');
   addInstruction('Account');
   addInstruction('Activity_Count');
   addInstruction('Activity_Feed');
@@ -73,7 +74,7 @@ module.exports = function(app) {
   });
 
   app.helpers.runRemotes(instructions);
-    
+
   instructions.forEach(function(data) {
     app.model(data.model, {
       dataSource: 'db_prd'

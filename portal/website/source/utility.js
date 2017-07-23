@@ -19,7 +19,7 @@
   var app = angular.module('MainApp');
   var logLimit = 3000;
 
-  app.controller('UtilityCtrl', function($scope, $rootScope, $mdToast, Utility, SocketIO, $mdDialog) {
+  app.controller('UtilityCtrl', function($scope, $rootScope, $mdToast, Utility, SocketIO, $parse, $mdDialog) {
 
     $scope.logLines = [];
     $scope.progressBars = {};
@@ -28,13 +28,23 @@
     var socket = SocketIO.connect('utilities');
     var utilityName = $rootScope.viewData.extra.name;
 
+    $scope.checkCondition = function(parameter) {
+      if (parameter.if) {
+        if (angular.isObject(parameter.if)) {
+          return $parse(parameter.if.prop)($scope.runOptions) == parameter.if.equals;
+        }
+        return $parse(parameter.if)($scope.runOptions);
+      }
+      return true;
+    };
+
     function socketOn(name, cb) {
       socket.on(utilityName + ':' + name, cb);
     }
 
     Utility.state({
-      name: utilityName
-    })
+        name: utilityName
+      })
       .$promise
       .then(function(options) {
         $scope.parameters = options.parameters;

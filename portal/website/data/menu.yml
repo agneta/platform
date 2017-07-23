@@ -68,8 +68,6 @@
     -
       page: 'utility/media'
     -
-      page: 'utility/search'
-    -
       page: 'utility/services'
 -
   title:

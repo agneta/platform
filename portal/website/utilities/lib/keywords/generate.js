@@ -14,10 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var path = require('path');
 var _ = require('lodash');
 var Promise = require('bluebird');
-var S = require('string');
 var cheerio = require('cheerio');
 var urljoin = require('url-join');
 
@@ -57,23 +55,20 @@ module.exports = function(util) {
               if (page.searchDisabled) {
                 return;
               }
-
               return webApp.renderPage(urljoin(page.path, 'view'), web.site.lang)
                 .then(function(html) {
-
+                  console.log(urljoin(page.path, 'view'),html);
                   if (!html) {
                     return;
                   }
 
-                  $ = cheerio.load(html, {
+                  var $ = cheerio.load(html, {
                     decodeEntities: false
                   });
 
                   var title = webApp.locals.lng(page.title);
                   var description = webApp.locals.lng(page.description);
-
                   var elements = $('*').not('a, h1, script');
-
                   var content = [];
 
                   elements.each(function() {
@@ -116,7 +111,7 @@ module.exports = function(util) {
 
         }, {
           concurrency: 3
-        }).then(function(data) {
+        }).then(function() {
 
           return Promise.all([
             util.keywords.deploy(_pages),

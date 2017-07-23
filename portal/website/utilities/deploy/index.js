@@ -14,122 +14,88 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const Sync = require('../sync');
-const SyncBuckets = require('../sync-buckets');
-const Promise = require('bluebird');
-const path = require('path');
+
+const Sync = require('./sync');
+const Pages_DB = require('./pages_db');
+const Search = require('./search');
 
 module.exports = function(util) {
 
-  var webProject = util.locals.web.project;
-  var services = util.locals.services;
+  var sync = Sync(util);
+  var pages_db = Pages_DB(util);
+  var search = Search(util);
 
   return {
     run: function(options) {
 
-      var sync = Sync(util);
-      var syncBuckets = SyncBuckets(util);
+      options.promote = options.promote || {};
+      options.stage = options.stage || {};
 
-      var storageConfig = services.get('storage');
-      var operations = [];
-
-      options.operations = options.operations || {};
-
-      if (options.operations.lib) {
-
-        operations.push({
-          method: syncBuckets,
-          options: {
-            source: storageConfig.buckets.lib.name,
-            target: storageConfig.buckets.lib.production
-          }
+      return pages_db(options)
+        .then(function() {
+          return sync(options);
+        })
+        .then(function() {
+          return search(options);
         });
-
-      }
-
-      if (options.operations.media) {
-
-        operations.push({
-          method: syncBuckets,
-          options: {
-            source: storageConfig.buckets.media.name,
-            target: storageConfig.buckets.media.production
-          }
-        });
-
-      }
-
-      if (options.operations.build_production) {
-
-        operations.push({
-          method: sync,
-          options: {
-            source: path.join(webProject.paths.build, 'production', 'public'),
-            target: storageConfig.buckets.app.production.name
-          }
-        });
-
-        operations.push({
-          method: sync,
-          options: {
-            source: path.join(webProject.paths.build, 'production', 'private'),
-            target: storageConfig.buckets.app.production.private
-          }
-        });
-
-      }
-
-      if (options.operations.build_staging) {
-
-        operations.push({
-          method: sync,
-          options: {
-            source: path.join(webProject.paths.build, 'staging', 'public'),
-            target: storageConfig.buckets.app.name
-          }
-        });
-
-        operations.push({
-          method: sync,
-          options: {
-            source: path.join(webProject.paths.build, 'staging', 'private'),
-            target: storageConfig.buckets.app.private
-          }
-        });
-
-      }
-
-      if (!operations.length) {
-        return Promise.reject({
-          message: 'Nothing to perform. Select at least one operation.'
-        });
-      }
-
-      return Promise.each(operations, function(operation) {
-        return operation.method(
-          operation.options
-        );
-      });
 
     },
     parameters: [{
-      name: 'operations',
-      title: 'Sync Operations',
+      name: 'destination',
+      title: 'Destination',
+      type: 'radio',
+      values: [{
+        name: 'staging',
+        title: 'Staging'
+      },{
+        name: 'production',
+        title: 'Production',
+      }]
+    }, {
+      name: 'promote',
+      title: 'Promote',
+      if: {
+        prop: 'destination',
+        equals: 'production'
+      },
       type: 'checkboxes',
       values: [{
+        name: 'pages',
+        title: 'Pages'
+      }, {
+        name: 'build',
+        title: 'Build'
+      }, {
+        name: 'search',
+        title: 'Search Keywords'
+      }, {
         name: 'media',
         title: 'Media'
       }, {
         name: 'lib',
         title: 'Libraries'
-      }, {
-        name: 'build_production',
-        title: 'Production Build'
-      }, {
-        name: 'build_staging',
-        title: 'Staging Build'
       }]
-    }]
+    },
+    {
+      name: 'stage',
+      title: 'Stage',
+      if: {
+        prop: 'destination',
+        equals: 'staging'
+      },
+      type: 'checkboxes',
+      values: [{
+        name: 'pages',
+        title: 'Pages'
+      }, {
+        name: 'build',
+        title: 'Build'
+      },{
+        name: 'search',
+        title: 'Search Keywords'
+      }]
+    }
+    ]
   };
 
 };

@@ -14,13 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var path = require('path');
-var _ = require('lodash');
 
-module.exports = function(app) {
-
-  var servicesDir = app.get('services_dir');
-  var servicesInclude = app.get('services_include');
+module.exports = function() {
 
   var sources = [
     'loopback/common/models',
@@ -107,6 +102,10 @@ module.exports = function(app) {
       public: true
     },
     Session: {
+      dataSource: 'db',
+      public: false
+    },
+    Page: {
       dataSource: 'db',
       public: false
     },

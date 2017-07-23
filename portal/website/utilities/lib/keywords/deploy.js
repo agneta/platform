@@ -19,7 +19,6 @@ const _ = require('lodash');
 
 module.exports = function(util, options) {
 
-  var Keyword = util.locals.services.models[options.model.keyword];
   var Page = util.locals.services.models[options.model.source];
 
   return function(data) {

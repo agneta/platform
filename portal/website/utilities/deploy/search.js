@@ -14,12 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var path = require('path');
-var _ = require('lodash');
-var Promise = require('bluebird');
-var path = require('path');
-
-const Keywords = require('./lib/keywords');
+const Keywords = require('../lib/keywords');
 
 module.exports = function(util) {
 
@@ -34,15 +29,10 @@ module.exports = function(util) {
     title: 'path'
   });
 
-  var result;
-
-  return {
-    run: function() {
-
-      return require('./lib/generate')(util);
-
+  return function(options) {
+    if (options.stage.search) {
+      return require('../lib/keywords/generate')(util);
     }
   };
-
 
 };
