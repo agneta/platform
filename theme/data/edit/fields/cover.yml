@@ -1,4 +1,5 @@
 title:
   en: 'Cover'
-type: 'media-public'
+type: 'media-value'
 valueType: 'object'
+default_name: 'cover'

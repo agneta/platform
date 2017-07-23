@@ -69,7 +69,8 @@
 
             scope.config = data.config;
             scope.file = {
-                dir: data.dir
+                dir: data.dir,
+                name: data.name
             };
 
             socket.on('file:upload:progress', function(result) {

@@ -6,9 +6,9 @@ fields:
     - text-value
     - text-rich
     - media
-    - media-public
+    - media-value
   inline:
-    - data-value
+    - value
     - text-single
     - boolean
     - select

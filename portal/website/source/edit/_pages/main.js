@@ -108,7 +108,7 @@ $scope.pageAdd = function() {
       var defaultPath = scopeEdit.page && scopeEdit.page.path;
       if (!defaultPath) {
         defaultPath = scopeEdit.template.path_default || '';
-        defaultPath += '/default';
+        defaultPath += '/old-file-name';
       }
 
       defaultPath = defaultPath.split('/');

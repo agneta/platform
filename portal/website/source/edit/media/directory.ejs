@@ -1,5 +1,5 @@
-<div ngf-drop="uploadFiles($files)" class="drop-box" ngf-drag-over-class="'dragover'" ngf-multiple="true" flex="100" layout="column">
-  <md-virtual-repeat-container ng-hide="searchResults || count===0" class="media-tiles" flex="100">
+<div ng-hide="searchResults || count===0" ngf-drop="uploadFiles($files)" class="drop-box" ngf-drag-over-class="'dragover'" ngf-multiple="true" flex="100" layout="column">
+  <md-virtual-repeat-container class="media-tiles" flex="100">
 
     <div md-virtual-repeat="object in objectsOnDemand" md-on-demand ng-click="objectClick(object)" ng-class="{selected:object.selected}" ng-mouseover="object.hovered = true" ng-mouseleave="object.hovered = false">
 

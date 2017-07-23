@@ -55,9 +55,9 @@ module.exports = function(locals) {
       cache.set(pathMedia, true);
 
       request({
-        method: 'HEAD',
-        uri: pathMedia
-      })
+          method: 'HEAD',
+          uri: pathMedia
+        })
         .catch(function(err) {
           console.log(chalk.bgRed('MEDIA_ERROR ' + err.statusCode), pathMedia);
         });
@@ -72,7 +72,7 @@ module.exports = function(locals) {
     page = page || this.page;
     return this.get_media(
       urljoin(
-        this.pagePath(page), path
+        'page', this.pagePath(page), path
       )
     );
   });
@@ -85,18 +85,26 @@ module.exports = function(locals) {
 
     page = page || this.page;
 
+    if (page.cover) {
+
+      var cover = page.cover.__value;
+      var size = cover.size || 'large';
+
+      return this.get_media(cover.location,size);
+    }
+
     if (!page.$cover) {
-      return;
+
+      var name = 'cover';
+
+      if (_.isString(page.$cover)) {
+        name = page.$cover;
+      }
+
+      return this.page_media(name);
+
     }
 
-    var name = 'cover';
-
-    if (_.isString(page.$cover)) {
-      name = page.$cover;
-    }
-
-    var coverPath = urljoin(this.pagePath(page), name);
-    return this.get_media(coverPath);
 
   });
 };

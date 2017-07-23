@@ -18,20 +18,21 @@
 
   var media = {};
 
-  media.editPrivate = function(parent, key) {
-
-    media.edit(parent, key, true);
-
+  media.editPrivate = function(field, parent, key) {
+    media.edit(field, parent, key, true);
   };
 
+  media.editPublic = function(field, parent, key) {
+    media.edit(field, parent, key, false);
+  };
 
-  media.edit = function(parent, key, isPrivate) {
+  media.edit = function(field, parent, key, isPrivate) {
 
     var parentValue = parent.__value || parent;
     var dataValue = parentValue[key].__value;
     var mediaOptions = MediaOpt.public;
 
-    if (dataValue.private) {
+    if (dataValue.private && isPrivate == undefined) {
       isPrivate = true;
     }
 
@@ -48,10 +49,12 @@
       partial: mediaOptions.partial,
       data: {
         config: {
+          nameLock: field.default_name ? true : false,
           dirLock: true
         },
         media: mediaOptions,
         location: dataValue.location,
+        name: field.default_name,
         dir: getBasePath(),
         onApply: function(file) {
           dataValue.type = file.type;
@@ -76,7 +79,7 @@
     return MediaOpt.public;
   }
 
-  media.backgroundImage = function(child) {
+  media.backgroundImage = function(child, size) {
 
     var data = dataValue(child);
     var media = getMedia(data);
@@ -86,7 +89,7 @@
     }
 
     if (data.location && data.type) {
-      return media.preview.backgroundImage(data);
+      return media.preview.backgroundImage(data, size);
     }
 
   };

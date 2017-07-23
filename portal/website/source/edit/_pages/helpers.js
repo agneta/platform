@@ -21,9 +21,9 @@ function setFilePath(file, location) {
 function toast(message) {
   $mdToast.show(
     $mdToast.simple()
-    .textContent(message)
-    .position('bottom right')
-    .hideDelay(3000)
+      .textContent(message)
+      .position('bottom right')
+      .hideDelay(3000)
   );
 }
 
@@ -36,7 +36,7 @@ function fixPath(path) {
 }
 
 function getBasePath() {
-  var base = $scope.page.path;
+  var base = 'page/' + $scope.page.path;
   return fixPath(base);
 }
 
