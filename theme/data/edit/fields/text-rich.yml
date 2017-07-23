@@ -1,6 +1,5 @@
 icon: material/short-text
 title:
-  en: 'Text'
-  gr: 'Κείμενο'
-type: 'text'
+  en: 'Text Rich'
+type: 'text-rich'
 valueType: 'object'

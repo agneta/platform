@@ -3,3 +3,4 @@ title:
   en: 'Media'
   gr: 'Πολυμέσα'
 type: 'media'
+valueType: 'object'

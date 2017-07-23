@@ -13,3 +13,4 @@ fields:
     title:
       en: 'Value'
     type: 'text-value'
+    valueType: 'value'

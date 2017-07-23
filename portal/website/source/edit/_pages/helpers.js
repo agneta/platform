@@ -21,9 +21,9 @@ function setFilePath(file, location) {
 function toast(message) {
   $mdToast.show(
     $mdToast.simple()
-      .textContent(message)
-      .position('bottom right')
-      .hideDelay(3000)
+    .textContent(message)
+    .position('bottom right')
+    .hideDelay(3000)
   );
 }
 
@@ -57,23 +57,11 @@ function dataValue(obj) {
 
 function fieldValue(field) {
 
-  var value;
-
-  switch (field.type) {
-    case 'select':
+  switch (field.valueType || field.type) {
     case 'value':
-    case 'text-value':
       return '';
-    case 'text':
-    case 'text-rich':
-    case 'text-single':
-      return {
-        en: ''
-      };
     case 'boolean':
       return false;
-    case 'media':
-      return {};
     case 'array':
       return [];
     case 'object':

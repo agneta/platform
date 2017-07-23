@@ -3,3 +3,4 @@ title:
   en: 'Text'
   gr: 'Κείμενο'
 type: 'text-single'
+valueType: 'object'

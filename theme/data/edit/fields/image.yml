@@ -2,7 +2,7 @@ icon: material/photo
 title:
   en: 'Image'
   gr: 'Εικόνα'
-type: 'media'
+extend: 'media'
 content_type: 'image'
 fields:
   -

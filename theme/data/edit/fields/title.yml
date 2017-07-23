@@ -2,4 +2,4 @@ icon: material/title
 title:
   en: 'Title'
   gr: 'Τίτλος'
-type: 'text-single'
+extend: 'text-single'

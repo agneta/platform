@@ -10,4 +10,4 @@ fields:
     title:
       en: 'Bullet'
       gr: 'Κουκκίδα'
-    type: 'text-rich'
+    extend: 'text-rich'
