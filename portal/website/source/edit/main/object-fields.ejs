@@ -1,18 +1,20 @@
 <div ng-repeat="(key,value) in data.__value" ng-if="getField(field,key)" ng-init="parentField=field;parent=data; data = value;name=key; field = getField(field,key)">
-    <div layout="row" class="header" layout-align="left center" ng-mouseover="fieldHover(data)">
-        <%-template('edit/main/icon')%>
-            <label>{{edit.lng(field.title)||key}}</label>
-            <%-template('edit/main/inline')%>
-                <span flex></span>
-                <%-template('edit/main/data-tools')%>
-                <%-template('edit/main/contributors')%>
-    </div>
-    <div ng-include="'page-data.html'">
-    </div>
+
+  <div layout="row" class="header" layout-align="left center" ng-mouseover="fieldHover(data)">
+    <%-template('edit/main/icon')%>
+    <label>{{edit.lng(field.title)||key}}</label>
+    <%-template('edit/main/fields-inline')%>
+    <span flex></span>
+    <%-template('edit/main/data-tools')%>
+    <%-template('edit/main/contributors')%>
+  </div>
+
+  <%-template('edit/main/fields-standard')%>
+
 </div>
 <div layout="row" layout-wrap class="add-value-row">
-    <md-button class="property" ng-click="addValue(field,data,key)" ng-init="key=value.name;objectField(value,field,data,key);" ng-repeat="(index,value) in field.fields" ng-show="!value.hidden&&!data.__value[key]">
-        <md-icon ng-if="value.icon" md-svg-icon="{{get_icon(value.icon)}}"></md-icon>
-        <span>{{value.title?edit.lng(value.title):key}}</span>
-    </md-button>
+  <md-button class="property" ng-click="addValue(field,data,key)" ng-init="key=value.name;objectField(value,field,data,key);" ng-repeat="(index,value) in field.fields" ng-show="!value.hidden&&!data.__value[key]">
+    <md-icon ng-if="value.icon" md-svg-icon="{{get_icon(value.icon)}}"></md-icon>
+    <span>{{value.title?edit.lng(value.title):key}}</span>
+  </md-button>
 </div>

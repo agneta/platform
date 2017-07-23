@@ -18,16 +18,16 @@
 
   var media = {};
 
-  media.editPrivate = function(field, parent, key) {
+  media.editPrivate = function(parent, key) {
 
-    media.edit(field, parent, key, true);
+    media.edit(parent, key, true);
 
   };
 
 
-  media.edit = function(field, parent, key, isPrivate) {
+  media.edit = function(parent, key, isPrivate) {
 
-    var parentValue = parent.__value;
+    var parentValue = parent.__value || parent;
     var dataValue = parentValue[key].__value;
     var mediaOptions = MediaOpt.public;
 
@@ -52,7 +52,7 @@
         },
         media: mediaOptions,
         location: dataValue.location,
-        dir: getBasePath(field),
+        dir: getBasePath(),
         onApply: function(file) {
           dataValue.type = file.type;
           dataValue.updatedAt = file.updatedAt;

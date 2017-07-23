@@ -1,0 +1,14 @@
+fields:
+  standard:
+    - array
+    - object
+    - text
+    - text-value
+    - text-rich
+    - media
+    - media-public
+  inline:
+    - data-value
+    - text-single
+    - boolean
+    - select

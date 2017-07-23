@@ -1,18 +1,25 @@
-<script type="text/ng-template" id="page-data.html">
-    <div ng-if="!isInline(field)" class="data-node" content-id="{{data.__id}}" ng-class="{contracted:data._expanded}">
-        <%-template('edit/main/array')%>
-            <%-template('edit/main/object')%>
-                <%-template('edit/main/text')%>
-                    <%-template('edit/main/text-value')%>
-                    <%-template('edit/main/text-rich')%>
-                        <%-template('edit/main/media')%>
+
+<%
+var fields = get_data('edit/page').fields;
+for(var field of fields.standard){%>
+  <script type="text/ng-template" id="field-standard-<%-field%>.html">
+    <div class="data-node" content-id="{{data.__id}}" ng-class="{contracted:data._expanded}">
+      <%-template('edit/main/'+field)%>
     </div>
-</script>
+  </script>
+<%}%>
+
+<%
+for(var field of fields.inline){%>
+  <script type="text/ng-template" id="field-inline-<%-field%>.html">
+      <%-template('edit/main/'+field)%>
+  </script>
+<%}%>
 
 <script type="text/ng-template" id="data-messages.html">
-    <div ng-messages="dataForm[data.__id].$error" role="alert">
-        <div ng-repeat="(name,validator) in field.validators" ng-message="{{name}}">
-            This field is required
-        </div>
+  <div ng-messages="dataForm[data.__id].$error" role="alert">
+    <div ng-repeat="(name,validator) in field.validators" ng-message="{{name}}">
+      This field is required
     </div>
+  </div>
 </script>

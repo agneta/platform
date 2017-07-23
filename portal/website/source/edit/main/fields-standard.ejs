@@ -1,0 +1,6 @@
+<%
+var fields = get_data('edit/page').fields.standard;
+for(var field of fields){%>
+  <div <%-locals.attr%> ng-if="field.type == '<%-field%>'" ng-include="'field-standard-<%-field%>.html'">
+  </div>
+<%}%>

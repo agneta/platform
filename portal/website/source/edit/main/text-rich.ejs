@@ -2,7 +2,6 @@
 on-content-changed="onFieldChange(data)"
 ng-mousedown="fieldFocus(data)"
 ng-init="registerInput(data)"
-ng-if="field.type == 'text-rich'"
 ng-model="data.__value[edit.lang]"
 placeholder="{{edit.lng(data.__value) | limitTo:50}}..."
 >

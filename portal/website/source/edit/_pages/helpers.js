@@ -35,7 +35,7 @@ function fixPath(path) {
   return path;
 }
 
-function getBasePath(field) {
+function getBasePath() {
   var base = $scope.page.path;
   return fixPath(base);
 }

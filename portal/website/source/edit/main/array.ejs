@@ -1,18 +1,20 @@
-<div ng-if="field.type == 'array'" class="field array" data-as-sortable="dragControlListeners" data-ng-model="data.__value">
+<div class="field array" data-as-sortable="dragControlListeners" data-ng-model="data.__value">
     <div ng-repeat="(key,child) in data.__value" ng-init="childField=getField(field,child);" data-as-sortable-item>
         <div data-as-sortable-item-handle class="header highlight md-padding" layout="row" layout-align="start center" ng-mouseover="fieldHover(data)">
             <span>{{$index+1}}.</span>
             <%-template('edit/main/icon')%>
                 <label>{{lng(childField.title)}}</label>
-                <%-template('edit/main/inline')%>
+                <%-template('edit/main/fields-inline')%>
                     <span flex></span>
                     <md-icon ng-if="childField.type == 'array'" ng-click="toggleView(data)" class="expander" aria-label="expand" md-svg-icon="<%-get_icon('material/keyboard-arrow-down')%>">
                     </md-icon>
                     <%-template('edit/main/data-tools')%>
                     <%-template('edit/main/contributors')%>
         </div>
-        <div class="array-cont" onload="parent=data; parentField=field; field=childField; data=child" ng-include="'page-data.html'">
-        </div>
+        <div ng-init="parent=data; parentField=field; field=childField; data=child">
+        <%-template('edit/main/fields-standard',{attr:'class="array-cont"'})%>
+      </div>
+
     </div>
 
     <md-divider>

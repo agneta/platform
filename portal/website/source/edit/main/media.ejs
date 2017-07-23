@@ -1,4 +1,4 @@
-<div ng-if="field.type == 'media'" class="field media">
+<div class="field media">
     <div ng-show="!data.__value.location" class="empty" layout="column" layout-align="center">
         <p class="intro">
             <%-lng('editor.media.empty.intro')%>
@@ -8,11 +8,11 @@
         </p>
 
         <div layout="row" layout-align="center center">
-          <md-button ng-click="media.edit(field,parent,key)" layout="column" aria-label="edit media public">
+          <md-button ng-click="media.edit(parent,key)" layout="column" aria-label="edit media public">
               <md-icon md-svg-src="<%-get_icon('material/public')%>"></md-icon>
               <span>Public</span>
           </md-button>
-          <md-button ng-click="media.editPrivate(field,parent,key)" layout="column" aria-label="edit media private">
+          <md-button ng-click="media.editPrivate(parent,key)" layout="column" aria-label="edit media private">
               <md-icon md-svg-src="<%-get_icon('material/lock')%>"></md-icon>
               <span>Private</span>
           </md-button>

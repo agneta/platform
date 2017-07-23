@@ -3,7 +3,7 @@
         <div layout="row" class="header" layout-align="left center"  ng-mouseover="fieldHover(data)">
             <%-template('edit/main/icon')%>
             <label>{{edit.lng(field.title)||key}}</label>
-            <%-template('edit/main/inline')%>
+            <%-template('edit/main/fields-inline')%>
             <span flex></span>
             <md-button ng-if="field.type=='array'" ng-click="toggleView(data)" class="md-fab md-mini md-white expander" aria-label="expander">
                 <md-icon md-svg-icon="<%-get_icon('material/keyboard-arrow-down')%>"></md-icon>
@@ -11,7 +11,9 @@
             <%-template('edit/main/data-tools')%>
             <%-template('edit/main/contributors')%>
         </div>
-        <div class="data-field" ng-include="'page-data.html'"></div>
+
+        <%-template('edit/main/fields-standard',{attr:'class="data-field"'})%>
+
     </div>
     <div layout="row">
         <md-button class="property" ng-click="addValue({type:'object',fields:template.fields},page.data,key)" ng-init="key=field.name" ng-repeat="(index,field) in template.fields" ng-if="!page.data[field.name]">

@@ -1,23 +1,23 @@
 <div layout="row" class="top-bar" layout="start center">
 
-<md-button ng-click="pageAdd()" ng-show="template" class="md-primary">
-  <md-icon md-svg-icon="<%-get_icon('material/add')%>"></md-icon>
-  <span>New</span>
-</md-button>
+  <md-button ng-click="pageAdd()" ng-show="template" class="md-primary">
+    <md-icon md-svg-icon="<%-get_icon('material/add')%>"></md-icon>
+    <span>New</span>
+  </md-button>
 
-<md-button ng-click="push()" class="md-primary">
-  <md-icon md-svg-src="<%-get_icon('material/file-upload')%>"></md-icon>
-  <span>Push</span>
-</md-button>
+  <md-button ng-click="push()" class="md-primary">
+    <md-icon md-svg-src="<%-get_icon('material/file-upload')%>"></md-icon>
+    <span>Push</span>
+  </md-button>
 
-<span flex></span>
+  <span flex></span>
 
-   <md-select md-offset="0 80" ng-model="edit.lang" placeholder="Language" class="md-no-underline">
-       <md-option ng-repeat="lng in edit.languages" value="{{lng.code}}">{{lng.title}}</md-option>
-   </md-select>
+  <md-select md-offset="0 80" ng-model="edit.lang" placeholder="Language" class="md-no-underline">
+    <md-option ng-repeat="lng in edit.languages" value="{{lng.code}}">{{lng.title}}</md-option>
+  </md-select>
 
   <md-menu class="settings" md-offset="0 40">
-    <md-button aria-label="Open editing settings" class="md-icon-button"  ng-click="$mdMenu.open()">
+    <md-button aria-label="Open editing settings" class="md-icon-button" ng-click="$mdMenu.open()">
       <md-icon md-menu-origin md-svg-src="<%-get_icon('material/settings')%>"></md-icon>
     </md-button>
     <md-menu-content width="4" class="md-padding">
@@ -36,40 +36,43 @@
   <div layout="row" class="heading" layout="start center" layout-margin>
     <%if(locals.toolbar){%>
       <%-template(locals.toolbar)%>
-      <%}%>
-      <span flex></span>
+    <%}%>
+    <span flex></span>
 
-      <md-button ng-click="save()" class="md-primary">
-        <md-icon md-svg-src="<%-get_icon('material/save')%>"></md-icon>
-        <span>Save</span>
-      </md-button>
+    <md-button ng-click="save()" class="md-primary">
+      <md-icon md-svg-src="<%-get_icon('material/save')%>"></md-icon>
+      <span>Save</span>
+    </md-button>
 
-      <md-button ng-click="pageDelete()" class="md-warn">
-        <md-icon md-svg-icon="<%-get_icon('material/delete')%>"></md-icon>
-        <span>Delete</span>
-      </md-button>
+    <md-button ng-click="pageDelete()" class="md-warn">
+      <md-icon md-svg-icon="<%-get_icon('material/delete')%>"></md-icon>
+      <span>Delete</span>
+    </md-button>
 
-      <md-button class="md-primary" aria-label="Switch Source" ng-click="openSource()">
-        Source
-      </md-button>
-
-    </div>
-
-    <p class="path">{{page.path}}</p>
-
-    <div class="edit-gui" ng-show="!sourceEnabled">
-      <%-template('edit/main/data')%>
-      <%-template('edit/main/content')%>
-    </div>
+    <md-button class="md-primary" aria-label="Switch Source" ng-click="openSource()">
+      Source
+    </md-button>
 
   </div>
 
-  <div layout="column" class="md-padding template-select" layout-align="center" ng-show="!page && !template">
-    <md-icon md-svg-src="<%-get_icon('material/folder')%>"></md-icon>
-    <h2>Choose a template to view a list of pages<h2>
+  <div class="edit-gui" ng-show="!sourceEnabled">
+    <div class="general-info">
+      <div layout="row" layout-align="start center">
+        <label>Path:</label>
+        <p class="path">{{page.path}}</p>
+        <span flex="auto"></span>
+      </div>
     </div>
+    <%-template('edit/main/data')%>
+    <%-template('edit/main/content')%>
+  </div>
+
+</div>
+
+<div layout="column" class="md-padding template-select" layout-align="center" ng-show="!page && !template">
+  <md-icon md-svg-src="<%-get_icon('material/folder')%>"></md-icon>
+  <h2>Choose a template to view a list of pages<h2></div>
 
     <div layout="column" class="md-padding template-select" layout-align="center" ng-show="!page && template">
       <md-icon md-svg-src="<%-get_icon('material/insert-drive-file')%>"></md-icon>
-      <h2>Choose a page to start editing<h2>
-      </div>
+      <h2>Choose a page to start editing<h2></div>

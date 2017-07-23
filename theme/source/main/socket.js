@@ -53,6 +53,14 @@
           var channel = socket.subscribe(getName(name));
           channel.watch(cb);
         },
+        once: function(name, cb) {
+          name = getName(name);
+          var channel = socket.subscribe(name);
+          channel.watch(function() {
+            socket.unsubscribe(name);
+            cb();
+          });
+        },
         emit: function(name, data) {
           socket.publish(getName(name), data);
         },
