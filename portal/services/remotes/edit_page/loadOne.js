@@ -14,11 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const Promise = require('bluebird');
 const fs = require('fs-extra');
 const yaml = require('js-yaml');
 const path = require('path');
-const _ = require('lodash');
 const templateBase = require('./templateBase');
 const loadTemplate = require('../edit/loadTemplate');
 

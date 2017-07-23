@@ -101,7 +101,16 @@ $scope.pageAdd = function() {
         $scope: $scope
       }));
 
-      var defaultPath = scopeEdit.page.path || '/default';
+      if (!scopeEdit.template) {
+        return;
+      }
+
+      var defaultPath = scopeEdit.page && scopeEdit.page.path;
+      if (!defaultPath) {
+        defaultPath = scopeEdit.template.path_default || '';
+        defaultPath += '/default';
+      }
+
       defaultPath = defaultPath.split('/');
       defaultPath.pop();
       defaultPath = defaultPath.join('/');

@@ -22,8 +22,6 @@ var klaw = require('klaw');
 
 module.exports = function(Model, app) {
 
-  var project = app.get('options').client.project;
-
   Model.loadTemplates = function(req) {
 
     var items = [];
@@ -49,7 +47,8 @@ module.exports = function(Model, app) {
               var id = path.relative(Model.editConfigDir, item.path).slice(0, -4);
               return {
                 id: id,
-                title: app.lng(data.title, req)
+                title: app.lng(data.title, req),
+                path_default: data.path_default
               };
             });
 
