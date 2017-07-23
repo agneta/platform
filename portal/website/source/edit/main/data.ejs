@@ -4,7 +4,7 @@ var fields = get_data('edit/page').fields;
 for(var field of fields.standard){%>
   <script type="text/ng-template" id="field-standard-<%-field%>.html">
     <div class="data-node" content-id="{{data.__id}}" ng-class="{contracted:data._expanded}">
-      <%-template('edit/main/'+field)%>
+      <%-template('edit/main/standard/'+field)%>
     </div>
   </script>
 <%}%>
@@ -12,7 +12,7 @@ for(var field of fields.standard){%>
 <%
 for(var field of fields.inline){%>
   <script type="text/ng-template" id="field-inline-<%-field%>.html">
-      <%-template('edit/main/'+field)%>
+      <%-template('edit/main/inline/'+field)%>
   </script>
 <%}%>
 
