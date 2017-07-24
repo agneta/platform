@@ -104,7 +104,7 @@ module.exports = function(Model, app) {
         req.session.searchPages = req.session.searchPages || {};
 
         for (var page of pages) {
-          var value = app.helpers.fixPath(page.path);
+          var value = app.helpers.slugifyPath(page.path);
           if (req.session.searchPages[value]) {
             continue;
           }

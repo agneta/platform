@@ -26,7 +26,6 @@ module.exports = function(Model, app, options) {
   //------------------------------------------------------------------
 
   require('./helpers/fixParams')(Model, app);
-  require('./helpers/fixPath')(Model, app);
   require('./helpers/getMediaPath')(Model, app);
   require('./helpers/images')(Model, app);
   require('./helpers/initOperation')(Model, app);

@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function(Model) {
+module.exports = function(Model,app) {
 
   Model.details = function(id, location) {
 
@@ -27,7 +27,7 @@ module.exports = function(Model) {
     if (location) {
       promise = Model.findOne({
         where: {
-          location: Model.__fixPath(location)
+          location: app.helpers.normalizePath(location)
         }
       });
     }

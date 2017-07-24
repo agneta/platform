@@ -26,7 +26,7 @@ module.exports = function(Model, app) {
       });
     }
 
-    data.path = app.helpers.fixPath(data.path);
+    data.path = app.helpers.slugifyPath(data.path);
 
     return Model.findOne({
       where: {

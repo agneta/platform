@@ -76,7 +76,7 @@ module.exports = function(app) {
 
       return type;
     },
-    fixPath: function(pagePath) {
+    slugifyPath: function(pagePath) {
       pagePath = path.normalize(pagePath);
       pagePath = pagePath.split('/');
       if (!pagePath[0].length) {
@@ -89,6 +89,14 @@ module.exports = function(app) {
         pagePath[i] = S(pagePath[i]).slugify().s;
       }
       return pagePath.join('/');
+    },
+    normalizePath: function(mediaPath) {
+      mediaPath = path.normalize(mediaPath);
+
+      if (mediaPath[0] == '/') {
+        return mediaPath.substring(1);
+      }
+      return mediaPath;
     },
     dropCollection: function(names) {
 

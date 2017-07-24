@@ -134,7 +134,7 @@ module.exports = function(app) {
         var ua = uaParser(req.dataParsed.agent);
 
         var parsed = path.parse(data.remotePath);
-        var pagePath = app.helpers.fixPath(parsed.dir);
+        var pagePath = app.helpers.slugifyPath(parsed.dir);
         var feeds = [{
           value: pagePath,
           type: 'view_page'

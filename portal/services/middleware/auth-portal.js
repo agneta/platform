@@ -20,28 +20,31 @@ var request = require('request');
 module.exports = function(app) {
 
   var apiAllow = urljoin(app.get('restApiRoot'), 'accounts');
+  apiAllow = app.helpers.normalizePath(apiAllow);
+
   var website = app.get('website').host;
 
   return function(req, res, next) {
 
     var reqPath = req.path.toLowerCase();
+    reqPath = app.helpers.normalizePath(reqPath);
     var urlParts = reqPath.split('/');
-
+    console.log(reqPath);
     switch (reqPath) {
-      case '/private/page/en/login/view/':
-      case '/private/page/en/login/view-data/':
-      case '/main/compatibility.js':
-      case '/generated/services.js':
-      case '/images/backgrounds/green-field.jpg':
-      case '/login.css':
-      case '/theme.css':
-      case '/style.css':
-      case '/main.js':
-      case '/main/account.js':
-      case '/main/socket.js':
-      case '/main/portal.js':
-      case '/main/interceptors.js':
-      case '/portal/main.js':
+      case 'private/page/en/login/view':
+      case 'private/page/en/login/view-data':
+      case 'main/compatibility.js':
+      case 'generated/services.js':
+      case 'images/backgrounds/green-field.jpg':
+      case 'login.css':
+      case 'theme.css':
+      case 'style.css':
+      case 'main.js':
+      case 'main/account.js':
+      case 'main/socket.js':
+      case 'main/portal.js':
+      case 'main/interceptors.js':
+      case 'portal/main.js':
         return next();
     }
 
@@ -49,15 +52,11 @@ module.exports = function(app) {
       return next();
     }
 
-    if (reqPath.indexOf('/private/page/en/partial/') === 0) {
+    if (reqPath.indexOf('private/page/en/partial') === 0) {
       return next();
     }
 
-    if (urlParts[2] == 'login') {
-
-    }
-
-    if (urlParts[2] == 'login') {
+    if (urlParts[1] == 'login') {
       return next();
     }
 

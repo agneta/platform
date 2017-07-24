@@ -15,16 +15,16 @@
  *   limitations under the License.
  */
 
-module.exports = function(Model) {
+module.exports = function(Model,app) {
 
   Model.__uploadData = function(req) {
 
     var params = req.body;
 
-    params.dir = Model.__fixPath(params.dir || '');
+    params.dir = app.helpers.normalizePath(params.dir || '');
 
     if (params.location) {
-      params.location = Model.__fixPath(params.location || '');
+      params.location = app.helpers.normalizePath(params.location || '');
     }
 
     return params;
