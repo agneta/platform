@@ -1,7 +1,7 @@
 <section layout="row" ng-controller="LoginController">
 
-    <div layout-padding class="details md-whiteframe-11dp">
-        <%
+  <div layout-padding class="details md-whiteframe-11dp">
+    <%
 
 var form =
 {
@@ -18,21 +18,21 @@ var form =
 
 %>
 
-        <%-template('form',{form:form})%>
+    <%-template('form',{form:form})%>
 
-        <div layout="row">
-            <%if(has_path('register')){%>
-                <md-button ng-href="<%-get_path('register')%>">
-                <%-lng('account.not_registered')%>
-                </md-button>
-            <%}%>
-            <md-button ng-click="lostPassword()">
-                <%-lng('account.forgot_password')%>
-            </md-button>
-        </div>
-
-        <%-template('ui/loader')%>
-
+    <div layout="row">
+      <%if(has_path('register')){%>
+        <md-button ng-href="<%-get_path('register')%>">
+          <%-lng('account.not_registered')%>
+        </md-button>
+      <%}%>
+      <md-button ng-click="lostPassword()">
+        <%-lng('account.forgot_password')%>
+      </md-button>
     </div>
+
+    <%-template('ui/loader')%>
+
+  </div>
 
 </section>

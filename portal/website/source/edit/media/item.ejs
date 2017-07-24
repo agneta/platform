@@ -1,4 +1,4 @@
-<div ng-show="object" class="media-tile" ng-class="{selected:object.selected}" layout="row" layout-margin layout-align="start center" item-menu="object">
+<media-item ng-show="object" class="media-tile" ng-class="{selected:object.selected}" layout="row" layout-margin layout-align="start center" media-model="mediaModel" object="object">
 
   <div class="preview" ng-style="{'background-image':object.background}" layout="column" layout-align="center center">
     <md-icon ng-if="object.icon" md-svg-src="{{object.icon}}"></md-icon>
@@ -24,4 +24,4 @@
     <md-icon ng-click="openObject(object)" md-svg-src="<%-get_icon('material/mode-edit')%>"></md-icon>
   </div>
 
-</div>
+</media-item>

@@ -1,13 +1,14 @@
 module.exports = function(Model) {
 
   Model.copyObject = function(source, target) {
-    return Model.__copyObject({
-      source: source,
-      target: target
+    return Model.__updateFile({
+      location: source,
+      target: target,
+      copy: true
     })
       .then(function() {
         return {
-          message: `Copied successfully from ${source} to ${target}`
+          success: `Copied successfully from ${source} to ${target}`
         };
       });
   };
@@ -19,7 +20,7 @@ module.exports = function(Model) {
         arg: 'source',
         type: 'string',
         required: true
-      },{
+      }, {
         arg: 'target',
         type: 'string',
         required: true

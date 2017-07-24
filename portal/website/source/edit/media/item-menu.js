@@ -1,11 +1,52 @@
-app.directive('itemMenu', function($mdMenu, $rootScope, $templateRequest) {
+app.directive('mediaItem', function($mdMenu, $rootScope, $templateRequest, $compile, $mdDialog) {
+
   return {
     scope: {
-      object: '=itemMenu'
+      mediaModel: '=mediaModel',
+      object: '=object'
     },
-    link: function(scope, element, attrs) {
+    link: function(scope, element) {
+
+      function prompt(options){
+
+        var action = options.action;
+        var confirm = $mdDialog.prompt()
+          .title(action + ' object')
+          .textContent('Enter the location you whish to '+action+' the object')
+          .placeholder('Location')
+          .ok('Create')
+          .cancel('Cancel');
+
+        return $mdDialog.show(confirm)
+          .then(function(dirTarget){
+            return scope.mediaModel[options.method]({
+              source: scope.object.location,
+              target: dirTarget + '/' + scope.object.name
+            })
+              .$promise;
+          });
+      }
+
+      scope.moveObject = function(){
+
+        prompt({
+          action: 'move',
+          method: 'moveObject'
+        });
+
+      };
+
+      scope.copyObject = function(){
+        prompt({
+          action: 'copy',
+          method: 'copyObject'
+        });
+      };
+
       $templateRequest('media-item-menu.html').then(function(html) {
-        var template = angular.element(html);
+        var template = angular.element(
+          $compile(html)(scope)
+        );
 
         var RightClickMenuCtrl = {
           open: function(event) {
@@ -36,7 +77,6 @@ app.directive('itemMenu', function($mdMenu, $rootScope, $templateRequest) {
         };
 
         element.bind('contextmenu', function(event) {
-          console.log('contextmenu', scope.object);
           scope.$apply(function() {
             event.preventDefault();
             RightClickMenuCtrl.open(event);

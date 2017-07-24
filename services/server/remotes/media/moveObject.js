@@ -1,13 +1,13 @@
 module.exports = function(Model) {
 
   Model.moveObject = function(source, target) {
-    return Model.__moveObject({
-      source: source,
+    return Model.__updateFile({
+      location: source,
       target: target
     })
       .then(function() {
         return {
-          message: `Moved successfully from ${source} to ${target}`
+          success: `Moved successfully from ${source} to ${target}`
         };
       });
   };

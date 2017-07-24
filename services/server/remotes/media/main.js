@@ -32,6 +32,7 @@ module.exports = function(Model, app, options) {
   require('./helpers/copyObject')(Model, app);
   require('./helpers/moveObject')(Model, app);
   require('./helpers/prepareFile')(Model, app);
+  require('./helpers/updateFile')(Model, app);
   require('./helpers/prepareObject')(Model, app);
   require('./helpers/sendFile')(Model, app);
   require('./helpers/checkFolders')(Model, app);

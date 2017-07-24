@@ -40,6 +40,7 @@
                 MediaPreview = MediaOpt.private.preview;
             }
         }
+        $scope.mediaModel = Media;
 
         Search_Engine.init({
             scope: $scope,
@@ -111,7 +112,7 @@
         $scope.openFolder(startingLocation);
 
     });
-    
+
     <%-js('edit/media/item-menu')%>
 
 })();
