@@ -29,6 +29,7 @@ module.exports = function(Model, app, options) {
   require('./helpers/getMediaPath')(Model, app);
   require('./helpers/images')(Model, app);
   require('./helpers/initOperation')(Model, app);
+  require('./helpers/copyObject')(Model, app);
   require('./helpers/moveObject')(Model, app);
   require('./helpers/prepareFile')(Model, app);
   require('./helpers/prepareObject')(Model, app);
@@ -47,6 +48,8 @@ module.exports = function(Model, app, options) {
   require('./updateFile')(Model, app);
   require('./search')(Model, app);
   require('./updateFile')(Model, app);
+  require('./copyObject')(Model, app);
+  require('./moveObject')(Model, app);
   require('./uploadFile')(Model, app);
   require('./uploadFiles')(Model, app);
 

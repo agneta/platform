@@ -81,14 +81,15 @@ module.exports = function(locals) {
     return this.get_media(urljoin('icons', name));
   });
 
-  project.extend.helper.register('get_cover', function(page) {
+  project.extend.helper.register('get_cover', function(page,options) {
 
+    options = options || {};
     page = page || this.page;
 
     if (page.cover) {
 
       var cover = page.cover.__value;
-      var size = cover.size || 'large';
+      var size = options.size || cover.size || 'large';
 
       return this.get_media(cover.location,size);
     }
