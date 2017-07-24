@@ -114,6 +114,11 @@ color-bar = #fbfbfb;
       cursor: pointer;
       margin: 4px 0;
 
+      &.selected{
+        background: #95989a;
+        color: white;
+      }
+
       &:hover{
         background: #f3f3f3;
       }
@@ -174,13 +179,6 @@ color-bar = #fbfbfb;
         }
       }
 
-      &.selected{
-        figure{
-          border: solid 9px white;
-          box-shadow: 0 6px 16px grey;
-          z-index: 10;
-        }
-      }
     }
 
     .media-tile-footer{

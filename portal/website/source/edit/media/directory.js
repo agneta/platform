@@ -166,12 +166,12 @@
     }
   };
 
-  $scope.toolbarClick = function($event) {
-    $event.stopPropagation();
-  };
-
   $scope.isFolder = function(object) {
     return object.type == 'folder';
+  };
+
+  $scope.contextMenu = function(object) {
+    console.log('menu',object);
   };
 
   $scope.openObject = $scope.openObject || function(object) {

@@ -55,9 +55,9 @@ module.exports = function(locals) {
       cache.set(pathMedia, true);
 
       request({
-          method: 'HEAD',
-          uri: pathMedia
-        })
+        method: 'HEAD',
+        uri: pathMedia
+      })
         .catch(function(err) {
           console.log(chalk.bgRed('MEDIA_ERROR ' + err.statusCode), pathMedia);
         });

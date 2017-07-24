@@ -111,5 +111,7 @@
         $scope.openFolder(startingLocation);
 
     });
+    
+    <%-js('edit/media/item-menu')%>
 
 })();

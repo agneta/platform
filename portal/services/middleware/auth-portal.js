@@ -29,7 +29,7 @@ module.exports = function(app) {
     var reqPath = req.path.toLowerCase();
     reqPath = app.helpers.normalizePath(reqPath);
     var urlParts = reqPath.split('/');
-    console.log(reqPath);
+
     switch (reqPath) {
       case 'private/page/en/login/view':
       case 'private/page/en/login/view-data':
