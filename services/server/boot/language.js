@@ -21,7 +21,7 @@ module.exports = function(app) {
   var client = app.get('options').client;
   var helpers = client.app.locals;
   var config = app.get('language');
-  console.log(config);
+
   app.getLng = function(req) {
     if (req.query && req.query.language) {
       return req.query.language;
