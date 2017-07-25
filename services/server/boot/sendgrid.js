@@ -16,11 +16,7 @@
  */
 var DataSource = require('loopback-datasource-juggler').DataSource;
 var utils = require('loopback/lib/utils');
-var path = require('path');
-var ejs = require('ejs');
-var fs = require('fs');
 var _ = require('lodash');
-var htmlToText = require('html-to-text');
 
 module.exports = function(app) {
 
@@ -82,7 +78,8 @@ module.exports = function(app) {
     //-------
 
     _.extend(options.data, {
-      info: config.info
+      info: config.info,
+      language: options.language
     });
 
     ///////////////////////////////////////////////////////////////

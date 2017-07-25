@@ -35,7 +35,7 @@ module.exports = function(Model, app) {
         });
 
         return {
-          success: 'Your password has changed. Next time you login, enter your new password',
+          success: app.lng('account.passwordChanged',req),
           email: account.email
         };
 

@@ -14,17 +14,10 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const path = require('path');
-const eRecaptcha = require('express-recaptcha');
-const loopback = require('loopback');
-const utils = require('loopback/lib/utils');
-const _ = require('lodash');
-const assert = require('assert');
-const urljoin = require('urljoin');
 
 module.exports = function(Model, app) {
 
-  Model.resendVerification = function(email) {
+  Model.resendVerification = function(email, req) {
     return Model.findOne({
       where: {
         email: email
@@ -53,7 +46,7 @@ module.exports = function(Model, app) {
 
         return {
           account: account,
-          success: 'We are sending you another email for verifying your account.'
+          success: app.lng('account.resendingVerification', req)
         };
       });
   };
@@ -65,6 +58,12 @@ module.exports = function(Model, app) {
         arg: 'email',
         type: 'string',
         required: true,
+      }, {
+        arg: 'req',
+        type: 'object',
+        'http': {
+          source: 'req'
+        }
       }],
       returns: {
         arg: 'result',

@@ -64,7 +64,7 @@ module.exports = function(Model, app) {
         });
 
         return {
-          success: 'Password has changed.'
+          success: app.lng('admin.passwordChanged',req)
         };
 
       });

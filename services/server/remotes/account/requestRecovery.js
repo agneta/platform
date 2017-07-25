@@ -14,15 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const path = require('path');
-const eRecaptcha = require('express-recaptcha');
-const loopback = require('loopback');
-const utils = require('loopback/lib/utils');
-const _ = require('lodash');
-const assert = require('assert');
-const urljoin = require('urljoin');
 
-module.exports = function(Model, app) {
+module.exports = function(Model,app) {
 
   Model.requestRecovery = function(email, req) {
 
@@ -72,7 +65,7 @@ module.exports = function(Model, app) {
         });
 
         return {
-          success: 'We sent you an email with a link to reset your password'
+          success: app.lng('account.recoveryRequested',req)
         };
       });
 
