@@ -14,11 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const path = require('path');
-const eRecaptcha = require('express-recaptcha');
 const loopback = require('loopback');
 const utils = require('loopback/lib/utils');
-const _ = require('lodash');
 const assert = require('assert');
 const urljoin = require('urljoin');
 
@@ -29,8 +26,8 @@ module.exports = function(Model, app) {
   Model.sendVerification = function(options) {
 
     var language = app.getLng(options.req);
-
-    var verifyHref = urljoin(app.get('website').url, language, 'login',
+    var urlPath = options.path || 'login';
+    var verifyHref = urljoin(app.get('website').url, language, urlPath,
       '?action=verify' +
             '&uid=' + options.account.id
     );
@@ -49,9 +46,9 @@ module.exports = function(Model, app) {
 
   };
 
-  Model._sendVerification = function(context, result, next) {
+  Model._sendVerification = function(context, result) {
 
-    Model.sendVerification({
+    return Model.sendVerification({
       account: result.account,
       req: context.req
     })
