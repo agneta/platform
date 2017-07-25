@@ -34,7 +34,7 @@
     function loadAccounts() {
 
       AccountModel.recent({
-        limit: 10
+        limit: 20
       }).$promise
         .then(function(recent) {
           $scope.accounts = recent;

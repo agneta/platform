@@ -24,7 +24,6 @@ module.exports = function(Model, app) {
   var email = app.get('email');
 
   Model.sendVerification = function(options) {
-
     var language = app.getLng(options.req);
     var urlPath = options.path || 'login';
     var verifyHref = urljoin(app.get('website').url, language, urlPath,
@@ -98,8 +97,14 @@ module.exports = function(Model, app) {
     function sendEmail(user) {
       options.verifyHref += '&token=' + user.verificationToken;
 
+      var language = options.language;
+      if(!language && options.req){
+        language = app.getLng(options.req);
+      }
+      
       options.data = {
-        verifyHref: options.verifyHref
+        verifyHref: options.verifyHref,
+        language: language
       };
 
       options.to = options.to || user.email;
