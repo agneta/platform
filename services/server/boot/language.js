@@ -20,6 +20,7 @@ module.exports = function(app) {
 
   var client = app.get('options').client;
   var helpers = client.app.locals;
+  var config = app.get('language');
 
   app.getLng = function(req) {
     if (req.query && req.query.language) {
@@ -37,6 +38,10 @@ module.exports = function(app) {
 
     if (_.isObject(lng)) {
       lng = app.getLng(lng);
+    }
+
+    if (_.isString(obj)) {
+      obj = _.get(config,obj) || obj;
     }
 
     if (_.isObject(obj)) {

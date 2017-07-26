@@ -1,8 +1,8 @@
 actionHref: '#'
 
-header:
-  en: 'Reactivating your Account'
-  gr: 'Επανενεργοποίηση του λογαριασμού σας'
+subject:
+  en: 'Recovering your account'
+  gr: 'Ανάκτηση του λογαριασμού σας'
 
 body:
 -

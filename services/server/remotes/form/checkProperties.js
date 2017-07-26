@@ -73,8 +73,9 @@ module.exports = function(Model, app) {
               // Recaptcha
 
               case 'recaptcha':
-                return new Promise(function(resolve, reject) {
-                  app.recaptcha.verify(param, function(response) {
+
+                return app.recaptcha.verify(param)
+                  .then(function(response) {
                     if (!response.success) {
                       errors.push({
                         code: 'RECAPTCHA_ERROR',
@@ -82,10 +83,7 @@ module.exports = function(Model, app) {
                         data: response
                       });
                     }
-                    resolve();
                   });
-
-                });
 
             }
 

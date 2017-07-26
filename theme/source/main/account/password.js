@@ -16,7 +16,7 @@
  */
 (function() {
 
-  app.controller('PassLostCtrl', function($scope, $controller, Account, $mdDialog) {
+  app.controller('PassLostCtrl', function($scope, $controller,data, Account) {
 
     angular.extend(this, $controller('DialogCtrl', {
       $scope: $scope
@@ -24,10 +24,11 @@
 
     $scope.submit = function() {
       $scope.loading = true;
-      Account.requestPassword($scope.passLostFields, function(result) {
-
+      Account.requestPassword({
+        email: $scope.passLostFields.email,
+        callback: data.callback
+      }, function() {
         $scope.loading = false;
-
       });
     };
 

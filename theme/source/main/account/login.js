@@ -59,12 +59,13 @@
       break;
     }
 
-    $scope.lostPassword = function() {
-
-      $mdDialog.show({
-        clickOutsideToClose: true,
-        templateUrl: agneta.partial('password-lost'),
-        controller: 'PassLostCtrl'
+    $scope.lostPassword = function(options) {
+      options = options || {};
+      $mdDialog.open({
+        partial: 'password-lost',
+        data: {
+          callback: options.callback
+        }
       });
 
     };
@@ -79,7 +80,7 @@
       $rootScope.signIn({
         email: email,
         password: password
-      }, function(err, account) {
+      }, function(err) {
 
         $scope.loading = false;
 

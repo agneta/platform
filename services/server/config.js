@@ -67,6 +67,7 @@ module.exports = {
     },
     cors: false
   },
+  language: require('./config/language'),
   media: require('./config/media'),
   activities: require('./config/activities'),
   legacyExplorer: false

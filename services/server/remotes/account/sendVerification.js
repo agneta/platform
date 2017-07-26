@@ -14,11 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const path = require('path');
-const eRecaptcha = require('express-recaptcha');
 const loopback = require('loopback');
 const utils = require('loopback/lib/utils');
-const _ = require('lodash');
 const assert = require('assert');
 const urljoin = require('urljoin');
 
@@ -27,10 +24,9 @@ module.exports = function(Model, app) {
   var email = app.get('email');
 
   Model.sendVerification = function(options) {
-
     var language = app.getLng(options.req);
-
-    var verifyHref = urljoin(app.get('website').url, language, 'login',
+    var urlPath = options.path || 'login';
+    var verifyHref = urljoin(app.get('website').url, language, urlPath,
       '?action=verify' +
             '&uid=' + options.account.id
     );
@@ -39,27 +35,13 @@ module.exports = function(Model, app) {
       type: 'email',
       to: options.account.email,
       from: email.contacts.support,
-      subject: options.subject || 'Thanks for registering.',
+      subject: options.subject || app.lng('account.registeredSubject',options.req),
       language: language,
       req: options.req,
       templateName: options.template || 'verify',
       user: options.account,
       verifyHref: verifyHref
     });
-
-  };
-
-  Model._sendVerification = function(context, result, next) {
-
-    Model.sendVerification({
-      account: result.account,
-      req: context.req
-    })
-      .then(function() {
-        return {
-          success: result.success
-        };
-      });
 
   };
 
@@ -101,8 +83,14 @@ module.exports = function(Model, app) {
     function sendEmail(user) {
       options.verifyHref += '&token=' + user.verificationToken;
 
+      var language = options.language;
+      if(!language && options.req){
+        language = app.getLng(options.req);
+      }
+
       options.data = {
-        verifyHref: options.verifyHref
+        verifyHref: options.verifyHref,
+        language: language
       };
 
       options.to = options.to || user.email;

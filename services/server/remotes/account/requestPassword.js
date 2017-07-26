@@ -14,21 +14,23 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const path = require('path');
-const eRecaptcha = require('express-recaptcha');
-const loopback = require('loopback');
-const utils = require('loopback/lib/utils');
-const _ = require('lodash');
-const assert = require('assert');
-const urljoin = require('urljoin');
+
+const urljoin = require('url-join');
 
 module.exports = function(Model, app) {
 
-  Model.requestPassword = function(email, req) {
+  var callbacks = app.get('account').callbacks;
+
+  Model.requestPassword = function(email, callback, req) {
+
+    if (callback) {
+      callback = callbacks.indexOf(callback) >= 0 ? callback : null;
+    }
 
     var options = {
       email: email,
-      req: req
+      req: req,
+      path: callback
     };
 
     var account;
@@ -53,7 +55,7 @@ module.exports = function(Model, app) {
         });
 
         return {
-          success: 'We sent you an email with a link to reset your password'
+          success: app.lng('account.requestPassword', req)
         };
       });
 
@@ -67,6 +69,10 @@ module.exports = function(Model, app) {
         arg: 'email',
         type: 'string',
         required: true
+      }, {
+        arg: 'callback',
+        type: 'string',
+        required: false
       }, {
         arg: 'req',
         type: 'object',
@@ -90,29 +96,25 @@ module.exports = function(Model, app) {
 
     var templateName;
     var action;
-    var subject;
     var req = info.options.req;
     var language = app.getLng(req);
 
     if (info.user.deactivated) {
-      subject = 'Recovering your account.';
       action = 'recover-account';
       templateName = 'recover-account';
     } else {
-      subject = 'Resetting your password.';
       action = 'password-reset';
       templateName = 'password-reset';
     }
 
-    var url = app.get('website').url +
-            '/' + language +
-            '/login' +
-            '?action=' + action +
-            '&token=' + info.accessToken.id;
+    var url = urljoin(app.get('website').url,
+      language,
+      info.options.path || 'login',
+      '?action=' + action +
+      '&token=' + info.accessToken.id);
 
     app.loopback.Email.send({
       to: info.email,
-      subject: subject,
       templateName: templateName,
       data: {
         actionHref: url

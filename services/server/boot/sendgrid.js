@@ -16,11 +16,7 @@
  */
 var DataSource = require('loopback-datasource-juggler').DataSource;
 var utils = require('loopback/lib/utils');
-var path = require('path');
-var ejs = require('ejs');
-var fs = require('fs');
 var _ = require('lodash');
-var htmlToText = require('html-to-text');
 
 module.exports = function(app) {
 
@@ -30,6 +26,12 @@ module.exports = function(app) {
   if (!config) {
     throw new Error('No Email config is present');
   }
+
+  //--------------------------------------------------------------
+
+  var subjectPrefix = _.get(config,'subject.prefix') || '';
+
+  //--------------------------------------------------------------
 
   var dataSource;
 
@@ -82,7 +84,8 @@ module.exports = function(app) {
     //-------
 
     _.extend(options.data, {
-      info: config.info
+      info: config.info,
+      language: options.language
     });
 
     ///////////////////////////////////////////////////////////////
@@ -112,9 +115,17 @@ module.exports = function(app) {
 
       options.text = options.text || config.text(options.html);
 
-      if (_.isObject(options.subject)) {
-        options.subject = app.lng(options.subject, options.language);
+      //----------------------------------
+
+      var subject = options.subject || template.data.subject;
+
+      if (_.isObject(subject)) {
+        subject = app.lng(subject, options.language);
       }
+
+      options.subject = app.lng(subjectPrefix,options.language) + subject;
+
+      //----------------------------------
 
       emailSend.call(app.loopback.Email, options)
         .catch(function(err) {
