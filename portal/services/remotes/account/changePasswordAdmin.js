@@ -52,7 +52,7 @@ module.exports = function(Model, app) {
           account: account,
           req: req,
           template: 'password-change',
-          subject: 'Your password has changed.'
+          subject: app.lng('account.passwordChangedSubject',req)
         });
 
         Model.activity({

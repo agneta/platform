@@ -96,16 +96,13 @@ module.exports = function(Model, app) {
 
     var templateName;
     var action;
-    var subject;
     var req = info.options.req;
     var language = app.getLng(req);
 
     if (info.user.deactivated) {
-      subject = 'Recovering your account.';
       action = 'recover-account';
       templateName = 'recover-account';
     } else {
-      subject = 'Resetting your password.';
       action = 'password-reset';
       templateName = 'password-reset';
     }
@@ -118,7 +115,6 @@ module.exports = function(Model, app) {
 
     app.loopback.Email.send({
       to: info.email,
-      subject: subject,
       templateName: templateName,
       data: {
         actionHref: url

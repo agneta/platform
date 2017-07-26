@@ -27,6 +27,12 @@ module.exports = function(app) {
     throw new Error('No Email config is present');
   }
 
+  //--------------------------------------------------------------
+
+  var subjectPrefix = _.get(config,'subject.prefix') || '';
+
+  //--------------------------------------------------------------
+
   var dataSource;
 
   if (config.sendgrid) {
@@ -109,9 +115,17 @@ module.exports = function(app) {
 
       options.text = options.text || config.text(options.html);
 
-      if (_.isObject(options.subject)) {
-        options.subject = app.lng(options.subject, options.language);
+      //----------------------------------
+
+      var subject = options.subject || template.data.subject;
+
+      if (_.isObject(subject)) {
+        subject = app.lng(subject, options.language);
       }
+
+      options.subject = app.lng(subjectPrefix,options.language) + subject;
+
+      //----------------------------------
 
       emailSend.call(app.loopback.Email, options)
         .catch(function(err) {

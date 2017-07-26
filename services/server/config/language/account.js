@@ -7,6 +7,10 @@ module.exports = {
     en: 'Your password has changed. Next time you login, enter your new password.',
     gr: 'Ο κωδικός πρόσβασης έχει αλλάξει. Την επόμενη φορά που θα συνδεθείτε, πληκτρολογήστε τον νέο κωδικό πρόσβασης.'
   },
+  passwordChangedSubject: {
+    en: 'Your password has changed',
+    gr: 'Ο κωδικός πρόσβασης έχει αλλάξει'
+  },
   recoveryRequested: {
     en: 'We sent you an email with a link to reset your password.',
     gr: 'Σας στείλαμε email με έναν σύνδεσμο για να επαναφέρετε τον κωδικό πρόσβασής σας.'
@@ -42,6 +46,10 @@ module.exports = {
   exists:{
     en: 'Account is already registered.',
     gr: 'Ο λογαριασμός έχει ήδη καταχωρηθεί.'
+  },
+  registeredSubject:{
+    en: 'Thanks for registering',
+    gr: 'Σας ευχαριστούμε για την εγγραφή'
   },
   wrongPassword:{
     en: 'You have entered an invalid password. Please try again.',

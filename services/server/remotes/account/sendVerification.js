@@ -35,7 +35,7 @@ module.exports = function(Model, app) {
       type: 'email',
       to: options.account.email,
       from: email.contacts.support,
-      subject: options.subject || 'Thanks for registering.',
+      subject: options.subject || app.lng('account.registeredSubject',options.req),
       language: language,
       req: options.req,
       templateName: options.template || 'verify',
