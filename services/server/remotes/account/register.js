@@ -14,21 +14,82 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const path = require('path');
-const eRecaptcha = require('express-recaptcha');
-const loopback = require('loopback');
-const utils = require('loopback/lib/utils');
-const _ = require('lodash');
-const assert = require('assert');
-const urljoin = require('urljoin');
 
 module.exports = function(Model, app) {
 
-  Model.register = function(email, password, recaptcha) {
+  var callbacks = app.get('account').callbacks;
 
-    return Model.create({
+
+
+  Model.__register = function(options) {
+
+    var email = options.email;
+    var username = options.username;
+    var password = options.password;
+    var req = options.req;
+    var path = options.path;
+
+    if (path) {
+      path = callbacks.indexOf(path) >= 0 ? path : null;
+    }
+
+    if (!email && !username) {
+
+      return Promise.reject({
+        statusCode: 400,
+        message: app.lng('account.noIdentity', req)
+      });
+
+    }
+    return Model.findOne({
+      where: {
+        or: [{
+          email: email
+        }, {
+          username: username
+        }]
+      },
+      fields: {
+        id: true
+      }
+    })
+      .then(function(result) {
+
+        if (result) {
+          return Promise.reject({
+            code: 'EXISTS',
+            statusCode: 400,
+            message: app.lng('account.exists', req)
+          });
+        }
+
+      })
+      .then(function() {
+
+        return Model.create({
+          email: email,
+          password: password
+        });
+
+      })
+      .then(function(account) {
+        Model.sendVerification({
+          account: account,
+          path: 'partner/dashboard',
+          req: req
+        });
+        return account;
+      });
+
+  };
+
+  Model.register = function(email, username, password, recaptcha, req) {
+
+    return Model.__register({
       email: email,
-      password: password
+      username: username,
+      password: password,
+      req: req
     })
       .then(function(account) {
         return {
@@ -48,7 +109,11 @@ module.exports = function(Model, app) {
       accepts: [{
         arg: 'email',
         type: 'string',
-        required: true,
+        required: false,
+      }, {
+        arg: 'username',
+        type: 'string',
+        required: false,
       }, {
         arg: 'password',
         type: 'string',
@@ -56,7 +121,7 @@ module.exports = function(Model, app) {
       }, {
         arg: 'recaptcha',
         type: 'string',
-        required: false
+        required: true
       }],
       returns: {
         arg: 'result',
@@ -70,27 +135,22 @@ module.exports = function(Model, app) {
     }
   );
 
-  if (false) { // Fix this
-    Model.beforeRemote('register', function(context, account, next) {
+  Model.beforeRemote('register', function(context) {
 
-      var recaptcha = context.req.recaptcha;
+    return app.recaptcha.verify(context.req.recaptcha)
+      .then(function(response) {
 
-      eRecaptcha.verify(recaptcha, function(error) {
-
-        if (error) {
-          return next({
+        if (!response.success) {
+          return Promise.reject({
             code: 'RECAPTCHA_ERROR',
-            message: 'The recaptcha you sent is invalid',
-            data: error
+            statusCode: 400,
+            message: 'The recaptcha you sent is invalid'
           });
         }
 
-        next();
       });
 
-    });
-  }
+  });
 
-  Model.afterRemote('register', Model._sendVerification);
 
 };

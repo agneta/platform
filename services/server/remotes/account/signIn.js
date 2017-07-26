@@ -14,24 +14,18 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const path = require('path');
-const eRecaptcha = require('express-recaptcha');
-const loopback = require('loopback');
-const utils = require('loopback/lib/utils');
 const _ = require('lodash');
-const assert = require('assert');
-const urljoin = require('urljoin');
 
 module.exports = function(Model, app) {
 
   var signinRoles = app.get('signinRoles');
   var tokenName = app.get('token').name;
 
-  Model.signIn = function(email, username, password) {
+  Model.signIn = function(email, username, password,req) {
 
     if (!email && !username) {
 
-      var err = new Error('Must enter username or email');
+      var err = new Error(app.lng('account.noIdentity',req));
       err.statusCode = 400;
 
       throw err;
@@ -57,7 +51,7 @@ module.exports = function(Model, app) {
 
         if (!account) {
 
-          var err1 = new Error('Email not recognized');
+          var err1 = new Error(app.lng('account.notFound',req));
           err1.statusCode = 400;
           err1.code = 'USER_NOT_FOUND';
 
@@ -66,7 +60,7 @@ module.exports = function(Model, app) {
 
         if (account.deactivated) {
 
-          var err2 = new Error('Cannot login. Account is Deactivated');
+          var err2 = new Error(app.lng('account.deactivated',req));
           err2.statusCode = 400;
           err2.code = 'USER_DEACTIVATED';
 
@@ -84,7 +78,7 @@ module.exports = function(Model, app) {
             .length
           ) {
 
-            var err3 = new Error('The account does not have a valid role to signin');
+            var err3 = new Error(app.lng('account.invalidRole',req));
             err3.statusCode = 400;
             err3.code = 'USER_ROLE_INVALID';
 
@@ -93,7 +87,13 @@ module.exports = function(Model, app) {
         }
 
 
-        return Model.login(credentials, null);
+        return Model.login(credentials, null)
+          .catch(function(){
+            return Promise.reject({
+              statusCode: 400,
+              message: app.lng('account.wrongPassword',req)
+            });
+          });
 
       })
       .then(function(token) {
@@ -120,6 +120,12 @@ module.exports = function(Model, app) {
         arg: 'password',
         type: 'string',
         required: true
+      },{
+        arg: 'req',
+        type: 'object',
+        'http': {
+          source: 'req'
+        }
       }],
       returns: {
         arg: 'result',

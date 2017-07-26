@@ -14,9 +14,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const path = require('path');
-const url = require('url');
-const _ = require('lodash');
 const urljoin = require('url-join');
 const request = require('request-promise');
 const chalk = require('chalk');

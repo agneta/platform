@@ -18,7 +18,7 @@
 module.exports = function(app) {
 
   var Administrator = app.models.Role_Administrator;
-  var account = app.get('account');
+  var account = app.get('account').default;
 
   if (!account) {
     return Promise.reject('Must have account configuration');

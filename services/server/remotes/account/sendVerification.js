@@ -45,20 +45,6 @@ module.exports = function(Model, app) {
 
   };
 
-  Model._sendVerification = function(context, result) {
-
-    return Model.sendVerification({
-      account: result.account,
-      req: context.req
-    })
-      .then(function() {
-        return {
-          success: result.success
-        };
-      });
-
-  };
-
   Model.prototype.verify = function(options, fn) {
     fn = fn || utils.createPromiseCallback();
 
@@ -101,7 +87,7 @@ module.exports = function(Model, app) {
       if(!language && options.req){
         language = app.getLng(options.req);
       }
-      
+
       options.data = {
         verifyHref: options.verifyHref,
         language: language

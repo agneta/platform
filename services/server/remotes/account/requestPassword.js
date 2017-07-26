@@ -15,13 +15,22 @@
  *   limitations under the License.
  */
 
+const urljoin = require('url-join');
+
 module.exports = function(Model, app) {
 
-  Model.requestPassword = function(email, req) {
+  var callbacks = app.get('account').callbacks;
+
+  Model.requestPassword = function(email, callback, req) {
+
+    if (callback) {
+      callback = callbacks.indexOf(callback) >= 0 ? callback : null;
+    }
 
     var options = {
       email: email,
-      req: req
+      req: req,
+      path: callback
     };
 
     var account;
@@ -46,7 +55,7 @@ module.exports = function(Model, app) {
         });
 
         return {
-          success: app.lng('account.requestPassword',req)
+          success: app.lng('account.requestPassword', req)
         };
       });
 
@@ -60,6 +69,10 @@ module.exports = function(Model, app) {
         arg: 'email',
         type: 'string',
         required: true
+      }, {
+        arg: 'callback',
+        type: 'string',
+        required: false
       }, {
         arg: 'req',
         type: 'object',
@@ -97,11 +110,11 @@ module.exports = function(Model, app) {
       templateName = 'password-reset';
     }
 
-    var url = app.get('website').url +
-            '/' + language +
-            '/login' +
-            '?action=' + action +
-            '&token=' + info.accessToken.id;
+    var url = urljoin(app.get('website').url,
+      language,
+      info.options.path || 'login',
+      '?action=' + action +
+      '&token=' + info.accessToken.id);
 
     app.loopback.Email.send({
       to: info.email,

@@ -44,6 +44,11 @@ module.exports = function(Model, app) {
 
         }
 
+        Model.sendVerification({
+          account: account,
+          req: req
+        });
+
         return {
           account: account,
           success: app.lng('account.resendingVerification', req)
@@ -76,7 +81,5 @@ module.exports = function(Model, app) {
       }
     }
   );
-
-  Model.afterRemote('resendVerification', Model._sendVerification);
 
 };
