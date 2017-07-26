@@ -41,13 +41,21 @@ module.exports = function(Model, app) {
       });
 
     }
+    var or = [];
+    if (email) {
+      or.push({
+        email: email
+      });
+    }
+    if (username) {
+      or.push({
+        username: username
+      });
+    }
+
     return Model.findOne({
       where: {
-        or: [{
-          email: email
-        }, {
-          username: username
-        }]
+        or: or
       },
       fields: {
         id: true
