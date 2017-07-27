@@ -31,7 +31,6 @@ module.exports = function(Model) {
       },
       include: {
         location: true,
-        name: true,
         isSize: true,
         createdAt: true,
         type: true

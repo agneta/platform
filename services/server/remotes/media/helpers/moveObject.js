@@ -18,8 +18,10 @@
 module.exports = function(Model, app) {
 
   Model.__moveObject = function(operation) {
+    var object;
     return Model.__copyObject(operation)
-      .then(function() {
+      .then(function(_object) {
+        object = _object;
         if (operation.source == operation.target) {
           return;
         }
@@ -27,6 +29,12 @@ module.exports = function(Model, app) {
           Bucket: Model.__bucket.name,
           Key: operation.source
         });
+      })
+      .then(function() {
+        return operation.object.destroy();
+      })
+      .then(function() {
+        return object;
       });
   };
 };

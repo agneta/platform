@@ -38,7 +38,6 @@ module.exports = function(Model) {
     var options = {
       id: uuid,
       file: file.stream,
-      name: file.name,
       location: file.location,
       type: file.type,
       mimetype: file.mimetype,
@@ -112,8 +111,7 @@ module.exports = function(Model) {
           type: file.type,
           dir: file.dir,
           size: file.size,
-          contentType: file.mimetype,
-          name: file.name,
+          contentType: file.mimetype
         };
 
       })

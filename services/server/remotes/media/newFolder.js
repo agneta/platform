@@ -28,7 +28,6 @@ module.exports = function(Model) {
         id: true
       }
     }, {
-      name: name,
       location: location,
       type: 'folder'
     })

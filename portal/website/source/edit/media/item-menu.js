@@ -14,7 +14,7 @@ app.directive('mediaItem', function($mdMenu, $rootScope, $templateRequest, $comp
           .title(action + ' object')
           .textContent('Enter the location you whish to '+action+' the object')
           .placeholder('Location')
-          .ok('Create')
+          .ok(action)
           .cancel('Cancel');
 
         return $mdDialog.show(confirm)

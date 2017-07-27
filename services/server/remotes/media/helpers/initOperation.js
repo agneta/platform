@@ -25,7 +25,6 @@ module.exports = function(Model, app) {
       .then(function() {
 
         var socketProps = {
-          name: options.name,
           index: options.index,
           id: options.id
         };
@@ -48,7 +47,6 @@ module.exports = function(Model, app) {
       .then(function() {
 
         var fileProps = {
-          name: options.name,
           location: options.location,
           isSize: options.isSize,
           size: options.size,

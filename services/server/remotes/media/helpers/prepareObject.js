@@ -16,6 +16,7 @@
  */
 const mime = require('mime-types');
 const prettyBytes = require('pretty-bytes');
+const path = require('path');
 
 module.exports = function(Model, app) {
 
@@ -27,11 +28,10 @@ module.exports = function(Model, app) {
       return;
     }
 
-    var dir = object.location.split('/');
-    dir.pop();
-    dir = dir.join('/');
+    var locationParsed = path.parse(object.location);
 
-    object.dir = dir;
+    object.dir = locationParsed.dir;
+    object.name = locationParsed.name;
 
     switch (object.type) {
       case 'folder':

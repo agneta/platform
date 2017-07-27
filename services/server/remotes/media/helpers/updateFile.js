@@ -8,7 +8,6 @@ module.exports = function(Model, app) {
   var rolesConfig = app.get('roles');
 
   Model.__updateFile = function(options) {
-    console.log('options',options);
     var id = options.id;
     var location = options.location;
     var dir = options.dir;
@@ -68,7 +67,6 @@ module.exports = function(Model, app) {
 
         if (dir) {
           target = urljoin(dir, name);
-          return;
         }
 
         target = options.target || target;
@@ -76,7 +74,6 @@ module.exports = function(Model, app) {
         if (!target) {
           return;
         }
-
 
         operations = [{
           source: file.location,
@@ -95,7 +92,7 @@ module.exports = function(Model, app) {
                 childDir = childDir.join('/');
 
                 return Model.__updateFile(
-                  _.extend({},options,{
+                  _.extend({}, options, {
                     id: object.id,
                     location: null,
                     target: null,
@@ -124,56 +121,35 @@ module.exports = function(Model, app) {
 
         return Promise.map(operations, function(operation) {
 
-          operation.contentType = contentType;
+          return Promise.resolve()
+            .then(function() {
+              operation.contentType = contentType;
+              operation.object = file;
 
-          if (options.copy) {
-            console.log('operation',operation);
-            return Model.__copyObject(operation);
-          }
+              if (options.copy) {
+                return Model.__copyObject(operation);
+              }
 
-          return Model.__moveObject(operation);
+              return Model.__moveObject(operation);
+            })
+            .then(function(object) {
+              var attrs = {};
+
+              if (options.roles) {
+                attrs.roles = options.roles;
+              }
+
+              if (_.size(attrs)) {
+                return object.patchAttributes(attrs);
+              }
+              return object;
+            });
         })
-          .then(function() {
+          .then(function(objects) {
+            var object = _.find(objects,{
+              location: target
+            });
 
-            var attrs = {};
-
-            if (contentType) {
-              attrs.contentType = contentType;
-              attrs.type = app.helpers.mediaType(contentType);
-            }
-            attrs.location = target;
-            attrs.name = name;
-            if (roles) {
-              attrs.roles = roles;
-            }
-
-            if (options.copy) {
-
-              var props = _.extend({}, file.__data, attrs);
-              props = _.omit(props,['id']);
-
-              console.log('props',props);
-
-              return Model.findOrCreate({
-                where: {
-                  location: props.location
-                }
-              }, props)
-                .then(function(result) {
-                  if (result[1]) {
-                    //created
-                    return;
-                  }
-
-                  return result[0].updateAttributes(props);
-
-
-                });
-            }
-            return file.updateAttributes(attrs);
-
-          })
-          .then(function(object) {
             Model.__prepareObject(object);
             return {
               _success: 'Object was updated',
