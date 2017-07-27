@@ -17,7 +17,7 @@
 const Promise = require('bluebird');
 const _ = require('lodash');
 var uuidV1 = require('uuid/v1');
-
+const stream = require('stream');
 
 module.exports = function(Model) {
 
@@ -31,6 +31,9 @@ module.exports = function(Model) {
       id: uuid
     });
 
+    var fileStream = new stream.PassThrough();
+    fileStream = file.stream.pipe(fileStream);
+
     var operations = [];
     var options = {
       id: uuid,
@@ -42,7 +45,9 @@ module.exports = function(Model) {
       size: file.size,
     };
 
-    operations.push(options);
+    operations.push(_.extend({},options,{
+      file: fileStream
+    }));
 
     switch (file.type) {
       case 'pdf':

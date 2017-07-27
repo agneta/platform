@@ -18,7 +18,6 @@ const Promise = require('bluebird');
 const path = require('path');
 const _ = require('lodash');
 const sharp = require('sharp');
-const stream = require('stream');
 
 module.exports = function(Model, app) {
 
@@ -42,31 +41,19 @@ module.exports = function(Model, app) {
         transformer = transformer.max();
       }
 
-      options.file.pipe(transformer);
-
       var parsed = path.parse(options.location);
       parsed.base += '/' + key;
       var location = path.format(parsed);
 
-      var operation = transformer.toBuffer()
-        .then(function(buffer) {
-
-          var readableStream = new stream.PassThrough();
-          readableStream.end(buffer);
-
-          return {
-            file: readableStream,
-            size: buffer.length,
-            name: key,
-            location: location,
-            id: options.id,
-            mimetype: options.mimetype,
-            type: options.type,
-            isSize: true
-          };
-
-        });
-      operations.push(operation);
+      operations.push({
+        file: options.file.pipe(transformer),
+        name: key,
+        location: location,
+        id: options.id,
+        mimetype: options.mimetype,
+        type: options.type,
+        isSize: true
+      });
 
     });
 
