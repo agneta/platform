@@ -63,7 +63,6 @@ module.exports.run = function(worker) {
     .then(function(result) {
       starting = false;
       console.log(chalk.bold.green('Application is available'));
-
       worker.sendToMaster({
         started: true,
         result: result

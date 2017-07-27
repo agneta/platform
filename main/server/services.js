@@ -31,7 +31,9 @@ module.exports = function(options) {
           fields: {
             title: true,
             authorization: true,
-            path: true
+            path: true,
+            isView: true,
+            isViewData: true
           },
           exclude: {
             pages: true,
@@ -55,6 +57,9 @@ module.exports = function(options) {
   return start.init([
     services,
     webPages
-  ]);
+  ])
+    .then(function() {
+      return;
+    });
 
 };
