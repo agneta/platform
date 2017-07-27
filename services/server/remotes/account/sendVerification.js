@@ -21,8 +21,6 @@ const urljoin = require('urljoin');
 
 module.exports = function(Model, app) {
 
-  var email = app.get('email');
-
   Model.sendVerification = function(options) {
     var language = app.getLng(options.req);
     var urlPath = options.path || 'login';
@@ -34,7 +32,6 @@ module.exports = function(Model, app) {
     return options.account.verify({
       type: 'email',
       to: options.account.email,
-      from: email.contacts.support,
       subject: options.subject || app.lng('account.registeredSubject',options.req),
       language: language,
       req: options.req,
@@ -51,12 +48,12 @@ module.exports = function(Model, app) {
     var user = this;
     var userModel = this.constructor;
     var registry = userModel.registry;
+
     assert(typeof options === 'object', 'options required when calling user.verify()');
     assert(options.verifyHref, 'You must supply a verification href');
     assert(options.type, 'You must supply a verification type (options.type)');
     assert(options.type === 'email', 'Unsupported verification type');
     assert(options.to || this.email, 'Must include options.to when calling user.verify() or the user must have an email property');
-    assert(options.from, 'Must include options.from when calling user.verify()');
 
     // Email model
     var Email = options.mailer || this.constructor.email || registry.getModelByType(loopback.Email);

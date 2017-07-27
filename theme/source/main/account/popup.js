@@ -32,9 +32,14 @@
         email: email,
         password: password
       },
-      function() {
+      function(err) {
 
         $scope.loading = false;
+
+        if (err) {
+          return;
+        }
+
         $mdDialog.hide();
 
       });
