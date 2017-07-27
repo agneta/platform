@@ -39,8 +39,6 @@ module.exports = function(Model, app) {
         }
 
         attrs = _.extend({}, operation.object.__data, attrs);
-        console.log('attrs',attrs);
-
         attrs = _.omit(attrs,['id']);
 
         return Model.findOrCreate({
@@ -62,7 +60,6 @@ module.exports = function(Model, app) {
 
         object = _object;
         var parsedLocation = path.parse(operation.target);
-        console.log(operation.target, parsedLocation);
         return Model.__checkFolders({
           dir: parsedLocation.dir
         });
