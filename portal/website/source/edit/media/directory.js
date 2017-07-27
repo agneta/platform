@@ -166,6 +166,12 @@
     }
   };
 
+  // Helps to use toolbar without propagating to another function
+  // For example: to prevent folder from opening
+  $scope.toolbarClick = function($event) {
+      $event.stopPropagation();
+  };
+
   $scope.isFolder = function(object) {
     return object.type == 'folder';
   };
