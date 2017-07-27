@@ -24,10 +24,11 @@ module.exports = function(Model, app) {
   Model.sendVerification = function(options) {
     var language = app.getLng(options.req);
     var urlPath = options.path || 'login';
-    var verifyHref = urljoin(app.get('website').url, language, urlPath,
-      '?action=verify' +
-            '&uid=' + options.account.id
-    );
+    var verifyHref = urljoin(app.get('website').url, language, urlPath);
+
+    // With trailing slash: Fixes an issue where AWS redirects the location without the query string
+    verifyHref += '/?action=verify' +
+          '&uid=' + options.account.id;
 
     return options.account.verify({
       type: 'email',

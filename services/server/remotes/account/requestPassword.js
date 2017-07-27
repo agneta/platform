@@ -36,10 +36,10 @@ module.exports = function(Model, app) {
     var account;
 
     return Model.findOne({
-      where: {
-        email: email
-      }
-    })
+        where: {
+          email: email
+        }
+      })
       .then(function(_account) {
 
         account = _account;
@@ -109,9 +109,11 @@ module.exports = function(Model, app) {
 
     var url = urljoin(app.get('website').url,
       language,
-      info.options.path || 'login',
-      '?action=' + action +
-      '&token=' + info.accessToken.id);
+      info.options.path || 'login');
+
+    // With trailing slash: Fixes an issue where AWS redirects the location without the query string
+    url += '/?action=' + action +
+      '&token=' + info.accessToken.id;
 
     app.loopback.Email.send({
       to: info.email,
