@@ -172,8 +172,7 @@ module.exports = function(options) {
         root: websiteRoot
       },
       building: true,
-      dir: projectPaths.portal,
-      include: path.join(projectPaths.project, 'services')
+      dir: projectPaths.project
     });
 
     buildServices.locals.env = options.env;
