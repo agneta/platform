@@ -232,7 +232,7 @@
         .cancel('Cancel');
 
       $mdDialog.show(confirm).then(function() {
-        AccountModel.remove({
+        AccountModel.delete({
           id: $scope.viewAccount.id
         })
           .$promise

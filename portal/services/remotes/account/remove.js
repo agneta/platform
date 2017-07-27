@@ -14,33 +14,26 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var _ = require('lodash');
 
-module.exports = function(Model, app) {
+module.exports = function(Model) {
 
-  Model.remove = function(req, id) {
+  Model.delete = function(id) {
 
     return Model.findById(id)
       .then(function(account) {
         if (!account) {
           throw new Error('Account not found');
         }
+        console.log(account);
         return account.destroy();
       });
 
   };
 
-
   Model.remoteMethod(
-    'remove', {
-      description: 'Get user\'s administrative settings',
+    'delete', {
+      description: 'Delete account by id',
       accepts: [{
-        arg: 'req',
-        type: 'object',
-        'http': {
-          source: 'req'
-        }
-      }, {
         arg: 'id',
         type: 'string',
         required: true
@@ -52,7 +45,7 @@ module.exports = function(Model, app) {
       },
       http: {
         verb: 'post',
-        path: '/remove'
+        path: '/delete'
       }
     }
   );

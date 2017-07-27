@@ -16,7 +16,6 @@
  */
 const path = require('path');
 const _ = require('lodash');
-var fs = require('fs');
 
 module.exports = function(app) {
 
@@ -73,7 +72,7 @@ module.exports = function(app) {
   });
 
   app.helpers.runRemotes(instructions);
-    
+
   instructions.forEach(function(data) {
     app.model(data.model, {
       dataSource: 'db_prd'
@@ -94,11 +93,10 @@ module.exports = function(app) {
     var name = data.name;
     var filename = name.toLowerCase();
     var newName = productionName(name);
-
     var definition = app.modelDefinitions[filename + '.json'].definition;
-    definition = _.extend({}, definition, {
-      name: newName,
 
+    definition = _.extend({}, definition, {
+      name: newName
     });
 
     if (definition.relations) {
@@ -116,7 +114,7 @@ module.exports = function(app) {
     });
 
     _.extend(definition.http, {
-      path: 'production/' + name.toLowerCase()
+      path: newName
     });
 
     // create a model
