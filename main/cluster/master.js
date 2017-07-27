@@ -18,8 +18,6 @@ const cluster = require('cluster');
 
 module.exports.run = function(socketCluster) {
 
-  console.log('NODE_ENV', process.env.NODE_ENV);
-
   return new Promise(function(resolve) {
 
     socketCluster.on('ready', function() {
