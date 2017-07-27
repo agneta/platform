@@ -83,6 +83,7 @@ module.exports = function(app) {
         if (!result.has) {
           //console.log(result);
           return Promise.reject({
+            status: '401',
             message: 'You are not authorized to access this media object'
           });
         }

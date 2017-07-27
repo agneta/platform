@@ -236,10 +236,9 @@
           id: $scope.viewAccount.id
         })
           .$promise
-          .then(function(response) {
+          .then(function() {
             loadAccounts();
             $scope.viewAccount = null;
-            //console.log(response);
           });
       }, function() {});
 
