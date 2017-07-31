@@ -91,15 +91,15 @@ module.exports = function(Model, app) {
                 childDir.pop();
                 childDir = childDir.join('/');
 
-                return Model.__updateFile(
-                  _.extend({}, options, {
-                    id: object.id,
-                    location: null,
-                    target: null,
-                    dir: childDir,
-                    name: object.name
-                  })
-                );
+                var childOptions = _.extend({}, options, {
+                  id: object.id,
+                  location: null,
+                  target: null,
+                  dir: childDir,
+                  name: object.name
+                });
+
+                return Model.__updateFile(childOptions);
               }, {
                 concurrency: 6
               });
@@ -146,7 +146,7 @@ module.exports = function(Model, app) {
             });
         })
           .then(function(objects) {
-            var object = _.find(objects,{
+            var object = _.find(objects, {
               location: target
             });
 

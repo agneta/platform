@@ -23,8 +23,6 @@ var readdir = Promise.promisify(fs.readdir);
 module.exports = function(app, generated) {
 
   var definitions = app.modelDefinitions = generated._definitions;
-
-  var servicesDir = app.get('services_dir');
   var servicesInclude = app.get('services_include');
 
   var dirs = [

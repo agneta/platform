@@ -16,10 +16,7 @@
  */
 var path = require('path');
 var fs = require('fs');
-var Promise = require('bluebird');
 var _ = require('lodash');
-var stat = Promise.promisify(fs.stat);
-var readdir = Promise.promisify(fs.readdir);
 
 module.exports = function(app) {
 
@@ -46,11 +43,8 @@ module.exports = function(app) {
 
     dirs.forEach(function(dir) {
 
-      var index = 0;
-
       keys.forEach(function(key) {
         _runRemote(key, dir);
-        index++;
       });
 
     });
@@ -79,6 +73,19 @@ module.exports = function(app) {
     } else {
       Model = app.models[name];
     }
+
+    //--------------------------------
+
+    var __findOrCreate = Model.findOrCreate;
+    Model.findOrCreate = function(findOptions) {
+      return __findOrCreate.apply(Model,arguments)
+        .catch(function(err) {
+          if (err.code == 11000) {
+            return Model.findOne(findOptions);
+          }
+        });
+    };
+    //--------------------------------
 
     name = name.toLowerCase();
 

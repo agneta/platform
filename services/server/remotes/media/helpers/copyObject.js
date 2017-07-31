@@ -12,13 +12,18 @@ module.exports = function(Model, app) {
     operation.source = app.helpers.normalizePath(operation.source);
     operation.target = app.helpers.normalizePath(operation.target);
 
-    return app.storage.copyObject({
+    var storageOptions = {
       Bucket: Model.__bucket.name,
       CopySource: urljoin(Model.__bucket.name, operation.source),
       Key: operation.target,
       ContentType: operation.contentType
-    })
+    };
+
+    //console.log(storageOptions);
+
+    return app.storage.copyObject(storageOptions)
       .catch(function(err) {
+
         if (err.message.indexOf('This copy request is illegal because it is trying to copy an object to itself') === 0) {
           return;
         }
@@ -41,6 +46,8 @@ module.exports = function(Model, app) {
         attrs = _.extend({}, operation.object.__data, attrs);
         attrs = _.omit(attrs,['id']);
 
+        //console.log('copy object:Model.findOrCreate',attrs);
+
         return Model.findOrCreate({
           where: {
             location: attrs.location
@@ -58,6 +65,8 @@ module.exports = function(Model, app) {
       })
       .then(function(_object) {
 
+        //console.log('copied object',_object);
+
         object = _object;
         var parsedLocation = path.parse(operation.target);
         return Model.__checkFolders({
@@ -66,6 +75,8 @@ module.exports = function(Model, app) {
 
       })
       .then(function() {
+        //console.log('checked folders');
+
         return object;
       });
   };

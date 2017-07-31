@@ -19,6 +19,8 @@ module.exports = function(Model, app) {
 
   Model.__moveObject = function(operation) {
     var object;
+    //console.log('__moveObject',operation);
+
     return Model.__copyObject(operation)
       .then(function(_object) {
         object = _object;
