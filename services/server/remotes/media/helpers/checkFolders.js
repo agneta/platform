@@ -19,6 +19,9 @@ const Promise = require('bluebird');
 module.exports = function(Model) {
 
   Model.__checkFolders = function(options) {
+    if(!options.dir){
+      return Promise.resolve();
+    }
     var dirParts = options.dir.split('/');
     var dir = '';
     return Promise.each(dirParts, function(name) {

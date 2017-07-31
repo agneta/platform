@@ -81,8 +81,12 @@ module.exports = function(app) {
       return __findOrCreate.apply(Model,arguments)
         .catch(function(err) {
           if (err.code == 11000) {
-            return Model.findOne(findOptions);
+            return Model.findOne(findOptions)
+              .then(function(item){
+                return [item];
+              });
           }
+          return Promise.reject(err);
         });
     };
     //--------------------------------

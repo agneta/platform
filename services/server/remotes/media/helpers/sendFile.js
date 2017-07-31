@@ -18,6 +18,7 @@ const Promise = require('bluebird');
 const _ = require('lodash');
 var uuidV1 = require('uuid/v1');
 const stream = require('stream');
+const path = require('path');
 
 module.exports = function(Model) {
 
@@ -97,7 +98,7 @@ module.exports = function(Model) {
     return Promise.all(operations)
       .then(function() {
         return Model.__checkFolders({
-          dir: file.dir
+          dir: path.parse(file.location).dir
         });
       })
       .then(function() {
@@ -109,7 +110,6 @@ module.exports = function(Model) {
           id: options.objectId,
           location: file.location,
           type: file.type,
-          dir: file.dir,
           size: file.size,
           contentType: file.mimetype
         };
