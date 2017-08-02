@@ -48,7 +48,6 @@ module.exports = function(Model, app) {
       operations.push({
         file: options.file.pipe(transformer),
         location: location,
-        id: options.id,
         mimetype: options.mimetype,
         type: options.type,
         isSize: true

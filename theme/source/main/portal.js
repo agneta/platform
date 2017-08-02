@@ -23,6 +23,9 @@
     var socket = SocketIO.connect('portal');
     this.socket = socket;
 
+    socket.media = SocketIO.connect('media');
+
+
     socket.on('page-saved', function(id) {
 
       if ($rootScope.viewData.path == id) {

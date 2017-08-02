@@ -57,10 +57,10 @@ module.exports = function(Model, app) {
       stream: stream
     })
       .then(function(result) {
-        return fs.unlinkAsync(file.path)
-          .then(function() {
-            return Model.__prepareObject(result);
-          });
+
+        fs.unlinkAsync(file.path);
+        return Model.__prepareObject(result);
+
       })
       .catch(function(error) {
         console.error(error);

@@ -18,21 +18,6 @@
 
     var app = angular.module('MainApp');
 
-    app.controller("FileUploader", function(socket) {
-        socket.on('file:upload:error', function(error) {
-            console.error(error);
-        });
-        socket.on('file:upload:progress', function(result) {
-            //  console.log(result);
-        });
-        socket.on('file:upload:created', function(result) {
-            console.log(result);
-        });
-        socket.on('file:upload:complete', function(result) {
-            //console.log(result);
-        });
-    });
-
     <%-js('media/preview')%>
 
     app.service('MediaOpt', function(Media, MediaPreview, Media_Private) {
@@ -53,9 +38,9 @@
 
     });
 
-    app.service('EditFile', function(Upload, SocketIO, $timeout, $mdDialog) {
+    app.service('EditFile', function(Upload, SocketIO, $timeout, $mdDialog, Portal) {
 
-        var socket = SocketIO.connect('media');
+        var socket = Portal.socket.media;
 
         this.init = function(options) {
 

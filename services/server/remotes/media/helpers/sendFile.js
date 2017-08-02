@@ -16,7 +16,6 @@
  */
 const Promise = require('bluebird');
 const _ = require('lodash');
-var uuidV1 = require('uuid/v1');
 const stream = require('stream');
 const path = require('path');
 
@@ -24,20 +23,13 @@ module.exports = function(Model) {
 
   Model.__sendFile = function(file) {
 
-    var uuid = uuidV1();
-
     file.stream.setMaxListeners(20);
-
-    Model.io.emit('file:upload:created', {
-      id: uuid
-    });
 
     var fileStream = new stream.PassThrough();
     fileStream = file.stream.pipe(fileStream);
 
     var operations = [];
     var options = {
-      id: uuid,
       file: file.stream,
       location: file.location,
       type: file.type,
@@ -45,51 +37,30 @@ module.exports = function(Model) {
       size: file.size,
     };
 
-    operations.push(_.extend({},options,{
+    operations.push(_.extend({}, options, {
       file: fileStream
     }));
 
     switch (file.type) {
       case 'pdf':
-      //TODO: Make PDF preview images
+        //TODO: Make PDF preview images
         break;
       case 'image':
         Model.__images.onUpload(options, operations);
         break;
     }
 
-    var operationProgress = [];
-    _.map(operations, function() {
-      operationProgress.push(0);
-    });
-
-    function onProgress(progress) {
-      operationProgress[progress.index] = progress.percentage;
-
-      var percentage = _.reduce(operationProgress, function(sum, n) {
-        return sum + n;
-      }, 0);
-      percentage /= operationProgress.length;
-      Model.io.emit('file:upload:progress', {
-        percentage: (percentage * 100).toFixed(2) / 1
-      });
-    }
-
-    function prepareOperation(options) {
-      options.onProgress = onProgress;
-      return Model.__initOperation(options);
-    }
 
     operations = _.map(operations, function(operation, index) {
 
       if (operation.then) {
         return operation.then(function(options) {
           options.index = index;
-          return prepareOperation(options);
+          return Model.__initOperation(options);
         });
       }
       operation.index = index;
-      return prepareOperation(operation);
+      return Model.__initOperation(operation);
 
     });
 
@@ -97,22 +68,21 @@ module.exports = function(Model) {
 
     return Promise.all(operations)
       .then(function() {
-        return Model.__checkFolders({
+
+        Model.__checkFolders({
           dir: path.parse(file.location).dir
         });
-      })
-      .then(function() {
-        Model.io.emit('file:upload:progress', {
-          percentage: 100
-        });
 
-        return {
+        var object = {
           id: options.objectId,
           location: file.location,
           type: file.type,
           size: file.size,
           contentType: file.mimetype
         };
+
+        Model.io.emit('file:upload:complete',object);
+        return object;
 
       })
       .catch(function(err) {

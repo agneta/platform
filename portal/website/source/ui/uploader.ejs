@@ -1,0 +1,21 @@
+<file-uploader></file-uploader>
+
+<script type="text/ng-template" id="file-uploader.html">
+  <md-menu md-offset="0 65" class="file-uploader">
+
+    <div class="button" layout="column" ng-click="$mdMenu.open()" layout-align="space-around">
+      <div class="icon" layout="column" layout-align="space-around">
+      <md-icon md-svg-src="<%-get_icon('material/file-upload')%>"></md-icon>
+    </div>
+    <md-progress-circular md-mode="determinate" value=30></md-progress-circular>
+    </div>
+
+    <md-menu-content width="4">
+      <div layout="column" layout-margin>
+        <p>
+          Test
+        </p>
+      </div>
+    </md-menu-content>
+  </md-menu>
+</script>

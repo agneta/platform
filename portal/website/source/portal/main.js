@@ -69,6 +69,24 @@
 
   });
 
+  app.component('fileUploader',{
+    templateUrl: 'file-uploader.html',
+    bindings: {},
+    controller: function($scope, Portal) {
+
+      var socket =  Portal.socket.media;
+
+      socket.on('file:upload:error', function(error) {
+        console.error(error);
+      });
+      
+      socket.on('file:upload:progress', function(result) {
+        console.log(result);
+      });
+
+    }
+  });
+
   app.component('memoryUsage', {
     templateUrl: 'memory-usage.html',
     bindings: {

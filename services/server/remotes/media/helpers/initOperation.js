@@ -21,30 +21,56 @@ module.exports = function(Model, app) {
 
   Model.__initOperation = function(options) {
 
+    var latestEmit = {
+      steps: {}
+    };
+
     return Promise.resolve()
       .then(function() {
-
-        var socketProps = {
-          index: options.index,
-          id: options.id
-        };
 
         return app.storage.upload({
           Bucket: Model.__bucket.name,
           Key: options.location,
           ContentType: options.mimetype,
           Body: options.file,
-          onProgress: function(progress){
-            options.onProgress(_.extend({
+          onProgress: function(progress) {
+
+            var percentage = 0;
+
+            if(options.size){
+              percentage = progress.loaded / options.size / 2 * 100;
+            }
+
+            _.extend(latestEmit,{
               uploadedSize: progress.loaded,
               fileSize: options.size,
-              percentage: progress.loaded / options.size
-            }, socketProps));
+              percentage: percentage,
+              location: options.location
+            });
+
+            Model.io.emit('file:upload:progress', latestEmit);
+
           }
         });
 
       })
       .then(function() {
+
+        latestEmit.percentage = 50;
+        latestEmit.steps.uploaded = true;
+        Model.io.emit('file:upload:progress', latestEmit);
+
+        return Model.findOne({
+          where: {
+            location: options.location
+          }
+        });
+      })
+      .then(function(fileInstance) {
+
+        latestEmit.percentage = 70;
+        latestEmit.steps.searchedDatabase = true;
+        Model.io.emit('file:upload:progress', latestEmit);
 
         var fileProps = {
           location: options.location,
@@ -53,23 +79,21 @@ module.exports = function(Model, app) {
           type: options.type,
           contentType: options.mimetype
         };
-        return Model.findOne({
-          where: {
-            location: options.location
-          }
-        })
-          .then(function(fileInstance) {
-            if (fileInstance) {
-              //console.log('file update', fileProps);
-              return fileInstance.updateAttributes(fileProps);
-            } else {
-              //console.log('file create', fileProps);
-              return Model.create(fileProps);
-            }
-          });
 
+        if (fileInstance) {
+          //console.log('file update', fileProps);
+          return fileInstance.updateAttributes(fileProps);
+        } else {
+          //console.log('file create', fileProps);
+          return Model.create(fileProps);
+        }
       })
       .then(function(dbObject) {
+
+        latestEmit.percentage = 100;
+        latestEmit.steps.updatedDatabase = true;
+        Model.io.emit('file:upload:progress', latestEmit);
+
         options.objectId = dbObject.id;
         return dbObject;
       });

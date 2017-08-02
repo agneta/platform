@@ -16,7 +16,7 @@
  */
 (function() {
 
-  var socket = SocketIO.connect('media');
+  var socket = Portal.socket.media;
   var objects = [];
   var lastResult = null;
   var loadmoreCount = 20;
@@ -42,7 +42,6 @@
 
   $scope.refresh = readdir;
 
-  socket.on('files:upload:complete', readdir);
   socket.on('file:upload:complete', readdir);
 
   //---------------------------------------------------

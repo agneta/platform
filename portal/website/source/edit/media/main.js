@@ -18,7 +18,7 @@
 
     var app = angular.module('MainApp');
 
-    app.controller('MediaCtrl', function($scope, $rootScope, Upload, MediaOpt, SocketIO, $timeout, $mdToast, $mdDialog, $location, $sce, $routeParams, Search_Engine) {
+    app.controller('MediaCtrl', function($scope, $rootScope, Upload, MediaOpt, SocketIO, $timeout, $mdToast, $mdDialog, $location, $sce, $routeParams, Search_Engine, Portal) {
 
         var apiMedia = MediaOpt.api;
         var partialFile = MediaOpt.partial;

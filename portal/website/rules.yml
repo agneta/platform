@@ -21,7 +21,6 @@
       - 'lib/quill.snow'
       - 'lib/ng-sortable.min'
       - 'edit/main'
-      - 'partial/uploader'
     angular_libs:
       -
         js: lib/ng-quill.min

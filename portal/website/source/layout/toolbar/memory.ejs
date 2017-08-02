@@ -1,29 +1,31 @@
-<memory-usage>
-
-</memory-usage>
+<memory-usage></memory-usage>
 
 <script type="text/ng-template" id="memory-usage.html">
-    <md-menu md-offset="0 65">
-        <div layout="row" layout-align="start center">
-          <md-icon class="icon" md-svg-src="<%-get_icon('material/memory')%>"></md-icon>
-        <div layout="column" class="usage" layout-align="start center" ng-click="$mdMenu.open()">
-            <div class="progress" ng-repeat="unit in $ctrl.update.usage">
-                <md-progress-linear md-mode="determinate" value="{{unit.percentage*100}}"></md-progress-linear>
-            </div>
+  <md-menu md-offset="0 65">
+
+    <div layout="row" layout-align="start center">
+      <md-icon class="icon" md-svg-src="<%-get_icon('material/memory')%>"></md-icon>
+      <div layout="column" class="usage" layout-align="start center" ng-click="$mdMenu.open()">
+        <div class="progress" ng-repeat="unit in $ctrl.update.usage">
+          <md-progress-linear md-mode="determinate" value="{{unit.percentage*100}}"></md-progress-linear>
         </div>
       </div>
-        <md-menu-content width="4" class="memory-content">
-            <div layout="column" layout-margin>
-                <div class="header" layout="row" layout-align="start center">
-                    <h3>Memory</h3> <span>{{$ctrl.update.limit}}MB</span>
-                </div>
-                <div class="unit" ng-repeat="(key,unit) in $ctrl.update.usage" layout="row">
-                    <span>{{key}}</span>
-                    <span flex="auto"></span>
-                    <span class="title">{{unit.title}}</span>
-                    <span>{{unit.percentage*100 | number:0}}%</span>
-                </div>
-            </div>
-        </md-menu-content>
-    </md-menu>
+    </div>
+
+    <md-menu-content width="4" class="memory-content">
+      <div layout="column" layout-margin>
+        <div class="header" layout="row" layout-align="start center">
+          <h3>Memory</h3>
+          <span>{{$ctrl.update.limit}}MB</span>
+        </div>
+        <div class="unit" ng-repeat="(key,unit) in $ctrl.update.usage" layout="row">
+          <span>{{key}}</span>
+          <span flex="auto"></span>
+          <span class="title">{{unit.title}}</span>
+          <span>{{unit.percentage*100 | number:0}}%</span>
+        </div>
+      </div>
+    </md-menu-content>
+
+  </md-menu>
 </script>

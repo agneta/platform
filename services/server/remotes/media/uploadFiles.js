@@ -27,28 +27,14 @@ module.exports = function(Model) {
   Model.uploadFiles = function(req) {
 
     var data = Model.__uploadData(req);
-    var count = 0;
 
     Promise.map(req.files, function(file) {
       return Model.__prepareFile(file, {
         dir: data.dir
-      })
-        .then(function() {
-          count++;
-          Model.io.emit('files:upload:progress', {
-            count: count,
-            total: req.files.length
-          });
-
-          return file.id;
-        });
+      });
     }, {
       concurrency: 5
-    })
-      .then(function(files) {
-        Model.io.emit('files:upload:complete', files);
-      });
-
+    });
 
     return Promise.resolve({
       _success: 'Files are uploading to your storage service'
