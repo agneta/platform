@@ -17,7 +17,6 @@
 (function() {
 
   var app = angular.module('MainApp');
-  var logLimit = 3000;
 
   app.run(function($rootScope, $mdToast, Portal) {
 
@@ -72,17 +71,41 @@
   app.component('fileUploader',{
     templateUrl: 'file-uploader.html',
     bindings: {},
-    controller: function($scope, Portal) {
+    controller: function($scope, Portal,$timeout) {
 
       var socket =  Portal.socket.media;
+      $scope.files = {};
+      $scope.filesCount;
 
-      socket.on('file:upload:error', function(error) {
+      socket.on('file:operation:error', function(error) {
         console.error(error);
       });
-      
-      socket.on('file:upload:progress', function(result) {
-        console.log(result);
+
+      socket.on('file:operation:progress', function(result){
+        $scope.files[result.location] = result;
+        onUpdate();
       });
+
+      socket.on('file:operation:complete', function(result) {
+        delete $scope.files[result.location];
+        onUpdate();
+      });
+
+      function onUpdate(){
+
+        var progress = 0;
+        var count = 0;
+        for(var location in $scope.files){
+          var file = $scope.files[location];
+          progress += file.percentage;
+          count++;
+        }
+        $scope.filesCount = count;
+        $scope.progress = progress / count;
+
+        $timeout();
+
+      }
 
     }
   });

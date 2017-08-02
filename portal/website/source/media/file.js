@@ -58,12 +58,6 @@
                 name: data.name
             };
 
-            socket.on('file:upload:progress', function(result) {
-                console.log(result.percentage);
-                scope.progress = result.percentage;
-                scope.$apply();
-            });
-
             socket.on('file:upload:complete', function(result) {
                 scope.progress = 100;
                 console.log(result);

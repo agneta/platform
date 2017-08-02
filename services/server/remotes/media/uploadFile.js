@@ -33,7 +33,10 @@ module.exports = function(Model) {
       dir: data.dir,
       name: data.name,
       location: data.location
-    });
+    })
+      .then(function(object){
+        Model.io.emit('file:upload:complete',object);
+      });
 
     return Promise.resolve({
       _success: 'File is uploading'

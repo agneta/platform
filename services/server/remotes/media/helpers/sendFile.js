@@ -81,7 +81,6 @@ module.exports = function(Model) {
           contentType: file.mimetype
         };
 
-        Model.io.emit('file:upload:complete',object);
         return object;
 
       })

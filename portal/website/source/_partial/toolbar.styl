@@ -1,13 +1,22 @@
 md-menu-toolbar.site-content-toolbar {
 
   .file-uploader{
-    >.button{
-      
+    transform: scale(0);
+    transition: transform 250ms ease;
+
+    &.uploading{
+      transform: scale(1);
+    }
+
+    .main-button{
+
       position: relative;
       background: #edf0f3;
       border-radius: 100%;
       margin: 10px;
       cursor: pointer;
+      width: 50px;
+      height: 50px;
 
       .icon{
         width: 100%;

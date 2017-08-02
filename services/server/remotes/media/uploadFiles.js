@@ -34,7 +34,10 @@ module.exports = function(Model) {
       });
     }, {
       concurrency: 5
-    });
+    })
+      .then(function(){
+        Model.io.emit('files:upload:complete');
+      });
 
     return Promise.resolve({
       _success: 'Files are uploading to your storage service'

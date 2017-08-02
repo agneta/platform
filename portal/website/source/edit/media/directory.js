@@ -43,6 +43,7 @@
   $scope.refresh = readdir;
 
   socket.on('file:upload:complete', readdir);
+  socket.on('files:upload:complete', readdir);
 
   //---------------------------------------------------
 
