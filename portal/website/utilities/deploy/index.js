@@ -18,6 +18,7 @@
 const Sync = require('./sync');
 const Pages_DB = require('./pages_db');
 const Search = require('./search');
+const Promise = require('bluebird');
 
 module.exports = function(util) {
 
@@ -31,7 +32,10 @@ module.exports = function(util) {
       options.promote = options.promote || {};
       options.stage = options.stage || {};
 
-      return pages_db(options)
+      return Promise.resolve()
+        .then(function() {
+          return pages_db(options);
+        })
         .then(function() {
           return sync(options);
         })
@@ -47,7 +51,7 @@ module.exports = function(util) {
       values: [{
         name: 'staging',
         title: 'Staging'
-      },{
+      }, {
         name: 'production',
         title: 'Production',
       }]
@@ -90,7 +94,7 @@ module.exports = function(util) {
       }, {
         name: 'build',
         title: 'Build'
-      },{
+      }, {
         name: 'search',
         title: 'Search Keywords'
       }]
