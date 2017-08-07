@@ -65,6 +65,9 @@ module.exports = function(locals) {
     config: function(prop) {
       return _.get(project.config, prop);
     },
+    configPrj: function(prop) {
+      return _.get(locals.web.project.config, prop);
+    },
     template: template
   };
 

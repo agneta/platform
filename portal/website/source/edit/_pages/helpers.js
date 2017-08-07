@@ -42,7 +42,7 @@ function _e_helpers($scope, $mdToast, $timeout, helpers) {
   };
   //------------------------------------------
   helpers.getBasePath = function() {
-    var base = 'page/' + $scope.page.path;
+    var base = agneta.urljoin('_t_configPrj("media.storageRoot");',$scope.page.path);
     return helpers.fixPath(base);
   };
   //------------------------------------------

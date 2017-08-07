@@ -35,6 +35,7 @@ page:
     default: 'private/page'
 
 media:
+  storageRoot: 'page'
   base: 'private/media'
   api:
     public: 'api/Media/'

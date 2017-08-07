@@ -68,7 +68,7 @@ module.exports = function(locals) {
       if (obj) {
         res = locals.app.locals.get_media(obj.path, obj.size);
       } else {
-        res = locals.app.locals.get_media(obj);
+        res = locals.app.locals.get_media(params.val);
       }
       return new stylus.nodes.String(res);
     });

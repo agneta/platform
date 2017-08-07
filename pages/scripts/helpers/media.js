@@ -72,7 +72,7 @@ module.exports = function(locals) {
     page = page || this.page;
     return this.get_media(
       urljoin(
-        'page', this.pagePath(page), path
+        project.config.media.storageRoot, this.pagePath(page), path
       )
     );
   });
@@ -81,7 +81,7 @@ module.exports = function(locals) {
     return this.get_media(urljoin('icons', name));
   });
 
-  project.extend.helper.register('get_cover', function(page,options) {
+  project.extend.helper.register('get_cover', function(page, options) {
 
     options = options || {};
     page = page || this.page;
@@ -91,20 +91,16 @@ module.exports = function(locals) {
       var cover = page.cover.__value;
       var size = options.size || cover.size || 'large';
 
-      return this.get_media(cover.location,size);
+      return this.get_media(cover.location, size);
     }
 
-    if (!page.$cover) {
+    var name = 'cover';
 
-      var name = 'cover';
-
-      if (_.isString(page.$cover)) {
-        name = page.$cover;
-      }
-
-      return this.page_media(name);
-
+    if (_.isString(page.$cover)) {
+      name = page.$cover;
     }
+
+    return this.page_media(name);
 
 
   });
