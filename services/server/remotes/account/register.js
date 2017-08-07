@@ -19,8 +19,6 @@ module.exports = function(Model, app) {
 
   var callbacks = app.get('account').callbacks;
 
-
-
   Model.__register = function(options) {
 
     var email = options.email;

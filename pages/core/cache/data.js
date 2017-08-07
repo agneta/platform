@@ -14,12 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const path = require('path');
 const LRU = require('lru-cache');
 
 module.exports = function(locals) {
-
-  var project = locals.project;
 
   const dirs = LRU();
   const files = LRU({

@@ -37,9 +37,9 @@ module.exports = function(app) {
       Key: key
     };
     return app.storage.headObject({
-        Bucket: bucket,
-        Key: key
-      })
+      Bucket: bucket,
+      Key: key
+    })
       .then(function(storageObjectHead) {
 
         data.res.set('Content-Encoding', storageObjectHead.ContentEncoding);

@@ -1,7 +1,6 @@
 controller: MediaSelect as media
 
 scripts:
-  - 'ui/paginator'
   - 'media/file'
   - 'edit/media/main'
 

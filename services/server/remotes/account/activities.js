@@ -23,7 +23,7 @@ module.exports = function(Model, app) {
 
   };
 
-  Model.activitiesAdmin = function(accountId, unit, value, skip, year, aggregate, req) {
+  Model.activitiesAdmin = function(accountId, unit, value, skip, year, aggregate) {
 
     return app.models.Activity_Feed.findOne({
       where: {

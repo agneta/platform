@@ -23,7 +23,7 @@ module.exports = function(locals) {
 
   var project = locals.project;
 
-  locals.app.get('/', function(req, res, next) {
+  locals.app.get('/', function(req, res) {
     var url = '/' + urljoin(project.config.root, project.config.language.default.key);
     url = path.normalize(url);
     res.redirect(url);

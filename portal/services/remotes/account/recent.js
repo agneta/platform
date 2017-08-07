@@ -14,9 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var _ = require('lodash');
 
-module.exports = function(Model, app) {
+module.exports = function(Model) {
 
   Model.recent = function(limit) {
 

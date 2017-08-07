@@ -92,7 +92,7 @@ module.exports = function(locals, options) {
         return;
       }
 
-      if (data.if && !project.config[post.if]) {
+      if (data.if && !project.config[data.if]) {
         pages_skipped.push(data.path);
         return;
       }

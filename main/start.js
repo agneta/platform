@@ -25,10 +25,10 @@ var start = {
   init: function(subApps) {
 
     return Promise.each(subApps, function(component) {
-        if (component.preInit) {
-          return component.preInit();
-        }
-      })
+      if (component.preInit) {
+        return component.preInit();
+      }
+    })
       .then(function() {
         return Promise.each(subApps, function(component) {
           log.info('Initiating: ' + component.locals.app.get('title'));

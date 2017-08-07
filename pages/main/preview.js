@@ -87,8 +87,6 @@ module.exports = function(locals) {
   var libPath = path.join(project.paths.project, 'website', 'lib');
   app.use('/lib', express.static(libPath));
 
-  var port = parseInt(locals.port);
-
   //--------------------------------------------------
   //
 

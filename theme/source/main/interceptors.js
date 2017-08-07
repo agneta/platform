@@ -39,15 +39,15 @@
             var data;
 
             switch (config.method) {
-            case 'GET':
-              config.params = config.params || {};
-              data = config.params;
-              data.__version = new Date().valueOf();
-              break;
-            case 'POST':
-              config.data = config.data || {};
-              data = config.data;
-              break;
+              case 'GET':
+                config.params = config.params || {};
+                data = config.params;
+                data.__version = new Date().valueOf();
+                break;
+              case 'POST':
+                config.data = config.data || {};
+                data = config.data;
+                break;
             }
 
             data.language = agneta.lang;
@@ -104,14 +104,14 @@
           var code = error && error.code;
 
           switch (code) {
-          case 'NO_USER_WITH_TOKEN':
-            console.warn('No user with token.');
-            LoopBackAuth.clearUser();
-            LoopBackAuth.clearStorage();
-            LoopBackAuth.save();
-          case 'LOGIN_FAILED_EMAIL_NOT_VERIFIED':
-          case 'USER_DEACTIVATED':
-            return $q.reject(error);
+            case 'NO_USER_WITH_TOKEN':
+              console.warn('No user with token.');
+              LoopBackAuth.clearUser();
+              LoopBackAuth.clearStorage();
+              LoopBackAuth.save();
+            case 'LOGIN_FAILED_EMAIL_NOT_VERIFIED':
+            case 'USER_DEACTIVATED':
+              return $q.reject(error);
           }
 
           var $mdDialog = $injector.get('$mdDialog');

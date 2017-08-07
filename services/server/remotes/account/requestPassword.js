@@ -36,10 +36,10 @@ module.exports = function(Model, app) {
     var account;
 
     return Model.findOne({
-        where: {
-          email: email
-        }
-      })
+      where: {
+        email: email
+      }
+    })
       .then(function(_account) {
 
         account = _account;

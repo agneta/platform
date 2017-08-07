@@ -62,13 +62,13 @@ module.exports = function(locals) {
       try {
         obj = JSON.parse(params.val);
       } catch (err) {
-
+        obj = null;
       }
       var res;
       if (obj) {
         res = locals.app.locals.get_media(obj.path, obj.size);
       } else {
-        res = locals.app.locals.get_media(params.val);
+        res = locals.app.locals.get_media(obj);
       }
       return new stylus.nodes.String(res);
     });

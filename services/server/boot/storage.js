@@ -37,9 +37,9 @@ module.exports = function(app) {
 
     function listAllKeys(marker) {
       return app.storage.listObjects({
-          Bucket: options.bucket,
-          Marker: marker
-        })
+        Bucket: options.bucket,
+        Marker: marker
+      })
         .then(function(data) {
 
           var promise = options.onData(data.Contents) || Promise.resolve();

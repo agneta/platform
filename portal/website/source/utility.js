@@ -43,8 +43,8 @@
     }
 
     Utility.state({
-        name: utilityName
-      })
+      name: utilityName
+    })
       .$promise
       .then(function(options) {
         $scope.parameters = options.parameters;

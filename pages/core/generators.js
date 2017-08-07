@@ -149,12 +149,12 @@ module.exports = function(locals) {
         if (page.authorization) {
 
           return run(_.extend({},
-              page,
-              pageBase, {
-                isView: true,
-                path: nPath.join(page.path, 'view-auth'),
-                template: 'authorization'
-              }))
+            page,
+            pageBase, {
+              isView: true,
+              path: nPath.join(page.path, 'view-auth'),
+              template: 'authorization'
+            }))
             .then(function() {
 
               return run(_.extend({},

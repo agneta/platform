@@ -21,33 +21,33 @@
   var minVersion;
 
   switch (browser.name) {
-  case 'Chromium':
-    minVersion = 21;
-    break;
-  case 'Chrome':
-    minVersion = 21;
-    break;
-  case 'Firefox':
-    minVersion = 28;
-    break;
-  case 'Opera':
-    minVersion = 12;
-    break;
-  case 'IE':
-    minVersion = 11;
-    break;
-  case 'Edge':
-    minVersion = 12;
-    break;
-  case 'Safari':
-    minVersion = 6;
-    break;
-  case 'Mobile Safari':
-    minVersion = 6;
-    break;
-  case 'Android Browser':
-    minVersion = 2;
-    break;
+    case 'Chromium':
+      minVersion = 21;
+      break;
+    case 'Chrome':
+      minVersion = 21;
+      break;
+    case 'Firefox':
+      minVersion = 28;
+      break;
+    case 'Opera':
+      minVersion = 12;
+      break;
+    case 'IE':
+      minVersion = 11;
+      break;
+    case 'Edge':
+      minVersion = 12;
+      break;
+    case 'Safari':
+      minVersion = 6;
+      break;
+    case 'Mobile Safari':
+      minVersion = 6;
+      break;
+    case 'Android Browser':
+      minVersion = 2;
+      break;
   }
 
   window.isCompatible = function() {

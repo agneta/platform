@@ -161,7 +161,7 @@ module.exports = function(locals) {
       file.stat(),
       file.read()
     ]).spread(function(stats, content) {
-
+      var data;
       try {
         data = yaml.safeLoad(content);
       } catch (e) {

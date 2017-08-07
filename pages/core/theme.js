@@ -16,7 +16,6 @@
  */
 var fs = require('fs');
 var path = require('path');
-var ejs = require('ejs');
 var _ = require('lodash');
 
 module.exports = function(locals) {
@@ -40,7 +39,9 @@ module.exports = function(locals) {
 
         try {
           stats = fs.statSync(dir);
-        } catch (e) {}
+        } catch (e) {
+          stats = null;
+        }
 
         if (stats && stats.isDirectory()) {
 
@@ -93,7 +94,9 @@ module.exports = function(locals) {
 
       try {
         stats = fs.lstatSync(filePath);
-      } catch (e) {}
+      } catch (e) {
+        stats = null;
+      }
 
       if (stats && stats[method]()) {
 

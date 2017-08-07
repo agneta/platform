@@ -16,7 +16,7 @@
  */
 var _ = require('lodash');
 
-module.exports = function(Model, app) {
+module.exports = function(Model) {
 
   Model.update = function(req, data) {
     return Model.findById(data.id)

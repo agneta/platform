@@ -14,7 +14,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var fs = require('hexo-fs');
 var Database = require('warehouse');
 var registerModels = require('../../pages/register_models');
 var path = require('path');

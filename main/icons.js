@@ -52,7 +52,7 @@ module.exports = function(paths) {
         var svgDir = path.join(searchDir, base);
 
         return lstat(svgDir)
-          .then(function(stats) {
+          .then(function() {
             return glob('**/*_24px.svg', {
               cwd: svgDir,
               nodir: true,
@@ -97,7 +97,7 @@ module.exports = function(paths) {
     })
     .then(function(names) {
 
-      bar = new ProgressBar('[:bar] :percent', {
+      var bar = new ProgressBar('[:bar] :percent', {
         total: names.length
       });
 

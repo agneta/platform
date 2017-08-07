@@ -4,7 +4,6 @@ title:
 template: edit/media/main
 
 scripts:
-  - 'ui/paginator'
   - 'media/file'
 
 angular_libs:

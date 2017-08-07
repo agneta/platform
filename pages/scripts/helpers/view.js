@@ -65,7 +65,7 @@ module.exports = function(locals) {
 
     data.layoutClass = [
       'page-' + page.templateSource.split('/')
-      .join('-')
+        .join('-')
     ];
     if (page.class) {
       data.layoutClass.push(page.class);
