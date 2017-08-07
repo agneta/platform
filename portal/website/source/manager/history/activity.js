@@ -14,6 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+/*global CodeMirror*/
 (function() {
 
   var app = angular.module('MainApp');
@@ -22,7 +23,8 @@
     return {
       restrict: 'A',
       scope: true,
-      link: function(scope, element, attrs) {
+      link: function(scope, element) {
+
         var myCodeMirror = CodeMirror.fromTextArea(element[0], {
           readOnly: true,
           lineWrapping: true,
@@ -30,7 +32,6 @@
           mode: 'application/json',
           theme: 'monokai'
         });
-        var givenValue;
 
         scope.$watch('data', function(newValue) {
           if (newValue) {

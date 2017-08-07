@@ -53,7 +53,7 @@ module.exports = function(util, dir) {
 
 
   return bower(util, dir.root)
-    .then(function(content) {
+    .then(function() {
 
       return Promise.promisify(fs.readFile)(
         path.join(dir.base, 'config.yml'),
@@ -131,13 +131,8 @@ module.exports = function(util, dir) {
 
     })
     .then(function() {
-      if (false) { // perhaps remove on bundle install?
-        return Promise.promisify(fs.remove)(projectPaths.lib);
-      }
-    })
-    .then(function() {
 
-      bar = util.progress(totalFiles, {
+      var bar = util.progress(totalFiles, {
         title: 'Dependencies for ' + dir.name
       });
 

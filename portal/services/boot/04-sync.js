@@ -16,9 +16,6 @@
  */
 var chokidar = require('chokidar');
 var path = require('path');
-var yaml = require('js-yaml');
-var fs = require('fs');
-var _ = require('lodash');
 var Promise = require('bluebird');
 
 module.exports = function(app) {
@@ -46,18 +43,18 @@ module.exports = function(app) {
       project.paths.configTheme,
     ], {
       ignoreInitial: true,
-      ignored: /[\/\\]\./
+      ignored: /[/\\]\./
     });
 
-    watcher.on('add', function(pathFile, stats) {
+    watcher.on('add', function(pathFile) {
       onWatcher(pathFile);
     });
 
-    watcher.on('change', function(pathFile, stats) {
+    watcher.on('change', function(pathFile) {
       onWatcher(pathFile);
     });
 
-    watcher.on('unlink', function(pathFile, stats) {
+    watcher.on('unlink', function(pathFile) {
       onWatcher(pathFile);
     });
 

@@ -17,7 +17,9 @@
 (function(){
   var activeScope;
   var scopeCount = 0;
-  app.controller('MenuItemCtrl', function($rootScope, $scope, $element, $timeout, $mdSidenav, $log) {
+
+  var app = window.angular.module('MainApp', window.angularDeps);
+  app.controller('MenuItemCtrl', function($rootScope, $scope, $element, $timeout) {
 
     $scope.expanded = false;
     $scope.id = scopeCount++;
@@ -43,7 +45,7 @@
       }
     });
 
-    $scope.toggleView = function(data) {
+    $scope.toggleView = function() {
 
       $scope.expanded = !$scope.expanded;
 

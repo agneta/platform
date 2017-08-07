@@ -16,7 +16,7 @@
  */
 (function() {
 
-  angular.module('MainApp').controller('RegisterCtrl', function($scope, Account, $mdDialog) {
+  angular.module('MainApp').controller('RegisterCtrl', function($scope, Account) {
 
     $scope.registerAccount = function() {
 

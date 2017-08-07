@@ -14,11 +14,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const Promise = require('bluebird');
-const nodegit = require('nodegit');
-const path = require('path');
-const _ = require('lodash');
-const yaml = require('js-yaml');
 
 module.exports = function(app) {
 

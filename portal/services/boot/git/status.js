@@ -15,9 +15,6 @@
  *   limitations under the License.
  */
 var Promise = require('bluebird');
-var nodegit = require('nodegit');
-var path = require('path');
-var _ = require('lodash');
 
 module.exports = function(app) {
 

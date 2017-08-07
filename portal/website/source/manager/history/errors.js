@@ -14,16 +14,20 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+/*global beautifyJSON*/
+/*global UAParser*/
+
 (function() {
 
   var moment = window.moment;
   var angular = window.angular;
   var app = angular.module('MainApp');
-    
-  app.directive('visError', function($timeout, $interpolate, $mdDialog) {
+
+  app.directive('visError', function() {
 
     return {
-      link: function($scope, $element, $attrs) {
+      link: function($scope, $element) {
         $scope.createTimeline({
           $element: $element,
           getTitle: getTitle,
@@ -41,7 +45,7 @@
     }));
 
     $scope.fromNow = moment.utc(result.time).local().fromNow();
-        
+
     var data = result.meta || result.data;
     var error = data.error;
     $scope.error = error;
@@ -55,7 +59,7 @@
       error: beautifyJSON(error),
       request: beautifyJSON(request)
     };
-        
+
     if(typeof agent == 'string'){
       var parser = new UAParser();
       parser.setUA(agent);
@@ -78,7 +82,7 @@
 
 
   function getTitle(error) {
-        
+
     var title = '';
     if (error.name) {
       title = error.name + ': ';

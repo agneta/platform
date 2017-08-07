@@ -14,12 +14,11 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var loopback = require('loopback');
 var Promise = require('bluebird');
 var moment = require('moment');
 var _ = require('lodash');
 
-module.exports = function(Model, app) {
+module.exports = function(Model) {
 
   require('../mixins/disableAllMethods')(Model);
 
@@ -191,7 +190,9 @@ module.exports = function(Model, app) {
   function preparePeriod(period, value, year) {
 
     var range;
-
+    var subUnit;
+    var start;
+    var length;
     var unit;
 
     switch (period) {
@@ -229,8 +230,6 @@ module.exports = function(Model, app) {
     result.value = value;
     result.period = period;
 
-    var subUnit;
-
     switch (unit) {
 
       case 'month':
@@ -249,8 +248,8 @@ module.exports = function(Model, app) {
 
         switch (period) {
           case 'month':
-            var start = utc.month(value).date(1).dayOfYear();
-            var length = utc.month(value).daysInMonth();
+            start = utc.month(value).date(1).dayOfYear();
+            length = utc.month(value).daysInMonth();
 
             range = _.range(start, start + length);
             break;
@@ -265,8 +264,8 @@ module.exports = function(Model, app) {
 
         switch (period) {
           case 'dayOfYear':
-            var start = utc.dayOfYear(value).hour(0).hourOfYear();
-            var length = 24;
+            start = utc.dayOfYear(value).hour(0).hourOfYear();
+            length = 24;
 
             range = _.range(start, start + length);
             break;

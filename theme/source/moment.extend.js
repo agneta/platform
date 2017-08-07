@@ -14,6 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+/*global moment*/
+
 moment.fn.hourOfYear = function(value) {
 
   if (value) {

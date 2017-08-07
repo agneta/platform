@@ -14,11 +14,14 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+/*global socketCluster*/
+
 (function() {
 
   var app = angular.module('MainApp');
 
-  app.factory('SocketIO', function($mdDialog) {
+  app.factory('SocketIO', function() {
 
     var socket = socketCluster.connect({
       host: agneta.services.host,
@@ -39,11 +42,6 @@
 
     socket.on('error', function(err) {
       console.error(err);
-      /*
-              error({
-                  title: 'Socket Error',
-                  content: err
-              });*/
     });
 
     function connect(namespace) {
@@ -73,18 +71,6 @@
         return namespace + '.' + name;
       }
 
-    }
-
-    function error(options) {
-
-      $mdDialog.show({
-        clickOutsideToClose: true,
-        templateUrl: agneta.partial('error'),
-        locals: {
-          data: options
-        },
-        controller: 'DialogController'
-      });
     }
 
     return {

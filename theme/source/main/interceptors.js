@@ -109,6 +109,7 @@
               LoopBackAuth.clearUser();
               LoopBackAuth.clearStorage();
               LoopBackAuth.save();
+              // falls through
             case 'LOGIN_FAILED_EMAIL_NOT_VERIFIED':
             case 'USER_DEACTIVATED':
               return $q.reject(error);

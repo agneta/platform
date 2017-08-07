@@ -15,19 +15,12 @@
  *   limitations under the License.
  */
 var Promise = require('bluebird');
-var nodegit = require('nodegit');
-var path = require('path');
-var _ = require('lodash');
 
 module.exports = function(app) {
 
-  var config = app.get('git');
-
   app.git.push = function(message, req) {
 
-    var repo = app.git.repository;
     var Account = app.models.Account;
-    var index;
     var commit;
 
     var git = app.git.native;
@@ -73,8 +66,7 @@ module.exports = function(app) {
           });
 
       })
-      .then(function(result) {
-        //console.log(result);
+      .then(function() {
         return {
           commit: commit
         };

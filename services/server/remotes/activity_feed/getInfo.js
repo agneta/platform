@@ -15,7 +15,6 @@
  *   limitations under the License.
  */
 var Promise = require('bluebird');
-var _ = require('lodash');
 var randomColor = require('randomcolor');
 
 module.exports = function(Model, app) {
@@ -110,7 +109,7 @@ module.exports = function(Model, app) {
 
   //----------------------------------------------
 
-  Model.registerInfo('account', function(feed, req) {
+  Model.registerInfo('account', function(feed) {
     var id = feed.value.split('_')[1];
     if (!id) {
       return;

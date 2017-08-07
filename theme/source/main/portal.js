@@ -44,7 +44,7 @@
   app.directive('portalEdit', function(Portal, $rootScope) {
     return {
       restrict: 'A',
-      link: function(scope, elem, attrs) {
+      link: function(scope, elem) {
 
         var contentId = elem.attr('portal-edit');
         var listener = 'content-change:' + $rootScope.viewData.path + ':' + contentId;

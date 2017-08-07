@@ -18,6 +18,7 @@
 /*global Fuse:true*/
 /*global S:true*/
 /*global greeklish:true*/
+/*global Promise:true*/
 
 function _e_searchEngine(app) {
 
