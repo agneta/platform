@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
+function _e_password(app) {
 
   app.controller('PassLostCtrl', function($scope, $controller,data, Account) {
 
@@ -61,4 +61,4 @@
 
   });
 
-})();
+}

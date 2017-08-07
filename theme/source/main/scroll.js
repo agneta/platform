@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
+function _e_Scroll(app) {
 
   var scrollParent;
 
@@ -62,7 +62,7 @@
   app.directive('autoScroll', function($document, $timeout,$window, $location) {
     return {
       restrict: 'A',
-      link: function(scope, element, attrs) {
+      link: function(scope, element) {
 
         var elm = element[0];
         scope.okSaveScroll = true;
@@ -78,14 +78,14 @@
           scope.scrollPos[path] = 0;
         };
 
-        scope.$on('$viewContentLoaded', function(route) {
+        scope.$on('$viewContentLoaded', function() {
           $timeout(function() {
             elm.scrollTop = scope.scrollPos[$location.path()] ? scope.scrollPos[$location.path()] : 0;
             scope.okSaveScroll = true;
           }, 0);
         });
 
-        scope.$on('$locationChangeStart', function(event) {
+        scope.$on('$locationChangeStart', function() {
           scope.okSaveScroll = false;
         });
       }
@@ -96,4 +96,5 @@
     var elm = document.getElementById(eID);
     return elm.offsetTop;
   }
-})();
+
+}

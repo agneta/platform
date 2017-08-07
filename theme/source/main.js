@@ -14,12 +14,22 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+/*global _e_helpers:true*/
+
+/*global _e_searchEngine*/
+/*global _e_Route*/
+/*global _e_Form*/
+/*global _e_Scroll*/
+/*global _e_Dialog*/
+
 (function() {
 
   var agneta = window.agneta;
   var app = window.angular.module('MainApp', window.angularDeps);
 
-  <%-js('main/helpers')%>
+  _t_template('main/helpers');
+  _e_helpers();
 
   app.config(function($mdThemingProvider, $sceDelegateProvider) {
 
@@ -36,21 +46,23 @@
 
     function definePalette(name, color) {
 
+      var lum = agneta.colorLuminance;
+
       $mdThemingProvider.definePalette(name, {
-        '50': colorLuminance(color, -0.5),
-        '100': colorLuminance(color, -0.4),
-        '200': colorLuminance(color, -0.3),
-        '300': colorLuminance(color, -0.2),
-        '400': colorLuminance(color, -0.1),
-        '500': colorLuminance(color, 0),
-        '600': colorLuminance(color, 0.05),
-        '700': colorLuminance(color, 0.1),
-        '800': colorLuminance(color, 0.15),
-        '900': colorLuminance(color, 0.2),
-        'A100': colorLuminance(color, 0.25),
-        'A200': colorLuminance(color, 0.3),
-        'A400': colorLuminance(color, 0.25),
-        'A700': colorLuminance(color, 0.3),
+        '50': lum(color, -0.5),
+        '100': lum(color, -0.4),
+        '200': lum(color, -0.3),
+        '300': lum(color, -0.2),
+        '400': lum(color, -0.1),
+        '500': lum(color, 0),
+        '600': lum(color, 0.05),
+        '700': lum(color, 0.1),
+        '800': lum(color, 0.15),
+        '900': lum(color, 0.2),
+        'A100': lum(color, 0.25),
+        'A200': lum(color, 0.3),
+        'A400': lum(color, 0.25),
+        'A700': lum(color, 0.3),
         'contrastDefaultColor': 'light', // whether, by default, text (contrast)
         // on this palette should be dark or light
         'contrastDarkColors': ['50', '100', //hues which contrast should be 'dark' by default
@@ -71,8 +83,7 @@
       })
       .warnPalette('red');
 
-
-  }).controller('AppCtrl', function($scope, $mdMedia, $http, Account, $rootScope, $ocLazyLoad, $route, $timeout, $location, $mdSidenav, $q, $log, $mdDialog, $routeParams) {
+  }).controller('AppCtrl', function($scope, $mdMedia, $http, Account, $rootScope, $ocLazyLoad, $route, $timeout, $location, $mdSidenav, $q, $log, $mdDialog) {
 
     $location.path(agneta.url(agneta.path), false);
 
@@ -120,7 +131,7 @@
 
     ////////////////////////////////////////////////////////////////
 
-    $rootScope.pageTitle = function(path) {
+    $rootScope.pageTitle = function() {
       if (!$rootScope.viewData) {
         return agneta.title;
       }
@@ -128,11 +139,12 @@
     };
 
     ////////////////////////////////////////////////////////////////
+
     $rootScope.loadData = function(path) {
 
       var params = $route.current.params;
       path = path || params.path;
-      console.log(path);
+
       var dataPath = agneta.urljoin({
         path: [agneta.services.view, path, 'view-data'],
         query: {
@@ -153,21 +165,21 @@
 
           files = files.concat(data.scripts, data.styles);
 
-          return $q(function(resolve, reject) {
+          return $q(function(resolve) {
 
-              if (files.length) {
+            if (files.length) {
 
-                $ocLazyLoad.load([{
-                  serie: true,
-                  name: 'MainApp',
-                  files: files
-                }]).then(resolve);
+              $ocLazyLoad.load([{
+                serie: true,
+                name: 'MainApp',
+                files: files
+              }]).then(resolve);
 
-              } else {
-                resolve();
-              }
+            } else {
+              resolve();
+            }
 
-            })
+          })
             .then(function() {
 
               var dependencies = data.dependencies || [];
@@ -229,7 +241,7 @@
       if (!phrase) {
         return text;
       }
-      phrase = phrase.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+      phrase = phrase.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>{}[]\\\/]/gi, '');
       phrase = phrase.split(' ').join('|');
       text = text.replace(new RegExp('(' + phrase + ')', 'gi'),
         '<span class="highlighted">$1</span>');
@@ -266,7 +278,7 @@
       },
       link: function(scope, element) {
         scope.$watch('trigger', function(value) {
-          if (value === "true") {
+          if (value === 'true') {
             $timeout(function() {
               element[0].focus();
             });
@@ -276,11 +288,11 @@
     };
   });
 
-  app.directive("compareTo", function() {
+  app.directive('compareTo', function() {
     return {
-      require: "ngModel",
+      require: 'ngModel',
       scope: {
-        otherModelValue: "=compareTo"
+        otherModelValue: '=compareTo'
       },
       link: function(scope, element, attributes, ngModel) {
 
@@ -288,17 +300,23 @@
           return modelValue == scope.otherModelValue;
         };
 
-        scope.$watch("otherModelValue", function() {
+        scope.$watch('otherModelValue', function() {
           ngModel.$validate();
         });
       }
     };
   });
 
-  <%-js('main/search-engine')%>
-  <%-js('main/route')%>
-  <%-js('main/form')%>
-  <%-js('main/scroll')%>
-  <%-js('main/dialog')%>
+  _t_template('main/search-engine');
+  _t_template('main/route');
+  _t_template('main/form');
+  _t_template('main/scroll');
+  _t_template('main/dialog');
+
+  _e_searchEngine(app);
+  _e_Route(app);
+  _e_Form(app);
+  _e_Scroll(app);
+  _e_Dialog(app);
 
 })();

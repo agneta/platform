@@ -14,32 +14,15 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = {
-  "env": {
-    "browser": true
-  },
-  "extends": "eslint:recommended",
-  "parserOptions": {
-  },
-  "rules": {
-    "no-console": ["error", {
-      allow: ["warn", "error", "log"]
-    }],
-    "indent": [
-      "error",
-      2
-    ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ]
-  }
-};
+ module.exports = {
+   "globals": {
+     angular: true,
+     agneta: true,
+     _t_template: true
+   },
+   "env": {
+     "es6": false,
+     "browser": true,
+     "node": false
+   }
+ }

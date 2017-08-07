@@ -112,10 +112,11 @@ color-bar = #fbfbfb;
     .media-tile{
 
       cursor: pointer;
-      margin: 4px 0;
+      padding: 4px 0;
+      margin: 0;
 
       &.selected{
-        background: #95989a;
+        background: #95989a !important;
         color: white;
       }
 
@@ -125,6 +126,12 @@ color-bar = #fbfbfb;
 
       md-icon{
         color: #7e7d7d;
+      }
+
+      .selector{
+        min-width: 20px;
+        max-width: 20px;
+        margin-left: 10px;
       }
 
       .preview{

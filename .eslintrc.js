@@ -27,6 +27,9 @@ module.exports = {
     "no-console": ["error", {
       allow: ["warn", "error", "log"]
     }],
+    "no-unused-vars": ["error", {
+      "varsIgnorePattern": "^_e_"
+    }],
     "indent": [
       "error",
       2, {

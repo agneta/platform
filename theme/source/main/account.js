@@ -14,27 +14,38 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+/*global  _e_login*/
+/*global  _e_password*/
+/*global  _e_popup*/
+/*global  _e_recovery*/
+/*global  _e_root*/
+/*global  _e_verification*/
+
 (function() {
 
-    var app = window.angular.module('MainApp');
-    var tokenName = "<%-configServices('token').name%>";
+  var app = window.angular.module('MainApp');
+  var tokenName = '_t_configServices("token").name;';
 
-    function getName(name) {
-        return tokenName + '::' + name;
-    }
+  app.config(function(LoopBackResourceProvider) {
+    LoopBackResourceProvider.setAuthHeader(tokenName);
+    var url = agneta.urljoin(agneta.services.url, 'api');
+    LoopBackResourceProvider.setUrlBase(url);
 
-    app.config(function(LoopBackResourceProvider) {
-        LoopBackResourceProvider.setAuthHeader(tokenName);
-        var url = agneta.urljoin(agneta.services.url, 'api');
-        LoopBackResourceProvider.setUrlBase(url);
+  });
 
-    });
+  _t_template('main/account/login');
+  _t_template('main/account/password');
+  _t_template('main/account/popup');
+  _t_template('main/account/recovery');
+  _t_template('main/account/root');
+  _t_template('main/account/verification');
 
-    <%-js('main/account/login')%>
-    <%-js('main/account/password')%>
-    <%-js('main/account/popup')%>
-    <%-js('main/account/recovery')%>
-    <%-js('main/account/root')%>
-    <%-js('main/account/verification')%>
+  _e_login(app);
+  _e_password(app);
+  _e_popup(app);
+  _e_recovery(app);
+  _e_root(app);
+  _e_verification(app);
 
 })();

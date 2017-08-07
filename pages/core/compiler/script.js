@@ -16,27 +16,26 @@
  */
 var path = require('path');
 var fs = require('fs-extra');
-var ejs = require('ejs');
 var _ = require('lodash');
-var babel = require('babel-core');
 
 module.exports = function(locals) {
 
   var project = locals.project;
 
-  function js(path_partial, data) {
-    return this.template(path_partial + '.js', data);
-  }
-
   function template(path_partial, data) {
 
     var path_result;
 
+    if (path.parse(path_partial).ext !== '.js') {
+      path_partial += '.js';
+    }
+
     if (path_partial.indexOf(project.paths.source) === 0 ||
-            path_partial.indexOf(project.paths.sourceTheme) === 0) {
+      path_partial.indexOf(project.paths.sourceTheme) === 0) {
       path_result = path_partial;
     } else {
-      path_result = project.theme.getFile(path.join('source', path_partial));
+      path_partial = path.join('source', path_partial);
+      path_result = project.theme.getFile(path_partial);
     }
 
     if (!path_result) {
@@ -47,11 +46,11 @@ module.exports = function(locals) {
 
     var file_content = fs.readFileSync(path_result, 'utf8');
 
-    var result = ejs.render.apply(this, [file_content,
-      _.extend(this, data, {
-        locals: data,
-      })
-    ]);
+    var result = _.template(file_content, {
+      interpolate: /_t_(.+?);/g
+    })(_.extend(this, data, {
+      locals: data
+    }));
     return result;
 
   }
@@ -60,7 +59,6 @@ module.exports = function(locals) {
     path: function(req) {
       return locals.app.locals.get_path(req);
     },
-    js: js,
     configServices: function(prop) {
       return locals.services.get(prop);
     },
@@ -68,16 +66,6 @@ module.exports = function(locals) {
       return _.get(project.config, prop);
     },
     template: template
-  };
-
-  var babelOptions = {
-    presets: [
-      ['env', {
-        targets: {
-          browsers: ['ie >= 10']
-        }
-      }]
-    ]
   };
 
   function middleware(req, res, next) {
@@ -108,14 +96,6 @@ module.exports = function(locals) {
     options.babel = options.babel || {};
 
     var content = template(path_partial, helpers);
-
-    if (false && options.useBabel) {
-      content = babel.transform(content,
-        _.extend({}, babelOptions, options.babel)
-      );
-      content = content.code;
-    }
-
     return content;
   }
 

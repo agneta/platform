@@ -14,7 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
+
+function _e_directory($scope, Portal, $location, $rootScope, Media, MediaPreview, $mdDialog, Upload, apiMedia, partialFile) {
 
   var socket = Portal.socket.media;
   var objects = [];
@@ -24,7 +25,6 @@
   function readdir() {
 
     var dir = $scope.dir;
-    var query = '';
 
     if (dir.location.length) {
       $location.search('location', dir.location);
@@ -94,8 +94,7 @@
           params.marker = marker;
         }
 
-        console.warn('fetchMoreItems_', index, this.numLoaded_, this.toLoad_);
-
+        //console.warn('fetchMoreItems_', index, this.numLoaded_, this.toLoad_);
 
         Media.list(params)
           .$promise
@@ -126,14 +125,35 @@
   //---------------------------------------------------
   $scope.isLoadingMore = function(object) {
     return !object &&
-            (
-              $scope.objectsOnDemand.numLoaded_ === 0 ||
-                $scope.objectsOnDemand.numLoaded_ < $scope.count
-            );
+      (
+        $scope.objectsOnDemand.numLoaded_ === 0 ||
+        $scope.objectsOnDemand.numLoaded_ < $scope.count
+      );
   };
   //---------------------------------------------------
+  // Selected
 
-  $scope.newFolder = function(file) {
+  var selectedObjects = [];
+
+  $scope.selection = {
+    count: function() {
+      return selectedObjects.length;
+    },
+    add: function(object) {
+      selectedObjects.push(object);
+      object.selected = false;
+    },
+    removeAll: function() {
+      for (var key in selectedObjects) {
+        var selectedObject = selectedObjects[key];
+        selectedObject.selected = false;
+      }
+    }
+  };
+
+  //---------------------------------------------------
+
+  $scope.newFolder = function() {
 
     var confirm = $mdDialog.prompt()
       .title('New Folder')
@@ -169,7 +189,7 @@
   // Helps to use toolbar without propagating to another function
   // For example: to prevent folder from opening
   $scope.toolbarClick = function($event) {
-      $event.stopPropagation();
+    $event.stopPropagation();
   };
 
   $scope.isFolder = function(object) {
@@ -177,7 +197,7 @@
   };
 
   $scope.contextMenu = function(object) {
-    console.log('menu',object);
+    console.log('menu', object);
   };
 
   $scope.openObject = $scope.openObject || function(object) {
@@ -188,7 +208,7 @@
         Media: Media,
         MediaPreview: MediaPreview,
         location: object.location,
-        onChange: function(file) {
+        onChange: function() {
           $scope.refresh();
         }
       }
@@ -209,14 +229,17 @@
           objects: objects
         },
         arrayKey: ''
-      }).then(function(response) {}, function(response) {
-        if (response.status > 0)
-          $scope.errorMsg = response.status + ': ' + response.data;
-      }, function(evt) {
-        $scope.uploadProgress = Math.min(100, parseInt(100.0 *
-                    evt.loaded / evt.total));
-      });
+      })
+        .then(function() {},
+          function(response) {
+            if (response.status > 0)
+              $scope.errorMsg = response.status + ': ' + response.data;
+          },
+          function(evt) {
+            $scope.uploadProgress = Math.min(100, parseInt(100.0 *
+              evt.loaded / evt.total));
+          });
 
     }
   };
-})();
+}

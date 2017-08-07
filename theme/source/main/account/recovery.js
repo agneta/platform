@@ -14,9 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
+function _e_recovery(app) {
 
-  app.controller('AccountRecoverCtrl', function($scope, $controller, Account, $mdDialog) {
+  app.controller('AccountRecoverCtrl', function($scope, $controller, Account) {
 
     angular.extend(this, $controller('DialogCtrl', {
       $scope: $scope
@@ -26,7 +26,7 @@
 
       $scope.loading = true;
 
-      Account.recover($scope.formPassFields, function(res) {
+      Account.recover($scope.formPassFields, function() {
         $scope.loading = false;
 
       });
@@ -60,4 +60,4 @@
 
   });
 
-})();
+}

@@ -14,28 +14,33 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-$scope.onSearch = function(value) {
 
-  var scopeName;
+function _e_search($scope, $timeout, fuse, itemsLoaded) {
 
-  if ($scope.pages) {
-    scopeName = 'pages';
-  }
-  if ($scope.templates) {
-    scopeName = 'templates';
-  }
+  $scope.onSearch = function(value) {
 
-  if (!value) {
+    var scopeName;
+
+    if ($scope.pages) {
+      scopeName = 'pages';
+    }
+    if ($scope.templates) {
+      scopeName = 'templates';
+    }
+
+    if (!value) {
 
 
-    $scope[scopeName] = null;
-    $timeout(function() {
-      $scope[scopeName] = itemsLoaded;
-    }, 100);
+      $scope[scopeName] = null;
+      $timeout(function() {
+        $scope[scopeName] = itemsLoaded;
+      }, 100);
 
-    return;
-  }
-    
-  var result = fuse.search(value).slice(0, 6);
-  $scope[scopeName] = result;
-};
+      return;
+    }
+
+    var result = fuse.search(value).slice(0, 6);
+    $scope[scopeName] = result;
+  };
+
+}

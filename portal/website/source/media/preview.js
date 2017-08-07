@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
+function _e_preview(app) {
 
   app.service('MediaPreview', function() {
     var types = {
@@ -144,4 +144,4 @@
     });
 
   });
-})();
+}

@@ -14,25 +14,28 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-$scope.showCommit = function(commit) {
-  Model.loadCommit({
-    id: $scope.page.id,
-    commit: commit.hash
-  })
-    .$promise
-    .then(function(result) {
-      $scope.work = $scope.page.data;
-      structureData($scope.template, result.data);
-      setData(result.data);
-    });
-};
 
-$scope.rollback = function(id) {
-  $scope.save();
-  $scope.work = null;
-};
+function _e_history($scope, helpers) {
+  $scope.showCommit = function(commit) {
+    helpers.Model.loadCommit({
+      id: $scope.page.id,
+      commit: commit.hash
+    })
+      .$promise
+      .then(function(result) {
+        $scope.work = $scope.page.data;
+        helpers.structureData($scope.template, result.data);
+        helpers.setData(result.data);
+      });
+  };
 
-$scope.cancelRollback = function(id) {
-  setData($scope.work);
-  $scope.work = null;
-};
+  $scope.rollback = function() {
+    $scope.save();
+    $scope.work = null;
+  };
+
+  $scope.cancelRollback = function() {
+    helpers.setData($scope.work);
+    $scope.work = null;
+  };
+}

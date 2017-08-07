@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
+function _e_popup(app) {
   app.controller('PopupLoginCtrl', function($rootScope, $scope, $mdDialog, $controller) {
 
     angular.extend(this, $controller('DialogCtrl', {
@@ -46,4 +46,4 @@
     };
 
   });
-})();
+}

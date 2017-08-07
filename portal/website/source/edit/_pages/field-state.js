@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
+function _e_fieldState($scope) {
 
   var focused = null;
   $scope.fieldFocus = function(data) {
@@ -44,4 +44,4 @@
     }
   };
 
-})();
+}

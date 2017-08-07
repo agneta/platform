@@ -14,9 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
+function _e_Form(app) {
 
-  app.directive('selectButtons', function($filter,$parse,$timeout) {
+  app.directive('selectButtons', function($filter, $parse) {
     return {
       restrict: 'E',
       scope: true,
@@ -41,7 +41,7 @@
     };
   });
 
-  app.directive('checkboxes', function($filter) {
+  app.directive('checkboxes', function() {
     return {
       restrict: 'E',
       scope: true,
@@ -63,12 +63,10 @@
 
           ngModel.$setValidity('minselect', length >= minselect);
 
-
         }, true);
-
 
       }
     };
   });
 
-})();
+}

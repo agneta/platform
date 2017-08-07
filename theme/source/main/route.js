@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
+function _e_Route(app) {
 
   app.config(function($routeProvider, $locationProvider) {
 
@@ -39,7 +39,7 @@
         reloadOnSearch: false
       })
       .when('/', {
-        templateUrl: function(params) {
+        templateUrl: function() {
           var result = versionURL(agneta.lang);
           return result;
         },
@@ -73,10 +73,7 @@
 
   app.controller('ViewCtrl', function($scope, $rootScope, $route, $timeout, $location, Account, $mdDialog) {
 
-    var wrapper = document.getElementById('wrap');
-
-
-    $rootScope.$on('$routeChangeStart', function(event, current, previous) {
+    $rootScope.$on('$routeChangeStart', function() {
 
       $rootScope.loadingMain = true;
       var searchData = $location.search();
@@ -87,9 +84,6 @@
 
     $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
 
-      var url;
-
-      //----------------------------------------------
       if (rejection.unauthorized) {
         $mdDialog.open({
           partial: 'unauthorized',
@@ -106,28 +100,9 @@
 
       console.error(rejection);
 
-      /*
-            if (previous) {
-
-                var testPath = agneta.url_web + current.params.path;
-                var checkPath = window.location.href;
-
-                if (previous.loadedTemplateUrl == current.loadedTemplateUrl) {
-                    return;
-                }
-
-                url = agneta.url(current.params.path);
-            } else {
-                url = current.loadedTemplateUrl;
-            }
-            if (url) {
-                window.location.href = url;
-            }*/
-
-
     });
 
-    $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
+    $rootScope.$on('$routeChangeSuccess', function(event, current) {
 
       if (current.redirect) {
         window.location.href = $location.path();
@@ -157,4 +132,4 @@
   });
 
 
-})();
+}

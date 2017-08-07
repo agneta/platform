@@ -14,9 +14,12 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
 
-  var app = window.angular.module('MainApp');
+/*global Fuse:true*/
+/*global S:true*/
+/*global greeklish:true*/
+
+function _e_searchEngine(app) {
 
   app.service('Search_Engine', function($http, $location, $timeout) {
 
@@ -186,5 +189,4 @@
     };
   });
 
-
-})();
+}

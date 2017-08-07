@@ -14,9 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
+function _e_Dialog(app) {
 
-  app.run(function($rootScope, $mdDialog, $route) {
+  app.run(function($rootScope, $mdDialog) {
 
     ////////////////////////////////////////////////////////////////
     // Dialog History
@@ -73,7 +73,7 @@
           dialogOptions.controller = options.controller || data.controller || 'DialogController';
           $mdDialog.show(dialogOptions);
         })
-        .finally(function(err) {
+        .finally(function() {
           $rootScope.loadingMain = false;
         });
 
@@ -126,4 +126,4 @@
 
   });
 
-})();
+}

@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
+function _e_media($scope, MediaOpt, $mdDialog, helpers) {
 
   var media = {};
 
@@ -55,11 +55,11 @@
         media: mediaOptions,
         location: dataValue.location,
         name: field.default_name,
-        dir: getBasePath(),
+        dir: helpers.getBasePath(),
         onApply: function(file) {
           dataValue.type = file.type;
           dataValue.updatedAt = file.updatedAt;
-          setFilePath(dataValue, file.location);
+          helpers.setFilePath(dataValue, file.location);
           $scope.save();
         },
         onDelete: function() {
@@ -81,7 +81,7 @@
 
   media.backgroundImage = function(child, size) {
 
-    var data = dataValue(child);
+    var data = helpers.dataValue(child);
     var media = getMedia(data);
 
     if (data.location && !data.icon && data.type) {
@@ -95,17 +95,17 @@
   };
 
   media.getIcon = function(child) {
-    var data = dataValue(child);
+    var data = helpers.dataValue(child);
     var media = getMedia(data);
     return media.preview.objectIcon(data);
   };
 
   media.hasBackground = function(child) {
-    var data = dataValue(child);
+    var data = helpers.dataValue(child);
     var media = getMedia(data);
     return media.preview.hasBackground(data);
   };
 
   $scope.media = media;
 
-})();
+}

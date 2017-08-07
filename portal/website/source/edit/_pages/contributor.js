@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
+function _e_contributor($scope, $rootScope, Account, Portal, $timeout) {
 
   $scope.contributors = {};
 
@@ -57,7 +57,7 @@
     if (angular.isObject(value)) {
       value = value[$scope.edit.lang];
     }
-    console.log('emit');
+    //console.log('emit');
     if (lastEdit.id == child.__id && lastEdit.value == value) {
       return;
     }
@@ -114,4 +114,4 @@
 
   };
 
-})();
+}

@@ -14,8 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
-  app.run(function($rootScope, LoopBackAuth, $mdDialog, $route, Account, $location, $templateCache) {
+function _e_root(app) {
+
+  app.run(function($rootScope, LoopBackAuth, $mdDialog, $route, Account, $location) {
 
     $rootScope.signIn = function(credentials, cb) {
 
@@ -100,4 +101,4 @@
       angular.element(result).removeClass('user-check');
     });
   });
-})();
+}

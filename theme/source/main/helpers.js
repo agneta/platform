@@ -14,7 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
+
+function _e_helpers() {
 
   var agneta = window.agneta;
 
@@ -43,7 +44,7 @@
 
   agneta.prv_media = function() {
     var args = Array.prototype.slice.call(arguments);
-    args.unshift('<%-config("media.base")%>');
+    args.unshift('_t_config("media.base");');
     args.unshift(agneta.services.url);
     return urljoin(args);
   };
@@ -92,7 +93,9 @@
     return urljoin(args);
   };
 
-  window.colorLuminance = function ColorLuminance(hex, lum) {
+  //--------------------------------------------------------------------
+
+  agneta.colorLuminance = function(hex, lum) {
 
     // validate hex string
     hex = String(hex)
@@ -115,6 +118,8 @@
 
     return rgb;
   };
+
+  //--------------------------------------------------------------------
 
   function url_for(path) {
     path = urljoin([agneta.root, path]);
@@ -178,4 +183,4 @@
 
   }
 
-})();
+}

@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
+function _e_verification(app) {
   app.controller('ResendVrfCtrl', function($scope, Account, $controller, $mdDialog, data) {
 
     angular.extend(this, $controller('DialogCtrl', {
@@ -37,4 +37,4 @@
     };
 
   });
-})();
+}
