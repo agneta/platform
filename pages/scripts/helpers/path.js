@@ -17,7 +17,6 @@
 var path = require('path');
 var url = require('url');
 var _ = require('lodash');
-var S = require('string');
 var fs = require('fs');
 var urljoin = require('url-join');
 const querystring = require('querystring');
@@ -159,8 +158,6 @@ module.exports = function(locals) {
   //----------------------------------------------------------------------
 
   project.extend.helper.register('has_file', function(pathFile) {
-
-    var result;
 
     var portalPath = path.join(project.paths.portalProject, pathFile);
     var projectPath = path.join(project.paths.source, pathFile);

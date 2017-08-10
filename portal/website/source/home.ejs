@@ -1,38 +1,49 @@
-
 <div class="md-padding" layout="row" layout-sm="column">
   <%
   var menu = get_data('menu');
   var half = menu.length/2;
   %>
   <div layout="column" flex="100">
-         <%
-         for(var i=0;i<half;i++){
-           var item = menu[i];
-           %>
-           <%-template('ui/page-card',{data:item})%>
-           <%
-         }
-         %>
-   </div>
+    <%
+    for(var i=0;i<half;i++){
+      var item = menu[i];
+      %>
+    <%-template('ui/page-card',{data:item})%>
+  <%
+    }
+    %>
+</div>
 <div layout="column" flex="100">
-       <%
-       for(var i=half;i<menu.length;i++){
-         var item = menu[i];
-         %>
-         <%-template('ui/page-card',{data:item})%>
-         <%
-       }
-       %>
- </div>
- </div>
+  <%
+    for(var i=half;i<menu.length;i++){
+      var item = menu[i];
+      %>
+  <%-template('ui/page-card',{data:item})%>
+<%
+    }
+    %>
+</div>
+</div>
 
- <md-content class="md-padding" layout="row" >
-   <span flex="100">
-   </span>
-   <div class="poweredby">
-     <p align="right">
-       Powered by:
-     </p>
-   <img src="<%-get_asset('images/agneta-logo-full.png')%>">
- </div>
- </md-content>
+<md-content class="md-padding" layout="row">
+
+<div layout="column">
+<p>
+  <b>Versions</b>
+</p>
+<p>Agneta Platform:
+  <%-site.version.agneta%></p>
+<p>Node.js:
+  <%-site.version.node%></p>
+<p>NPM:
+  <%-site.version.npm%></p>
+</div>
+
+<span flex="auto"></span>
+<div class="poweredby">
+<p align="right">
+  Powered by:
+</p>
+<img src="<%-get_asset('images/agneta-logo-full.png')%>">
+</div>
+</md-content>

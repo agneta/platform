@@ -71,6 +71,7 @@ function _e_helpers($scope, $mdToast, $timeout, helpers) {
       case 'array':
         return [];
       case 'object':
+      case 'text':
         return {};
     }
 
