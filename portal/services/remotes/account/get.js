@@ -29,7 +29,10 @@ module.exports = function(Model, app) {
       })
         .then(function(account) {
           if (!account) {
-            throw new Error('Account not found');
+            return Promise.reject({
+              statusCode: 401,
+              message: 'Account not found'
+            });
           }
 
           account = account.__data;

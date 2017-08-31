@@ -120,7 +120,10 @@ module.exports = function(locals) {
     };
 
     /////////////////////////////////////////////////////
-    return load.init();
+    return load.init()
+      .then(function() {
+        return project.call_listeners('initiated');
+      });
 
   }
 

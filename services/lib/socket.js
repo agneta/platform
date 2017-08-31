@@ -15,6 +15,7 @@
  *   limitations under the License.
  */
 const _ = require('lodash');
+const Promise = require('bluebird');
 
 module.exports = function(options) {
 
@@ -89,18 +90,19 @@ module.exports = function(options) {
 
     cookieParser(req, null, function() {
 
-      app.token.middleware(req, null, function(err) {
-
-        if (err) {
-          return next(err);
-        }
-
-      });
+      Promise
+        .resolve()
+        .then(function(){
+          if(!app.token){
+            return Promise.delay(300);
+          }
+        })
+        .then(function(){
+          app.token.middleware(req, null, next);
+        })
+        .catch(next);
 
     });
-
-
-    next();
   });
 
   server.addMiddleware(server.MIDDLEWARE_SUBSCRIBE, function(req, next) {

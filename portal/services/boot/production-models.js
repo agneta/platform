@@ -19,18 +19,39 @@ const _ = require('lodash');
 
 module.exports = function(app) {
 
-  var webPrj = app.get('options').web.project;
-  var configPath = path.join(webPrj.paths.api, 'config.production.js');
-  var configPrd = require(configPath);
   var instructions = [];
+  var appOptions = app.get('options');
+  var locals = require(
+    path.join(appOptions.web.project.paths.services,'lib', 'locals')
+  );
 
   //--------------------------------------------------
-  // Create a data source
+  // Create the Production app
+
+  var prdConfig = {};
+  var appPrd = _.extend({},app,{
+    get: function(name){
+      return prdConfig[name];
+    },
+    set: function(name,value){
+      prdConfig[name] = value;
+    }
+  });
+
+  locals(
+    appPrd,
+    _.extend({},appOptions,{
+      env: 'production'
+    })
+  );
+
+  //--------------------------------------------------
+  // Create the Production data source
 
   app.dataSource('db_prd', _.extend({
     connector: 'loopback-connector-mongodb'
   },
-  configPrd.db));
+  appPrd.get('db')));
 
   //--------------------------------------------------
 
@@ -121,6 +142,9 @@ module.exports = function(app) {
     // create a model
 
     data.model = app.registry.createModel(definition);
+    data.model.__isProduction = true;
+    data.model.app = appPrd;
+
     data.newName = newName;
 
   }

@@ -19,19 +19,35 @@ var _ = require('lodash');
 module.exports = function(app) {
 
   var client = app.get('options').client;
+  var project = client.project;
   var helpers = client.app.locals;
   var config = app.get('language');
 
   app.getLng = function(req) {
-    if (req.query && req.query.language) {
-      return req.query.language;
+
+    var result = (function() {
+
+      if (req.query && req.query.language) {
+        return req.query.language;
+      }
+
+      if (req.body && req.body.language) {
+        return req.body.language;
+      }
+
+      return 'en';
+
+    })();
+
+    var language = _.find(project.config.languages, {
+      key: result
+    });
+    if(language && !language.skipBuild){
+      return language.value;
     }
 
-    if (req.body && req.body.language) {
-      return req.body.language;
-    }
+    return project.config.language.default.key;
 
-    return 'en';
   };
 
   app.lng = function(obj, lng) {

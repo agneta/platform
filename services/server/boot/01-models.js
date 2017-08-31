@@ -31,13 +31,16 @@ module.exports = function(app) {
     dirs.push(path.join(dir, 'remotes'));
   }
 
+  //--------------------------------------------------------
+
   function getModel(name) {
-    var thisName = this.definition.name;
-    if (thisName.indexOf('Production_') === 0) {
+    if (this.__isProduction) {
       return app.models['Production_' + name];
     }
     return app.models[name];
   }
+
+  //--------------------------------------------------------
 
   function runRemotes(keys) {
 
@@ -51,6 +54,8 @@ module.exports = function(app) {
 
   }
 
+  //--------------------------------------------------------
+
   function runRemote(key) {
 
     dirs.forEach(function(dir) {
@@ -60,6 +65,8 @@ module.exports = function(app) {
     });
 
   }
+
+  //--------------------------------------------------------
 
   function _runRemote(key, dir) {
     var name = key;
@@ -89,6 +96,10 @@ module.exports = function(app) {
           return Promise.reject(err);
         });
     };
+
+    //--------------------------------
+
+
     //--------------------------------
 
     name = name.toLowerCase();
@@ -100,7 +111,7 @@ module.exports = function(app) {
     var file = path.join(dir, name) + '.js';
 
     if (fs.existsSync(file)) {
-      require(file)(Model, app);
+      require(file)(Model, Model.app);
     }
 
     //--------------------------------
