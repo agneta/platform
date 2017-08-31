@@ -122,5 +122,21 @@
         "permission": "ALLOW",
         "property": "hasRoles"
     }],
-    "methods": {}
+    "methods": {},
+    "indexes": {
+        "fulltext": {
+            "keys": {
+                "email": "text",
+                "username": "text",
+                "name": "text"
+            },
+            "options": {
+                "weights": {
+                    "name": 1,
+                    "username": 5,
+                    "email": 10
+                }
+            }
+        }
+    }
 }

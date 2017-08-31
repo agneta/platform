@@ -1,20 +1,40 @@
-<md-list class="accounts">
+<div layout="column" flex="100">
 
-    <div ng-repeat="account in accounts">
+<div layout="row" class="search-list" layout-margin layout-align="start center">
+  <input flex="auto" on-enter="search.query()" ng-model="search.text" placeholder="Search" aria-label="search page">
+  <md-button class="md-icon-button" ng-click="search.query()">
+    <md-icon md-svg-src="<%-get_icon('material/search')%>"></md-icon>
+  </md-button>
+  <md-button ng-show="search.active" class="md-icon-button" ng-click="search.clear()">
+    <md-icon md-svg-src="<%-get_icon('material/close')%>"></md-icon>
+  </md-button>
+</div>
+<md-progress-linear md-mode="{{search.loading?'indeterminate':'determinate'}}"></md-progress-linear>
 
-        <md-list-item class="account md-long-text md-2-line" md-no-ink ng-click="change(account)">
-            <div layout="column" layout-align="center center" ng-style="{'background-image': 'url(' + account.picture + ')'}" class="md-avatar">
-              <md-icon ng-if="account.avatar" md-svg-src="{{get_avatar(account.avatar)}}">
-      </md-icon>
-            </div>
-            <div class="md-list-item-text">
-                <h3>{{account.name}}
-                </h3>
-                <p>{{account.email}}</p>
-            </div>
-        </md-list-item>
-        <md-divider></md-divider>
+<md-content class="accounts">
 
-    </div>
+    <md-list-item ng-repeat="account in accounts" class="account md-long-text md-2-line" md-no-ink ng-click="change(account)">
+      <div layout="column" layout-align="center center" ng-style="{'background-image': 'url(' + account.picture + ')'}" class="md-avatar">
+        <md-icon ng-if="account.avatar" md-svg-src="{{get_avatar(account.avatar)}}"></md-icon>
+      </div>
+      <div class="md-list-item-text">
+        <h3>{{account.name}}
+        </h3>
+        <p>{{account.email}}</p>
+      </div>
+    </md-list-item>
 
-</md-list>
+</md-content>
+
+<div class="nav" align="end" flex="noshrink" layout="row">
+  <md-button class="md-icon-button">
+    <md-icon md-svg-src="<%-get_icon('material/keyboard-arrow-left')%>"></md-icon>
+  </md-button>
+  <span flex="auto">
+  </span>
+  <md-button class="md-icon-button">
+    <md-icon md-svg-src="<%-get_icon('material/keyboard-arrow-right')%>"></md-icon>
+  </md-button>
+</div>
+
+</div>

@@ -18,11 +18,15 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('AccountCtrl', function($scope, $rootScope, $routeParams, $mdToast, $mdDialog, Production_Account, Account, $location) {
+  app.controller('AccountCtrl', function($scope, $rootScope, $routeParams, $mdToast, $mdDialog, Production_Account, Account, $location, $timeout) {
 
     var AccountModel = Account;
 
-    $scope.$on('productionMode', function(evt,enabled) {
+    var search = {
+      loading: false
+    };
+
+    $scope.$on('productionMode', function(evt, enabled) {
       if (enabled) {
         AccountModel = Production_Account;
       } else {
@@ -37,6 +41,7 @@
         limit: 20
       }).$promise
         .then(function(recent) {
+          search.active = false;
           $scope.accounts = recent;
         });
 
@@ -84,7 +89,7 @@
         data: $scope.viewAccount
       })
         .$promise
-        .then(function(response) {
+        .then(function() {
           reloadAccount();
           loadAccounts();
           $mdToast.show({
@@ -95,9 +100,9 @@
         });
     };
 
-    $scope.editRole = function(roleName) {
+    //---------------------------------------------------------
 
-      var role = $scope.viewAccount.roles[roleName];
+    $scope.editRole = function(roleName) {
 
       $mdDialog.open({
         partial: 'role-' + roleName,
@@ -108,6 +113,8 @@
       });
 
     };
+
+    //---------------------------------------------------------
 
     $scope.removeRole = function(role) {
 
@@ -123,7 +130,7 @@
           name: role,
         })
           .$promise
-          .then(function(response) {
+          .then(function() {
 
             reloadAccount();
 
@@ -131,6 +138,8 @@
       }, function() {});
 
     };
+
+    //---------------------------------------------------------
 
     $scope.addRole = function() {
 
@@ -178,9 +187,41 @@
 
     };
 
+    //------------------------------------------------------------
+
+    $scope.search = search;
+
+    search.query = function() {
+
+      if (!search.text) {
+        return;
+      }
+      search.loading = true;
+      search.active = true;
+
+      AccountModel.search({
+        query: search.text
+      })
+        .$promise
+        .then(function(result) {
+          $timeout(function() {
+            search.loading = false;
+          }, 400);
+          $scope.accounts = result.accounts;
+        });
+    };
+
+    search.clear = function() {
+      loadAccounts();
+    };
+
+    //------------------------------------------------------------
+
     $scope.change = function(account) {
       getAccount(account.id);
     };
+
+    //------------------------------------------------------------
 
     $scope.createAccount = function() {
 
@@ -203,6 +244,8 @@
 
     };
 
+    //------------------------------------------------------------
+
     $scope.changePassword = function() {
 
       $mdDialog.open({
@@ -217,11 +260,15 @@
 
     };
 
+    //------------------------------------------------------------
+
     $scope.resendVerification = function() {
       AccountModel.resendVerification({
         email: $scope.viewAccount.email
       });
     };
+
+    //------------------------------------------------------------
 
     $scope.removeAccount = function() {
 

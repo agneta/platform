@@ -105,7 +105,7 @@ module.exports = function(Model, app, models) {
                   lang: language
                 };
                 return Keyword.create(keywordProps)
-                  .catch(function(err) {
+                  .catch(function() {
 
                     return Keyword.findOne({
                       where: keywordProps

@@ -14,9 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var Promise = require('bluebird');
 var _ = require('lodash');
-var S = require('string');
 
 module.exports = function(Model, app) {
 
@@ -98,13 +96,13 @@ module.exports = function(Model, app) {
         }
 
         var feeds = [];
-
+        var value;
         //console.log(req.session);
 
         req.session.searchPages = req.session.searchPages || {};
 
         for (var page of pages) {
-          var value = app.helpers.slugifyPath(page.path);
+          value = app.helpers.slugifyPath(page.path);
           if (req.session.searchPages[value]) {
             continue;
           }
@@ -120,7 +118,7 @@ module.exports = function(Model, app) {
         req.session.searchKeywords = req.session.searchKeywords || {};
 
         for (var keyword of keywords) {
-          var value = keyword.value || keyword;
+          value = keyword.value || keyword;
           if (req.session.searchKeywords[value]) {
             continue;
           }
