@@ -85,6 +85,9 @@ libraries:
     dir: 'angular-i18n'
     include:
       - 'angular-locale_el-gr.js'
+  angular-material-sidemenu:
+    include:
+      - 'dest/**'
   angular-material:
     ignore:
       - 'modules/**'

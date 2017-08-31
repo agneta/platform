@@ -46,6 +46,7 @@
     "videogular-poster": "1.4.x",
     "ua-parser-js": "0.7.x",
     "pdfjs-dist": "1.7.x",
-    "ngstorage": "0.3.x"
+    "ngstorage": "0.3.x",
+    "angular-material-sidemenu": "git://github.com/jkloss4/angular-material-sidemenu.git"
   }
 }

@@ -1,0 +1,9 @@
+<md-sidemenu class="menu-expand" locked="false">
+  <md-sidemenu-group>
+    <%for(var item of locals.list){%>
+
+      <%-template('ui/menu-expand-item',{data:item})%>
+
+    <%}%>
+  </md-sidemenu-group>
+</md-sidemenu>

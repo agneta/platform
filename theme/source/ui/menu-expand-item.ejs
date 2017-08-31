@@ -1,0 +1,44 @@
+<%
+
+var item = {
+  title: data.title,
+  path: data.path,
+  list: data.list
+};
+
+if(data.page){
+  var itemPage = get_page(data.page);
+  if(itemPage){
+  item.title = itemPage.title;
+  item.path = itemPage.path;
+  }
+}
+
+item.href = '#';
+
+if(item.path){
+  item.href = get_path(item.path);
+}
+
+if(data.href){
+  item.href = data.href;
+}
+
+if(item.path == page.pathSource){
+  item.classActive="active";
+}
+%>
+
+<%if(item.list){%>
+
+  <md-sidemenu-content md-opened="true" md-heading="<%-lng(item.title)%>" md-active>
+    <%for(var item of item.list){%>
+    <%-template('ui/menu-expand-item',{data:item})%>
+    <%}%>
+  </md-sidemenu-content>
+
+<%}else{%>
+
+    <md-sidemenu-button class="<%-item.classActive%>" ng-href="<%-item.href%>"><%-lng(item.title)%></md-sidemenu-button>
+
+  <%}%>
