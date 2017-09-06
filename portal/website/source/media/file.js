@@ -278,7 +278,7 @@
 
       var icon = MediaPreview.objectIcon($scope.file);
       if (!icon) {
-        icon = MediaPreview.getUrl('icons/agneta/media');
+        icon = agneta.get_media('icons/agneta/media');
       }
       return icon;
     };
@@ -287,7 +287,7 @@
       data: data,
       scope: $scope,
       onFile: function(file) {
-        console.log('EditFile.init',file);
+        //console.log('EditFile.init',file);
         if (file.location) {
           $scope.preview_src = MediaPreview.image(file, 'medium');
         }
