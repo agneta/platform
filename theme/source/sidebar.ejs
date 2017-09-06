@@ -14,7 +14,11 @@ var siblings;
 %>
 <div class="sidebar-default">
   <%if(children.count()){%>
-    <%children.forEach(function(item){%>
+    <%children.forEach(function(item){
+      if(item.isPartial){
+        return;
+      }
+      %>
       <%-template('sidebar/item',{item:item})%>
     <%})%>
     <%if(parent){%>

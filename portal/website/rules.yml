@@ -40,4 +40,4 @@
   data:
     menuLock: true
   templates:
-    - "documentation"
+    - "docs"

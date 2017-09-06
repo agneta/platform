@@ -21,6 +21,12 @@ module.exports = function(Model, app) {
 
     return Model.confirm(uid, token, null)
       .then(function() {
+        return Model.findById(uid);
+      })
+      .then(function(account) {
+        return account.updateAttribute('verifiedAt', new Date());
+      })
+      .then(function() {
 
         Model.activity({
           req: req,

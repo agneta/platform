@@ -6,7 +6,6 @@ description:
   en: Here you will find pointers to manuals, tutorials and references that will come in handy when setting up, configuring, developing, building, etc.
   gr:  Εδώ θα βρείτε δείκτες σε εγχειρίδια, σεμινάρια και αναφορές που είναι χρήσιμες για τη δημιουργία, τη διαμόρφωση, ανάπτυξη, κατασκευή, κ.λπ.
 
-template: documentation
 icon: agneta/documentation
 
 content:

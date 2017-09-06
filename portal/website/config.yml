@@ -13,7 +13,8 @@ contact: false
 search: false
 cookies: false
 footer: false
-languages_toolbar: true
+languages_toolbar: false
+languages_sidebar: true
 services: true
 lockSidebar: false
 menu:

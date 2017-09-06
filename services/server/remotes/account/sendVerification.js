@@ -28,18 +28,21 @@ module.exports = function(Model, app) {
 
     // With trailing slash: Fixes an issue where AWS redirects the location without the query string
     verifyHref += '/?action=verify' +
-          '&uid=' + options.account.id;
+      '&uid=' + options.account.id;
 
     return options.account.verify({
       type: 'email',
       to: options.account.email,
-      subject: options.subject || app.lng('account.registeredSubject',options.req),
+      subject: options.subject || app.lng('account.registeredSubject', options.req),
       language: language,
       req: options.req,
       templateName: options.template || 'verify',
       user: options.account,
       verifyHref: verifyHref
-    });
+    })
+      .then(function() {
+        return options.account.updateAttribute('veriSentAt', new Date());
+      });
 
   };
 
@@ -62,7 +65,7 @@ module.exports = function(Model, app) {
     // Set a default token generation function if one is not provided
     var tokenGenerator = options.generateVerificationToken || Model.generateVerificationToken;
 
-    tokenGenerator(user,null, function(err, token) {
+    tokenGenerator(user, null, function(err, token) {
       if (err) {
         return fn(err);
       }
@@ -82,7 +85,7 @@ module.exports = function(Model, app) {
       options.verifyHref += '&token=' + user.verificationToken;
 
       var language = options.language;
-      if(!language && options.req){
+      if (!language && options.req) {
         language = app.getLng(options.req);
       }
 

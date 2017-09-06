@@ -60,15 +60,15 @@
   page: 'utilities'
   menu:
     -
-      page: 'utility/build'
+      page: 'utilities/build'
     -
-      page: 'utility/deploy'
+      page: 'utilities/deploy'
     -
-      page: 'utility/dependencies'
+      page: 'utilities/dependencies'
     -
-      page: 'utility/media'
+      page: 'utilities/media'
     -
-      page: 'utility/services'
+      page: 'utilities/services'
 -
   title:
     en: 'Services'
@@ -77,4 +77,4 @@
   href_full: '/services/explorer'
   icon: 'agneta/services'
 -
-  page: 'documentation'
+  page: 'docs'

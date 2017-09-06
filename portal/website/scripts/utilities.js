@@ -77,7 +77,7 @@ module.exports = function(locals) {
       var pageData = _.extend({
         name: utility.name,
         builtin: utility.builtin,
-        path: 'utility/' + utility.name,
+        path: 'utilities/' + utility.name,
         template: 'utility',
         viewData: {
           name: utility.name

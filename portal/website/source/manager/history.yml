@@ -1,8 +1,7 @@
 title:
-  en: 'History'
-  gr: 'Ιστορικό'
+  en: 'Activities'
+  gr: 'Ενέργειες'
 
-template: 'manager/history'
 icon: 'material/history'
 
 scripts:

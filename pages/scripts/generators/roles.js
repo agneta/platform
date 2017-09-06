@@ -40,6 +40,7 @@ module.exports = function(locals) {
       var pageData = _.extend({
         path: path.join('partial', name),
         template: 'role',
+        isPartial: true,
         barebones: true,
         controller: 'FormRole',
         scripts:[
