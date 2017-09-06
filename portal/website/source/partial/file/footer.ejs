@@ -1,6 +1,6 @@
 <md-progress-linear ng-show="progress" md-mode="determinate" value="{{progress}}"></md-progress-linear>
 
-<md-dialog-actions ng-if="file.id" layout="row" md-whiteframe="2">
+<md-dialog-actions ng-if="file.location" layout="row" md-whiteframe="2">
     <md-button ng-click="delete()" class="md-warn">
         <md-icon md-svg-src="<%-get_icon('material/delete')%>"></md-icon>
         <span><%-lng('general.delete')%></span>

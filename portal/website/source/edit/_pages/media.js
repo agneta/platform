@@ -26,6 +26,7 @@ function _e_media($scope, MediaOpt, $mdDialog, helpers) {
     media.edit(field, parent, key, false);
   };
 
+
   media.edit = function(field, parent, key, isPrivate) {
 
     var parentValue = parent.__value || parent;
@@ -37,13 +38,36 @@ function _e_media($scope, MediaOpt, $mdDialog, helpers) {
     }
 
     if (isPrivate) {
-      console.log('isPrivate');
       dataValue.private = true;
       mediaOptions = MediaOpt.private;
 
     } else {
       delete dataValue.private;
     }
+
+    //-----------------------------
+    // Select media as a default
+
+    if(!dataValue || !dataValue.location){
+
+      $mdDialog.open({
+        nested: true,
+        partial: 'select',
+        data: {
+          media: mediaOptions,
+          file: {
+            dir: helpers.getBasePath()
+          },
+          onSelect: function(object) {
+            onApply(object);
+          }
+        }
+      });
+
+      return;
+    }
+
+    //-----------------------------
 
     $mdDialog.open({
       partial: mediaOptions.partial,
@@ -56,18 +80,20 @@ function _e_media($scope, MediaOpt, $mdDialog, helpers) {
         location: dataValue.location,
         name: field.default_name,
         dir: helpers.getBasePath(),
-        onApply: function(file) {
-          dataValue.type = file.type;
-          dataValue.updatedAt = file.updatedAt;
-          helpers.setFilePath(dataValue, file.location);
-          $scope.save();
-        },
+        onApply: onApply,
         onDelete: function() {
           $scope.removeValue(key, parentValue);
           $scope.save();
         }
       }
     });
+
+    function onApply(file) {
+      dataValue.type = file.type;
+      dataValue.updatedAt = file.updatedAt;
+      helpers.setFilePath(dataValue, file.location);
+      $scope.save();
+    }
 
   };
 

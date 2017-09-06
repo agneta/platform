@@ -26,6 +26,12 @@ module.exports = function(Model) {
     var dir = '';
     return Promise.each(dirParts, function(name) {
       return Model.newFolder(name, dir)
+        .catch(function(err){
+          if(err.statusCode==400){
+            return;
+          }
+          return Promise.reject(err);
+        })
         .then(function() {
           if (dir.length) {
             dir += '/';

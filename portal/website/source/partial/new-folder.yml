@@ -1,0 +1,8 @@
+title:
+  en: New Folder
+description:
+  en: Enter the name of the folder you want to create.
+placeholder:
+  en: Name
+
+controller: NewFolder

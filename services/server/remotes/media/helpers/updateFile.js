@@ -149,6 +149,20 @@ module.exports = function(Model, app) {
               return Model.__moveObject(operation);
             })
             .then(function(object) {
+
+              if (!object) {
+                return Model.findOne({
+                  where: {
+                    location: operation.target
+                  }
+                });
+              }
+
+              return object;
+
+            })
+            .then(function(object) {
+
               var attrs = {};
 
               if (options.roles) {
@@ -162,6 +176,7 @@ module.exports = function(Model, app) {
             });
         })
           .then(function(objects) {
+            console.log('On updated', objects);
             var object = _.find(objects, {
               location: target
             });

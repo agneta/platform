@@ -21,16 +21,20 @@ module.exports = function(Model, app) {
     var object;
     //console.log('__moveObject',operation);
 
+    if (operation.source == operation.target) {
+      return Promise.resolve();
+    }
+
     return Model.__copyObject(operation)
       .then(function(_object) {
+
         object = _object;
-        if (operation.source == operation.target) {
-          return;
-        }
+
         return app.storage.deleteObject({
           Bucket: Model.__bucket.name,
           Key: operation.source
         });
+
       })
       .then(function() {
         return operation.object.destroy();

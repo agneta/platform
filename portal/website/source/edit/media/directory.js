@@ -155,20 +155,19 @@ function _e_directory($scope, Portal, $location, $rootScope, Media, MediaPreview
 
   $scope.newFolder = function() {
 
-    var confirm = $mdDialog.prompt()
-      .title('New Folder')
-      .textContent('Enter the name of the folder you want to create.')
-      .placeholder('Name')
-      .ok('Create')
-      .cancel('Cancel');
-
-    $mdDialog.show(confirm).then(function(name) {
-      Media.newFolder({
-        dir: $scope.dir.location,
-        name: name
-      })
-        .$promise
-        .then(readdir);
+    $mdDialog.open({
+      nested: true,
+      partial: 'new-folder',
+      data: {
+        onApply: function(name) {
+          return Media.newFolder({
+            dir: $scope.dir.location,
+            name: name
+          })
+            .$promise
+            .then(readdir);
+        }
+      }
     });
 
   };

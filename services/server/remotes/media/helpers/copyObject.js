@@ -28,6 +28,10 @@ module.exports = function(Model, app) {
     operation.source = app.helpers.normalizePath(operation.source);
     operation.target = app.helpers.normalizePath(operation.target);
 
+    if (operation.source == operation.target) {
+      return Promise.resolve();
+    }
+
     var storageOptions = {
       Bucket: Model.__bucket.name,
       CopySource: urljoin(Model.__bucket.name, operation.source),

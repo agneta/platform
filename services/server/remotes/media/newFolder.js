@@ -14,25 +14,33 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+const Promise = require('bluebird');
 module.exports = function(Model) {
 
   Model.newFolder = function(name, dir) {
 
     var location = Model.__getMediaPath(dir, name);
 
-    return Model.findOrCreate({
+    return Model.findOne({
       where: {
         location: location
       },
       fields: {
         id: true
       }
-    }, {
-      location: location,
-      type: 'folder'
     })
       .then(function(res) {
-        return res[1];
+        console.log('newFolder:Model.findOne:res',res);
+        if (res) {
+          return Promise.reject({
+            statusCode: 400,
+            message: 'Object already exists with that name'
+          });
+        }
+        return Model.create({
+          location: location,
+          type: 'folder'
+        });
       });
 
   };

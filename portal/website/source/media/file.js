@@ -65,13 +65,13 @@
 
       socket.on('file:upload:complete', function(result) {
         scope.progress = 100;
-        console.log(result);
+        //console.log('file:upload:complete',result);
         setTimeout(function() {
           scope.progress = null;
-          scope.file = result.file;
+          scope.file = result;
           onFile();
           scope.$apply();
-        }, 400);
+        }, 300);
       });
 
       function onChange() {
@@ -139,7 +139,7 @@
         scope.loading = true;
 
         Media.updateFile({
-          id: scope.file.id,
+          location: scope.file.location,
           name: scope.file.name,
           contentType: scope.file.contentType,
           dir: scope.file.dir,
@@ -147,6 +147,7 @@
         })
           .$promise
           .then(function(result) {
+            console.log('Media.updateFile',result);
             scope.file = result.file;
             onFile();
             onApply();
@@ -286,7 +287,7 @@
       data: data,
       scope: $scope,
       onFile: function(file) {
-        console.log(file);
+        console.log('EditFile.init',file);
         if (file.location) {
           $scope.preview_src = MediaPreview.image(file, 'medium');
         }

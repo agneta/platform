@@ -1,0 +1,15 @@
+<div class="md-padding" layout="column">
+<h3><%-lng(page.title)%></h3>
+<p><%-lng(page.description)%></p>
+
+<md-input-container>
+    <label><%-lng(page.placeholder)%></label>
+    <input ng-model="name">
+</md-input-container>
+</div>
+
+<div layout="row">
+  <span flex="auto"></span>
+  <md-button ng-click="apply()">Apply</md-button>
+  <md-button ng-click="close()">Cancel</md-button>
+</div>

@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-function _e_mediaItem(app) {
+function _e_itemMenu(app) {
 
   app.directive('mediaItem', function($mdMenu, $rootScope, $templateRequest, $compile, $mdDialog) {
 

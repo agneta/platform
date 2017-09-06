@@ -17,10 +17,10 @@
 
 module.exports = function(Model) {
 
-  Model.updateFile = function(id, dir, name, contentType, roles) {
+  Model.updateFile = function(location, dir, name, contentType, roles) {
 
     return Model.__updateFile({
-      id: id,
+      location: location,
       dir: dir,
       name: name,
       contentType: contentType,
@@ -33,7 +33,7 @@ module.exports = function(Model) {
     'updateFile', {
       description: 'Update a file',
       accepts: [{
-        arg: 'id',
+        arg: 'location',
         type: 'string',
         required: true
       }, {

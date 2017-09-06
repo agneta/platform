@@ -74,13 +74,11 @@ module.exports = function(Model) {
         });
 
         var object = {
-          id: options.objectId,
           location: file.location,
           type: file.type,
           size: file.size,
           contentType: file.mimetype
         };
-
         return object;
 
       })

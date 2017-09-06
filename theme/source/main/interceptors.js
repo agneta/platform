@@ -147,16 +147,13 @@
 
             $rootScope.$emit('error');
 
-            $mdDialog.show({
-              clickOutsideToClose: true,
-              templateUrl: agneta.partial('error'),
-              locals: {
-                data: {
-                  title: error.title || errors.title,
-                  content: html
-                }
-              },
-              controller: 'DialogController'
+            $mdDialog.open({
+              partial: 'error',
+              nested: true,
+              data: {
+                title: error.title || errors.title,
+                content: html
+              }
             });
 
           }
