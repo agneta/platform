@@ -54,6 +54,10 @@ module.exports = function(locals) {
         page.parentPath = null;
       }
 
+      if(page.isPartial){
+        delete page.parentPath;
+      }
+
     }
   };
 

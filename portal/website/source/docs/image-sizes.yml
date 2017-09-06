@@ -5,7 +5,7 @@ template: docs
 class: doc-image-sizes
 
 styles:
-  - documentation/image-sizes
+  - docs/image-sizes
 
 content:
   -
@@ -25,5 +25,4 @@ content:
       en: 'Below are the sizes that your project generates when uploading an image:'
   -
     key: template
-    value:
-      path: documentation/image-sizes
+    value: docs/sizes
