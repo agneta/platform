@@ -47,24 +47,32 @@
 
   });
 
+  var toggle = {
+    value: false
+  };
+
   app.controller('LiveToggleCtrl', function($scope, $rootScope) {
 
-    $scope.value = false;
+    $scope.value = toggle.value;
 
     $rootScope.isProduction = function() {
-      return $scope.value;
+      return toggle.value;
     };
 
     if (!$rootScope.account.administrator) {
-      $scope.value = true;
+      toggle.value = true;
       return;
     }
 
     $scope.onChange = function(value) {
-      $scope.value = value;
+      if(value==toggle.value){
+        return;
+      }
+      toggle.value = value;
       $rootScope.$broadcast('productionMode', value);
     };
 
+    $scope.onChange(toggle.value);
 
   });
 

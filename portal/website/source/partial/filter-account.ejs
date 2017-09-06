@@ -1,0 +1,31 @@
+<md-dialog class="edit-source" aria-label="<%-lng(page.title)%>">
+
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2><%-lng(page.title)%></h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="close()">
+        <md-icon md-svg-src=<%-get_icon("material/close")%> aria-label="Cancel"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-content class="md-padding">
+  <%for(var filter of page.filters){%>
+    <div layout="row" layout-align="start center">
+    <md-checkbox ng-model="filters.<%-filter.name%>.enabled" aria-label="<%-filter.name%>">
+      <%-lng(filter.title)%>
+    </md-checkbox>
+    <span flex="auto"></span>
+    <md-switch ng-model="filters.<%-filter.name%>.value" aria-label="<%-filter.name%>" class="md-primary"></md-switch>
+    </div>
+  <%}%>
+  </md-content>
+
+  <div layout="row">
+    <span flex="auto"></span>
+    <md-button ng-click="apply()">Apply</md-button>
+    <md-button ng-click="close()">Cancel</md-button>
+  </div>
+
+</md-dialog>

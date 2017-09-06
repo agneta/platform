@@ -14,7 +14,7 @@ search: false
 cookies: false
 footer: false
 languages_toolbar: false
-languages_sidebar: true
+languages_sidebar: false
 services: true
 lockSidebar: false
 menu:

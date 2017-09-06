@@ -1,0 +1,10 @@
+title:
+  en: Filter Accounts
+
+controller: FilterAccount
+
+filters:
+  -
+    title:
+      en: Verified
+    name: emailVerified

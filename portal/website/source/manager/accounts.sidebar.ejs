@@ -13,7 +13,7 @@
 
 <md-content class="accounts">
 
-    <md-list-item ng-repeat="account in accounts" class="account md-long-text md-2-line" md-no-ink ng-click="change(account)">
+    <md-list-item ng-repeat="account in accounts.list" class="account md-long-text md-2-line" md-no-ink ng-click="change(account)">
       <div layout="column" layout-align="center center" ng-style="{'background-image': 'url(' + account.picture + ')'}" class="md-avatar">
         <md-icon ng-if="account.avatar" md-svg-src="{{get_avatar(account.avatar)}}"></md-icon>
       </div>
@@ -30,11 +30,13 @@
   <md-button class="md-icon-button">
     <md-icon md-svg-src="<%-get_icon('material/keyboard-arrow-left')%>"></md-icon>
   </md-button>
-  <span flex="auto">
-  </span>
   <md-button class="md-icon-button">
     <md-icon md-svg-src="<%-get_icon('material/keyboard-arrow-right')%>"></md-icon>
   </md-button>
+  <span flex="auto">  </span>
+    <md-button ng-href="<%-get_path('manager/accounts/search')%>">
+      Expand
+    </md-button>
 </div>
 
 </div>

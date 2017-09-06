@@ -14,40 +14,14 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
 (function() {
 
   var app = angular.module('MainApp');
 
-  app.controller('AccountCtrl', function($scope, $rootScope, $routeParams, $mdToast, $mdDialog, Production_Account, Account, $location, $timeout) {
+  app.controller('AccountCtrl', function($scope, $rootScope, AccountList, $routeParams, $mdToast, $mdDialog, Production_Account, Account, $location) {
 
-    var AccountModel = Account;
-
-    var search = {
-      loading: false
-    };
-
-    $scope.$on('productionMode', function(evt, enabled) {
-      if (enabled) {
-        AccountModel = Production_Account;
-      } else {
-        AccountModel = Account;
-      }
-      loadAccounts();
-    });
-
-    function loadAccounts() {
-
-      AccountModel.recent({
-        limit: 20
-      }).$promise
-        .then(function(recent) {
-          search.active = false;
-          $scope.accounts = recent;
-        });
-
-    }
-
-    loadAccounts();
+    AccountList.useScope($scope);
 
     function reloadAccount() {
 
@@ -59,7 +33,7 @@
 
       $location.search('account', id);
 
-      AccountModel.get({
+      AccountList.model.get({
         id: id
       })
         .$promise
@@ -67,7 +41,7 @@
 
           $scope.viewAccount = account;
 
-          AccountModel.activitiesAdmin({
+          AccountList.model.activitiesAdmin({
             accountId: id,
             unit: 'month',
             aggregate: 'dayOfYear'
@@ -85,13 +59,15 @@
     }
 
     $scope.save = function() {
-      AccountModel.update({
+      AccountList.model.update({
         data: $scope.viewAccount
       })
         .$promise
         .then(function() {
+
           reloadAccount();
-          loadAccounts();
+          AccountList.loadAccounts();
+
           $mdToast.show({
             hideDelay: 5000,
             position: 'bottom right',
@@ -125,7 +101,7 @@
         .cancel('Cancel');
 
       $mdDialog.show(confirm).then(function() {
-        AccountModel.roleRemove({
+        AccountList.model.roleRemove({
           id: $scope.viewAccount.id,
           name: role,
         })
@@ -143,7 +119,7 @@
 
     $scope.addRole = function() {
 
-      AccountModel.roles()
+      AccountList.model.roles()
         .$promise
         .then(function(roles) {
 
@@ -159,7 +135,7 @@
 
                 $scope.loading = true;
 
-                AccountModel.roleAdd({
+                AccountList.model.roleAdd({
                   id: data.account.id,
                   name: $scope.role
                 })
@@ -189,34 +165,6 @@
 
     //------------------------------------------------------------
 
-    $scope.search = search;
-
-    search.query = function() {
-
-      if (!search.text) {
-        return;
-      }
-      search.loading = true;
-      search.active = true;
-
-      AccountModel.search({
-        query: search.text
-      })
-        .$promise
-        .then(function(result) {
-          $timeout(function() {
-            search.loading = false;
-          }, 400);
-          $scope.accounts = result.accounts;
-        });
-    };
-
-    search.clear = function() {
-      loadAccounts();
-    };
-
-    //------------------------------------------------------------
-
     $scope.change = function(account) {
       getAccount(account.id);
     };
@@ -234,7 +182,7 @@
 
           $scope.submit = function() {
             $scope.loading = true;
-            AccountModel.new($scope.formSubmitFields);
+            AccountList.model.new($scope.formSubmitFields);
           };
 
         },
@@ -252,7 +200,7 @@
         partial: 'password-change-admin',
         data: {
           onFinally: function() {
-            loadAccounts();
+            AccountList.loadAccounts();
           },
           account: $scope.viewAccount
         }
@@ -263,7 +211,7 @@
     //------------------------------------------------------------
 
     $scope.resendVerification = function() {
-      AccountModel.resendVerification({
+      AccountList.model.resendVerification({
         email: $scope.viewAccount.email
       });
     };
@@ -279,12 +227,12 @@
         .cancel('Cancel');
 
       $mdDialog.show(confirm).then(function() {
-        AccountModel.delete({
+        AccountList.model.delete({
           id: $scope.viewAccount.id
         })
           .$promise
           .then(function() {
-            loadAccounts();
+            AccountList.loadAccounts();
             $scope.viewAccount = null;
           });
       }, function() {});

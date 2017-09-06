@@ -6,6 +6,7 @@ template: 'manager/accounts'
 icon: 'material/group'
 
 scripts:
+  - manager/accounts/list
   - 'lib/moment/moment.min'
 
 controller: AccountCtrl
