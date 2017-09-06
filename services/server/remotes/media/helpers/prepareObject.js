@@ -20,8 +20,6 @@ const path = require('path');
 
 module.exports = function(Model, app) {
 
-  var prjHelpers = app.get('options').client.app.locals;
-
   Model.__prepareObject = function(object) {
 
     if (!object) {
@@ -38,7 +36,7 @@ module.exports = function(Model, app) {
         return object;
     }
 
-    object.url = prjHelpers.prv_media(object.location);
+    object.url = Model._url(object.location);
     object.size = object.size ? prettyBytes(parseFloat(object.size)) : null;
     object.type = app.helpers.mediaType(object.contentType);
     object.ext = mime.extension(object.contentType);

@@ -17,7 +17,10 @@
 module.exports = function(Model, app) {
 
   var config = app.get('storage');
+  var prjHelpers = app.get('options').client.app.locals;
   var bucket = config.buckets.media;
+
+  Model._url = prjHelpers.get_media;
 
   app.requireServices('server/remotes/media/main')(Model, app, {
     name: 'public',

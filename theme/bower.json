@@ -47,6 +47,8 @@
     "ua-parser-js": "0.7.x",
     "pdfjs-dist": "1.7.x",
     "ngstorage": "0.3.x",
-    "angular-material-sidemenu": "git://github.com/jkloss4/angular-material-sidemenu.git"
+    "angular-material-sidemenu": "git://github.com/jkloss4/angular-material-sidemenu.git",
+    "d3": "4.10.2",
+    "scrollmagic": "2.0.5"
   }
 }
