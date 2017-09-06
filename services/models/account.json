@@ -14,6 +14,12 @@
         },
         "deactivated": {
             "type": "boolean"
+        },
+        "verifiedAt": {
+            "type": "Date"
+        },
+        "veriSentAt": {
+            "type": "Date"
         }
     },
     "validations": [],
@@ -136,6 +142,24 @@
                     "username": 5,
                     "email": 10
                 }
+            }
+        },
+        "uniqueEmail": {
+            "keys": {
+                "email": 1
+            },
+            "options": {
+                "unique": true,
+                "required": true
+            }
+        },
+        "uniqueUsername": {
+            "keys": {
+                "username": 1
+            },
+            "options": {
+                "unique": true,
+                "sparse": true
             }
         }
     }
