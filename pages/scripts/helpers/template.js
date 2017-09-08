@@ -52,7 +52,7 @@ module.exports = function(locals) {
 
     var file_path = project.theme.getTemplateFile(path_partial + '.ejs');
     if (!file_path) {
-      console.dir(path_partial);
+      //console.dir(path_partial);
       throw new Error('Could not find template: ' + path_partial);
     }
 

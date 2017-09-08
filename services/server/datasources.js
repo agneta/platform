@@ -20,7 +20,7 @@ module.exports = function(app) {
 
   var db = app.get('db');
 
-  result = {
+  var result = {
     db: _.extend({
       name: 'db',
       connector: 'mongodb'

@@ -18,8 +18,6 @@ var Promise = require('bluebird');
 
 module.exports = function(util) {
 
-  var project = util.locals.project;
-
   return {
     run: function(options) {
       if (!options.env) {

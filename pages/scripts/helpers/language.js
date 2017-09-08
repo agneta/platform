@@ -20,7 +20,6 @@ var _ = require('lodash');
 module.exports = function(locals) {
 
   var project = locals.project;
-  var app = locals.app;
 
   /////////////////////////////////////////////////////////////////
   // GET LANGUAGE

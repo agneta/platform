@@ -19,11 +19,11 @@
   var moment = window.moment;
   var angular = window.angular;
   var app = angular.module('MainApp');
-    
-  app.directive('visUser', function($timeout, $interpolate, $mdDialog) {
+
+  app.directive('visUser', function() {
 
     return {
-      link: function($scope, $element, $attrs) {
+      link: function($scope, $element) {
         $scope.createTimeline({
           $element: $element,
           getTitle: getTitle,
@@ -47,11 +47,9 @@
   });
 
 
-  function getTitle(data) {
+  function getTitle() {
 
     var title = '';
-
-
     return title;
 
   }

@@ -25,7 +25,10 @@ module.exports = function(Model, app) {
       var limiter = app.locals.limiters[name];
       return new Promise(function(resolve, reject) {
 
-        limiter.reset(req.ip, null, function() {
+        limiter.reset(req.ip, null, function(err) {
+          if(err){
+            reject(err);
+          }
           resolve();
         });
 

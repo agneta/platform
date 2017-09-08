@@ -33,7 +33,7 @@ module.exports = function(Model, app) {
 
   Model.checkProperties = function(formFields) {
 
-    return function(context, account) {
+    return function(context) {
 
       var params = context.req.body;
       var errors = [];

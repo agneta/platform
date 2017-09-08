@@ -20,7 +20,7 @@ var deploy = require('./deploy');
 module.exports = function(util) {
 
   return {
-    run: function(options) {
+    run: function() {
 
       return generate(util)
         .then(function() {

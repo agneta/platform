@@ -90,7 +90,7 @@ module.exports = function(locals) {
 
   project.site.utilities = utilPages;
 
-  project.extend.generator.register('utilities', function(locals) {
+  project.extend.generator.register('utilities', function() {
     return utilPages;
   });
 

@@ -14,11 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var Promise = require('bluebird');
-var _ = require('lodash');
-var yaml = require('js-yaml');
 var path = require('path');
-var fs = require('fs-extra');
 
 module.exports = function(Model, app) {
 

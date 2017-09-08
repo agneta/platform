@@ -18,7 +18,6 @@ module.exports = function(Model, options) {
   options = options || {};
   if(Model && Model.sharedClass) {
     var methodsToExpose = options.expose || [];
-    var modelName = Model.sharedClass.name;
     var methods = Model.sharedClass.methods();
     var relationMethods = [];
     var hiddenMethods = [];
@@ -39,7 +38,9 @@ module.exports = function(Model, options) {
         relationMethods.push({ name: '__count__' + relation, isStatic: false });
         relationMethods.push({ name: '__delete__' + relation, isStatic: false });
       });
-    } catch(err) {}
+    } catch(err) {
+      console.log(err);
+    }
     methods.concat(relationMethods).forEach(function(method) {
       var methodName = method.name;
       if(methodsToExpose.indexOf(methodName) < 0) {

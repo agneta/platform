@@ -312,8 +312,6 @@ module.exports = function(util) {
 
       parameters.options = parameters.options || {};
 
-      var allKeys;
-
       //-----------------------------------------------------
 
       var mediaBucket = configStorage.buckets.media;
@@ -339,8 +337,7 @@ module.exports = function(util) {
           });
 
           return listAllKeys(parameters)
-            .then(function(_allKeys) {
-              allKeys = _allKeys;
+            .then(function() {
               return createMissingFolders();
             })
             .then(function() {

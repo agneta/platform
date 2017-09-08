@@ -34,7 +34,7 @@
     var sidebarPath;
     var contentElement = angular.element($element.find('md-content')[0]);
 
-    $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
+    $rootScope.$on('$routeChangeSuccess', function(event, current) {
 
       sidebarPath = current.locals.data.sidebar;
       locked = current.locals.data.menuLock;

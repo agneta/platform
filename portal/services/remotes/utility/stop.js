@@ -16,7 +16,7 @@
  */
 var Promise = require('bluebird');
 
-module.exports = function(Model, app) {
+module.exports = function(Model) {
 
   Model.stop = function(name) {
     return Model.getUtility(name)

@@ -33,7 +33,9 @@ moment.prototype.hourOfYear = function(value) {
 
 };
 
+/* Test
 var m = moment().utc().dayOfYear(100).hour(30);
 var hourOfYear = m.hourOfYear();
-//console.log(hourOfYear);
-//console.log(m.hourOfYear(2929).hourOfYear());
+console.log(hourOfYear);
+console.log(m.hourOfYear(2929).hourOfYear());
+*/

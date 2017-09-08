@@ -43,7 +43,7 @@ module.exports = function(locals) {
   });
 
   project.extend.helper.register('md5', function(string) {
-    return md5(message);
+    return md5(string);
   });
 
 };

@@ -19,7 +19,7 @@
   var app = angular.module('MainApp');
   var logLimit = 3000;
 
-  app.controller('UtilityCtrl', function($scope, $rootScope, $mdToast, Utility, SocketIO, $parse, $mdDialog) {
+  app.controller('UtilityCtrl', function($scope, $rootScope, $mdToast, Utility, SocketIO, $parse) {
 
     $scope.logLines = [];
     $scope.progressBars = {};

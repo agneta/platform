@@ -33,7 +33,7 @@
         accountId: data.account.id
       })
         .$promise
-        .then(function(result) {
+        .then(function() {
 
           if (data.account.id == $rootScope.account.id) {
             LoopBackAuth.clearUser();
