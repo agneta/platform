@@ -44,15 +44,16 @@ module.exports = function(Model, app) {
 
         }
 
-        Model.sendVerification({
+        return Model.sendVerification({
           account: account,
           req: req
+        }).then(function(){
+          return {
+            account: account,
+            success: app.lng('account.resendingVerification', req)
+          };
         });
 
-        return {
-          account: account,
-          success: app.lng('account.resendingVerification', req)
-        };
       });
   };
 

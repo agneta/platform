@@ -21,6 +21,15 @@
         </div>
 
         <md-divider></md-divider>
+
+        <div ng-if="viewAccount.veriSentAt">
+        <p class="subhead">Verification Sent
+            <span am-time-ago="viewAccount.veriSentAt"></span>
+        </p>
+        <p>{{viewAccount.veriSentAt | amUtc | amLocal | amDateFormat:'DD MMMM YYYY HH:mm:ss'}}</p>
+        </div>
+
+        <md-divider></md-divider>
         <p class="subhead">Registered
             <span am-time-ago="viewAccount.createdAt"></span>
         </p>

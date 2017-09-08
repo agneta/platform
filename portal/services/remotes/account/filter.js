@@ -31,7 +31,7 @@ module.exports = function(Model) {
 
         return Model.find({
           where: options,
-          limit: 20
+          limit: 50
         });
 
       })
