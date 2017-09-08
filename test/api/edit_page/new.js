@@ -19,7 +19,7 @@ module.exports = function(options) {
 
   describe('Account', function() {
 
-    var account = options.account.test;
+    var account = options.account.default.test;
 
     it('should login', function() {
       return options.agent
