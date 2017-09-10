@@ -19,7 +19,6 @@ require('sharp');
 
 const Promise = require('bluebird');
 const os = require('os');
-const _ = require('lodash');
 const fs = require('fs-extra');
 const config = require('./config');
 const path = require('path');
