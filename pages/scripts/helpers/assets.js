@@ -17,7 +17,6 @@
 var path = require('path');
 var url = require('url');
 var _ = require('lodash');
-var S = require('string');
 var fs = require('fs');
 var urljoin = require('url-join');
 

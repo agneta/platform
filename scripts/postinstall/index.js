@@ -17,24 +17,27 @@
 const path = require('path');
 const express = require('express');
 
+(function() {
 
-switch (process.env.MODE) {
+  switch (process.env.MODE) {
     case 'services':
-        return;
-}
+      return;
+  }
 
-var app = express();
+  var app = express();
 
-var platformPath = path.join(__dirname, '../..');
+  var platformPath = path.join(__dirname, '../..');
 
-app.requirePortal = function(reqPath) {
+  app.requirePortal = function(reqPath) {
     return require(path.join(platformPath, 'portal', reqPath));
-};
+  };
 
-app.requireServices = function(reqPath) {
+  app.requireServices = function(reqPath) {
     return require(path.join(platformPath, 'services', reqPath));
-};
+  };
 
-app.requireServices('lib/locals')(app);
+  app.requireServices('lib/locals')(app);
 
-require('./git')(app);
+  require('./git')(app);
+
+})();

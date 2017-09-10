@@ -16,33 +16,72 @@
  */
 module.exports = function(Model, options) {
   options = options || {};
-  if(Model && Model.sharedClass) {
+  if (Model && Model.sharedClass) {
     var methodsToExpose = options.expose || [];
-    var modelName = Model.sharedClass.name;
     var methods = Model.sharedClass.methods();
     var relationMethods = [];
     var hiddenMethods = [];
 
-    try {
-      Object.keys(Model.definition.settings.relations).forEach(function(relation) {
-        relationMethods.push({ name: '__findById__' + relation, isStatic: false });
-        relationMethods.push({ name: '__destroyById__' + relation, isStatic: false });
-        relationMethods.push({ name: '__updateById__' + relation, isStatic: false });
-        relationMethods.push({ name: '__upsert__' + relation, isStatic: false });
-        relationMethods.push({ name: '__exists__' + relation, isStatic: false });
-        relationMethods.push({ name: '__link__' + relation, isStatic: false });
-        relationMethods.push({ name: '__get__' + relation, isStatic: false });
-        relationMethods.push({ name: '__create__' + relation, isStatic: false });
-        relationMethods.push({ name: '__update__' + relation, isStatic: false });
-        relationMethods.push({ name: '__destroy__' + relation, isStatic: false });
-        relationMethods.push({ name: '__unlink__' + relation, isStatic: false });
-        relationMethods.push({ name: '__count__' + relation, isStatic: false });
-        relationMethods.push({ name: '__delete__' + relation, isStatic: false });
+    var relations = Model.definition.settings.relations || {};
+
+    Object.keys(relations).forEach(function(relation) {
+      relationMethods.push({
+        name: '__findById__' + relation,
+        isStatic: false
       });
-    } catch(err) {}
+      relationMethods.push({
+        name: '__destroyById__' + relation,
+        isStatic: false
+      });
+      relationMethods.push({
+        name: '__updateById__' + relation,
+        isStatic: false
+      });
+      relationMethods.push({
+        name: '__upsert__' + relation,
+        isStatic: false
+      });
+      relationMethods.push({
+        name: '__exists__' + relation,
+        isStatic: false
+      });
+      relationMethods.push({
+        name: '__link__' + relation,
+        isStatic: false
+      });
+      relationMethods.push({
+        name: '__get__' + relation,
+        isStatic: false
+      });
+      relationMethods.push({
+        name: '__create__' + relation,
+        isStatic: false
+      });
+      relationMethods.push({
+        name: '__update__' + relation,
+        isStatic: false
+      });
+      relationMethods.push({
+        name: '__destroy__' + relation,
+        isStatic: false
+      });
+      relationMethods.push({
+        name: '__unlink__' + relation,
+        isStatic: false
+      });
+      relationMethods.push({
+        name: '__count__' + relation,
+        isStatic: false
+      });
+      relationMethods.push({
+        name: '__delete__' + relation,
+        isStatic: false
+      });
+    });
+
     methods.concat(relationMethods).forEach(function(method) {
       var methodName = method.name;
-      if(methodsToExpose.indexOf(methodName) < 0) {
+      if (methodsToExpose.indexOf(methodName) < 0) {
         hiddenMethods.push(methodName);
         Model.disableRemoteMethodByName(methodName, method.isStatic);
       }

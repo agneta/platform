@@ -14,8 +14,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var prettyBytes = require('pretty-bytes');
-var _ = require('lodash');
 
 module.exports = function(app) {
 

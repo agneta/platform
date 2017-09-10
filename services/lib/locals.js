@@ -79,30 +79,32 @@ module.exports = function(app, options) {
 
   var storageConfig = app.get('storage');
   var domain = options.web || options.client;
-  domain = domain.project.config.domain.production;
+  if(domain){
+    domain = domain.project.config.domain.production;
 
-  var buckets = {
-    media: {
-      name: `media-staging.${domain}`,
-      host: `media-staging.${domain}`,
-      private: `media-private.${domain}`,
-      production: `media.${domain}`
-    },
-    lib: {
-      name: `lib-staging.${domain}`,
-      host: `lib-staging.${domain}`,
-      production: `lib.${domain}`,
-    },
-    app: {
-      name: `staging.${domain}`,
-      host: `staging.${domain}`,
-      private: `staging-private.${domain}`,
-      production: {
-        name: `${domain}`,
-        private: `private.${domain}`,
+    var buckets = {
+      media: {
+        name: `media-staging.${domain}`,
+        host: `media-staging.${domain}`,
+        private: `media-private.${domain}`,
+        production: `media.${domain}`
+      },
+      lib: {
+        name: `lib-staging.${domain}`,
+        host: `lib-staging.${domain}`,
+        production: `lib.${domain}`,
+      },
+      app: {
+        name: `staging.${domain}`,
+        host: `staging.${domain}`,
+        private: `staging-private.${domain}`,
+        production: {
+          name: `${domain}`,
+          private: `private.${domain}`,
+        }
       }
-    }
-  };
+    };
+  }
 
   switch (env) {
     case 'production':

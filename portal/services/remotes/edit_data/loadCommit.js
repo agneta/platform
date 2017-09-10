@@ -14,8 +14,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var yaml = require('js-yaml');
-var path = require('path');
 
 module.exports = function(Model, app) {
 

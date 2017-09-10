@@ -14,11 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var _ = require('lodash');
 
 module.exports = function(app) {
 
-  var socket = app.portal.socket;
   var services = app.get('options').web.services;
 
   services.models.Activity_Feed.on('activity-update', function(feed) {

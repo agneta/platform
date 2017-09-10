@@ -19,8 +19,6 @@ const Promise = require('bluebird');
 
 module.exports = function(app) {
 
-  var db;
-
   app.indexes = {
     autoupdate: function(names) {
       return Promise.map(names, function(name) {

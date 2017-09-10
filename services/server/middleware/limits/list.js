@@ -14,8 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function(app, options) {
-  return function(req, res, next) {
+module.exports = function(app) {
+  return function(req, res) {
 
     var result = [];
     for (var name in app.locals.limiters) {

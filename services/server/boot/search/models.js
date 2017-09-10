@@ -14,9 +14,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const Promise = require('bluebird');
-const _ = require('lodash');
-
 module.exports = function(app) {
 
   var config = app.get('search');

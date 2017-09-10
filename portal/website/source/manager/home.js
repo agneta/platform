@@ -18,7 +18,7 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('HomeCtrl', function($scope, $rootScope, $location, Account, $route, $timeout, $ocLazyLoad, $mdDialog) {
+  app.controller('HomeCtrl', function($scope, $rootScope, $location, Account, $route, $timeout, $ocLazyLoad) {
 
     $ocLazyLoad.load({
       name: 'angularMoment',
@@ -85,7 +85,7 @@
 
   });
 
-  app.directive('agnetaHomeFeed', function(Activity_Count, $timeout, $interpolate, $mdDialog) {
+  app.directive('agnetaHomeFeed', function(Activity_Count) {
 
     return {
       link: function($scope, $element, $attrs) {

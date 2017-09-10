@@ -15,11 +15,9 @@
  *   limitations under the License.
  */
 var Promise = require('bluebird');
-var _ = require('lodash');
-var randomColor = require('randomcolor');
 const path = require('path');
 
-module.exports = function(Model, app) {
+module.exports = function(Model) {
 
   var infoMethods = {};
 

@@ -21,6 +21,6 @@ module.exports = function(app) {
 
   for (var name in config) {
     var options = config[name];
-    search = init(options);
+    init(options);
   }
 };

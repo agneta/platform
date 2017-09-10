@@ -16,10 +16,7 @@
  */
 var fs = require('fs');
 var path = require('path');
-var url = require('url');
-var _ = require('lodash');
 var urljoin = require('url-join');
-var yaml = require('js-yaml');
 
 module.exports = function(locals) {
 

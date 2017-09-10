@@ -139,7 +139,7 @@ module.exports = function(app) {
                     reject: reject
                   };
 
-                  method(query, function(err, result, raw, soapHeader) {
+                  method(query, function(err) {
                     if (err) {
                       return reject(err);
                     }

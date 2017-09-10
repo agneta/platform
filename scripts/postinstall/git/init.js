@@ -92,22 +92,6 @@ module.exports = function(app) {
 
       console.log('Git repository is ready');
       console.log('Current branch is', app.git.branch.name());
-      return;
-
-      // Testing
-      var filePath = path.join(base_dir, 'website/source/pages/home.yml');
-      return app.git.log({
-        file: filePath
-      })
-        .then(function(log) {
-          console.log(log);
-
-          return app.git.readFile({
-            file: filePath,
-            commit: 'bd4e1dfe140299e698d771b2da189b54f5da7206'
-          });
-        })
-        .then(console.log);
 
     });
 

@@ -37,8 +37,7 @@ module.exports = function(app) {
         new RegExp('/' + currentUserLiteral + '(/|$|\\?)', 'g'),
         '/' + req.accessToken.userId + '$1');
       if (req.url !== urlBeforeRewrite) {
-        debug('req.url has been rewritten from %s to %s', urlBeforeRewrite,
-          req.url);
+        //debug('req.url has been rewritten from %s to %s', urlBeforeRewrite,  req.url);
       }
     }
   }
@@ -58,7 +57,7 @@ module.exports = function(app) {
 
   var currentUserLiteral = options.currentUserLiteral;
   if (currentUserLiteral && (typeof currentUserLiteral !== 'string')) {
-    debug('Set currentUserLiteral to \'me\' as the value is not a string.');
+    //debug('Set currentUserLiteral to \'me\' as the value is not a string.');
     currentUserLiteral = 'me';
   }
   if (typeof currentUserLiteral === 'string') {

@@ -14,7 +14,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var loopback = require('loopback');
 var Promise = require('bluebird');
 var _ = require('lodash');
 var moment = require('moment');
@@ -49,7 +48,7 @@ module.exports = function(Model, app) {
 
   function format(name) {
 
-    res = S(name)
+    var res = S(name)
       .collapseWhitespace()
       .trim()
       .s.toLowerCase();

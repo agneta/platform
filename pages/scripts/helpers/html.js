@@ -54,7 +54,6 @@ module.exports = function(locals) {
   project.extend.helper.register('attrs', function(attrs) {
     var res = '';
     for (var key in attrs) {
-      var obj = attrs[key];
       res += ' ' + attr(attrs, key);
     }
     return res;
