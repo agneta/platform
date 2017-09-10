@@ -16,7 +16,11 @@
  */
 require('sharp');
 
+
+const Promise = require('bluebird');
 const os = require('os');
+const _ = require('lodash');
+const fs = require('fs-extra');
 const config = require('./config');
 const path = require('path');
 const SocketCluster = require('socketcluster')
@@ -47,20 +51,61 @@ switch (environment) {
     break;
 }
 
-var options = {
-  workers: workerCount,
-  port: port,
-  path: config.socket.path,
-  workerController: path.join(__dirname, 'cluster', 'worker'),
-  environment: environment
-};
+//---------------------------------------------------
+// Look for server certificates
 
-var socketCluster = new SocketCluster(options);
-module.exports = require('./cluster/master')
-  .run(socketCluster)
-  .then(function(result){
-    return {
+var certDir = path.join(process.cwd(),'services','certificates');
+var protocolOptions;
+
+fs.pathExists(certDir)
+  .then(function(exists){
+
+    if(!exists){
+      return;
+    }
+
+    var files = [
+      'server-key.pem',
+      'server-crt.pem',
+      'ca-crt.pem'
+    ];
+
+    return Promise.mapSeries(files,function(file){
+      return fs.readFile(
+        path.join(certDir,file)
+      );
+    })
+      .then(function(certs) {
+        protocolOptions = {
+          key: certs[0],
+          cert: certs[1],
+          ca: certs[2],
+          requestCert: true,
+          rejectUnauthorized: false
+        };
+
+      });
+
+  })
+  .then(function(){
+
+    var options = {
+      workers: workerCount,
       port: port,
-      result: result
+      path: config.socket.path,
+      workerController: path.join(__dirname, 'cluster', 'worker'),
+      environment: environment,
+      protocolOptions: protocolOptions
     };
+
+    var socketCluster = new SocketCluster(options);
+    module.exports = require('./cluster/master')
+      .run(socketCluster)
+      .then(function(result) {
+        return {
+          port: port,
+          result: result
+        };
+      });
+
   });
