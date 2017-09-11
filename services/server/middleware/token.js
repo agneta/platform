@@ -76,6 +76,7 @@ module.exports = function(app) {
         }
       });
     }
+    
     app.models.AccessToken.findForRequest(req, options, function(err, token) {
       if (err) {
         return next(err);
@@ -106,9 +107,8 @@ module.exports = function(app) {
           req.accessTokens[name] = token || null;
           rewriteUserLiteral(req, currentUserLiteral);
 
-          next(null,token);
         })
-        .catch(next);
+        .asCallback(next);
     });
 
   }

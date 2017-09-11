@@ -21,7 +21,7 @@ module.exports = function(app) {
 
   var apiAllow = urljoin(app.get('restApiRoot'), 'accounts');
   apiAllow = app.helpers.normalizePath(apiAllow);
-
+  console.log(apiAllow);
   var website = app.get('website').host;
 
   return function(req, res, next) {

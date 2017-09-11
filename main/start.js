@@ -43,6 +43,7 @@ var start = {
           if (component.start) {
             return component.start();
           }
+          return null;
         });
       });
   },

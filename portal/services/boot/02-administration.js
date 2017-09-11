@@ -21,7 +21,7 @@ module.exports = function(app) {
   var account = app.get('account').default;
 
   if (!account) {
-    return Promise.reject('Must have account configuration');
+    return Promise.reject(new Error('Must have account configuration'));
   }
 
   return Promise.resolve()

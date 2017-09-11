@@ -18,6 +18,14 @@ const cluster = require('cluster');
 const express = require('express');
 const loopback = require('loopback');
 const chalk = require('chalk');
+const Promise = require('bluebird');
+
+Promise.config({
+  // Enables all warnings except forgotten return statements.
+  warnings: {
+    wForgottenReturn: false
+  }
+});
 
 module.exports.run = function(worker) {
 

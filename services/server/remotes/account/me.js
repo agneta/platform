@@ -27,7 +27,6 @@ module.exports = function(Model) {
           };
         });
     }
-
     return Model.findById(req.accessToken.userId, {
       include: Model.includeRoles
     });

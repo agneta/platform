@@ -168,7 +168,7 @@ module.exports = function(locals) {
             host: servicesParsed.host,
             view: urljoin(servicesUrl, viewPath)
           };
-          console.log('pages:url_services', project.site.services.url);
+          //console.log('pages:url_services', project.site.services.url);
 
         }
 

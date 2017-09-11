@@ -25,7 +25,6 @@ module.exports = function(app) {
 
     handler: function(error, req, res, next) {
       var errorLog;
-
       if (error instanceof Error) {
         errorLog = _.extend({}, error, {
           name: error.name,

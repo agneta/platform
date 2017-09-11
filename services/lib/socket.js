@@ -99,6 +99,7 @@ module.exports = function(options) {
         })
         .then(function(){
           app.token.middleware(req, null, next);
+          return null;
         })
         .catch(next);
 
