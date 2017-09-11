@@ -43,7 +43,7 @@ module.exports = function(app) {
       key: result
     });
     if(language && !language.skipBuild){
-      return language.value;
+      return language.key;
     }
 
     return project.config.language.default.key;
