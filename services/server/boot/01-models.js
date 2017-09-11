@@ -99,9 +99,6 @@ module.exports = function(app) {
 
     //--------------------------------
 
-
-    //--------------------------------
-
     name = name.toLowerCase();
 
     if (map) {

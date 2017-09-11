@@ -24,7 +24,6 @@ module.exports = function(app) {
     for (var name in roles) {
       var role = roles[name];
       var model = app.models[role.model];
-
       model.belongsTo(Account, {
         foreignKey: 'accountId',
         as: 'account'
@@ -37,12 +36,18 @@ module.exports = function(app) {
         as: name
       });
 
-      Role.registerResolver(name, checkRole);
+      Role.registerResolver(name, function(role, context, cb) {
 
-    }
+        var result = context.accessToken && context.accessToken.roles && context.accessToken.roles[role];
 
-    function checkRole(role, context, cb) {
-      cb(null, context.accessToken && context.accessToken.roles && context.accessToken.roles[role]);
+        if(result && role.auth){
+          return role.auth(role, context, cb);
+        }
+
+        cb(result);
+
+      });
+
     }
 
   }

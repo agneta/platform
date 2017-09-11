@@ -41,7 +41,7 @@ module.exports = function(app) {
     }
   }
 
-  return {
+  var result =  {
     'initial:before': {
       'loopback#favicon': {}
     },
@@ -99,6 +99,10 @@ module.exports = function(app) {
       }
     },
     'routes:before': {
+      './middleware/certificate': {
+        params: [app],
+        enabled: app.get('certificate')
+      },
       './middleware/token': {
         params: [app]
       }
@@ -133,4 +137,7 @@ module.exports = function(app) {
     }
   };
 
+
+
+  return result;
 };

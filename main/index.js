@@ -55,6 +55,9 @@ switch (environment) {
 
 var certDir = path.join(process.cwd(),'services','certificates');
 var protocolOptions;
+var protocol;
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 fs.pathExists(certDir)
   .then(function(exists){
@@ -75,6 +78,7 @@ fs.pathExists(certDir)
       );
     })
       .then(function(certs) {
+
         protocolOptions = {
           key: certs[0],
           cert: certs[1],
@@ -82,6 +86,8 @@ fs.pathExists(certDir)
           requestCert: true,
           rejectUnauthorized: false
         };
+
+        protocol = 'https';
 
       });
 
@@ -91,6 +97,7 @@ fs.pathExists(certDir)
     var options = {
       workers: workerCount,
       port: port,
+      protocol: protocol,
       path: config.socket.path,
       workerController: path.join(__dirname, 'cluster', 'worker'),
       environment: environment,

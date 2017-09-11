@@ -34,7 +34,7 @@ projectOptions = projectOptions[env] || {};
 
 _.extend(projectOptions, {
   port: 8080,
-  protocol: 'http',
+  protocol: 'https',
   hostName: 'localhost'
 });
 
