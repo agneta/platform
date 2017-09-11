@@ -44,7 +44,7 @@ module.exports = function(app) {
           return role.auth(role, context, cb);
         }
 
-        cb(result);
+        cb(null,result);
 
       });
 
