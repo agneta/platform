@@ -56,13 +56,12 @@ module.exports = function(app, options) {
 
   var webOpts = options.website || {};
   var website = {
-    host: webOpts.host || app.get('web_url') || process.env.WEBSITE,
+    host: webOpts.host || app.get('web_url') || process.env.ENDPOINT,
     root: webOpts.root
   };
 
   website.url = urljoin(website.host, website.root);
   //console.log('services:url_web',website.url);
-
   app.set('website', website);
 
   //-------------------------------------------

@@ -16,11 +16,10 @@
  */
 require('sharp');
 
-
+const url = require('url');
 const Promise = require('bluebird');
 const os = require('os');
 const fs = require('fs-extra');
-const config = require('./config');
 const path = require('path');
 const SocketCluster = require('socketcluster')
   .SocketCluster;
@@ -29,7 +28,6 @@ const SocketCluster = require('socketcluster')
 // TODO: Make more stable the multiple workers
 
 var workerCount = 1;
-var port = config.port;
 
 //-------------------------------------------------
 
@@ -53,16 +51,16 @@ switch (environment) {
 //---------------------------------------------------
 // Look for server certificates
 
-var certDir = path.join(process.cwd(),'services','certificates');
+var certDir = path.join(process.cwd(), 'services', 'certificates');
 var protocolOptions;
-var protocol;
-
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+var protocol = 'http';
+var port = 8080;
+var socketPath = '/socket';
 
 fs.pathExists(certDir)
-  .then(function(exists){
+  .then(function(exists) {
 
-    if(!exists){
+    if (!exists) {
       return;
     }
 
@@ -72,12 +70,14 @@ fs.pathExists(certDir)
       'ca-crt.pem'
     ];
 
-    return Promise.mapSeries(files,function(file){
+    return Promise.mapSeries(files, function(file) {
       return fs.readFile(
-        path.join(certDir,file)
+        path.join(certDir, file)
       );
     })
       .then(function(certs) {
+
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
         protocolOptions = {
           key: certs[0],
@@ -90,15 +90,34 @@ fs.pathExists(certDir)
         protocol = 'https';
 
       });
-
   })
-  .then(function(){
+  .then(function() {
+
+    //---------------------------------------------------
+    // Set environment variables
+
+    process.env.HOST_NAME = process.env.HOST_NAME || 'localhost';
+    process.env.PORT = process.env.PORT || port;
+
+
+    process.env.ENDPOINT = process.env.ENDPOINT ||
+      url.format({
+        protocol: protocol,
+        hostname: process.env.HOST_NAME,
+        port: process.env.PORT
+      });
+
+    process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+    process.env.PROTOCOL = protocol;
+    process.env.PATH_SOCKET = process.env.PATH_SOCKET || socketPath;
+
+    //---------------------------------------------------
 
     var options = {
       workers: workerCount,
       port: port,
       protocol: protocol,
-      path: config.socket.path,
+      path: socketPath,
       workerController: path.join(__dirname, 'cluster', 'worker'),
       environment: environment,
       protocolOptions: protocolOptions

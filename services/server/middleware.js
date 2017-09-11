@@ -101,7 +101,7 @@ module.exports = function(app) {
     'routes:before': {
       './middleware/certificate': {
         params: [app],
-        enabled: app.get('certificate')
+        enabled: app.get('certificate')?true:false
       },
       './middleware/token': {
         params: [app]

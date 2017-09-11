@@ -73,6 +73,7 @@ module.exports = function(locals) {
 
         var hostPath = locals.services.get('website') || {};
         hostPath = hostPath.host || locals.host;
+        //console.log('config:hostPath',hostPath);
 
         if (!hostPath) {
           throw new Error('Must have a URL for the website');
@@ -167,7 +168,7 @@ module.exports = function(locals) {
             host: servicesParsed.host,
             view: urljoin(servicesUrl, viewPath)
           };
-          //console.log('pages:url_services', project.site.services.url);
+          console.log('pages:url_services', project.site.services.url);
 
         }
 

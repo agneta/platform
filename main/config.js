@@ -14,53 +14,13 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var url = require('url');
-var _ = require('lodash');
-var path = require('path');
 var error = require('./error');
 
-var projectPaths = require('./paths').project;
-var projectOptions;
-
-var env = process.env.NODE_ENV || 'development';
-
-try {
-  projectOptions = require(path.join(projectPaths.project, 'config'));
-} catch (e) {
-  projectOptions = {};
-}
-
-projectOptions = projectOptions[env] || {};
-
-_.extend(projectOptions, {
-  port: 8080,
-  protocol: 'https',
-  hostName: 'localhost'
-});
-
-var port = parseFloat(process.env.PORT || projectOptions.port);
-var protocol = process.env.PROTOCOL || projectOptions.protocol;
-var hostName = process.env.HOST_NAME || projectOptions.hostName;
-
-//-------------------------------------
-
-if (process.env.APP_HOST) {
-  var hostParsed = url.parse(process.env.APP_HOST);
-  protocol = hostParsed.protocol;
-  if (protocol) {
-    protocol = protocol.split(':')[0];
-  }
-}
-
-var host = process.env.APP_HOST ||
-    process.env.HOST ||
-    url.format({
-      protocol: protocol,
-      hostname: hostName,
-      port: port
-    });
-
-process.env.WEBSITE = host;
+var env = process.env.NODE_ENV;
+var port = parseFloat(process.env.PORT);
+var protocol = process.env.PROTOCOL;
+var hostName = process.env.HOST_NAME;
+var host = process.env.ENDPOINT;
 
 //-------------------------------------
 
@@ -68,7 +28,7 @@ if (!port) {
   error.config(port, 'PORT');
 }
 
-module.exports = _.extend(projectOptions, {
+var result = {
   port: port,
   host: host,
   protocol: protocol,
@@ -77,4 +37,8 @@ module.exports = _.extend(projectOptions, {
   socket: {
     path: '/socket'
   },
-});
+};
+
+console.log(result);
+
+module.exports = result;
