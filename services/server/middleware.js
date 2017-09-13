@@ -19,6 +19,7 @@ module.exports = function(app) {
 
   var limiterOptions = [];
   var configLimiter = app.get('limiter');
+  var apiRoot = app.get('restApiRoot');
 
   if (configLimiter.global) {
     limiterOptions.push({
@@ -28,7 +29,7 @@ module.exports = function(app) {
         isGlobal: true,
         options: configLimiter.global
       }],
-      paths: [app.get('restApiRoot')]
+      paths: [apiRoot]
     });
   }
 
@@ -104,6 +105,7 @@ module.exports = function(app) {
       },
       './middleware/certificate': {
         params: [app],
+        paths: [apiRoot],
         enabled: app.get('certificate')?true:false
       }
     },

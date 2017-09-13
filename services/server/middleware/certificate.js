@@ -25,6 +25,10 @@ module.exports = function(app) {
           return;
         }
 
+        if (!certEmail) {
+          return;
+        }
+
         return app.models.Account.findOne({
           include: app.roles.include,
           where: {
@@ -39,10 +43,9 @@ module.exports = function(app) {
             account = _account;
 
             if (!account) {
-              return Promise.reject({
-                statusCode: 400,
-                message: 'Your certificate does not correspond to a registered user. Choose another one, register your account, or remove it.'
-              });
+              var error = new Error('Your certificate does not correspond to a registered user. Choose another one, register your account, or remove it.');
+              error.statusCode = 400;
+              return Promise.reject(error);
             }
 
             return account.createAccessToken();
