@@ -14,10 +14,15 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+const _ = require('lodash');
+const Promise = require('bluebird');
+
 module.exports = function(app) {
 
+  var roles = app.get('roles');
 
-  function setRoles(Account, roles) {
+  function set(Account, roles) {
 
     var Role = app.models.Role;
 
@@ -36,15 +41,23 @@ module.exports = function(app) {
         as: name
       });
 
-      Role.registerResolver(name, function(role, context, cb) {
+      Role.registerResolver(name, function(roleName, context, cb) {
 
-        var result = context.accessToken && context.accessToken.roles && context.accessToken.roles[role];
+        var role = roles[roleName];
 
-        if(result && role.auth){
-          return role.auth(role, context, cb);
-        }
+        Promise.resolve()
+          .then(function() {
 
-        cb(null,result);
+            var result = context.accessToken && context.accessToken.roles && context.accessToken.roles[roleName];
+
+            if (result && role.auth) {
+              return role.auth(role, context);
+            }
+
+            return result?true:false;
+
+          })
+          .asCallback(cb);
 
       });
 
@@ -52,8 +65,24 @@ module.exports = function(app) {
 
   }
 
-  setRoles(app.models.Account, app.get('roles'));
+  //-----------------------------------
 
-  app.helpers.setRoles = setRoles;
+  var roleKeys = _.keys(roles);
+  var include = _.map(roleKeys, function(name) {
+    return {
+      relation: name,
+      scope: {
+        fields: ['id']
+      }
+    };
+  });
 
+  //-----------------------------------
+
+  set(app.models.Account, roles);
+
+  app.roles = {
+    set: set,
+    include: include
+  };
 };

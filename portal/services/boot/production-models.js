@@ -104,7 +104,7 @@ module.exports = function(app) {
 
   });
 
-  app.helpers.setRoles(app.models.Production_Account, roles);
+  app.roles.set(app.models.Production_Account, roles);
 
   //-----------------------------------------------------------------
 

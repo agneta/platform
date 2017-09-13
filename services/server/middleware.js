@@ -99,12 +99,12 @@ module.exports = function(app) {
       }
     },
     'routes:before': {
+      './middleware/token': {
+        params: [app]
+      },
       './middleware/certificate': {
         params: [app],
         enabled: app.get('certificate')?true:false
-      },
-      './middleware/token': {
-        params: [app]
       }
     },
     'routes': {

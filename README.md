@@ -1,5 +1,6 @@
 [![CLA assistant](https://cla-assistant.io/readme/badge/agneta/platform)](https://cla-assistant.io/agneta/platform)
 [![npm version](https://badge.fury.io/js/agneta-platform.svg)](https://badge.fury.io/js/agneta-platform)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/bd72081720b4409582d682551ef84386)](https://www.codacy.com/app/r.varonos/platform?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=agneta/platform&amp;utm_campaign=Badge_Grade)
 
 # Agneta Platform
 

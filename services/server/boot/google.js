@@ -34,8 +34,6 @@ module.exports = function(app) {
   //---------------------------------------------------
   // Recaptcha
 
-
-
   if (!config.recaptcha) {
     console.warn('Could not find Recaptcha configuration');
     return;

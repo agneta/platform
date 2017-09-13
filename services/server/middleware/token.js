@@ -18,17 +18,6 @@ var _ = require('lodash');
 
 module.exports = function(app) {
 
-  var roles = app.get('roles');
-  var roleKeys = _.keys(roles);
-  var includeRoles = _.map(roleKeys, function(name) {
-    return {
-      relation: name,
-      scope: {
-        fields: ['id']
-      }
-    };
-  });
-
   function rewriteUserLiteral(req, currentUserLiteral) {
     if (req.accessToken && req.accessToken.userId && currentUserLiteral) {
       // Replace /me/ with /current-user-id/
@@ -76,7 +65,7 @@ module.exports = function(app) {
         }
       });
     }
-    
+
     app.models.AccessToken.findForRequest(req, options, function(err, token) {
       if (err) {
         return next(err);
@@ -87,7 +76,7 @@ module.exports = function(app) {
       }
 
       app.models.Account.findById(token.userId, {
-        include: includeRoles,
+        include: app.roles.include,
         fields: {
           id: true
         }
