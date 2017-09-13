@@ -16,7 +16,6 @@
  */
 var ExpressBrute = require('express-brute');
 var MongoStore = require('express-brute-mongo');
-var MongoClient = require('mongodb').MongoClient;
 var moment = require('moment');
 var _ = require('lodash');
 
@@ -40,9 +39,9 @@ module.exports = function(app, config) {
   app.locals.limiters = app.locals.limiters || {};
 
   var store = new MongoStore(function(ready) {
-    MongoClient.connect(app.get('db').url, function(err, db) {
-      if (err) throw err;
-      ready(db.collection('Limiter'));
+    var datasource = app.dataSources.db;
+    datasource.on('connected',function(){
+      ready(datasource.connector.db.collection('Limiter'));
     });
   });
 

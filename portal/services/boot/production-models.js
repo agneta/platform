@@ -48,10 +48,12 @@ module.exports = function(app) {
   //--------------------------------------------------
   // Create the Production data source
 
+  var dbConfig = app.dataSources.db.settings;
+
   app.dataSource('db_prd', _.extend({
     connector: 'loopback-connector-mongodb'
   },
-  appPrd.get('db')));
+  dbConfig));
 
   //--------------------------------------------------
 

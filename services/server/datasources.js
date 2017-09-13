@@ -15,10 +15,13 @@
  *   limitations under the License.
  */
 var _ = require('lodash');
+var db = null;
 
 module.exports = function(app) {
 
-  var db = app.get('db');
+  if(!db){
+    db = app.secrets.get('db');
+  }
 
   var result = {
     db: _.extend({

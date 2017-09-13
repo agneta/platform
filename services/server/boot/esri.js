@@ -17,14 +17,20 @@
 var urljoin = require('url-join');
 var _ = require('lodash');
 var requestPromise = require('request-promise');
+var credentials = null;
 
 module.exports = function(app) {
 
   var config = app.get('esri');
+
   if (!config) {
     return;
   }
-  var credentials = config.credentials;
+
+  if(!credentials){
+    credentials = app.secrets.get('esri');
+  }
+
   var endpoint = urljoin(config.endpoint, 'rest/services', config.app, 'FeatureServer/0/query');
   var access;
 

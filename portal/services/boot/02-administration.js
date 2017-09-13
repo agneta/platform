@@ -15,10 +15,15 @@
  *   limitations under the License.
  */
 
+var account;
+
 module.exports = function(app) {
 
   var Administrator = app.models.Role_Administrator;
-  var account = app.get('account').default;
+
+  if(!account){
+    account = app.secrets.get('account');
+  }
 
   if (!account) {
     return Promise.reject(new Error('Must have account configuration'));

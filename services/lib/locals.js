@@ -76,9 +76,17 @@ module.exports = function(app, options) {
   //-------------------------------------------
   // Storage
 
-  var storageConfig = app.get('storage');
+  var configName = 'storage';
+  var storageConfig = app.get(configName);
+
+  if (!storageConfig) {
+    app.set(configName, {});
+    storageConfig = app.get(configName);
+  }
+
   var domain = options.web || options.client;
-  if(domain){
+
+  if (domain) {
     domain = domain.project.config.domain.production;
 
     var buckets = {
@@ -113,28 +121,5 @@ module.exports = function(app, options) {
   }
 
   storageConfig.buckets = buckets;
-
-  //-------------------------------------------
-  // Database
-
-  var db = app.get('db');
-  var user = '';
-  var ssl = '';
-
-  if (!db.host || !db.database) {
-    console.error(db);
-    throw 'Missing database configurations...';
-  }
-
-  if (db.username) {
-    user = db.username + ':' + db.password + '@';
-  }
-  if (db.ssl) {
-    ssl = '?ssl=true';
-  }
-
-  db.url = 'mongodb://' + user + db.host + ':' + db.port + '/' + db.database + ssl;
-  //console.log('Mongod URL: "' + db.url + '"');
-  //console.log('Website is:', app.get('website'));
 
 };

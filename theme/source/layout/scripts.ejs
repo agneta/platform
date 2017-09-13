@@ -31,8 +31,8 @@ window.agneta = {
     media: "<%-site.servers.media%>"
   },
   keys:{
-    googleAPI: "<%-services_config('google').apiKey%>",
-    recaptcha: "<%-services_config('recaptcha').siteKey%>"
+    googleAPI: "<%-services_config('google').api%>",
+    recaptcha: "<%-services_config('google').recaptcha%>"
   },
   <%if(config.search){%>
   urls:{

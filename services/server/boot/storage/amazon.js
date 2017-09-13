@@ -15,10 +15,13 @@
  *   limitations under the License.
  */
 var AWS = require('aws-sdk');
+var config;
 
-module.exports = function(app, config) {
+module.exports = function(app) {
 
-  config = config.s3;
+  if (!config) {
+    config = app.secrets.get('aws.s3');
+  }
 
   if (!config) {
     return;
@@ -59,7 +62,7 @@ module.exports = function(app, config) {
     },
     upload: function(options) {
       var upload = s3.upload.apply(s3, arguments);
-      if(options.onProgress){
+      if (options.onProgress) {
         upload.on('httpUploadProgress', options.onProgress);
       }
       return upload.promise();

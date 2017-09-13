@@ -76,14 +76,19 @@ module.exports = function(app) {
     path.join(__dirname, '../server'),
   ];
 
-  dirs = dirs.concat(app.get('services_include'));
-  dirs = dirs.concat(servicesDir);
 
-  function load(name) {
+
+  function load(name,dontInclude) {
+
+    var loadDirs = dirs.concat();
+    if(!dontInclude){
+      loadDirs = loadDirs.concat(app.get('services_include'));
+    }
+    loadDirs = loadDirs.concat(servicesDir);
 
     var result = {};
 
-    for (var dir of dirs) {
+    for (var dir of loadDirs) {
 
       _.merge(
         result,

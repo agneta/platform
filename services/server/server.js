@@ -78,7 +78,7 @@ module.exports = function(options) {
               appRootDir: __dirname,
               models: bootGenerated.models,
               modelDefinitions: bootGenerated.modelDefinitions,
-              middleware: app.configurator.load('middleware'),
+              middleware: app.configurator.load('middleware',true),
               dataSources: app.configurator.load('datasources'),
               bootDirs: [
                 path.join(__dirname, 'boot'),

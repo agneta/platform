@@ -23,6 +23,8 @@ const simpleParser = require('mailparser').simpleParser;
 const Request = require('request');
 const concatStream = require('concat-stream');
 
+var credentials;
+
 module.exports = function(app) {
 
   app.soapServices = {};
@@ -31,6 +33,10 @@ module.exports = function(app) {
     return;
   }
 
+  if(!credentials){
+    credentials = app.secrets.get('wsdl');
+  }
+  
   var dirServices = config.path || path.join(app.get('services_dir'), 'wsdl');
 
   return fs.readdir(dirServices)
@@ -65,11 +71,11 @@ module.exports = function(app) {
               return reject(err);
             }
 
-            switch (config.credentials.scheme) {
+            switch (credentials.scheme) {
               case 'BasicAuth':
                 client.setSecurity(new soap.BasicAuthSecurity(
-                  config.credentials.username,
-                  config.credentials.password));
+                  credentials.username,
+                  credentials.password));
                 break;
               default:
 

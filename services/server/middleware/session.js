@@ -16,14 +16,21 @@
  */
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const Promise = require('bluebird');
 
 module.exports = function(app, _options) {
 
   var secret = app.get('cookie_secret');
-  var db = app.get('db');
+
+  var dbPromise = new Promise(function(resolve, reject) {
+    app.dataSources.db.on('connected', function() {
+      resolve(app.dataSources.db.connector.db);
+    });
+    app.dataSources.db.on('error', reject);
+  });
 
   var sessionStore = app.sessionStore = new MongoStore({
-    url: db.url,
+    dbPromise: dbPromise,
     collection: 'Session',
     ttl: 8 * 60 * 60,
     autoRemove: 'native'
