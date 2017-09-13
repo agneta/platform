@@ -86,15 +86,11 @@ module.exports = function(app) {
             return next('Account not found from access token');
           }
 
-          var roles = _.omit(account.__data, 'id');
-          roles = _.mapValues(roles, function(value) {
-            return value.id;
+          save({
+            account: account,
+            token: token,
+            req: req
           });
-
-          token = token.__data;
-          token.roles = roles;
-          req.accessTokens[name] = token || null;
-          rewriteUserLiteral(req, currentUserLiteral);
 
         })
         .asCallback(next);
@@ -102,8 +98,26 @@ module.exports = function(app) {
 
   }
 
+  function save(options){
+
+    var account = options.account;
+    var token = options.token;
+    var req = options.req;
+
+    var roles = _.omit(account.__data, 'id');
+    roles = _.mapValues(roles, function(value) {
+      return value.id;
+    });
+
+    token = token.__data;
+    token.roles = roles;
+    req.accessTokens[name] = token || null;
+    rewriteUserLiteral(req, currentUserLiteral);
+  }
+
   app.token = {
-    middleware: middleware
+    middleware: middleware,
+    save: save
   };
 
   return middleware;
