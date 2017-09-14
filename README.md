@@ -3,6 +3,8 @@
 
 # Agneta Platform
 
+[![Join the chat at https://gitter.im/Agneta/platform](https://badges.gitter.im/Agneta/platform.svg)](https://gitter.im/Agneta/platform?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 All-in-one solution for integrating and customizing business applications.
 
 ## Want to help?
