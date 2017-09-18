@@ -101,6 +101,24 @@ module.exports = function(locals) {
       appLocals.config_prj = locals.web.project.config;
     }
 
+    //-----------------------------------------------------------
+
+    _.mergePages = function(objValue, srcValue) {
+
+      return _.mergeWith(objValue, srcValue, mergeFn);
+
+      function mergeFn(objValue, srcValue) {
+        if (_.isArray(objValue) || _.isArray(srcValue)) {
+          objValue = objValue || [];
+          srcValue = srcValue || [];
+
+          return _.uniq(srcValue.concat(objValue));
+        }
+      }
+    };
+
+    //-----------------------------------------------------------
+
     function deepMerge(object, source) {
       return _.mergeWith(object, source,
         function(objValue, srcValue) {

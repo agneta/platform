@@ -1,29 +1,37 @@
 <%if(page.barebones){%>
   <%-body%>
-  <%}else{%>
-    <!DOCTYPE html>
-    <html <%-page.html_attributes%> lang="<%-site.lang%>" ng-app="MainApp" ng-controller="AppCtrl as app">
+<%}else{%>
+  <!DOCTYPE html>
+  <html <%-page.html_attributes%> lang="<%-site.lang%>" ng-app="MainApp" ng-controller="AppCtrl as app">
     <%- template('layout/head') %>
+
     <body <%-page.body_attributes%> ng-class="[viewData.layoutClass,sidebarClass(),loggedClass(),mediaClass()]" layout="column" ng-keypress="viewData.keypress && onKeyPress($event)" dynamic-ctrl="viewData.controller">
-    <%-template('layout/compatibility',null,true)%>
-    <%-template('layout/loader',null,true)%>
-    <div class="page-loader" ng-hide="loggedClass">
-    <div class="loader">Loading...</div>
-    </div>
-    <%if(page.static){%>
-      <div id="wrap-cont" flex="100" layout="row" ng-cloak>
-      <%-template('layout/wrap',null,true)%>
+
+      <%-template('layout/compatibility',null,true)%>
+      <%-template('layout/loader',null,true)%>
+
+      <div class="page-loader" ng-hide="loggedClass">
+        <div class="loader">Loading...</div>
       </div>
-      <%}else{%>
-        <div layout="column" flex="100" ng-cloak>
-        <%-template('layout/toolbar',{post:page},true)%>
+
+      <div layout="column" flex="100" ng-cloak>
+
+        <%
+    var toolbar = config.toolbar || {};
+    if(!toolbar.disabled && !page.hiddenToolbar){
+      %>
+          <%-template('layout/toolbar',{post:page},true)%>
+        <%}%>
+
         <div id="wrap-cont" layout="row" flex="100">
-        <%-template('layout/menu/side',null,true)%>
-        <%-template('layout/wrap',null,true)%>
+          <%-template('layout/menu/side',null,true)%>
+          <%-template('layout/wrap',null,true)%>
         </div>
-        </div>
-        <%}%>
-        <%-template('layout/scripts')%>
-        </body>
-        </html>
-        <%}%>
+
+      </div>
+
+      <%-template('layout/scripts')%>
+
+    </body>
+  </html>
+<%}%>

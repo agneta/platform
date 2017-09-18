@@ -22,8 +22,10 @@
 /*global _e_Form*/
 /*global _e_Scroll*/
 /*global _e_Dialog*/
+/*global _e_menuSide*/
 
 (function() {
+
 
   var agneta = window.agneta;
   var app = window.angular.module('MainApp', window.angularDeps);
@@ -326,11 +328,13 @@
   _t_template('main/form');
   _t_template('main/scroll');
   _t_template('main/dialog');
+  _t_template('main/menu-side');
 
   _e_searchEngine(app);
   _e_Route(app);
   _e_Form(app);
   _e_Scroll(app);
   _e_Dialog(app);
+  _e_menuSide(app);
 
 })();

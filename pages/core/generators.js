@@ -176,6 +176,9 @@ module.exports = function(locals) {
         }
 
         var template = page.template + '.sidebar';
+        if(_.isString(page.sidebar)){
+          template = page.sidebar;
+        }
         if (!app.locals.has_template(template)) {
           template = 'sidebar';
         }

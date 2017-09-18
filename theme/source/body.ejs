@@ -5,7 +5,7 @@ if(page.barebones && (!page.isView||page.isPartial)){
 <%}else if(page.isView){%>
 	<div id="view-content" layout="column">
 			<%-template(page.template)%>
-			<%if(!page.fullscreen){%>
+			<%if(!page.hiddenFooter){%>
 				<%- template('layout/footer',null,true) %>
 				<%}%>
 	</div>
