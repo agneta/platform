@@ -22,6 +22,7 @@ const uuidV1 = require('uuid/v1');
 const simpleParser = require('mailparser').simpleParser;
 const Request = require('request');
 const concatStream = require('concat-stream');
+const _ = require('lodash');
 
 var credentials;
 
@@ -33,135 +34,185 @@ module.exports = function(app) {
     return;
   }
 
-  if(!credentials){
+  if (!credentials) {
     credentials = app.secrets.get('wsdl');
   }
-  
+
   var dirServices = config.path || path.join(app.get('services_dir'), 'wsdl');
+
+  //-----------------------------------------------------------
 
   return fs.readdir(dirServices)
     .then(function(files) {
+      return Promise.map(files, onFile);
+    });
 
-      return Promise.map(files, function(file) {
+  //-----------------------------------------------------------
 
-        var fileParsed = path.parse(file);
-        var fileName = fileParsed.name;
+  function onFile(file) {
 
-        return new Promise(function(resolve, reject) {
+    var fileParsed = path.parse(file);
+    var fileName = fileParsed.name;
+    var fileConfig = _.get(config, `file.${fileName}`) || {};
 
-          soap.createClient(path.join(dirServices, file), {
-            wsdl_headers: {
-              connection: 'keep-alive'
-            },
-            request: function(options, cb) {
-              var request = Request(options, cb);
-              request.on('response', function(response) {
-                response.pipe(concatStream({
-                  encoding: 'buffer'
-                }, function(buffer) {
-                  request.bufferResult = buffer;
-                }));
-              });
-              return request;
-            }
-          },
-          function(err, client) {
+    return soap.createClientAsync(path.join(dirServices, file), {
+      wsdl_headers: {
+        connection: 'keep-alive'
+      },
+      request: function(options, cb) {
 
-            if (err) {
-              return reject(err);
-            }
-
-            switch (credentials.scheme) {
-              case 'BasicAuth':
-                client.setSecurity(new soap.BasicAuthSecurity(
-                  credentials.username,
-                  credentials.password));
-                break;
-              default:
-
-            }
-
-            var methodName = client.wsdl.definitions.$name;
-            var method = client[methodName];
-            var methodPromise = Promise.promisify(method);
-            var responses = {};
-
-            client.on('soapError', function() {
-              console.log(arguments);
-            });
-
-            client.on('response', function(result, incomingMessage, exchangeId) {
-
-              var responseParsed = responses[exchangeId];
-              if (!responseParsed) {
-                return;
-              }
-
-              delete responses[exchangeId];
-
-              if (!result) {
-                return responseParsed.reject('No incoming response. Check the log for errors');
-              }
-
-              var resContentType = incomingMessage.headers['content-type'];
-              var attachments = [];
-
-              Promise.resolve()
-                .then(function() {
-
-                  var buffer = Buffer.concat([
-                    Buffer.from('content-type: ' + resContentType + '\r\n', 'utf8'),
-                    incomingMessage.request.bufferResult
-                  ]);
-
-                  return simpleParser(buffer)
-                    .then(function(parsed) {
-                      attachments = parsed.attachments;
-                    });
-
-                })
-                .then(function() {
-
-                  responseParsed.resolve({
-                    attachments: attachments,
-                    raw: result
-                  });
-
-                });
-
-
-            });
-
-            app.soapServices[fileName] = {
-              getResult: methodPromise,
-              getDetails: function(query) {
-
-                return new Promise(function(resolve, reject) {
-
-                  var uuid = uuidV1();
-
-                  responses[uuid] = {
-                    resolve: resolve,
-                    reject: reject
-                  };
-
-                  method(query, function(err) {
-                    if (err) {
-                      return reject(err);
-                    }
-                  }, {
-                    exchangeId: uuid
-                  });
-                });
-              }
-            };
-
-            resolve();
-
-          });
+        setSecurity({
+          config: fileConfig,
+          requestOptions: options
         });
 
+        //console.log(options);
+        //---------------------------------------------------
+
+        var request = Request(options, cb);
+
+        request.on('response', function(response) {
+          response.pipe(concatStream({
+            encoding: 'buffer'
+          }, function(buffer) {
+            request.bufferResult = buffer;
+          }));
+        });
+
+        return request;
+      }
+    })
+      .then(function(client) {
+
+        if (!fileConfig.security) {
+          switch (credentials.scheme) {
+            case 'BasicAuth':
+              client.setSecurity(new soap.BasicAuthSecurity(
+                credentials.username,
+                credentials.password));
+              break;
+            default:
+          }
+
+        }
+        
+        //------------------------------------------------------------------------
+
+        var methodName = client.wsdl.definitions.$name;
+        var method = client[methodName];
+        var methodPromise = client[methodName + 'Async'];
+        var responses = {};
+
+        //------------------------------------------------------------------------
+
+        client.on('soapError', function() {
+          console.log(arguments);
+        });
+
+        client.on('response', onClientResponse);
+
+        //------------------------------------------------------------------------
+
+        app.soapServices[fileName] = {
+          getResult: methodPromise,
+          getDetails: function(query, options) {
+
+            return new Promise(function(resolve, reject) {
+
+              var uuid = uuidV1();
+
+              responses[uuid] = {
+                resolve: resolve,
+                reject: reject
+              };
+
+              method(query, function(err) {
+                if (err) {
+                  return reject(err);
+                }
+              }, {
+                methodOptions: options,
+                exchangeId: uuid
+              });
+            });
+          }
+        };
+
+        //------------------------------------------------------------------------
+
+        function onClientResponse(result, incomingMessage, exchangeId) {
+
+          var responseParsed = responses[exchangeId];
+          if (!responseParsed) {
+            return;
+          }
+
+          delete responses[exchangeId];
+
+          if (!result) {
+            return responseParsed.reject('No incoming response. Check the log for errors');
+          }
+
+          var resContentType = incomingMessage.headers['content-type'];
+          var attachments = [];
+
+          Promise.resolve()
+            .then(function() {
+
+              var buffer = Buffer.concat([
+                Buffer.from('content-type: ' + resContentType + '\r\n', 'utf8'),
+                incomingMessage.request.bufferResult
+              ]);
+
+              return simpleParser(buffer)
+                .then(function(parsed) {
+                  attachments = parsed.attachments;
+                });
+
+            })
+            .then(function() {
+
+              responseParsed.resolve({
+                attachments: attachments,
+                raw: result
+              });
+
+            });
+
+        }
+
       });
-    });
+  }
+
+  function setSecurity(options) {
+
+    var config = options.config;
+    var requestOptions = options.requestOptions;
+
+    if (!config.security){
+      return;
+    }
+
+    if (config.security.roleCertificate){
+
+      requestOptions.agentOptions = {
+        crt: fs.readFileSync(
+          path.join(process.cwd(),'..','certificates/wsdl/supplier.crt')
+        ),
+        key: fs.readFileSync(
+          path.join(process.cwd(),'..','certificates/wsdl/supplier.key')
+        ),
+        passphrase: '123!@#',
+        securityOptions: 'SSL_OP_NO_SSLv3'
+      };
+
+      //var req = requestOptions.methodOptions.req;
+      //var clientCRT = req.socket.getPeerCertificate().raw.toString('base64');
+      return;
+    }
+
+  }
+
+
 
 };
