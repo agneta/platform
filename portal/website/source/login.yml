@@ -3,7 +3,9 @@ title:
   gr: 'Σύνδεση'
 
 template: 'login'
-static: true
+
+hiddenToolbar: true
+hiddenFooter: true
 
 viewData:
   loginRedirect: '/'

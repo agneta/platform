@@ -22,6 +22,7 @@ const File = require('../../pages/file');
 const yaml = require('js-yaml');
 const replaceExt = require('replace-ext');
 const klaw = require('klaw');
+const fs = require('fs-extra');
 
 module.exports = function(locals) {
 
@@ -83,12 +84,35 @@ module.exports = function(locals) {
                   }
                 });
 
+                var data;
+
                 return readFile(file)
-                  .then(function(data) {
-                    if (!data) {
-                      return;
-                    }
+                  .then(function(_data) {
+
+                    data = _data;
                     data.path = data.path || path_url;
+
+                    //---------------------------------------
+                    // extend
+
+                    if (data.extend) {
+
+                      var extendPath = path.join(
+                        project.paths.source,
+                        data.extend
+                      ) + '.yml';
+                      return fs.readFile(extendPath)
+                        .then(function(content) {
+
+                          var extendedData = yaml.safeLoad(content) || {};
+                          _.mergePages(extendedData,data);
+                          data = extendedData;
+                        });
+
+                    }
+
+                  })
+                  .then(function() {
 
                     //---------------------------------------
                     // Partials
@@ -165,12 +189,12 @@ module.exports = function(locals) {
       try {
         data = yaml.safeLoad(content);
       } catch (e) {
-        console.error('Found problem on YAML: ' + path);
+        console.error('Found problem on YAML: ' + file.path);
         throw e;
       }
 
       if (!data) {
-        return;
+        return {};
       }
 
       data.source = file.path;

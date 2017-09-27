@@ -14,9 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
+function _e_menuSide(app) {
 
-  var app = window.angular.module('MainApp');
   var menu;
 
   app.run(function($rootScope) {
@@ -41,11 +40,11 @@
       $rootScope.hasSidebar = sidebarPath ? true : false;
       contentElement.empty();
 
-      if(!sidebarPath){
+      if (!sidebarPath) {
         sidebarPath = agneta.langPath('/sidebar');
       }
 
-      sidebarPath =  agneta.urljoin({
+      sidebarPath = agneta.urljoin({
         path: [sidebarPath],
         query: {
           version: agneta.page.version
@@ -56,9 +55,9 @@
 
         $timeout(function() {
           var sidebarHTML = $compile(result.data)($scope);
-          for(var key in sidebarHTML){
+          for (var key in sidebarHTML) {
             var node = sidebarHTML[key];
-            if(node instanceof HTMLElement){
+            if (node instanceof HTMLElement) {
               contentElement.append(node);
             }
           }
@@ -122,4 +121,4 @@
     };
   });
 
-})();
+}

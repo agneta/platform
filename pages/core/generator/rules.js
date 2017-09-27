@@ -34,7 +34,7 @@ module.exports = function(locals) {
   fs.ensureFileSync(dataPath);
   var data = yaml.safeLoad(fs.readFileSync(dataPath, 'utf8'));
 
-  _.mergeWith(data, dataTheme, mergeFn);
+  _.mergePages(data, dataTheme);
 
   if (data) {
 
@@ -48,20 +48,10 @@ module.exports = function(locals) {
             scripts: [],
             styles: []
           };
-          _.mergeWith(template, props.data, mergeFn);
+          _.mergePages(template, props.data);
           templates[name] = template;
         }
       }
-    }
-  }
-
-
-  function mergeFn(objValue, srcValue) {
-    if (_.isArray(objValue) || _.isArray(srcValue)) {
-      objValue = objValue || [];
-      srcValue = srcValue || [];
-
-      return _.uniq(srcValue.concat(objValue));
     }
   }
 
@@ -81,7 +71,7 @@ module.exports = function(locals) {
 
     var templateData = templates[data.templateSource || data.template];
     if (templateData) {
-      _.mergeWith(data, templateData, mergeFn);
+      _.mergePages(data, templateData);
     }
 
     return data;
