@@ -1,4 +1,9 @@
 require('sharp');
+
+// Extend lodash
+var _ = require('lodash');
+_.mixin(require('lodash-deep'));
+
 const url = require('url');
 const Promise = require('bluebird');
 const fs = require('fs-extra');
@@ -80,4 +85,7 @@ module.exports = fs.pathExists(certDir)
 
     server(options);
 
+  })
+  .catch(function(err){
+    console.error(err);
   });

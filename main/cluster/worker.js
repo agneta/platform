@@ -20,10 +20,6 @@ const loopback = require('loopback');
 const chalk = require('chalk');
 const Promise = require('bluebird');
 
-// Extend lodash
-var _ = require('lodash');
-_.mixin(require('lodash-deep'));
-
 Promise.config({
   // Enables all warnings except forgotten return statements.
   warnings: {

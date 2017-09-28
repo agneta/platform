@@ -21,6 +21,8 @@ var server = require(projectPaths.services);
 
 module.exports = function(options) {
 
+  options = options || {};
+
   var webPages = require(projectPaths.framework)({
     paths: projectPaths,
     mode: 'default',
