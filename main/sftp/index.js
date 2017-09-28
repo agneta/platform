@@ -3,7 +3,6 @@ const path = require('path');
 const fs = require('fs-extra');
 const sessionHandler = require('./session');
 const services = require('../server/services');
-const _ = require('lodash');
 const ssh2 = require('ssh2');
 const utils = ssh2.utils;
 const crypto = require('crypto');
@@ -35,10 +34,10 @@ module.exports = function(options) {
     .then(function() {
 
 
-      server.on('connect', function(context, info) {
+      server.on('connect', function(context) {
 
-        console.log('user attempting to connect', context.ctx, info);
-        console.log('method', context.method);
+        //console.log('user attempting to connect', context.ctx, info);
+        //console.log('method', context.method);
 
         var ctx = context.ctx;
 
