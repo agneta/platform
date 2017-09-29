@@ -14,28 +14,13 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var start = require('./start');
 
 module.exports = function(options) {
 
+  var component = options.component;
   var app = options.mainApp;
-  var name = options.name || options.root;
   var url = '/' + options.root;
-
-  var title = options.title || name;
-  options.url_services = options.url_services || '/';
-
-  var component = start[name](options);
   var componentApp = component.locals.app;
-
-  var appName = name;
-
-  if (options.id) {
-    appName += '_' + options.id;
-  }
-
-  componentApp.set('name', appName);
-  componentApp.set('title', title);
 
   function init() {
     //console.log('URL:', url);

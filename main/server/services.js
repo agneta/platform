@@ -17,37 +17,32 @@
 var projectPaths = require('../paths').project;
 var config = require('../config');
 var start = require('../start');
-var server = require(projectPaths.services);
 
 module.exports = function(options) {
 
   options = options || {};
 
-  var webPages = require(projectPaths.framework)({
-    paths: projectPaths,
-    mode: 'default',
-    locals: {
-      load: {
-        media: false,
-        pages: {
-          fields: {
-            title: true,
-            authorization: true,
-            path: true,
-            isView: true,
-            isViewData: true
-          },
-          exclude: {
-            pages: true,
-            sidebar: true
-          }
+  var webPages = start.default({
+    load: {
+      media: false,
+      pages: {
+        fields: {
+          title: true,
+          authorization: true,
+          path: true,
+          isView: true,
+          isViewData: true
+        },
+        exclude: {
+          pages: true,
+          sidebar: true
         }
-      },
-      host: config.host
-    }
+      }
+    },
+    host: config.host
   });
 
-  var services = server({
+  var services = start.services({
     dir: projectPaths.project,
     client: webPages.locals,
     server: options.server,

@@ -20,9 +20,15 @@ const paths = require('./paths');
 const projectPaths = paths.project;
 const config = require('./config');
 const Promise = require('bluebird');
+var ProgressBar = require('progress');
 
 var start = {
   init: function(subApps) {
+
+    var bar = new ProgressBar('[:bar] :title', {
+      total: subApps.length*2 + 1,
+      width: 30
+    });
 
     return Promise.each(subApps, function(component) {
       if (component.preInit) {
@@ -31,7 +37,9 @@ var start = {
     })
       .then(function() {
         return Promise.each(subApps, function(component) {
-          log.info('Initiating: ' + component.locals.app.get('title'));
+          bar.tick({
+            title: 'Initiating: ' + component.locals.app.get('name')
+          });
           if (component.init) {
             return component.init();
           }
@@ -39,36 +47,52 @@ var start = {
       })
       .then(function() {
         return Promise.each(subApps, function(component) {
-          log.info('Starting: ' + component.locals.app.get('title'));
+          bar.tick({
+            title: 'Starting: ' + component.locals.app.get('name')
+          });
           if (component.start) {
             return component.start();
           }
           return null;
         });
+      })
+      .then(function(){
+        bar.tick({
+          title: ''
+        });
       });
   },
-  default: function() {
+  default: function(options) {
 
-    return start.pages({
-      mode: 'default'
+    var component = start.pages({
+      mode: 'default',
+      locals: options
     });
 
-  },
-  portal: function(locals) {
+    return component;
 
-    return start.pages({
+  },
+  portal: function(options) {
+
+    var component = start.pages({
       mode: 'preview',
       dir: projectPaths.portalWebsite,
-      locals: locals
+      locals: options
     });
-  },
-  website: function(locals) {
 
-    return start.pages({
+    setName(component, 'pages_portal', options);
+    return component;
+  },
+  website: function(options) {
+
+    var component = start.pages({
       mode: 'preview',
       sync: true,
-      locals: locals
+      locals: options
     });
+
+    setName(component, 'pages_website', options);
+    return component;
   },
   pages: function(options) {
 
@@ -77,14 +101,27 @@ var start = {
 
     _.extend(options.locals, config);
 
-    var result = require(options.paths.framework)(options);
-    return result;
+    var component = require(options.paths.framework)(options);
+    setName(component, 'pages', options);
+    return component;
+
   },
   services: function(options) {
 
-    return require(projectPaths.services)(options);
+    var component = require(projectPaths.services)(options);
+    setName(component, 'services', options);
+    return component;
 
   }
 };
+
+function setName(component, name, options) {
+  options = options || {};
+  if (options.id) {
+    name += '_' + options.id;
+  }
+  component.locals.app.set('name', name);
+
+}
 
 module.exports = start;

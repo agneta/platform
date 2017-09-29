@@ -33,7 +33,6 @@ module.exports = function(options) {
   var commonOptions = _.extend({
     mainApp: app,
     worker: options.worker,
-    appName: config.appName,
     server: server
   }, config);
 
@@ -87,45 +86,47 @@ module.exports = function(options) {
   }
 
   //-----------------------------------------------------
-
   // Setup the preview components
 
-  var portalServices = middleware(_.extend({
-    title: 'Portal Services',
+  function setupServer(name,options){
+    var component = start[name](_.extend(options, commonOptions));
+
+    return middleware({
+      component: component,
+      root: options.root,
+      mainApp: app
+    });
+  }
+
+  var portalServices = setupServer('services',{
     root: '',
-    name: 'services',
     id: 'portal',
     include: path.join(projectPaths.project, 'services'),
     dir: projectPaths.portal,
     website: {}
-  }, commonOptions));
+  });
 
-  var portalPages = middleware(_.extend({
+  var portalPages = setupServer('portal',{
     root: '',
     dir: projectPaths.portalWebsite,
-    name: 'portal',
-    title: 'Portal Pages'
-  }, commonOptions));
+  });
 
-  var webServices = middleware(_.extend({
-    title: 'Web Services',
+  var webServices = setupServer('services',{
     root: 'services',
-    name: 'services',
     id: 'web',
     disableSocket: true,
     dir: projectPaths.project,
     website: {
       root: appRoots.preview
     }
-  }, commonOptions));
+  });
 
-  var webPages = middleware(_.extend({
+  var webPages = setupServer('website',{
     root: appRoots.preview,
-    url_services: url_services,
-    name: 'website',
-    title: 'Web Pages'
-  }, commonOptions));
+    url_services: url_services
+  });
 
+  //-----------------------------------------------------
   // Share apps
 
   portalServices.locals.client = portalPages.locals;
