@@ -1,17 +1,23 @@
 const path = require('path');
 
-module.exports = function(session,app) {
+module.exports = function(session, app) {
 
-  require('./readdir')(session,app);
+  require('./readdir')(session, app);
 
   session.on('stat', function(path, statkind, res) {
 
+    console.log('stat');
+    app.models.Media_Private.details(null, path)
+      .then(function(item) {
+        console.log(item);
+      })
+      .catch(console.error);
     //res.is_directory();
     res.is_file();
 
     res.permissions = 0o755;
-    //res.uid = 1;
-    //res.gid = 1;
+    res.uid = 1;
+    res.gid = 1;
     res.size = 1234;
     res.atime = 123456;
     res.mtime = 123456;
@@ -22,9 +28,9 @@ module.exports = function(session,app) {
 
   //------------------------------------------------------------------------------------
 
-  session.on('realpath',function (location,callback) {
+  session.on('realpath', function(location, callback) {
     callback(
-      path.join('/',location)
+      path.join('/', location)
     );
   });
 

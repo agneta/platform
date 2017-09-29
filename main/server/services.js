@@ -56,7 +56,10 @@ module.exports = function(options) {
     webPages
   ])
     .then(function() {
-      return;
+      return {
+        services: services.locals,
+        pages: webPages.locals
+      };
     });
 
 };

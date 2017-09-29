@@ -1,30 +1,25 @@
-const SFTPServer = require('node-sftp-server');
+const SFTPServer = require('./server');
 const path = require('path');
-const fs = require('fs-extra');
 const services = require('../server/services');
 const auth = require('./auth');
 
 module.exports = function(options) {
 
   var server;
-  var keyPath = path.join(process.cwd(), 'tmp', 'private.key');
   var tmpDir = path.join(process.cwd(), 'tmp', 'sftp');
+  var app;
 
   return services()
-    .then(function() {
-      console.log(arguments);
-      return fs.outputFile(keyPath, options.protocolOptions.key);
-    })
-    .then(function() {
+    .then(function(result) {
+      app = result.services.app;
       server = new SFTPServer({
-        privateKeyFile: keyPath,
+        privateKey: options.protocolOptions.key,
         temporaryFileDirectory: tmpDir
       });
-      return fs.remove(keyPath);
     })
     .then(function() {
 
-      auth(server);
+      auth(server, app);
       // User disconnects from the server
       server.on('end', function() {
         console.log('user disconnected');

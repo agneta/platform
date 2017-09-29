@@ -37,7 +37,10 @@ module.exports = function(Model, app) {
     }
 
     object.url = Model._url(object.location);
-    object.size = object.size ? prettyBytes(parseFloat(object.size)) : null;
+    if(object.size){
+      object.sizeBytes = parseFloat(object.size);
+      object.size = prettyBytes(object.sizeBytes);
+    }
     object.type = app.helpers.mediaType(object.contentType);
     object.ext = mime.extension(object.contentType);
 

@@ -15,7 +15,6 @@
  *   limitations under the License.
  */
 const _ = require('lodash');
-const log = require('./log');
 const paths = require('./paths');
 const projectPaths = paths.project;
 const config = require('./config');
@@ -26,7 +25,7 @@ var start = {
   init: function(subApps) {
 
     var bar = new ProgressBar('[:bar] :title', {
-      total: subApps.length*2 + 1,
+      total: subApps.length * 2 + 1,
       width: 30
     });
 
@@ -56,7 +55,7 @@ var start = {
           return null;
         });
       })
-      .then(function(){
+      .then(function() {
         bar.tick({
           title: ''
         });

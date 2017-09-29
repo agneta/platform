@@ -55,8 +55,6 @@ module.exports = function(options) {
           app: app
         });
       }
-
-      return Promise.resolve();
     },
     start: function() {
 
