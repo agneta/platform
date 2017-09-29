@@ -25,6 +25,7 @@ module.exports = function(Model, app, options) {
 
   //------------------------------------------------------------------
 
+  require('./helpers/download')(Model, app);
   require('./helpers/fixParams')(Model, app);
   require('./helpers/getMediaPath')(Model, app);
   require('./helpers/images')(Model, app);
@@ -37,7 +38,6 @@ module.exports = function(Model, app, options) {
   require('./helpers/sendFile')(Model, app);
   require('./helpers/checkFolders')(Model, app);
   require('./helpers/uploadData')(Model, app);
-
 
   require('./add')(Model, app);
   //require('./beforeSave')(Model, app);

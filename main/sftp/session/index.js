@@ -38,9 +38,26 @@ module.exports = function(session, app) {
   //------------------------------------------------------------------------------------
   // Send file from Storage
 
-  session.on('readfile', function(path, writable_stream) {
+  session.on('readfile', function(location, writable_stream) {
+    var req = {
+      accessToken: {
+        // For testing only
+        userId: '58579794ccc7d91100d86bd3'
+      }
+    };
 
+    var parsed = path.parse(location);
+    parsed.ext = null;
+    parsed.base = null;
+    location = path.format(parsed);
 
+    app.models.Media_Private.__download(location, req)
+      .then(function(item) {
+        item.stream.pipe(writable_stream);
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
   });
 
   //------------------------------------------------------------------------------------

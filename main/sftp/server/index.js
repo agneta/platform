@@ -1,4 +1,4 @@
-const  SFTPSession = require('./session');
+const SFTPSession = require('./session');
 const EventEmitter = require('events').EventEmitter;
 const debug = require('debug');
 const ssh2 = require('ssh2');
@@ -9,8 +9,7 @@ extend(SFTPServer, EventEmitter);
 
 function SFTPServer(options) {
   // Expose options for the other classes to read.
-  if (!options) options = {
-  };
+  if (!options) options = {};
   if (typeof options === 'string') options = {
     privateKeyFile: options
   }; // Original constructor had just a privateKey string, so this preserves backwards compatibility.
@@ -47,7 +46,7 @@ function SFTPServer(options) {
           return session.on('sftp', function(accept) {
             var sftpStream;
             sftpStream = accept();
-            session = new SFTPSession(sftpStream);
+            session = new SFTPSession(sftpStream,SFTPServer);
             return _this._session_start_callback(session);
           });
         });

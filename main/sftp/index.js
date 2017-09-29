@@ -2,14 +2,15 @@ const SFTPServer = require('./server');
 const path = require('path');
 const services = require('../server/services');
 const auth = require('./auth');
-
+const fs = require('fs-extra');
 module.exports = function(options) {
 
   var server;
   var tmpDir = path.join(process.cwd(), 'tmp', 'sftp');
   var app;
 
-  return services()
+  fs.ensureDir(tmpDir)
+    .then(services)
     .then(function(result) {
       app = result.services.app;
       server = new SFTPServer({

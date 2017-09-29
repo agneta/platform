@@ -44,22 +44,24 @@ module.exports = function(session, app) {
       function sendItem() {
 
         var item = loaded[i];
-        var mode;
+        var mode, permissions;
 
         switch(item.type){
           case 'folder':
             mode = fs.constants.S_IFDIR;
+            permissions = 'drwxrwxr-x';
             break;
           default:
             mode = fs.constants.S_IFREG;
+            permissions = '-rw-rw-r--';
             break;
         }
 
-
         var attrs = {
           mode: mode | 0o644,
-          uid: 1000,
-          gid: 1000,
+          permissions: permissions,
+          uid: 'user',
+          gid: 'group',
           size: item.sizeBytes,
           atime: item.createdAt,
           mtime: item.updatedAt
@@ -70,8 +72,7 @@ module.exports = function(session, app) {
         if(item.ext){
           filename += '.' + item.ext;
         }
-        console.dir(attrs);
-        res.file(filename);
+        res.file(filename,attrs);
         return i++;
       }
 

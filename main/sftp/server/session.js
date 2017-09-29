@@ -7,7 +7,6 @@ const extend = require('./extend');
 const debug = require('debug');
 const slice = [].slice;
 const DirectoryEmitter = require('./dirEmmiter');
-const SFTPServer = require('./index');
 const Responder = require('./responder');
 const EventEmitter = require('events').EventEmitter;
 const Readable = require('stream').Readable;
@@ -22,8 +21,9 @@ SFTPSession.Events = [
   'MKDIR', 'RMDIR'
 ];
 
-function SFTPSession(sftpStream1) {
+function SFTPSession(sftpStream1,server) {
   var event, fn, i, len, ref;
+  this.server = server;
   this.sftpStream = sftpStream1;
   this.max_filehandle = 0;
   this.handles = {};
@@ -135,7 +135,7 @@ SFTPSession.prototype.OPEN = function(reqid, pathname, flags) {
     case 'r':
       // Create a temporary file to hold stream contents.
       var options = {};
-      if (SFTPServer.options.temporaryFileDirectory) options.dir = SFTPServer.options.temporaryFileDirectory;
+      if (this.server.options.temporaryFileDirectory) options.dir = this.server.options.temporaryFileDirectory;
       return tmp.file(options, function(err, tmpPath, fd) {
         if (err) throw err;
         handle = this.fetchhandle();

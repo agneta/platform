@@ -21,14 +21,20 @@ DirectoryEmitter.prototype.request_directory = function(req) {
 };
 
 DirectoryEmitter.prototype.file = function(name, attrs) {
+
   if (typeof attrs === 'undefined') {
     attrs = {};
   }
+
+  var date = `${attrs.mtime.getMonth()} ${attrs.mtime.getDate()} ${attrs.mtime.getFullYear()}`;
+  var longname = `${attrs.permissions} 1 ${attrs.uid} ${attrs.gid} ${attrs.size||0} ${date} ${name}`;
+
   this.stopped = this.sftpStream.name(this.req, {
     filename: name.toString(),
-    longname: name.toString(),
+    longname: longname,
     attrs: attrs
   });
+
   if (!this.stopped && !this.done) {
     return this.emit('dir');
   }
