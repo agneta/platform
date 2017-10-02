@@ -30,7 +30,7 @@ module.exports = function(Model) {
       }
     })
       .then(function(res) {
-        console.log('newFolder:Model.findOne:res',res);
+        //console.log('newFolder:Model.findOne:res',res);
         if (res) {
           return Promise.reject({
             statusCode: 400,

@@ -3,13 +3,13 @@ const _ = require('lodash');
 
 module.exports = function(session, app) {
 
-  session.on('readdir', function(path, res) {
+  session.on('readdir', function(location, res) {
 
     var marker = null;
     var i = 0;
     var loaded = [];
 
-    console.log('readdir', path);
+    location = session.helpers.location(location);
 
     res.on('dir', function() {
 
@@ -25,13 +25,19 @@ module.exports = function(session, app) {
             (marker || _.isNull(marker))
           ) {
 
-            return app.models.Media_Private._list(null, 50, marker)
+            return app.models.Media_Private._list(location, 50, marker)
               .then(function(result) {
+
+                //console.log('sftp:readdir:list:result',result);
 
                 loaded = loaded.concat(result.objects);
                 marker = result.nextMarker;
-                //console.log(result);
-                sendItem();
+
+                if(result.objects.length){
+                  sendItem();
+                }else{
+                  res.end();
+                }
               });
 
           }

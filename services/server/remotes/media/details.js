@@ -39,7 +39,8 @@ module.exports = function(Model,app) {
     return promise.then(function(object) {
       if (!object) {
         return {
-          notfound: 'Not found on database'
+          notfound: 'Not found on database',
+          location: location
         };
       }
 

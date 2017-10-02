@@ -19,7 +19,7 @@ const _ = require('lodash');
 const stream = require('stream');
 const path = require('path');
 
-module.exports = function(Model) {
+module.exports = function(Model, app) {
 
   Model.__sendFile = function(file) {
 

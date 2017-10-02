@@ -37,18 +37,18 @@ module.exports = function(Model, app) {
 
             var percentage = 0;
 
-            if(options.size){
+            if (options.size) {
               percentage = progress.loaded / options.size / 2 * 100;
             }
 
-            _.extend(latestEmit,{
+            _.extend(latestEmit, {
               uploadedSize: progress.loaded,
               fileSize: options.size,
               percentage: percentage,
               location: options.location
             });
 
-            Model.io.emit('file:operation:progress', latestEmit);
+            emit('file:operation:progress', latestEmit);
 
           }
         });
@@ -58,7 +58,7 @@ module.exports = function(Model, app) {
 
         latestEmit.percentage = 50;
         latestEmit.steps.uploaded = true;
-        Model.io.emit('file:operation:progress', latestEmit);
+        emit('file:operation:progress', latestEmit);
 
         return Model.findOne({
           where: {
@@ -70,15 +70,17 @@ module.exports = function(Model, app) {
 
         latestEmit.percentage = 70;
         latestEmit.steps.searchedDatabase = true;
-        Model.io.emit('file:operation:progress', latestEmit);
+        emit('file:operation:progress', latestEmit);
 
         var fileProps = {
           location: options.location,
           isSize: options.isSize,
-          size: options.size,
+          size: latestEmit.uploadedSize,
           type: options.type,
           contentType: options.mimetype
         };
+
+        console.log('media:initOperation:fileProps',fileProps);
 
         if (fileInstance) {
           //console.log('file update', fileProps);
@@ -92,11 +94,18 @@ module.exports = function(Model, app) {
 
         latestEmit.percentage = 100;
         latestEmit.steps.updatedDatabase = true;
-        Model.io.emit('file:operation:complete',latestEmit);
+        emit('file:operation:complete', latestEmit);
 
         options.objectId = dbObject.id;
         return dbObject;
       });
 
   };
+
+  function emit(name, data) {
+    if (!Model.io) {
+      return;
+    }
+    Model.io.emit(name, data);
+  }
 };

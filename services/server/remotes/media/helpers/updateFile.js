@@ -73,6 +73,9 @@ module.exports = function(Model, app) {
 
         file = _file;
 
+        //console.log('media:updateFile:item',file);
+
+
         if (!file) {
           return Promise.reject({
             message: 'File not found'
@@ -81,11 +84,15 @@ module.exports = function(Model, app) {
 
         name = name || file.name;
 
-        if (dir) {
+        if (dir || name) {
           target = urljoin(dir, name);
         }
 
         target = options.target || target;
+
+        //console.log('media:updateFile:dir',dir);
+        //console.log('media:updateFile:target',target);
+
 
         if (!target) {
           return;
@@ -145,7 +152,7 @@ module.exports = function(Model, app) {
               if (options.copy) {
                 return Model.__copyObject(operation);
               }
-
+              //console.log('media:updateFile:moveObject:operation',operation);
               return Model.__moveObject(operation);
             })
             .then(function(object) {
@@ -176,7 +183,7 @@ module.exports = function(Model, app) {
             });
         })
           .then(function(objects) {
-            console.log('On updated', objects);
+            //console.log('On updated', objects);
             var object = _.find(objects, {
               location: target
             });
