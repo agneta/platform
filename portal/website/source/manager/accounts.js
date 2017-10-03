@@ -226,6 +226,28 @@
 
     //------------------------------------------------------------
 
+    $scope.activateAccount = function() {
+
+      var confirm = $mdDialog.confirm()
+        .title('Activate Account')
+        .textContent('Are you sure you want to activate this account?')
+        .ok('Yes')
+        .cancel('Cancel');
+
+      $mdDialog.show(confirm).then(function() {
+        AccountList.model.activateAdmin({
+          id: $scope.viewAccount.id
+        })
+          .$promise
+          .then(function() {
+            reloadAccount();
+          });
+      }, function() {});
+
+    };
+
+    //------------------------------------------------------------
+
     $scope.deactivateAccount = function() {
 
       var confirm = $mdDialog.confirm()

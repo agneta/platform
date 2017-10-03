@@ -1,7 +1,7 @@
 module.exports = function(Model) {
 
 
-  Model.deactivateAdmin = function(id, req) {
+  Model.activateAdmin = function(id, req) {
 
     return Model.__signOutAll(id)
       .then(function() {
@@ -15,20 +15,20 @@ module.exports = function(Model) {
           });
         }
         return account.updateAttributes({
-          deactivated: true
+          deactivated: false
         });
       })
       .then(function() {
 
         Model.activity({
           req: req,
-          action: 'deactivate_account_admin'
+          action: 'activate_account_admin'
         });
 
         return {
           success: {
-            title: 'Deactivation Complete',
-            content: 'The account may be recovered by trying to login again.'
+            title: 'Account Activated',
+            content: 'The account can login again.'
           }
         };
 
@@ -37,8 +37,8 @@ module.exports = function(Model) {
   };
 
   Model.remoteMethod(
-    'deactivateAdmin', {
-      description: 'Deactivate Account with given ID',
+    'activateAdmin', {
+      description: 'Activate Account with given ID',
       accepts: [{
         arg: 'id',
         type: 'string',
@@ -57,7 +57,7 @@ module.exports = function(Model) {
       },
       http: {
         verb: 'post',
-        path: '/deactivate-admin'
+        path: '/activate-admin'
       }
     }
   );
