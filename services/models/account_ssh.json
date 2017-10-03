@@ -12,7 +12,7 @@
       "type": "string",
       "required": true
     },
-    "key":{
+    "data":{
       "type": "string",
       "required": true
     }

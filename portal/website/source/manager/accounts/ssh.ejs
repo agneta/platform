@@ -1,0 +1,33 @@
+<md-whiteframe class="md-whiteframe-1dp roles section ssh" layout="column">
+
+  <div class="header md-padding" layout-align="left center" layout="row">
+    <h3 class="title">SSH Keys</h3>
+    <span flex></span>
+    <md-button ng-click="ssh.add()" class="md-fab md-mini md-white" aria-label="Add">
+      <md-icon md-svg-icon="<%-get_icon('material/add')%>"></md-icon>
+    </md-button>
+  </div>
+
+  <md-divider></md-divider>
+
+  <md-list>
+    <div ng-if="!viewAccount.ssh.keys" class="no-keys" layout="column" layout-align="center center">
+      <md-icon md-svg-src="<%-get_icon('material/vpn-key')%>"></md-icon>
+      <p class="title">No SSH keys</p>
+      <p class="message">With the SSH protocol, you can connect and authenticate to Agneta services without supplying your password at each visit.</p>
+    </div>
+    <div ng-if="viewAccount.ssh.keys" ng-repeat="key in viewAccount.ssh.keys">
+      <md-list-item ng-click="ssh.open(key)" class="role">
+        <p>
+          {{key.title}}
+        </p>
+        <p>
+          {{key.createdAt}}
+        </p>
+        <md-icon ng-click="ssh.remove(key.id)" aria-label="delete" class="md-secondary delete" md-svg-src="<%-get_icon('material/delete')%>"></md-icon>
+      </md-list-item>
+      <md-divider></md-divider>
+    </div>
+  </md-list>
+
+</md-whiteframe>

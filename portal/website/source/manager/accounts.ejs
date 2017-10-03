@@ -7,7 +7,7 @@
 </div>
 
 <div ng-show="viewAccount">
-  <div layout="row" class="boxes">
+  <div layout="column" layout-gt-sm="row" class="boxes">
     <div flex="50" layout="column">
       <%-template('manager/accounts/overview')%>
       <%-template('manager/accounts/activities')%>
@@ -15,6 +15,7 @@
     <div flex="50" layout="column">
       <%-template('manager/accounts/fieldset')%>
       <%-template('manager/accounts/roles')%>
+      <%-template('manager/accounts/ssh')%>
     </div>
   </div>
 
