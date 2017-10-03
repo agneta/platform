@@ -27,7 +27,11 @@ module.exports = function(app) {
     db: _.extend({
       name: 'db',
       connector: 'mongodb'
-    }, db)
+    }, db),
+    transient: {
+      name: 'transient',
+      connector: 'transient'
+    }
   };
 
   return result;

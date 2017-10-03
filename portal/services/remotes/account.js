@@ -34,5 +34,9 @@ module.exports = function(Model, app) {
   require('./account/roles')(Model, app);
   require('./account/total')(Model, app);
   require('./account/update')(Model, app);
+  
+  require('./account/ssh/add')(Model, app);
+  require('./account/ssh/remove')(Model, app);
+  require('./account/ssh/list')(Model, app);
 
 };

@@ -19,7 +19,7 @@ module.exports = function(Model, app) {
 
   Model.roleRemove = function(id, name) {
 
-    return Model.findById(id)
+    return Model.__get(id)
       .then(function(account) {
 
         var RoleModel = getRoleModel(account, name);
@@ -73,10 +73,6 @@ module.exports = function(Model, app) {
   );
 
   function getRoleModel(account, name) {
-
-    if (!account) {
-      throw new Error('Account not found');
-    }
 
     var role = Model.roleOptions[name];
 

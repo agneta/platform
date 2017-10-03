@@ -5,15 +5,9 @@ module.exports = function(Model) {
 
     return Model.__signOutAll(id)
       .then(function() {
-        return Model.findById(id);
+        return Model.__get(id);
       })
       .then(function(account) {
-        if (!account) {
-          return Promise.reject({
-            message: 'Account not found',
-            statusCode: 401
-          });
-        }
         return account.updateAttributes({
           deactivated: false
         });

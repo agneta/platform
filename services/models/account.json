@@ -24,15 +24,15 @@
   },
   "validations": [],
   "relations": {
-    "emails": {
+    "forms": {
       "type": "hasMany",
       "model": "Form",
       "foreign_key": "accountId"
     },
-    "sshKeys": {
+    "ssh": {
       "type": "embedsMany",
       "model": "Account_SSH",
-      "property": "sshKeys",
+      "property": "ssh",
       "options": {
         "validate": true,
         "forceId": false

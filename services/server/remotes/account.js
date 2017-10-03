@@ -56,34 +56,47 @@ module.exports = function(Model, app) {
     var accessToken = ctx.req.accessToken;
     if (accessToken && accessToken.ttl < 1000) {
       console.log(accessToken);
-      app.models.AccessToken.destroyById(accessToken.id,next);
+      app.models.AccessToken.destroyById(accessToken.id, next);
 
     } else {
       next();
     }
   });
 
+  Model.__get = function(id,filter) {
+    return Model.findById(id,filter)
+      .then(function(account) {
+        if (!account) {
+          return Promise.reject({
+            message: 'Account not found',
+            statusCode: 401
+          });
+        }
+        return account;
+      });
+  };
+
   //---------------------------------------------------
 
-  require('./account/includeRoles')(Model,app);
-  require('./account/hasRoles')(Model,app);
-  require('./account/activities')(Model,app);
-  require('./account/activity')(Model,app);
-  require('./account/passwordChange')(Model,app);
-  require('./account/deactivate')(Model,app);
-  require('./account/me')(Model,app);
-  require('./account/recover')(Model,app);
-  require('./account/register')(Model,app);
-  require('./account/requestPassword')(Model,app);
-  require('./account/requestRecovery')(Model,app);
-  require('./account/resendVerification')(Model,app);
-  require('./account/sendVerification')(Model,app);
-  require('./account/signedIn')(Model,app);
-  require('./account/signIn')(Model,app);
-  require('./account/signOut')(Model,app);
-  require('./account/signOutAll')(Model,app);
-  require('./account/roleAdd')(Model,app);
-  require('./account/verifyEmail')(Model,app);
+  require('./account/includeRoles')(Model, app);
+  require('./account/hasRoles')(Model, app);
+  require('./account/activities')(Model, app);
+  require('./account/activity')(Model, app);
+  require('./account/passwordChange')(Model, app);
+  require('./account/deactivate')(Model, app);
+  require('./account/me')(Model, app);
+  require('./account/recover')(Model, app);
+  require('./account/register')(Model, app);
+  require('./account/requestPassword')(Model, app);
+  require('./account/requestRecovery')(Model, app);
+  require('./account/resendVerification')(Model, app);
+  require('./account/sendVerification')(Model, app);
+  require('./account/signedIn')(Model, app);
+  require('./account/signIn')(Model, app);
+  require('./account/signOut')(Model, app);
+  require('./account/signOutAll')(Model, app);
+  require('./account/roleAdd')(Model, app);
+  require('./account/verifyEmail')(Model, app);
 
 
 

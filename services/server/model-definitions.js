@@ -50,8 +50,10 @@ module.exports = function(app, generated) {
       .then(function(files) {
 
         return Promise.map(files, function(file) {
+
           var filePath = path.join(dir, file);
           var data = require(filePath);
+
           if (definitions[file]) {
             _.mergeWith(definitions[file].definition, data, mergeFn);
           } else {

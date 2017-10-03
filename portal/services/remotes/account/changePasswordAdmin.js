@@ -23,16 +23,10 @@ module.exports = function(Model, app) {
     var account;
     var AccessToken = app.models.AccessToken;
 
-    return Model.findById(accountId)
+    return Model.__get(accountId)
       .then(function(_account) {
 
         account = _account;
-
-        if (!account) {
-          var err = new Error('Account not found');
-          err.statusCode = 400;
-          throw err;
-        }
 
         return AccessToken.destroyAll({
           userId: account.id

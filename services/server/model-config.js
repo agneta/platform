@@ -78,7 +78,7 @@ module.exports = function() {
       }
     },
     Account_SSH: {
-      dataSource: false,
+      dataSource: 'transient',
       public: false
     },
     Activity_Item: {

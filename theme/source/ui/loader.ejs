@@ -1,3 +1,6 @@
-<div class="api-loader" ng-show="loading">
+<%
+  var prop = locals.prop || 'loading';
+%>
+<div class="api-loader" ng-show="<%-prop%>">
 <md-progress-circular md-mode="indeterminate" md-diameter="50"></md-progress-circular>
 </div>

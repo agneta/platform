@@ -19,12 +19,8 @@ module.exports = function(Model, app) {
 
   Model.roleGet = function(accountId, roleName) {
 
-    return Model.findById(accountId)
+    return Model.__get(accountId)
       .then(function(account) {
-
-        if (!account) {
-          throw new Error('Account not found');
-        }
 
         var role = Model.roleOptions[roleName];
 

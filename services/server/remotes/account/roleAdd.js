@@ -32,12 +32,8 @@ module.exports = function(Model, app) {
 
   Model._roleAdd = function(id, name, _fields) {
 
-    return Model.findById(id)
+    return Model.__get(id)
       .then(function(account) {
-
-        if (!account) {
-          throw new Error('Account not found');
-        }
 
         var role = Model.roleOptions[name];
 

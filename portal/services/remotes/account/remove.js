@@ -21,12 +21,8 @@ module.exports = function(Model) {
 
   Model.delete = function(id) {
 
-    return Model.findById(id)
+    return Model.__get(id)
       .then(function(account) {
-        if (!account) {
-          throw new Error('Account not found');
-        }
-        console.log(account);
         return account.destroy();
       });
 

@@ -1,0 +1,42 @@
+<md-dialog aria-label="Re-enter your password">
+
+  <md-toolbar>
+
+    <div class="md-toolbar-tools">
+      <h2><%-lng(page.title)%></h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="close()">
+        <md-icon md-svg-src=<%-get_icon("material/close")%> aria-label="Cancel"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-dialog-content style="max-width:500px;max-height:600px; ">
+    <%
+  var form =
+  {
+    name: 'formSSH',
+    onSubmit: 'submit()',
+     fields:[
+    'title',
+    'key'
+    ]
+  };
+  %>
+
+  <%-template('form',{form:form})%>
+  <%-template('ui/loader')%>
+
+  </md-dialog-content>
+
+  <md-dialog-actions layout="row" md-whiteframe="2">
+    <span flex> </span>
+    <md-button  ng-click="close()">
+      <%-lng('general.cancel')%>
+    </md-button>
+    <md-button ng-click="submit()" ng-disabled="formSSH.$invalid" md-autofocus class="md-raised md-primary">
+      <%-lng('general.add')%>
+    </md-button>
+  </md-dialog-actions>
+
+</md-dialog>

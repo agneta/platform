@@ -24,16 +24,10 @@ module.exports = function(Model, app) {
 
     if (req.accessToken.roles.administrator) {
 
-      return Model.findById(id, {
+      return Model.__get(id, {
         include: Model.rolesInclude
       })
         .then(function(account) {
-          if (!account) {
-            return Promise.reject({
-              statusCode: 401,
-              message: 'Account not found'
-            });
-          }
 
           account = account.__data;
 

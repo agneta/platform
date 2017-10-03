@@ -12,7 +12,7 @@
       "type": "string",
       "required": true
     },
-    "data":{
+    "content":{
       "type": "string",
       "required": true
     }

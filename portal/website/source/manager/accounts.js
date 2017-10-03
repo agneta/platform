@@ -24,7 +24,7 @@
     AccountList.useScope($scope);
 
     function reloadAccount() {
-      if(!$scope.viewAccount){
+      if (!$scope.viewAccount) {
         return;
       }
       getAccount($scope.viewAccount.id);
@@ -56,8 +56,10 @@
               $scope.activities = result.activities;
             });
 
+          $scope.ssh.load();
+
         })
-        .finally(function(){
+        .finally(function() {
           $rootScope.loadingMain = false;
         });
     }
@@ -267,6 +269,77 @@
       }, function() {});
 
     };
+
+    //------------------------------------------------------------
+    // SSH Keys
+
+    (function() {
+
+
+      var ssh = {};
+      $scope.ssh = ssh;
+
+      ssh.load = function() {
+
+        ssh.loading = true;
+
+        AccountList.model.sshList({
+          accountId: $scope.viewAccount.id
+        })
+          .$promise
+          .then(function(result) {
+            ssh.keys = result.keys;
+          })
+          .finally(function() {
+            ssh.loading = false;
+          });
+
+      };
+
+      ssh.open = function() {};
+
+      ssh.add = function(options) {
+
+        ssh.loading = true;
+
+        AccountList.model.sshAdd({
+          id: $scope.viewAccount.id,
+          title: options.title,
+          data: options.data
+        })
+          .$promise
+          .then(function(result) {
+            console.log(result);
+          })
+          .finally(function() {
+            ssh.load();
+            ssh.loading = false;
+          });
+
+      };
+
+      ssh.remove = function(key) {
+
+        ssh.loading = true;
+
+        AccountList.model.sshRemove({
+          id: $scope.viewAccount.id,
+          keyId: key.id
+        })
+          .$promise
+          .then(function(result) {
+            console.log(result);
+          })
+          .finally(function() {
+            ssh.load();
+            ssh.loading = false;
+          });
+
+      };
+
+    })();
+
+
   });
 
 })();
