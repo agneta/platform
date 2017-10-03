@@ -1,0 +1,23 @@
+{
+  "name": "Account_SSH",
+  "base": "Model",
+  "idInjection": true,
+  "properties": {
+    "id": {
+      "type": "string",
+      "id": true,
+      "defaultFn": "uuid"
+    },
+    "title":{
+      "type": "string",
+      "required": true
+    },
+    "key":{
+      "type": "string",
+      "required": true
+    }
+  },
+  "mixins": {
+    "TimeStamp": true
+  }
+}

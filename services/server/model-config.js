@@ -77,6 +77,10 @@ module.exports = function() {
         emailVerificationRequired: true
       }
     },
+    Account_SSH: {
+      dataSource: false,
+      public: false
+    },
     Activity_Item: {
       dataSource: 'db',
       public: true
