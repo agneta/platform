@@ -48,13 +48,18 @@ module.exports = function(options) {
   return {
     locals: options,
     init: function() {
+
       require('../lib/locals')(app, options);
+
       if (!options.disableSocket) {
         require('../lib/socket')({
           worker: options.worker,
           app: app
         });
       }
+
+      return Promise.resolve();
+
     },
     start: function() {
 

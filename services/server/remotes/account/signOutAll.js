@@ -17,12 +17,18 @@
 
 module.exports = function(Model, app) {
 
+  Model.__signOutAll = function(userId) {
+
+    return app.models.AccessToken.destroyAll({
+      userId: userId
+    });
+
+  };
+
   Model.signOutAll = function(req) {
 
-    var AccessToken = app.models.AccessToken;
-    return AccessToken.destroyAll({
-      userId: req.accessToken.userId
-    })
+
+    return Model.__signOutAll(req.accessToken.userId)
       .then(function() {
 
         Model.activity({

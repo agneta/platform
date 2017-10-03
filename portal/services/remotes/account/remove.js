@@ -17,6 +17,8 @@
 
 module.exports = function(Model) {
 
+  // Should see how this can be an option from the portal. Perhaps for unverified accounts?
+
   Model.delete = function(id) {
 
     return Model.findById(id)
@@ -29,25 +31,5 @@ module.exports = function(Model) {
       });
 
   };
-
-  Model.remoteMethod(
-    'delete', {
-      description: 'Delete account by id',
-      accepts: [{
-        arg: 'id',
-        type: 'string',
-        required: true
-      }],
-      returns: {
-        arg: 'result',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'post',
-        path: '/delete'
-      }
-    }
-  );
 
 };

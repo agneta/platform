@@ -18,6 +18,7 @@
 module.exports = function(Model, app) {
 
   require('./account/activitiesAdmin')(Model, app);
+  require('./account/deactivateAdmin')(Model, app);
   require('./account/search')(Model, app);
   require('./account/filter')(Model, app);
   require('./account/get')(Model, app);

@@ -24,16 +24,21 @@
     AccountList.useScope($scope);
 
     function reloadAccount() {
-
+      if(!$scope.viewAccount){
+        return;
+      }
       getAccount($scope.viewAccount.id);
 
     }
 
+    $scope.reloadAccount = reloadAccount;
+
     function getAccount(id) {
 
       $location.search('account', id);
+      $rootScope.loadingMain = true;
 
-      AccountList.model.get({
+      return AccountList.model.get({
         id: id
       })
         .$promise
@@ -51,6 +56,9 @@
               $scope.activities = result.activities;
             });
 
+        })
+        .finally(function(){
+          $rootScope.loadingMain = false;
         });
     }
 
@@ -218,22 +226,21 @@
 
     //------------------------------------------------------------
 
-    $scope.removeAccount = function() {
+    $scope.deactivateAccount = function() {
 
       var confirm = $mdDialog.confirm()
-        .title('Account Removal')
-        .textContent('Are you sure you want to remove this account?')
+        .title('Deactivate Account')
+        .textContent('Are you sure you want to deactivate this account?')
         .ok('Yes')
         .cancel('Cancel');
 
       $mdDialog.show(confirm).then(function() {
-        AccountList.model.delete({
+        AccountList.model.deactivateAdmin({
           id: $scope.viewAccount.id
         })
           .$promise
           .then(function() {
-            AccountList.loadAccounts();
-            $scope.viewAccount = null;
+            reloadAccount();
           });
       }, function() {});
 

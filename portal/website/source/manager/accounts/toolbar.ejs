@@ -2,6 +2,9 @@
   <div class="md-toolbar-tools">
     <%-template('ui/live-toggle')%>
     <span flex></span>
+    <md-button ng-click="reloadAccount()" class="md-primary">
+      Referesh
+    </md-button>
     <md-button ng-click="createAccount()" class="md-fab md-mini md-white" aria-label="Add">
       <md-icon md-svg-icon="<%-get_icon('material/add')%>"></md-icon>
     </md-button>
