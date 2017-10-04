@@ -71,7 +71,7 @@ module.exports = function(app) {
         return next(err);
       }
 
-      if (!token) {
+      if (!token || !app.roles) {
         return next();
       }
 

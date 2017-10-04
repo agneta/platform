@@ -1,4 +1,4 @@
-module.exports = function(Model) {
+module.exports = function(Model,app) {
 
 
   Model.sshAdd = function(accountId, title, content) {
@@ -6,9 +6,10 @@ module.exports = function(Model) {
     return Model.__get(accountId)
       .then(function(account) {
 
-        return account.sshKeys.add({
+        return account.ssh.create({
           title: title,
-          content: content
+          content: content,
+          createdAt: new Date()
         });
 
       })
@@ -21,10 +22,20 @@ module.exports = function(Model) {
 
   };
 
+  var fields = app.models.Form.scanFields({
+    form: 'ssh-add-key'
+  });
+
+  Model.beforeRemote('sshAdd',  app.models.Form.checkProperties(fields));
+
   Model.remoteMethod(
     'sshAdd', {
       description: 'Activate Account with given ID',
       accepts: [{
+        arg: 'accountId',
+        type: 'string',
+        required: true
+      },{
         arg: 'title',
         type: 'string',
         required: true
@@ -50,5 +61,6 @@ module.exports = function(Model) {
       }
     }
   );
+
 
 };

@@ -1,0 +1,3 @@
+message:
+  en: Must be at least <%-value%> characters long.
+  gr: Πρέπει να έχει μήκος τουλάχιστον <%-value%> χαρακτήρες.

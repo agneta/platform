@@ -1,0 +1,3 @@
+message:
+  en: Must not be more than <%-value%>.
+  gr: Δεν πρέπει να είναι περισσότερο από <%-value%>.

@@ -21,7 +21,6 @@ module.exports = function(Model, app) {
 
   Model.newMethod = function(formMethod) {
 
-    var formFields = {};
     var form = formMethod.data;
 
     var accepts = [{
@@ -32,30 +31,9 @@ module.exports = function(Model, app) {
       }
     }];
 
-    function scanFields(data) {
-
-      if (_.isString(data)) {
-        data = Model.clientHelpers.get_data(data);
-      }
-
-      for (var field of data.fields) {
-
-        field = Model.clientHelpers.form_field(field, formMethod);
-        if (field.fields) {
-          scanFields(field);
-          continue;
-        }
-
-        if (!field.name) {
-          continue;
-        }
-
-        if (field.static) {
-          continue;
-        }
-
-        formFields[field.name] = field;
-
+    var formFields = Model.scanFields({
+      form: formMethod,
+      onField: function(field) {
         var type = field.valueType || 'string';
 
         switch (field.type) {
@@ -70,9 +48,7 @@ module.exports = function(Model, app) {
           required: field.validators && field.validators.required
         });
       }
-    }
-
-    scanFields(form);
+    });
 
     function method(args) {
 

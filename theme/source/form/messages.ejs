@@ -1,7 +1,7 @@
 <div class="error-messages" ng-messages="<%-field.prop%>.$error" <%-locals.attr%> role="alert">
 <%
 
-var messages = get_data('form/messages');
+var dataValidators = get_data('form/validators');
 
 for(var name in field.validators){
 
@@ -19,7 +19,7 @@ for(var name in field.validators){
     value: value
   };
 
-  text = lng(messages[message]);
+  text = lng(dataValidators[message].message);
   %>
 
   <div ng-message="<%-name%>" class="error">

@@ -101,7 +101,7 @@ module.exports = function(locals) {
   project.extend.helper.register('formValidators', function(field) {
 
     var validators = '';
-    var messages = this.get_data('form/messages');
+    var validatorData = this.get_data('form/validators');
 
     for (var name in field.validators) {
 
@@ -114,7 +114,7 @@ module.exports = function(locals) {
       switch (name) {
         case 'pattern':
           name = 'ng-pattern';
-          value = '/' + messages[value].pattern + '/';
+          value = '/' + validatorData[value].pattern + '/';
           break;
         case 'compareTo':
           name = 'compare-to';

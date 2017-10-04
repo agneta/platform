@@ -12,19 +12,8 @@
   </md-toolbar>
 
   <md-dialog-content style="max-width:500px;max-height:600px; ">
-    <%
-  var form =
-  {
-    name: 'formSSH',
-    onSubmit: 'submit()',
-     fields:[
-    'title',
-    'key'
-    ]
-  };
-  %>
 
-  <%-template('form',{form:form})%>
+  <%-template('form',{form:'ssh-add-key'})%>
   <%-template('ui/loader')%>
 
   </md-dialog-content>

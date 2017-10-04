@@ -1,0 +1,4 @@
+message:
+  en: Should contain only letters.
+  gr: Θα πρέπει να περιέχει μόνο γράμματα.
+pattern: "^[A-ZA-zΑ-Ωα-ωίϊΐόάέύϋΰήώ]*$"

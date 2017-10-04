@@ -20,7 +20,7 @@ var Promise = require('bluebird');
 
 module.exports = function(Model, app) {
 
-  var fieldMessages = Model.clientHelpers.get_data('form/messages');
+  var dataValidators = Model.clientHelpers.get_data('form/validators');
 
   var errorMessages = {
     validation: {
@@ -100,8 +100,7 @@ module.exports = function(Model, app) {
             //
 
             return Promise.map(_.keys(field.validators), function(name) {
-
-              var message = fieldMessages[name];
+              var message = _.get(dataValidators,`${name}.message`);
               var value = field.validators[name];
 
               function error() {
@@ -121,8 +120,9 @@ module.exports = function(Model, app) {
               switch (name) {
 
                 case 'pattern':
-                  message = fieldMessages[value];
-                  var match = param.match(message.pattern);
+                  var validator = dataValidators[value];
+                  message = validator.message;
+                  var match = param.match(validator.pattern);
                   match = match !== null && param == match[0];
 
                   if (!match) {

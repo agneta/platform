@@ -1,0 +1,3 @@
+message:
+  en: Must select at least <%-value%>.
+  gr: Πρέπει να επιλέξετε τουλάχιστον <%-value%>.

@@ -288,7 +288,8 @@
         })
           .$promise
           .then(function(result) {
-            ssh.keys = result.keys;
+            console.log(result);
+            $scope.ssh.keys = result.keys;
           })
           .finally(function() {
             ssh.loading = false;
@@ -298,23 +299,33 @@
 
       ssh.open = function() {};
 
-      ssh.add = function(options) {
+      ssh.add = function() {
 
-        ssh.loading = true;
+        $mdDialog.open({
+          partial: 'ssh-add-key',
+          data: {
+            onSubmit: function(form) {
 
-        AccountList.model.sshAdd({
-          id: $scope.viewAccount.id,
-          title: options.title,
-          data: options.data
-        })
-          .$promise
-          .then(function(result) {
-            console.log(result);
-          })
-          .finally(function() {
-            ssh.load();
-            ssh.loading = false;
-          });
+              ssh.loading = true;
+
+              AccountList.model.sshAdd({
+                accountId: $scope.viewAccount.id,
+                title: form.title,
+                content: form.content
+              })
+                .$promise
+                .then(function(result) {
+                  console.log(result);
+                })
+                .finally(function() {
+                  ssh.load();
+                  ssh.loading = false;
+                });
+
+            }
+          }
+        });
+
 
       };
 

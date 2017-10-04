@@ -10,16 +10,8 @@
 
     $scope.submit = function() {
 
-      var model = data.model;
-      var key = $scope.formSubmitFields;
-
-      model.sshAdd({
-        title: key.title,
-        data: key.data
-      })
-        .$promise
-        .then(data.onSuccess)
-        .finally(data.onFinally);
+      data.onSubmit($scope.formSSHFields);
+      $scope.close();
 
     };
 

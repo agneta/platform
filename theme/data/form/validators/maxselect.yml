@@ -1,0 +1,3 @@
+message:
+  en: Selections must not be more than <%-value%>
+  gr: Οι επιλογές δεν πρέπει να είναι περισσότερο από <%-value%>.

@@ -1,0 +1,4 @@
+message:
+  en: Does not look like an e-mail address.
+  gr: Δεν μοιάζει με διεύθυνση e-mail.
+pattern: "^.+@.+\\..+$"

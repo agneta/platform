@@ -6,6 +6,10 @@
   <md-button class="md-raised" ng-click="activateAccount()">Activate</md-button>
 </div>
 
+<div layout="row" class="md-padding">
+  <span>ID: {{viewAccount.id}}</span>
+</div>
+
 <div ng-show="viewAccount">
   <div layout="column" layout-gt-sm="row" class="boxes">
     <div flex="50" layout="column">

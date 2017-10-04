@@ -35,6 +35,7 @@ module.exports = function(Model, app) {
   Model.formServices = formServices;
   Model.clientHelpers = clientHelpers;
 
+  require('./form/scanFields')(Model, app);
   require('./form/checkProperties')(Model, app);
   require('./form/newMethod')(Model, app);
   require('./form/generate')(Model, app);

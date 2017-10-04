@@ -1,0 +1,15 @@
+name: 'formSSH'
+onSubmit: 'submit()'
+fields:
+  - 'title'
+  -
+    title:
+      en: Public Key
+    group: text
+    name: 'content'
+    icon: material/short-text
+    rows: 3
+    validators:
+      pattern: rsa_public
+      maxlength: 1000
+      required: true

@@ -14,14 +14,14 @@
 
     <%-template('ui/loader',{prop:'ssh.loading'})%>
 
-    <div ng-if="!viewAccount.ssh.keys" class="no-keys" layout="column" layout-align="center center">
+    <div ng-if="!ssh.keys" class="no-keys" layout="column" layout-align="center center">
       <md-icon md-svg-src="<%-get_icon('material/vpn-key')%>"></md-icon>
       <p class="title">No SSH keys</p>
       <p class="message">With the SSH protocol, you can connect and authenticate to Agneta services without supplying your password at each visit.</p>
     </div>
 
-    <md-list>
-      <div ng-if="viewAccount.ssh.keys" ng-repeat="key in viewAccount.ssh.keys">
+    <md-list ng-if="ssh.keys">
+      <div ng-repeat="key in ssh.keys">
         <md-list-item ng-click="ssh.open(key)" class="role">
           <p>
             {{key.title}}
