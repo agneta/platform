@@ -111,13 +111,13 @@ module.exports = function(app, options) {
         }
       }
     };
-  }
 
-  switch (env) {
-    case 'production':
-      buckets.media.host = buckets.media.production;
-      buckets.lib.host = buckets.lib.production;
-      break;
+    switch (env) {
+      case 'production':
+        buckets.media.host = buckets.media.production;
+        buckets.lib.host = buckets.lib.production;
+        break;
+    }
   }
 
   storageConfig.buckets = buckets;
