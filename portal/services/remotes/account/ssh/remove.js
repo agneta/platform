@@ -5,7 +5,7 @@ module.exports = function(Model) {
 
     return Model.__get(accountId)
       .then(function(account) {
-        return account.sshKeys.findById(keyId);
+        return account.ssh.findById(keyId);
       })
       .then(function(key) {
         if(!key){

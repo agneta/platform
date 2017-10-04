@@ -14,13 +14,13 @@
 
     <%-template('ui/loader',{prop:'ssh.loading'})%>
 
-    <div ng-if="!ssh.keys" class="no-keys" layout="column" layout-align="center center">
+    <div ng-if="!ssh.keys.length" class="no-keys" layout="column" layout-align="center center">
       <md-icon md-svg-src="<%-get_icon('material/vpn-key')%>"></md-icon>
       <p class="title">No SSH keys</p>
       <p class="message">With the SSH protocol, you can connect and authenticate to Agneta services without supplying your password at each visit.</p>
     </div>
 
-    <md-list ng-if="ssh.keys">
+    <md-list ng-if="ssh.keys.length">
       <div ng-repeat="key in ssh.keys">
         <md-list-item ng-click="ssh.open(key)" class="role">
           <p>
@@ -29,7 +29,7 @@
           <p>
             {{key.createdAt}}
           </p>
-          <md-icon ng-click="ssh.remove(key.id)" aria-label="delete" class="md-secondary delete" md-svg-src="<%-get_icon('material/delete')%>"></md-icon>
+          <md-icon ng-click="ssh.remove(key)" aria-label="delete" class="md-secondary delete" md-svg-src="<%-get_icon('material/delete')%>"></md-icon>
         </md-list-item>
         <md-divider></md-divider>
       </div>

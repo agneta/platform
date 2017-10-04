@@ -314,9 +314,6 @@
                 content: form.content
               })
                 .$promise
-                .then(function(result) {
-                  console.log(result);
-                })
                 .finally(function() {
                   ssh.load();
                   ssh.loading = false;
@@ -331,21 +328,27 @@
 
       ssh.remove = function(key) {
 
-        ssh.loading = true;
+        var confirm = $mdDialog.confirm()
+          .title('Remove Key')
+          .textContent('Are you sure you want to remove this ssh key?')
+          .ok('Yes')
+          .cancel('Cancel');
 
-        AccountList.model.sshRemove({
-          id: $scope.viewAccount.id,
-          keyId: key.id
-        })
-          .$promise
-          .then(function(result) {
-            console.log(result);
+        $mdDialog.show(confirm).then(function() {
+
+          ssh.loading = true;
+
+          AccountList.model.sshRemove({
+            accountId: $scope.viewAccount.id,
+            keyId: key.id
           })
-          .finally(function() {
-            ssh.load();
-            ssh.loading = false;
-          });
+            .$promise
+            .finally(function() {
+              ssh.load();
+              ssh.loading = false;
+            });
 
+        });
       };
 
     })();

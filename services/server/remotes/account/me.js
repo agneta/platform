@@ -28,7 +28,14 @@ module.exports = function(Model) {
         });
     }
     return Model.findById(req.accessToken.userId, {
-      include: Model.includeRoles
+      include: Model.includeRoles,
+      fields:{
+        id: true,
+        name: true,
+        avatar: true,
+        username: true,
+        email: true
+      }
     });
 
   };
