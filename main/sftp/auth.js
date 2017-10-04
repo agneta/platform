@@ -4,9 +4,10 @@ const utils = ssh2.utils;
 const crypto = require('crypto');
 const buffersEqual = require('buffer-equal-constant-time');
 const _ = require('lodash');
-const fs = require('fs');
-const path = require('path');
+
 module.exports = function(server, app) {
+
+  var config = app.get('sftp');
 
   server.on('connect', function(context) {
 
@@ -40,9 +41,6 @@ module.exports = function(server, app) {
               return Promise.reject('Key not found for user');
             }
 
-            key.content = fs.readFileSync(
-              path.join(process.cwd(), 'tmp', 'rsa_test.pub')
-            );
             var pubKey = utils.genPublicKey(
               utils.parseKey(key.content)
             );
@@ -55,8 +53,17 @@ module.exports = function(server, app) {
               if (ctx.signature) {
                 var verifier = crypto.createVerify(ctx.sigAlgo);
                 verifier.update(ctx.blob);
+
                 if (verifier.verify(pubKey.publicOrig, ctx.signature)) {
+
+                  var acl = _.find(config.acl,{email:context.username});
+
+                  if(!acl || !acl.allow){
+                    return Promise.reject('User not allowed');
+                  }
+
                   context.accept(function(session) {
+                    session.acl = acl;
                     sessionHandler(session, app);
                   });
                   return;
@@ -71,7 +78,7 @@ module.exports = function(server, app) {
 
             } else {
               // console.log('Keys do not match');
-              return Promise.reject('publickey');
+              return context.reject(['publickey']);
             }
 
           })

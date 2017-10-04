@@ -7,7 +7,7 @@ module.exports = function(session,app) {
 
       var parsed = path.parse(location);
 
-      location = path.join(parsed.dir, parsed.name);
+      location = path.join(session.acl.root,parsed.dir, parsed.name);
       location = path.normalize(location);
       location = app.helpers.normalizePath(location);
 

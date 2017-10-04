@@ -94,8 +94,13 @@ module.exports = function(app) {
       mediaPath = path.normalize(mediaPath);
 
       if (mediaPath[0] == '/') {
-        return mediaPath.substring(1);
+        mediaPath =  mediaPath.substring(1);
       }
+
+      if(mediaPath.substr(-1) === '/') {
+        mediaPath =  mediaPath.substr(0, mediaPath.length - 1);
+      }
+
       return mediaPath;
     },
     dropCollection: function(names) {

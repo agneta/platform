@@ -10,7 +10,6 @@ module.exports = function(session, app) {
     var loaded = [];
 
     location = session.helpers.location(location);
-
     res.on('dir', function() {
 
       Promise.resolve()
@@ -25,10 +24,12 @@ module.exports = function(session, app) {
             (marker || _.isNull(marker))
           ) {
 
+            console.log(location,marker);
+
             return app.models.Media_Private._list(location, 50, marker)
               .then(function(result) {
 
-                //console.log('sftp:readdir:list:result',result);
+                console.log('sftp:readdir:list:result',result);
 
                 loaded = loaded.concat(result.objects);
                 marker = result.nextMarker;
@@ -86,7 +87,7 @@ module.exports = function(session, app) {
     });
 
     res.on('end', function() {
-      return console.warn('Now I would normally do, like, cleanup stuff, for this directory listing');
+      //return console.warn('Now I would normally do, like, cleanup stuff, for this directory listing');
     });
 
   });

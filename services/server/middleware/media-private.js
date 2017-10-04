@@ -33,7 +33,7 @@ module.exports = function(app) {
 
     remotePath = remotePath.substring(basePath.length);
 
-    return app.models.Media_Private._download(remotePath,req)
+    return app.models.Media_Private.__download(remotePath,req)
       .then(function(item) {
 
         var ext = mime.extension(item.contentType);

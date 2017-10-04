@@ -18,9 +18,9 @@ module.exports = function(session, app) {
     var type = app.helpers.mediaType(contentType);
     location = session.helpers.location(location);
 
-    console.log('writefile:location',location);
-    console.log('writefile:type',type);
-    console.log('writefile:contentType',contentType);
+    //console.log('writefile:location',location);
+    //console.log('writefile:type',type);
+    //console.log('writefile:contentType',contentType);
 
     app.models.Media_Private.__sendFile({
       location: location,
