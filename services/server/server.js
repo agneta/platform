@@ -29,7 +29,7 @@ module.exports = function(options) {
 
   //-------------------------------------------------------
 
-  require('../lib/secrets')(app);
+  require('../lib/secrets')(app,options);
   require('../lib/moment');
   require('../lib/helpers')(app);
   require('../lib/log')(app);
