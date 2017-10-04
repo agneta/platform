@@ -18,7 +18,6 @@ var path = require('path');
 var ejs = require('ejs');
 var Promise = require('bluebird');
 var _ = require('lodash');
-var EmailTemplate = require('email-templates').EmailTemplate;
 var yaml = require('js-yaml');
 var fs = require('fs');
 var htmlToText = require('html-to-text');
@@ -106,23 +105,20 @@ module.exports = function(app) {
       }
 
       var templateData = yaml.safeLoad(fs.readFileSync(path.join(pathTemplate, 'data.yml'), 'utf8'));
-      var renderer = new EmailTemplate(pathTemplate);
+      var renderer = ejs.compile(pathTemplate);
 
       templates[templateDir] = {
         renderer: renderer,
         data: templateData,
         render: function(data) {
 
-          return new Promise(function(resolve, reject) {
-            renderer.render(
-              _.extend({}, dataMain, templateData, data, helpers),
-              function(err, result) {
-                if (err) {
-                  return reject(err);
-                }
-                resolve(result);
-              });
-          });
+          var html = renderer(_.extend({}, dataMain, templateData, data, helpers));
+
+          return {
+            html: html,
+            text: email.text(html)
+          };
+
         }
       };
 

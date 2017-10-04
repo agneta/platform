@@ -23,28 +23,52 @@ module.exports = fs.pathExists(certDir)
       return;
     }
 
-    var files = [
-      'server-key.pem',
-      'server-crt.pem',
-      'ca-crt.pem'
-    ];
+    var protocolOptions = {
+      key: process.env.SERVER_KEY,
+      cert: process.env.SERVER_CERT,
+      ca: process.env.CA_CERT,
+      requestCert: true,
+      rejectUnauthorized: false
+    };
+
+    delete process.env.SERVER_KEY;
+    delete process.env.SERVER_CERT;
+    delete process.env.CA_CERT;
+
+    var files = [];
+
+    if (!protocolOptions.key) {
+      files.push({
+        name: 'server-key.pem',
+        key: 'key'
+      });
+    }
+
+    if (!protocolOptions.cert) {
+      files.push({
+        name: 'server-crt.pem',
+        key: 'cert'
+      });
+    }
+
+    if (!protocolOptions.ca) {
+      files.push({
+        name: 'ca-crt.pem',
+        key: 'ca'
+      });
+    }
 
     return Promise.mapSeries(files, function(file) {
       return fs.readFile(
-        path.join(certDir, file)
-      );
+        path.join(certDir, file.name)
+      ).then(function(content) {
+        protocolOptions[file.key] = content;
+      });
     })
-      .then(function(certs) {
+      .then(function() {
 
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
-        options.protocolOptions = {
-          key: certs[0],
-          cert: certs[1],
-          ca: certs[2],
-          requestCert: true,
-          rejectUnauthorized: false
-        };
+        options.protocolOptions = protocolOptions;
 
         protocol = 'https';
 
@@ -86,6 +110,6 @@ module.exports = fs.pathExists(certDir)
     server(options);
 
   })
-  .catch(function(err){
+  .catch(function(err) {
     console.error(err);
   });
