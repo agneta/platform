@@ -81,7 +81,7 @@ module.exports = fs.pathExists(certDir)
 
     process.env.HOST_NAME = process.env.HOST_NAME || 'localhost';
     process.env.PORT = process.env.PORT || port;
-
+    process.env.MODE = process.env.MODE || 'portal';
 
     process.env.ENDPOINT = process.env.ENDPOINT ||
       url.format({

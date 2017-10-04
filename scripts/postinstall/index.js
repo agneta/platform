@@ -20,7 +20,9 @@ const express = require('express');
 (function() {
 
   switch (process.env.MODE) {
-    case 'services':
+    case 'portal':
+      break;
+    default:
       return;
   }
 

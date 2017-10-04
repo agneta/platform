@@ -40,10 +40,12 @@ module.exports.run = function(worker) {
       app = loopback();
       server = require('../server/services');
       break;
-    default:
+    case 'portal':
       app = express();
       server = require('../server/portal');
       break;
+    default:
+      throw new Error('Unrecognized process mode:',process.env.MODE);
   }
 
   //--------------------------------
