@@ -3,19 +3,14 @@ const sessionHandler = require('./session');
 const utils = ssh2.utils;
 const crypto = require('crypto');
 const buffersEqual = require('buffer-equal-constant-time');
+const _ = require('lodash');
+const fs = require('fs');
 const path = require('path');
-const fs = require('fs-extra');
-
-module.exports = function(server,app) {
-
-  var pubKey = fs.readFileSync(
-    path.join(process.cwd(), 'tmp', 'rsa_test.pub')
-  );
-  pubKey = utils.genPublicKey(utils.parseKey(pubKey));
+module.exports = function(server, app) {
 
   server.on('connect', function(context) {
 
-    //console.log('user attempting to connect', context.ctx, info);
+    //console.log('sftp:auth:context', context);
     //console.log('method', context.method);
 
     var ctx = context.ctx;
@@ -24,34 +19,66 @@ module.exports = function(server,app) {
 
       case 'publickey':
 
-        if (
-          ctx.key.algo === pubKey.fulltype &&
-          buffersEqual(ctx.key.data, pubKey.public)
-        ) {
+        return app.models.Account.findOne({
+          fields: {
+            id: true,
+            _ssh: true
+          },
+          where: {
+            email: context.username
+          }
+        })
+          .then(function(account) {
 
-          if (ctx.signature) {
-            var verifier = crypto.createVerify(ctx.sigAlgo);
-            verifier.update(ctx.blob);
-            if (verifier.verify(pubKey.publicOrig, ctx.signature)) {
-              context.accept(function(session) {
-                sessionHandler(session,app);
-              });
-              return;
-            } else {
-              console.log('Key not verified');
+            if (!account) {
+              return Promise.reject('Account not found');
+            }
+            var key = _.find(account._ssh,{title:'sftp'});
+            //console.log(key);
+
+            if (!key) {
+              return Promise.reject('Key not found for user');
             }
 
-          } else {
-            console.log('No signature');
-            context.accept();
-            return;
-          }
+            key.content = fs.readFileSync(
+              path.join(process.cwd(), 'tmp', 'rsa_test.pub')
+            );
+            var pubKey = utils.genPublicKey(
+              utils.parseKey(key.content)
+            );
 
-        } else {
-          console.log('Keys do not match');
-        }
+            if (
+              ctx.key.algo === pubKey.fulltype &&
+              buffersEqual(ctx.key.data, pubKey.public)
+            ) {
 
-        break;
+              if (ctx.signature) {
+                var verifier = crypto.createVerify(ctx.sigAlgo);
+                verifier.update(ctx.blob);
+                if (verifier.verify(pubKey.publicOrig, ctx.signature)) {
+                  context.accept(function(session) {
+                    sessionHandler(session, app);
+                  });
+                  return;
+                } else {
+                  return Promise.reject('Key not verified');
+                }
+
+              } else {
+                //console.log('No signature');
+                return context.accept();
+              }
+
+            } else {
+              // console.log('Keys do not match');
+              return Promise.reject('publickey');
+            }
+
+          })
+          .catch(function(err) {
+            console.log(err);
+            context.reject([err]);
+          });
     }
 
     context.reject(['publickey']);
