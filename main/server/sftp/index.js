@@ -1,6 +1,6 @@
 const SFTPServer = require('./server');
 const path = require('path');
-const services = require('../server/services');
+const services = require('../services');
 const auth = require('./auth');
 const fs = require('fs-extra');
 module.exports = function(options) {

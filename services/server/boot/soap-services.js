@@ -95,12 +95,12 @@ module.exports = function(app) {
           }
 
         }
-        
+
         //------------------------------------------------------------------------
 
         var methodName = client.wsdl.definitions.$name;
         var method = client[methodName];
-        var methodPromise = client[methodName + 'Async'];
+        var methodPromise = Promise.promisify(method);
         var responses = {};
 
         //------------------------------------------------------------------------
@@ -196,14 +196,10 @@ module.exports = function(app) {
     if (config.security.roleCertificate){
 
       requestOptions.agentOptions = {
-        crt: fs.readFileSync(
-          path.join(process.cwd(),'..','certificates/wsdl/supplier.crt')
+        pfx: fs.readFileSync(
+          path.join(process.cwd(),'..','certificates/wsdl/supplier.pfx')
         ),
-        key: fs.readFileSync(
-          path.join(process.cwd(),'..','certificates/wsdl/supplier.key')
-        ),
-        passphrase: '123!@#',
-        securityOptions: 'SSL_OP_NO_SSLv3'
+        passphrase: '123!@#'
       };
 
       //var req = requestOptions.methodOptions.req;

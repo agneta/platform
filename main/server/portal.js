@@ -46,25 +46,6 @@ module.exports = function(options) {
   // Ensure secure connection when not in development mode
 
   app.set('trust proxy', 1);
-
-  if (app.get('env') != 'development') {
-
-    app.use(function(req, res, next) {
-      if (!req.secure) {
-        var secureUrl = 'https://' + req.headers.host + req.url;
-        res.writeHead(301, {
-          'Location': secureUrl
-        });
-        res.end();
-        return;
-      }
-      next();
-    });
-
-  }
-
-  //-----------------------------------------------------
-
   app.use('/' + appRoots.local, staticMiddleware('local/public'));
   app.use('/', express.static(
     path.join(projectPaths.portalProject)

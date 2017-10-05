@@ -38,11 +38,11 @@ module.exports.run = function(worker) {
   switch (process.env.MODE) {
     case 'services':
       app = loopback();
-      server = require('../server/services');
+      server = require('../services');
       break;
     case 'portal':
       app = express();
-      server = require('../server/portal');
+      server = require('../portal');
       break;
     default:
       throw new Error('Unrecognized process mode:',process.env.MODE);
