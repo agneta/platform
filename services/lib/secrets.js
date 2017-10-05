@@ -26,10 +26,9 @@ module.exports = function(app, options) {
 
   delete process.env.AGNETA_SECRET_KEY;
 
-  var keys = _.extend({},
-    require(
-      path.join(options.paths.project, 'secrets.json')
-    ));
+  var keys = fs.readJsonSync(
+    path.join(options.paths.project, 'secrets.json')
+  );
 
   //----------------------------------------------------
   // Check if secret key is valid
@@ -55,7 +54,7 @@ module.exports = function(app, options) {
   // Decrypt all the object values
 
   _.deepMapValues(keys, function(value, path) {
-    value = cryptojs.AES.decrypt(value.toString(), secretKey)
+    value = cryptojs.AES.decrypt(value, secretKey)
       .toString(cryptojs.enc.Utf8);
     _.set(keys, path, value);
   });
