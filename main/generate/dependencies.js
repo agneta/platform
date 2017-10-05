@@ -16,7 +16,7 @@
  */
 const log = require('../log');
 const terminal = require('../server/terminal');
-const projectPaths = require('../paths').project;
+const projectPaths = require('../paths').core;
 const path = require('path');
 const progress = require('../progress');
 

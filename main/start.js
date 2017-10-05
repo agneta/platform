@@ -16,7 +16,6 @@
  */
 const _ = require('lodash');
 const paths = require('./paths');
-const projectPaths = paths.project;
 const config = require('./config');
 const Promise = require('bluebird');
 var ProgressBar = require('progress');
@@ -30,10 +29,10 @@ var start = {
     });
 
     return Promise.each(subApps, function(component) {
-      if (component.preInit) {
-        return component.preInit();
-      }
-    })
+        if (component.preInit) {
+          return component.preInit();
+        }
+      })
       .then(function() {
         return Promise.each(subApps, function(component) {
           bar.tick({
@@ -75,7 +74,7 @@ var start = {
 
     var component = start.pages({
       mode: 'preview',
-      dir: projectPaths.portalWebsite,
+      dir: paths.core.portalWebsite,
       locals: options
     });
 
@@ -95,24 +94,30 @@ var start = {
   },
   pages: function(options) {
 
-    options.locals = options.locals || {};
-    options.paths = paths.get(options);
-
-    _.extend(options.locals, config);
-
-    var component = require(options.paths.framework)(options);
-    setName(component, 'pages', options);
-    return component;
+    options.paths = paths.app(options);
+    return getComponent('pages', options.paths.framework, options);
 
   },
   services: function(options) {
 
-    var component = require(projectPaths.services)(options);
-    setName(component, 'services', options);
-    return component;
+    options.paths = paths.core;
+    return getComponent('services', paths.core.services, options);
 
   }
 };
+
+function getComponent(name, componentPath, options) {
+
+  options.locals = options.locals || {};
+  _.extend(options.locals, config);
+
+  var component = require(componentPath)(options);
+
+  setName(component, name, options);
+
+  return component;
+
+}
 
 function setName(component, name, options) {
   options = options || {};

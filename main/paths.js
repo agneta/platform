@@ -14,50 +14,54 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var path = require('path');
-var appName = process.env.APP_NAME || 'website';
-
+const path = require('path');
+const appName = process.env.APP_NAME || 'website';
+const _ = require('lodash');
 //console.log('Application folder:', appName);
 
+//--------------------------------------------------------------------
+
+var core = {};
+core.project = process.cwd();
+
+var agneta = path.join(core.project, 'node_modules', 'agneta-platform');
+
+core.agneta = agneta;
+core.services = path.join(agneta, 'services');
+core.portal = path.join(agneta, 'portal');
+core.framework = path.join(agneta, 'pages');
+core.scriptsFramework = path.join(core.framework, 'scripts');
+
+core.baseTheme = path.join(agneta, 'theme');
+core.dataTheme = path.join(core.baseTheme, 'data');
+core.templatesTheme = path.join(core.baseTheme, 'templates');
+core.scriptsTheme = path.join(core.baseTheme, 'scripts');
+core.sourceTheme = path.join(core.baseTheme, 'source');
+core.assetsTheme = path.join(core.sourceTheme, 'assets');
+core.configTheme = path.join(core.baseTheme, 'config.yml');
+
+core.api = path.join(core.project, 'services');
+core.portalWebsite = path.join(core.portal, 'website');
+core.portalSource = path.join(core.portalWebsite, 'source');
+core.portalAssets = path.join(core.portalSource, 'assets');
+core.portalProject = path.join(core.project, 'portal');
+core.portalGenerated = path.join(core.portalProject, 'generated');
+core.models = path.join(core.api, 'models');
+
+//--------------------------------------------------------------------
+
+
 module.exports = {
-  get: get,
-  project: get()
+  app: app,
+  core: core
 };
 
-function get(options) {
+function app(options) {
 
+  options = options || {};
   var paths = {};
 
-  paths.project = process.cwd();
-
-  var agneta = path.join(paths.project, 'node_modules', 'agneta-platform');
-
-  paths.agneta = agneta;
-  paths.services = path.join(agneta, 'services');
-  paths.portal = path.join(agneta, 'portal');
-  paths.framework = path.join(agneta, 'pages');
-  paths.baseTheme = path.join(agneta, 'theme');
-
-  paths.api = path.join(paths.project, 'services');
-  paths.portalWebsite = path.join(paths.portal, 'website');
-  paths.portalSource = path.join(paths.portalWebsite, 'source');
-  paths.portalAssets = path.join(paths.portalSource, 'assets');
-  paths.portalProject = path.join(paths.project, 'portal');
-  paths.portalGenerated = path.join(paths.portalProject, 'generated');
-  paths.models = path.join(paths.api, 'models');
-
-  //////////////////////////////////////////////////////////////////////////
-
-  paths.base = (options && options.dir) || path.join(paths.project, appName);
-
-  paths.scriptsFramework = path.join(paths.framework, 'scripts');
-
-  paths.dataTheme = path.join(paths.baseTheme, 'data');
-  paths.templatesTheme = path.join(paths.baseTheme, 'templates');
-  paths.scriptsTheme = path.join(paths.baseTheme, 'scripts');
-  paths.sourceTheme = path.join(paths.baseTheme, 'source');
-  paths.assetsTheme = path.join(paths.sourceTheme, 'assets');
-  paths.configTheme = path.join(paths.baseTheme, 'config.yml');
+  paths.base = options.dir || path.join(core.project, appName);
 
   paths.config = path.join(paths.base, 'config.yml');
   paths.data = path.join(paths.base, 'data');
@@ -69,6 +73,8 @@ function get(options) {
   paths.generated = path.join(paths.source, 'generated');
   paths.tmp = path.join(paths.base, 'tmp');
   paths.scripts = path.join(paths.base, 'scripts');
+
+  _.extend(paths,core);
 
   return paths;
 }

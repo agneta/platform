@@ -21,7 +21,7 @@ const start = require('../start');
 const config = require('../config');
 const middleware = require('../middleware');
 const projectPaths = require('../paths')
-  .project;
+  .core;
 const Build = require(path.join(projectPaths.framework, 'core/build'));
 
 module.exports = function(options) {
@@ -156,7 +156,6 @@ module.exports = function(options) {
     }
 
     var buildPages = start.pages({
-      paths: projectPaths,
       mode: 'default',
       locals: _.extend({}, config, {
         root: websiteRoot,

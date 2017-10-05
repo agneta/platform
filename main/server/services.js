@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var projectPaths = require('../paths').project;
+var projectPaths = require('../paths').core;
 var config = require('../config');
 var start = require('../start');
 

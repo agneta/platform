@@ -28,7 +28,7 @@ module.exports = function(app, options) {
 
   var keys = _.extend({},
     require(
-      path.join(options.client.project.paths.project, 'secrets.json')
+      path.join(options.paths.project, 'secrets.json')
     ));
 
   //----------------------------------------------------
