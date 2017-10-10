@@ -9,7 +9,7 @@ module.exports = function(options) {
   var tmpDir = path.join(process.cwd(), 'tmp', 'sftp');
   var app;
 
-  fs.ensureDir(tmpDir)
+  return fs.ensureDir(tmpDir)
     .then(services)
     .then(function(result) {
       app = result.services.app;

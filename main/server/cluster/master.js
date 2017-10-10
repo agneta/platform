@@ -17,14 +17,17 @@
 const cluster = require('cluster');
 
 module.exports.run = function(socketCluster) {
-
   return new Promise(function(resolve) {
 
     socketCluster.on('ready', function() {
       console.log('Listening');
     });
 
+    socketCluster.on('fail',console.error);
+    socketCluster.on('warning',console.warn);
+
     socketCluster.on('workerMessage', function(workerId, msg) {
+      
       if (msg.started) {
         resolve(msg.result);
       }

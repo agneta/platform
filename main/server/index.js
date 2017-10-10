@@ -98,6 +98,8 @@ module.exports = fs.pathExists(certDir)
 
     var server;
 
+    console.log('MODE',process.env.MODE);
+
     switch (process.env.MODE) {
       case 'sftp':
         server = require('./sftp');
@@ -107,7 +109,7 @@ module.exports = fs.pathExists(certDir)
         break;
     }
 
-    server(options);
+    return server(options);
 
   })
   .catch(function(err) {

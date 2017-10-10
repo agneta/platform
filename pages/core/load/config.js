@@ -14,14 +14,15 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var yaml = require('js-yaml');
-var path = require('path');
-var url = require('url');
-var urljoin = require('url-join');
-var fs = require('fs-extra');
-var Promise = require('bluebird');
-var readFile = Promise.promisify(fs.readFile);
-var _ = require('lodash');
+const yaml = require('js-yaml');
+const path = require('path');
+const url = require('url');
+const urljoin = require('url-join');
+const fs = require('fs-extra');
+const Promise = require('bluebird');
+const readFile = Promise.promisify(fs.readFile);
+const _ = require('lodash');
+const child_process = require('child_process');
 
 module.exports = function(locals) {
 
@@ -90,9 +91,9 @@ module.exports = function(locals) {
         );
 
         project.site.version = {
-          node: packageAgneta.engines.node,
-          npm: packageAgneta.engines.npm,
-          agneta: packageAgneta.version
+          node: process.versions.node,
+          npm: _.get(packageAgneta,'engines.npm'),
+          agneta: child_process.execSync('npm --version').toString().split('\n')[0]
         };
 
         //---------------------

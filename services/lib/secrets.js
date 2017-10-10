@@ -24,7 +24,7 @@ module.exports = function(app, options) {
     throw new Error('Could not find the secret key to set sensitive data');
   }
 
-  delete process.env.AGNETA_SECRET_KEY;
+  //delete process.env.AGNETA_SECRET_KEY;
 
   var keys = fs.readJsonSync(
     path.join(options.paths.project, 'secrets.json')

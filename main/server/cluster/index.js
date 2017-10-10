@@ -39,8 +39,9 @@ module.exports = function(options) {
     port: process.env.PORT,
     protocol: process.env.PROTOCOL,
     path: socketPath,
-    workerController: path.join(__dirname, 'worker'),
+    workerController: path.join(__dirname, 'worker.js'),
     environment: environment,
+    logLevel: 3,
     protocolOptions: options.protocolOptions
   };
 
@@ -49,6 +50,7 @@ module.exports = function(options) {
   return require('./master')
     .run(socketCluster)
     .then(function(result) {
+
       return {
         port: process.env.PORT,
         result: result

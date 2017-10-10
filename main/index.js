@@ -1,8 +1,12 @@
 const pm2 = require('pm2');
 const path = require('path');
 
-
 pm2.connect(function(err) {
+
+  var name = 'agneta';
+  var base = path.join(process.cwd(),'.pm2/logs');
+  var outputPath = path.join(base,'output.log');
+  var errorPath = path.join(base,'error.log');
 
   if (err) {
     console.error(err);
@@ -10,14 +14,14 @@ pm2.connect(function(err) {
   }
 
   pm2.start({
-    name: 'agneta',
+    name: name,
     script: path.join(__dirname, 'server', 'index.js'),
-    exec_mode: 'cluster',
-    max_memory_restart: '400M'
-  }, function(err, apps) {
+    exec_mode: 'fork',
+    max_memory_restart: '400M',
+    output: outputPath,
+    error: errorPath
+  }, function(err) {
 
-    console.log(apps);
-    pm2.disconnect();
     if (err) throw err;
 
   });

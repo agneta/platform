@@ -1,16 +1,12 @@
 {
   "name": "agneta-platform",
-  "version": "0.13.0-beta.8",
+  "version": "0.13.0-beta.10",
   "description": "Agneta Platform - Integrate and customize business applications",
   "main": "main",
   "scripts": {
     "audit": "nsp check",
     "license": "node scripts/license",
     "lint": "node node_modules/eslint/bin/eslint --fix --ignore-path .gitignore ./ --ext .js"
-  },
-  "engines": {
-    "node": "^6.11.0",
-    "npm": "^3.10.10"
   },
   "repository": {
     "type": "git",
@@ -96,6 +92,7 @@
     "nodegit": "0.20.2",
     "object-hash": "1.1.8",
     "pdf-image": "1.1.0",
+    "pm2": "^2.7.1",
     "pretty-bytes": "4.0.2",
     "progress": "2.0.0",
     "randomcolor": "0.5.3",
