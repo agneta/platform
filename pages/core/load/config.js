@@ -92,8 +92,8 @@ module.exports = function(locals) {
 
         project.site.version = {
           node: process.versions.node,
-          npm: _.get(packageAgneta,'engines.npm'),
-          agneta: child_process.execSync('npm --version').toString().split('\n')[0]
+          npm: child_process.execSync('npm --version').toString().split('\n')[0],
+          agneta: packageAgneta.version
         };
 
         //---------------------

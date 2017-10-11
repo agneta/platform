@@ -49,7 +49,6 @@ module.exports.run = function(worker) {
       throw new Error('Unrecognized process mode:',process.env.MODE);
   }
 
-
   //--------------------------------
 
   var log = console.log;
@@ -59,8 +58,6 @@ module.exports.run = function(worker) {
     log.apply(console, [chalk.cyan(`[worker:${cluster.worker.id}]`)].concat(args));
   };
 
-  console.log('aaaaaaaaaaaaaaaaaaaaa');
-  
 
   var httpServer = worker.httpServer;
   var starting = true;

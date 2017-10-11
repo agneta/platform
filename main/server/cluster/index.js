@@ -45,6 +45,9 @@ module.exports = function(options) {
     protocolOptions: options.protocolOptions
   };
 
+  console.log(clusterOptions);
+
+
   var socketCluster = new SocketCluster(clusterOptions);
 
   return require('./master')

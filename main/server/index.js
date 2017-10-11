@@ -6,73 +6,38 @@ _.mixin(require('lodash-deep'));
 
 const url = require('url');
 const Promise = require('bluebird');
-const fs = require('fs-extra');
-const path = require('path');
 //---------------------------------------------------
 // Look for server certificates
 
-var certDir = path.join(process.cwd(), 'services', 'certificates');
 var options = {};
 var protocol = 'http';
 var port = 8080;
 
-module.exports = fs.pathExists(certDir)
-  .then(function(exists) {
+module.exports = Promise.resolve()
+  .then(function() {
 
-    if (!exists) {
+    if (
+      !process.env.SERVER_KEY &&
+      !process.env.SERVER_CERT &&
+      !process.env.CA_CERT
+    ) {
       return;
     }
 
     var protocolOptions = {
-      key: process.env.SERVER_KEY,
-      cert: process.env.SERVER_CERT,
-      ca: process.env.CA_CERT,
+      key: process.env.SERVER_KEY.replace(/\\n/g,'\n'),
+      cert: process.env.SERVER_CERT.replace(/\\n/g,'\n'),
+      ca: process.env.CA_CERT.replace(/\\n/g,'\n'),
       requestCert: true,
       rejectUnauthorized: false
     };
+    //throw 'test';
 
-    delete process.env.SERVER_KEY;
-    delete process.env.SERVER_CERT;
-    delete process.env.CA_CERT;
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+    options.protocolOptions = protocolOptions;
 
-    var files = [];
+    protocol = 'https';
 
-    if (!protocolOptions.key) {
-      files.push({
-        name: 'server-key.pem',
-        key: 'key'
-      });
-    }
-
-    if (!protocolOptions.cert) {
-      files.push({
-        name: 'server-crt.pem',
-        key: 'cert'
-      });
-    }
-
-    if (!protocolOptions.ca) {
-      files.push({
-        name: 'ca-crt.pem',
-        key: 'ca'
-      });
-    }
-
-    return Promise.mapSeries(files, function(file) {
-      return fs.readFile(
-        path.join(certDir, file.name)
-      ).then(function(content) {
-        protocolOptions[file.key] = content;
-      });
-    })
-      .then(function() {
-
-        process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-        options.protocolOptions = protocolOptions;
-
-        protocol = 'https';
-
-      });
   })
   .then(function() {
 
