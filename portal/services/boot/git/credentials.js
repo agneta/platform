@@ -15,18 +15,24 @@
  *   limitations under the License.
  */
 const nodegit = require('nodegit');
-const path = require('path');
+const Promise = require('bluebird');
 
 module.exports = function(app) {
 
-  var base_dir = process.cwd();
+  return Promise.resolve()
+    .then(function() {
 
-  var sshDir = path.join(base_dir, 'ssh');
-  var sshPublicKey = path.join(sshDir, 'id_rsa.pub');
-  var sshPrivateKey = path.join(sshDir, 'id_rsa');
+      if (!process.env.GIT_PUB || !process.env.GIT_PUB) {
+        throw new Error('Git must have SSH credentials');
+      }
 
-  app.git.credentials = function(url, username) {
-    return nodegit.Cred.sshKeyNew(username, sshPublicKey, sshPrivateKey, '');
-  };
+      var sshPublicKey = process.env.GIT_PUB;
+      var sshPrivateKey = process.env.GIT_KEY.replace(/\\n/g,'\n');
+
+      app.git.credentials = function(url, username) {
+        return nodegit.Cred.sshKeyMemoryNew(username, sshPublicKey, sshPrivateKey, '');
+      };
+
+    });
 
 };
