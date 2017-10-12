@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/boot/git/credentials.js
+ *   Source file: scripts/postinstall/git/init.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,25 +14,22 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const nodegit = require('nodegit');
-const Promise = require('bluebird');
+
 
 module.exports = function(app) {
 
-  return Promise.resolve()
+  return app.git.init()
+    .then(function(result) {
+      if (result.initiated) {
+        return app.git.update();
+      }
+    })
     .then(function() {
 
-      if (!process.env.GIT_PUB || !process.env.GIT_PUB) {
-        throw new Error('Git must have SSH credentials');
-      }
-
-      var sshPublicKey = process.env.GIT_PUB;
-      var sshPrivateKey = process.env.GIT_KEY.replace(/\\n/g,'\n');
-
-      app.git.credentials = function(url, username) {
-        return nodegit.Cred.sshKeyMemoryNew(username, sshPublicKey, sshPrivateKey, '');
-      };
+      console.log('Git repository is ready');
+      console.log('Current branch is', app.git.branch.current);
 
     });
+
 
 };

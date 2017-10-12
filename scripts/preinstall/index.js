@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: scripts/postinstall/git/index.js
+ *   Source file: scripts/postinstall/index.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,15 +14,24 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function(app) {
+const express = require('express');
+const path = require('path');
+(function() {
 
-  app.git = {
-    name: '.git'
+  var app = express();
+
+  var platformPath = path.join(__dirname, '../..');
+
+  app.requirePortal = function(reqPath) {
+    return require(path.join(platformPath, 'portal', reqPath));
   };
 
-  app.requirePortal('services/boot/git/addAll')(app);
-  app.requirePortal('services/boot/git/update')(app);
-  app.requirePortal('services/boot/git/credentials')(app);
+  app.requireServices = function(reqPath) {
+    return require(path.join(platformPath, 'services', reqPath));
+  };
 
-  require('./init')(app);
-};
+  //app.requireServices('lib/locals')(app);s
+
+  require('./git')(app);
+
+})();

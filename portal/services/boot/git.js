@@ -39,7 +39,6 @@ module.exports = function(app) {
   require('./git/addAll')(app);
   require('./git/createYaml')(app);
   require('./git/update')(app);
-  require('./git/credentials')(app);
   require('./git/log')(app);
   require('./git/status')(app);
   require('./git/readFile')(app);

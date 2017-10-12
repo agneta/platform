@@ -55,15 +55,10 @@ module.exports = function(app) {
       .then(function(result) {
 
         commit = result.commit;
-        var branchName = app.git.branch.name();
+        var branchName = app.git.branch.current;
         //console.log(config.remote.name, branchName);
 
-        return app.git.remote.push(
-          [branchName + ':' + branchName], {
-            callbacks: {
-              credentials: app.git.credentials
-            }
-          });
+        return app.git.native.push(,branchName);
 
       })
       .then(function() {

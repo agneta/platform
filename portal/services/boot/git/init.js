@@ -14,34 +14,68 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const nodegit = require('nodegit');
-const path = require('path');
 const simplegit = require('simple-git/promise');
+const fs = require('fs-extra');
+const Promise = require('bluebird');
+const path = require('path');
 
 module.exports = function(app) {
 
-  var base_dir = process.cwd();
-  var repoPath = path.join(base_dir, app.git.name);
   var config = app.get('git');
+  var base_dir = process.cwd();
 
-  app.git.native = simplegit(base_dir);
+  app.git = {
+    name: '.git',
+    native: simplegit(base_dir)
+  };
 
-  return Promise.resolve()
-    .then(function() {
-      return nodegit.Repository.open(repoPath);
-    })
-    .then(function(repository) {
-      app.git.repository = repository;
-      return app.git.repository.getRemote(config.remote.name);
+  var repoPath = path.join(base_dir, app.git.name);
+  var initiated;
 
-    })
-    .then(function(remote) {
-      app.git.remote = remote;
-      return app.git.repository.getCurrentBranch();
+  app.git.native.outputHandler(function(command, stdout, stderr) {
+    stdout.pipe(process.stdout);
+    stderr.pipe(process.stderr);
+  });
 
-    })
-    .then(function(reference) {
-      app.git.branch = reference;
-    });
+  app.git.init = function() {
+
+    return Promise.resolve()
+      .then(function() {
+        if (!fs.existsSync(repoPath)) {
+          return app.git.native.init(repoPath, 0)
+            .then(function() {
+              return true;
+            });
+        }
+      })
+      .then(function(_initiated) {
+
+        initiated = _initiated;
+        return app.git.native.getRemotes();
+
+      })
+      .then(function(remotes) {
+
+        console.log(remotes);
+        var foundRemote = remotes.indexOf(config.remote.name) >= 0;
+
+        if (!foundRemote) {
+          return app.git.native.addRemote(config.remote.name, config.remote.url);
+        }
+
+      })
+      .then(function() {
+        return simplegit.branch();
+      })
+      .then(function(reference) {
+        app.git.branch = reference;
+
+        return {
+          initiated: initiated
+        };
+
+      });
+
+  };
 
 };
