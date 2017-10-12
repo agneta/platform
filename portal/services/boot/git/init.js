@@ -15,72 +15,31 @@
  *   limitations under the License.
  */
 const simplegit = require('simple-git/promise');
-const fs = require('fs-extra');
-const Promise = require('bluebird');
-const path = require('path');
-const _ = require('lodash');
 
 module.exports = function(app) {
 
-  var config = app.get('git');
   var base_dir = process.cwd();
 
-  app.git = {
-    name: '.git',
-    native: simplegit(base_dir)
-  };
-
-  var repoPath = path.join(base_dir, app.git.name);
-  var initiated;
+  app.git.native = simplegit(base_dir);
 
   app.git.native.outputHandler(function(command, stdout, stderr) {
     stdout.pipe(process.stdout);
     stderr.pipe(process.stderr);
   });
 
-  app.git.init = function() {
+  return app.git.native.getRemotes()
+    .then(function(remotes) {
 
-    return Promise.resolve()
-      .then(function() {
-        if (!fs.existsSync(repoPath)) {
-          return app.git.native.init(repoPath, 0)
-            .then(function() {
-              return true;
-            });
-        }
-      })
-      .then(function(_initiated) {
+      app.git.remotes = remotes;
+      console.log('remotes', app.git.remotes);
 
-        initiated = _initiated;
-        return app.git.native.getRemotes();
+      return app.git.native.branch();
+    })
+    .then(function(result) {
 
-      })
-      .then(function(remotes) {
+      console.log('branch', result);
+      app.git.branch = result;
 
-        app.git.remotes = remotes;
-        console.log('remotes',remotes);
-
-        var foundRemote = _.find(remotes,{name:config.remote.name});
-
-        if (!foundRemote) {
-          return app.git.native.addRemote(config.remote.name, config.remote.url);
-        }
-
-      })
-      .then(function() {
-        return app.git.native.branch();
-      })
-      .then(function(result) {
-        
-        console.log('branch',result);
-        app.git.branch = result;
-
-        return {
-          initiated: initiated
-        };
-
-      });
-
-  };
+    });
 
 };

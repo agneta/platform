@@ -14,48 +14,13 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var Promise = require('bluebird');
 
 module.exports = function(app) {
 
-  var config = app.get('git');
 
   app.git.update = function() {
 
-    var references = app.git.branch.all;
-    console.log('app.git.branch.all',references);
-
-    return app.git.native.fetch(config.remote.name, config.branch)
-      .then(function() {
-
-        var branchName;
-
-        return Promise.resolve()
-          .then(function() {
-
-            if (references.indexOf('refs/heads/master') >= 0) {
-
-              branchName = app.git.branch.current;
-              return;
-            }
-
-            branchName = 'master';
-            return app.git.native.checkoutLocalBranch(branchName);
-
-          })
-          .then(function() {
-
-            branchName = process.env.GIT_BRANCH || config.branch || branchName;
-            if (branchName == 'master') {
-              return;
-            }
-            return app.git.native.checkoutLocalBranch(branchName);
-
-          });
-
-
-      });
-
+    console.warn('Update is not available yet');
 
   };
 };
