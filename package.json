@@ -6,8 +6,7 @@
   "scripts": {
     "audit": "nsp check",
     "license": "node scripts/license",
-    "lint": "node node_modules/eslint/bin/eslint --fix --ignore-path .gitignore ./ --ext .js",
-    "preinstall": "node scripts/preinstall"
+    "lint": "node node_modules/eslint/bin/eslint --fix --ignore-path .gitignore ./ --ext .js"
   },
   "repository": {
     "type": "git",

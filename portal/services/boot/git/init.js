@@ -18,6 +18,7 @@ const simplegit = require('simple-git/promise');
 const fs = require('fs-extra');
 const Promise = require('bluebird');
 const path = require('path');
+const _ = require('lodash');
 
 module.exports = function(app) {
 
@@ -56,8 +57,10 @@ module.exports = function(app) {
       })
       .then(function(remotes) {
 
-        console.log(remotes);
-        var foundRemote = remotes.indexOf(config.remote.name) >= 0;
+        app.git.remotes = remotes;
+        console.log('remotes',remotes);
+
+        var foundRemote = _.find(remotes,{name:config.remote.name});
 
         if (!foundRemote) {
           return app.git.native.addRemote(config.remote.name, config.remote.url);
@@ -65,10 +68,12 @@ module.exports = function(app) {
 
       })
       .then(function() {
-        return simplegit.branch();
+        return app.git.native.branch();
       })
-      .then(function(reference) {
-        app.git.branch = reference;
+      .then(function(result) {
+        
+        console.log('branch',result);
+        app.git.branch = result;
 
         return {
           initiated: initiated

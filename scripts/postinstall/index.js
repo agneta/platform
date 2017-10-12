@@ -30,7 +30,7 @@ const path = require('path');
     return require(path.join(platformPath, 'services', reqPath));
   };
 
-  //app.requireServices('lib/locals')(app);s
+  app.requireServices('lib/locals')(app);
 
   require('./git')(app);
 
