@@ -24,6 +24,7 @@ module.exports = function(app) {
     var commit;
 
     var git = app.git.native;
+    var config = app.get('git');
 
     return git.status()
       .then(function(status) {
@@ -58,7 +59,7 @@ module.exports = function(app) {
         var branchName = app.git.branch.current;
         //console.log(config.remote.name, branchName);
 
-        return app.git.native.push(,branchName);
+        return app.git.native.push(config.remote.name,branchName);
 
       })
       .then(function() {
