@@ -22,22 +22,17 @@ module.exports = function(app) {
 
   app.git.native = simplegit(base_dir);
 
-  app.git.native.outputHandler(function(command, stdout, stderr) {
-    stdout.pipe(process.stdout);
-    stderr.pipe(process.stderr);
-  });
-
   return app.git.native.getRemotes()
     .then(function(remotes) {
 
       app.git.remotes = remotes;
-      console.log('remotes', app.git.remotes);
+      //console.log('remotes', app.git.remotes);
 
       return app.git.native.branch();
     })
     .then(function(result) {
 
-      console.log('branch', result);
+      //console.log('branch', result);
       app.git.branch = result;
 
     });

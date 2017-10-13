@@ -21,7 +21,7 @@ pm2.connect(function(err) {
     output: outputPath,
     error: errorPath
   }, function(err) {
-
+    console.log('pm2',arguments);
     if (err) throw err;
 
   });
