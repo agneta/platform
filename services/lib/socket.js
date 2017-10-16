@@ -93,9 +93,20 @@ module.exports = function(options) {
       Promise
         .resolve()
         .then(function(){
-          if(!app.token){
-            return Promise.delay(300);
+
+          function check(){
+
+            if(!app.token){
+              return Promise.delay(500)
+                .then(check);
+            }
+
+            return Promise.resolve();
+
           }
+
+          return check();
+
         })
         .then(function(){
           app.token.middleware(req, null, next);

@@ -1,20 +1,22 @@
 {
   "name": "Attachment",
-  "base": "Model",
-  "idInjection": true,
+  "base": "PersistedModel",
   "properties": {
     "name": {
       "type": "string",
-      "id": true,
-      "defaultFn": "uuid"
+      "required": true
     },
     "size":{
       "type": "string",
       "required": true
     },
+    "lock":{
+      "type": "boolean"
+    },
     "data":{
       "type": "string",
       "required": true
     }
-  }
+  },
+  "hidden": ["data"]
 }

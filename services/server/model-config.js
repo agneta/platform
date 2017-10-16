@@ -113,6 +113,10 @@ module.exports = function() {
       dataSource: 'db',
       public: false
     },
+    Attachment: {
+      dataSource: 'db',
+      public: false
+    },
     Media: {
       dataSource: 'db',
       public: false

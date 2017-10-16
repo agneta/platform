@@ -1,12 +1,19 @@
-<div class="row">
-  <div ng-if="!<%-field.model%>" layout="column">
-    <p>{{<%-field.model%>.name}}</<p>
-    <p>{{<%-field.model%>.size}}</<p>
-  </div>
-  <span ng-if="!<%-field.model%>">Nothing attached yet</span>
-  <span></span>
-  <md-button class="md-primary" type="file" ngf-accept="accept" ngf-select="uploadFiles($file)">
+<md-input-container>
+
+  <%-template('form/title')%>
+  <%-template('form/description')%>
+
+  <form-attachment class="row">
+    <div ng-if="!<%-field.model%>" layout="column">
+      <p>{{<%-field.model%>.name}}</<p>
+      <p>{{<%-field.model%>.size}}</<p>
+    </div>
+    <span ng-if="!<%-field.model%>">Nothing attached yet</span>
+    <span></span>
+    <md-button class="md-primary" type="file" ngf-accept="accept" ngf-select="uploadFiles($file)">
       <md-icon md-svg-src="<%-get_icon('material/file-upload')%>"></md-icon>
       Upload
-  </md-button>
-</div>
+    </md-button>
+  </form-attachment>
+
+</md-input-container>
