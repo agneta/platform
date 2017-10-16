@@ -10,7 +10,7 @@
       "type": "string",
       "required": true
     },
-    "lock":{
+    "downloadDisabled":{
       "type": "boolean"
     },
     "data":{

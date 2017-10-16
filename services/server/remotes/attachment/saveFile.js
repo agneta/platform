@@ -1,25 +1,34 @@
-module.exports = function(Model) {
+const Promise = require('bluebird');
+const fs = require('fs-extra');
+
+module.exports = function(Model, app) {
 
 
   Model.__saveFile = function(options) {
 
+    console.log(options);
+    var props;
     var relation = options.instance[options.prop];
 
-    relation(function(){
-      console.log(arguments);
-    });
-    return Promise.resolve();
-    return relation()
-      .then(function(attachment){
-        if(!attachment){
-          return relation.create({
+    return fs.readFile(options.file.path)
+      .then(function(content) {
 
-          });
+        props = {
+          name: options.file.originalname,
+          size: options.file.size,
+          downloadDisabled: true,
+          data: app.secrets.encrypt(content)
+        };
+
+        return Promise.promisify(relation)();
+      })
+      .then(function(attachment) {
+        console.log('attachment', attachment);
+        if (!attachment) {
+          return relation.create(props);
         }
 
-        return relation.update({
-
-        });
+        return relation.update(props);
       });
 
   };

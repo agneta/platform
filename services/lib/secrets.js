@@ -88,6 +88,12 @@ module.exports = function(app, options) {
       var env = app.get('env');
       return getSecret(env, path, keep);
 
+    },
+    encrypt: function(value){
+      return cryptojs.AES.encrypt(value.toString('utf8'), secretKey);
+    },
+    decrypt: function(value){
+      return cryptojs.AES.decrypt(value, secretKey).toString(cryptojs.enc.Utf8);
     }
   };
 };

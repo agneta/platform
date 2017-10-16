@@ -23,6 +23,7 @@ module.exports = function(Model, app) {
       .then(function(account) {
 
         var role = Model.roleOptions[roleName];
+        var roleService = role.service || {};
 
         if (!role) {
           throw new Error('No role found: ' + roleName);
@@ -33,7 +34,8 @@ module.exports = function(Model, app) {
         return RoleModel.findOne({
           where: {
             accountId: account.id
-          }
+          },
+          include: roleService.include
         });
 
       });
