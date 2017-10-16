@@ -20,6 +20,11 @@ module.exports = function(Model, app) {
           data: app.secrets.encrypt(content)
         };
 
+        return fs.remove(options.file.path);
+
+      })
+      .then(function() {
+
         return Promise.promisify(relation)();
       })
       .then(function(attachment) {
