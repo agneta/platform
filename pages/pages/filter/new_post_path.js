@@ -21,7 +21,6 @@ var moment = require('moment');
 var _ = require('lodash');
 var Promise = require('bluebird');
 var util = require('hexo-util');
-var fs = require('hexo-fs');
 var Permalink = util.Permalink;
 var permalink;
 
@@ -34,7 +33,7 @@ var reservedKeys = {
   title: true
 };
 
-function newPostPathFilter(data, replace){
+function newPostPathFilter(data) {
   /* jshint validthis: true */
   data = data || {};
 
@@ -49,12 +48,12 @@ function newPostPathFilter(data, replace){
   var slug = data.slug;
   var target = '';
 
-  if (!permalink || permalink.rule !== newPostName){
+  if (!permalink || permalink.rule !== newPostName) {
     permalink = new Permalink(newPostName);
   }
 
-  if (path){
-    switch (layout){
+  if (path) {
+    switch (layout) {
       case 'page':
         target = pathFn.join(sourceDir, path);
         break;
@@ -66,8 +65,8 @@ function newPostPathFilter(data, replace){
       default:
         target = pathFn.join(postDir, path);
     }
-  } else if (slug){
-    switch (layout){
+  } else if (slug) {
+    switch (layout) {
       case 'page':
         target = pathFn.join(sourceDir, slug, 'index');
         break;
@@ -90,7 +89,7 @@ function newPostPathFilter(data, replace){
           title: slug
         };
 
-        for (var i = 0, len = keys.length; i < len; i++){
+        for (var i = 0, len = keys.length; i < len; i++) {
           key = keys[i];
           if (!reservedKeys[key]) filenameData[key] = data[key];
         }
@@ -102,15 +101,11 @@ function newPostPathFilter(data, replace){
     return Promise.reject(new TypeError('Either data.path or data.slug is required!'));
   }
 
-  if (!pathFn.extname(target)){
+  if (!pathFn.extname(target)) {
     target += pathFn.extname(newPostName) || '.md';
   }
 
-  if (replace){
-    return Promise.resolve(target);
-  } else {
-    return fs.ensurePath(target);
-  }
+  return Promise.resolve(target);
 }
 
 module.exports = newPostPathFilter;

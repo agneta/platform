@@ -52,8 +52,6 @@
     "glob": "7.1.2",
     "greek-utils": "1.2.1",
     "helmet": "3.8.2",
-    "hexo-fs": "0.1.5",
-    "hexo-pagination": "0.0.2",
     "hexo-util": "0.5.1",
     "highlight.js": "9.12.0",
     "html-to-text": "3.3.0",
