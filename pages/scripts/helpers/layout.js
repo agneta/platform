@@ -43,7 +43,7 @@ module.exports = function(locals) {
       return _this[config.type](resPath);
 
     }else{
-      console.warn('Resource not found',filePath);
+      //console.warn('Resource not found',filePath);
     }
 
   }

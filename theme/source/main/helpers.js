@@ -64,6 +64,12 @@ function _e_helpers() {
     return url_for(urljoin(args));
   };
 
+  agneta.url_api = function(path) {
+
+    return agneta.urljoin(agneta.services.url, 'api',path);
+
+  };
+
   agneta.langPath = function() {
     var args = Array.prototype.slice.call(arguments);
     args.unshift(agneta.lang);

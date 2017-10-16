@@ -82,7 +82,10 @@ module.exports = function(options) {
   var portalServices = setupServer('services',{
     root: '',
     id: 'portal',
-    include: path.join(projectPaths.project, 'services'),
+    include: [
+      projectPaths.api,
+      projectPaths.portalProjectServices
+    ],
     dir: projectPaths.portal,
     website: {}
   });

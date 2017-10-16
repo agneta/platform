@@ -52,6 +52,7 @@ core.portalAssets = path.join(core.portalSource, 'assets');
 
 // Portal Project
 core.portalProject = path.join(core.project, 'portal');
+core.portalProjectServices = path.join(core.portalProject, 'services');
 core.portalProjectSource = path.join(core.portalProject, 'source');
 core.portalProjectGenerated = path.join(core.portalProjectSource,'generated');
 

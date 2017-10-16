@@ -1,4 +1,3 @@
-const Promise = require('bluebird');
 const multer = require('multer');
 
 var uploadSingle = multer({
@@ -13,39 +12,17 @@ module.exports = function(Model) {
 
     options = options || {};
 
-    if(!options.model){
+    if (!options.model) {
       throw new Error('Must provide a model');
     }
 
     var model = options.model;
     var name = options.name || 'uploadFile';
+
+    //------------------------------------------------
+    // Generate remote method
+
     var pathRemote = options.path || '/upload-file';
-
-    model[name] = function(req) {
-
-      return Promise.resolve()
-        .then(function() {
-          var params = req.body;
-
-          if (!params.name) {
-            throw new Error('We need a name to assign to the file');
-          }
-
-          //console.log('about to prepare file', data);
-          return model.__saveFile({
-            file: req.file,
-            name: params.name
-          });
-        })
-        .then(function() {
-
-          return {
-            success: 'File is uploaded'
-          };
-
-        });
-
-    };
 
     model.beforeRemote(name, function(context, instance, next) {
       uploadSingle(context.req, context.res, next);
