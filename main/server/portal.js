@@ -48,7 +48,7 @@ module.exports = function(options) {
   app.set('trust proxy', 1);
   app.use('/' + appRoots.local, staticMiddleware('local/public'));
   app.use('/', express.static(
-    path.join(projectPaths.portalProject)
+    path.join(projectPaths.portalProjectSource)
   ));
 
   function staticMiddleware(name) {

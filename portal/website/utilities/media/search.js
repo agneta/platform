@@ -38,7 +38,7 @@ module.exports = function(util, options) {
       return 'keywords_media';
     },
     title: 'location.value',
-    outputJson: util.locals.project.paths.portalGenerated
+    outputJson: util.locals.project.paths.portalProjectGenerated
   });
 
   function getItems(skip) {

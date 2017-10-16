@@ -40,7 +40,7 @@ module.exports = function(locals) {
   });
 
   project.extend.helper.register('get_asset', function(path_check) {
-
+    
     if (_.isObject(path_check)) {
       if (path_check.services) {
         return urljoin(project.site.services.url, path_check.services);

@@ -28,7 +28,7 @@ module.exports = function(util) {
 
       return Promise.map([{
         server: servicesPortal,
-        dir: webProject.paths.portalGenerated
+        dir: webProject.paths.portalProjectGenerated
       },
       {
         server: servicesWebsite,

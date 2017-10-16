@@ -1,19 +1,30 @@
-<md-input-container>
+<%
+var accept;
+var uploadMethod = field.uploadMethod || 'upload';
+
+if(field.accept){
+  accept = `ngf-accept="'${field.accept}'"`;
+}
+%>
+
+<md-input-container layout="column">
 
   <%-template('form/title')%>
   <%-template('form/description')%>
 
-  <form-attachment class="row">
-    <div ng-if="!<%-field.model%>" layout="column">
-      <p>{{<%-field.model%>.name}}</<p>
-      <p>{{<%-field.model%>.size}}</<p>
+  <form-attachment class="row" ng-model="<%-field.model%>" layout="row"  layout-align="start center">
+    <div ng-if="<%-field.model%>" layout="column">
+      <p>{{name}}</<p>
+      <p ng-show="size">{{size}}</<p>
     </div>
     <span ng-if="!<%-field.model%>">Nothing attached yet</span>
-    <span></span>
-    <md-button class="md-primary" type="file" ngf-accept="accept" ngf-select="uploadFiles($file)">
+    <span flex="auto"></span>
+
+    <md-button class="md-primary" type="file" <%-accept%> ngf-select="<%-uploadMethod%>($file)">
       <md-icon md-svg-src="<%-get_icon('material/file-upload')%>"></md-icon>
       Upload
     </md-button>
+
   </form-attachment>
 
 </md-input-container>

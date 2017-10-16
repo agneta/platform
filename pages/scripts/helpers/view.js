@@ -94,6 +94,17 @@ module.exports = function(locals) {
       data.scripts.push(templateScript);
     }
 
+    var sourceScript = this.layout_script({
+      source: true,
+      template: page.pathSource
+    });
+
+    if (sourceScript) {
+      data.scripts.push(sourceScript);
+    }
+
+    data.scripts = _.uniq(data.scripts);
+    data.styles = _.uniq(data.styles);
 
     return data;
 

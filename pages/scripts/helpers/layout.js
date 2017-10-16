@@ -26,37 +26,24 @@ module.exports = function(locals) {
 
   function layoutResource(options, config) {
 
+
     options = options || {};
 
     var _this = this;
     var template = options.template || this.page.template;
-    var filePath = path.join(project.paths.source, template + config.ext);
-    var exists = this.is_file(filePath);
+    var filePath = template + config.extOut;
+    var stat = this.has_file(filePath);
 
-    if (exists) {
-
-      return getPath();
-
-    } else {
-
-      filePath = path.join(project.paths.sourceTheme, template + config.ext);
-      exists = this.is_file(filePath);
-
-      if (exists) {
-        return getPath();
-      }
-    }
-
-    function getPath() {
-
-      var resPath = template + config.extOut;
-      resPath = _this.get_asset(resPath);
-
+    if (stat) {
+      var resPath = _this.get_asset(filePath);
       if (options.source) {
         return resPath;
       }
 
       return _this[config.type](resPath);
+
+    }else{
+      console.warn('Resource not found',filePath);
     }
 
   }

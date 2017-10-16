@@ -16,43 +16,6 @@
  */
 function _e_Form(app) {
 
-  app.directive('formAttachment', function($parse, Upload) {
-    return {
-      restrict: 'E',
-      scope: true,
-      require: 'ngModel',
-      link: function(scope, element, attrs, ngModel) {
-        if (!ngModel) return;
-
-        var model = $parse(attrs.ngModel);
-
-        scope.upload = function(object) {
-
-          if (object) {
-            //console.log(scope.file.location);
-            var api = 'hohoho';
-            Upload.upload({
-              url: agneta.url(api + 'pfx-upload'),
-              data: {
-                name: scope.file.name,
-                object: object
-              },
-              arrayKey: ''
-            })
-              .then(function(response) {
-                console.log('attachment-response', response);
-
-                model.assign(scope.$parent, response);
-                ngModel.$setViewValue(response);
-              });
-          }
-
-        };
-
-      }
-    };
-  });
-
   app.directive('selectButtons', function($filter, $parse) {
     return {
       restrict: 'E',

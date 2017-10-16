@@ -159,9 +159,11 @@ module.exports = function(locals) {
 
   project.extend.helper.register('has_file', function(pathFile) {
 
-    var portalPath = path.join(project.paths.portalProject, pathFile);
+    var portalPath = path.join(project.paths.portalProjectSource, pathFile);
     var projectPath = path.join(project.paths.source, pathFile);
     var themePath = path.join(project.paths.sourceTheme, pathFile);
+
+    //console.log(portalPath);
 
     if (fs.existsSync(projectPath)) {
       return fs.statSync(projectPath);

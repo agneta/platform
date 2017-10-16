@@ -32,6 +32,7 @@ core.portal = path.join(agneta, 'portal');
 core.framework = path.join(agneta, 'pages');
 core.scriptsFramework = path.join(core.framework, 'scripts');
 
+// Theme
 core.baseTheme = path.join(agneta, 'theme');
 core.dataTheme = path.join(core.baseTheme, 'data');
 core.templatesTheme = path.join(core.baseTheme, 'templates');
@@ -40,13 +41,20 @@ core.sourceTheme = path.join(core.baseTheme, 'source');
 core.assetsTheme = path.join(core.sourceTheme, 'assets');
 core.configTheme = path.join(core.baseTheme, 'config.yml');
 
+// Services
 core.api = path.join(core.project, 'services');
+core.models = path.join(core.api, 'models');
+
+// Portal
 core.portalWebsite = path.join(core.portal, 'website');
 core.portalSource = path.join(core.portalWebsite, 'source');
 core.portalAssets = path.join(core.portalSource, 'assets');
+
+// Portal Project
 core.portalProject = path.join(core.project, 'portal');
-core.portalGenerated = path.join(core.portalProject, 'generated');
-core.models = path.join(core.api, 'models');
+core.portalProjectSource = path.join(core.portalProject, 'source');
+core.portalProjectGenerated = path.join(core.portalProjectSource,'generated');
+
 
 //--------------------------------------------------------------------
 
