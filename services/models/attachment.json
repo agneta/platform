@@ -1,0 +1,20 @@
+{
+  "name": "Attachment",
+  "base": "Model",
+  "idInjection": true,
+  "properties": {
+    "name": {
+      "type": "string",
+      "id": true,
+      "defaultFn": "uuid"
+    },
+    "size":{
+      "type": "string",
+      "required": true
+    },
+    "data":{
+      "type": "string",
+      "required": true
+    }
+  }
+}
