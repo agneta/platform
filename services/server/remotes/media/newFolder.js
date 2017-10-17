@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const Promise = require('bluebird');
+
 module.exports = function(Model) {
 
   Model.newFolder = function(name, dir) {
@@ -32,10 +32,9 @@ module.exports = function(Model) {
       .then(function(res) {
         //console.log('newFolder:Model.findOne:res',res);
         if (res) {
-          return Promise.reject({
-            statusCode: 400,
+          return {
             message: 'Object already exists with that name'
-          });
+          };
         }
         return Model.create({
           location: location,

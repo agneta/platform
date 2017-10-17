@@ -35,7 +35,7 @@ module.exports = function(Model, app) {
       var transformer = gm(options.file);
 
       if (size.crop) {
-        transformer = transformer.thumb(size.width, size.height+'^');
+        transformer = transformer.thumbnail(size.width, size.height+'^');
         transformer = transformer.gravity('center');
       } else {
         transformer = transformer.resize(size.width, size.height);
