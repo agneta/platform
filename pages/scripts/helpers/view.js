@@ -83,6 +83,15 @@ module.exports = function(locals) {
       data.styles.push(templateStyle);
     }
 
+    var sourceStyle = this.layout_style({
+      source: true,
+      template: page.pathSource
+    });
+
+    if (sourceStyle) {
+      data.scripts.push(sourceStyle);
+    }
+
     //----------------------------------------
 
     var templateScript = this.layout_script({

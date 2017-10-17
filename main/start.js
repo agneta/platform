@@ -75,6 +75,11 @@ var start = {
   },
   portal: function(options) {
 
+    options.includeSources = [{
+      name: 'portal',
+      path: paths.core.portalProjectSource
+    }];
+
     var component = start.pages({
       mode: 'preview',
       dir: paths.core.portalWebsite,

@@ -65,7 +65,12 @@ module.exports = function(locals) {
   }
   ];
 
+  if (locals.includeSources) {
+    sources = sources.concat(locals.includeSources);
+  }
+
   for (var source of sources) {
+
 
     var cache = path.join(dirCache, source.name);
     // Styles

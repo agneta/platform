@@ -7,18 +7,19 @@ if(field.accept){
 }
 %>
 
-<md-input-container layout="column">
+<md-input-container layout="column" class="<%-field.class%>">
 
   <%-template('form/title')%>
   <%-template('form/description')%>
 
-  <form-attachment class="row" ng-model="<%-field.model%>" layout="row"  layout-align="start center">
-    <div ng-if="<%-field.model%>" layout="column">
-      <p><%-field.model%>.{{name}}</<p>
-      <p ng-show="size"><%-field.model%>.{{size}}</<p>
+  <form-attachment class="row" ng-model="<%-field.model%>" layout="row" layout-align="start center">
+    <div ng-if="<%-field.model%>" class="attachment" layout="row" layout-align="start center" flex="auto">
+      <span class="filename">{{<%-field.model%>.name}}</span>
+      <span>{{<%-field.model%>.size | filesize}}</span>
+      <span flex="auto"></span>
+      <span am-time-ago="<%-field.model%>.createdAt | amUtc | amLocal"></span>
     </div>
     <span ng-if="!<%-field.model%>">Nothing attached yet</span>
-    <span flex="auto"></span>
 
     <md-button class="md-primary" type="file" <%-accept%> ngf-select="<%-uploadMethod%>($file)">
       <md-icon md-svg-src="<%-get_icon('material/file-upload')%>"></md-icon>

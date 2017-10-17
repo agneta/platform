@@ -23,6 +23,7 @@
 /*global _e_Scroll*/
 /*global _e_Dialog*/
 /*global _e_menuSide*/
+/*global _e_menuSide*/
 
 (function() {
 
@@ -234,6 +235,17 @@
       return $rootScope.account ? 'logged-in' : 'logged-out';
     };
   });
+
+  app.filter('filesize', function () {
+
+    return function(bytes) {
+
+      return window.filesize(bytes);
+
+    };
+
+  });
+
 
   app.filter('highlight', function($sce) {
     return function(text, phrase) {
