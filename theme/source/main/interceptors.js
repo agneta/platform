@@ -68,17 +68,15 @@
 
             var $mdDialog = $injector.get('$mdDialog');
 
-            $mdDialog.show({
-              clickOutsideToClose: true,
-              templateUrl: agneta.partial('success'),
-              locals: {
-                data: {
-                  title: success.title,
-                  content: success.message || success.content || success
-                }
-              },
-              controller: 'DialogController'
+            $mdDialog.open({
+              partial: 'success',
+              nested: true,
+              data: {
+                title: success.title,
+                content: success.message || success.content || success
+              }
             });
+
           }
 
           return response;

@@ -90,7 +90,8 @@ module.exports = function(app, options) {
 
     },
     encrypt: function(value){
-      return cryptojs.AES.encrypt(value.toString('utf8'), secretKey);
+      value = value.toString('utf8');
+      return cryptojs.AES.encrypt(value, secretKey).toString();
     },
     decrypt: function(value){
       return cryptojs.AES.decrypt(value, secretKey).toString(cryptojs.enc.Utf8);

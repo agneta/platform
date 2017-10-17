@@ -27,7 +27,7 @@
     $scope.loading = true;
     $scope.formRoleFields = {};
 
-    function load() {
+    $scope.load = function() {
 
       Account.roleGet({
         accountId: data.accountId,
@@ -43,9 +43,9 @@
           $scope.loading = false;
         });
 
-    }
+    };
 
-    load();
+    $scope.load();
 
     $scope.update = function() {
       $scope.loading = true;

@@ -17,7 +17,7 @@ if(field.accept){
       <span class="filename">{{<%-field.model%>.name}}</span>
       <span>{{<%-field.model%>.size | filesize}}</span>
       <span flex="auto"></span>
-      <span am-time-ago="<%-field.model%>.createdAt | amUtc | amLocal"></span>
+      <span am-time-ago="<%-field.model%>.updatedAt | amUtc | amLocal"></span>
     </div>
     <span ng-if="!<%-field.model%>">Nothing attached yet</span>
 

@@ -25,10 +25,18 @@ function _e_Dialog(app) {
     $mdDialog._show = $mdDialog.show;
 
     $mdDialog.show = function(options) {
+
+      if (options.nested) {
+        var opt = options._options || options;
+        opt.multiple = true;
+        opt.skipHide = true;
+      }
+
       options.clickOutsideToClose = true;
       options.preserveScope = true;
       options.autoWrap = true;
       options.parent = angular.element(document.body);
+
       return $mdDialog._show(options);
 
     };
@@ -58,16 +66,10 @@ function _e_Dialog(app) {
           var dialogOptions = {
             onRemoving: options.onRemoving,
             clickOutsideToClose: true,
+            nested: options.nested,
             templateUrl: agneta.partial(options.partial),
             locals: locals
           };
-
-          if (options.nested) {
-            dialogOptions.multiple = true;
-            dialogOptions.preserveScope = true;
-            dialogOptions.autoWrap = true;
-            dialogOptions.skipHide = true;
-          }
 
 
           dialogOptions.controller = options.controller || data.controller || 'DialogController';
