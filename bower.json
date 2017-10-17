@@ -58,6 +58,7 @@
     "ngstorage": "0.3.x",
     "angular-material-sidemenu": "git://github.com/jkloss4/angular-material-sidemenu.git",
     "d3": "4.10.2",
-    "scrollmagic": "2.0.5"
+    "scrollmagic": "2.0.5",
+    "filesize": "3.5.10"
   }
 }

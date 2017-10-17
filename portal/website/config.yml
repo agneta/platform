@@ -44,26 +44,6 @@ minify:
   html: true
   js: false
 
-#-----------------------------------------------
-
-libraries:
-  quill.tar:
-    include:
-      - 'quill.snow.css'
-      - 'quill.min.js'
-  codemirror:
-    dir: 'editor'
-    include:
-      - 'addon/lint/lint.js'
-      - 'addon/lint/lint.css'
-      - 'addon/lint/yaml-lint.js'
-      - 'mode/yaml/yaml.js'
-      - 'mode/javascript/javascript.js'
-      - 'keymap/sublime.js'
-      - 'theme/monokai.css'
-      - 'lib/**'
-  st-json-beautifier:
-    include: '*.{css,min.js}'
 
 #-----------------------------------------------
 

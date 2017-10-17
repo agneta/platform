@@ -69,58 +69,6 @@ scripts:
 
 #-----------------------------------------------
 
-libraries:
-  videogular-themes-default:
-    include:
-      - 'fonts/**'
-      - '*.min.css'
-  string:
-  fuse.js:
-    ignoreDefaults: true
-    include: '*.min.js'
-  angular:
-  angular-animate:
-  angular-aria:
-  angular-i18n:
-    dir: 'angular-i18n'
-    include:
-      - 'angular-locale_el-gr.js'
-  angular-material-sidemenu:
-    include:
-      - 'dest/**'
-  angular-material:
-    ignore:
-      - 'modules/**'
-      - 'layouts/**'
-  angular-messages:
-  angular-resource:
-  angular-cookies:
-  angular-route:
-  angular-moment:
-  angular-material-data-table:
-  angular-sanitize:
-  cookieconsent:
-  oclazyload:
-  ngstorage:
-  Chart.js:
-  angular-swiper:
-    include: 'angular-swiper.js'
-  moment:
-    dir: 'moment'
-    include: '*.js'
-    ignore:
-      - 'ender.js'
-      - 'moment.js'
-      - 'package.js'
-  Swiper:
-    ignore:
-      - '**/*.jquery.**'
-  photoswipe:
-    dir: 'photoswipe'
-    include: '*.{css,min.js}'
-
-#-----------------------------------------------
-
 angular_libs:
 -
   js: 'lib/angular-aria.min'
