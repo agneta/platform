@@ -20,6 +20,9 @@ const config = require('./config');
 const Promise = require('bluebird');
 var ProgressBar = require('progress');
 
+_.mixin(require('lodash-deep'));
+
+
 var start = {
   init: function(subApps) {
 
@@ -29,10 +32,10 @@ var start = {
     });
 
     return Promise.each(subApps, function(component) {
-        if (component.preInit) {
-          return component.preInit();
-        }
-      })
+      if (component.preInit) {
+        return component.preInit();
+      }
+    })
       .then(function() {
         return Promise.each(subApps, function(component) {
           bar.tick({

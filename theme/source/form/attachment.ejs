@@ -14,8 +14,8 @@ if(field.accept){
 
   <form-attachment class="row" ng-model="<%-field.model%>" layout="row"  layout-align="start center">
     <div ng-if="<%-field.model%>" layout="column">
-      <p>{{name}}</<p>
-      <p ng-show="size">{{size}}</<p>
+      <p><%-field.model%>.{{name}}</<p>
+      <p ng-show="size"><%-field.model%>.{{size}}</<p>
     </div>
     <span ng-if="!<%-field.model%>">Nothing attached yet</span>
     <span flex="auto"></span>

@@ -21,7 +21,6 @@ var _ = require('lodash');
 
 module.exports = function() {
 
-  var server = require(path.join(projectPaths.services));
   var webPages = start.default();
   var webPortal = start.default();
 
@@ -29,12 +28,12 @@ module.exports = function() {
     client: webPages.locals
   };
 
-  var servicesPortal = server(_.extend({
+  var servicesPortal = start.services(_.extend({
     dir: projectPaths.portal,
     include: path.join(projectPaths.project, 'services')
   }, commonOptions));
 
-  var servicesWebsite = server(_.extend({
+  var servicesWebsite = start.services(_.extend({
     dir: projectPaths.project
   }, commonOptions));
 

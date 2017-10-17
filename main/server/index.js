@@ -1,5 +1,3 @@
-require('sharp');
-
 // Extend lodash
 var _ = require('lodash');
 _.mixin(require('lodash-deep'));

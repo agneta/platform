@@ -16,11 +16,11 @@
  */
 var error = require('./error');
 
-var port = parseFloat(process.env.PORT);
-var protocol = process.env.PROTOCOL;
-var hostName = process.env.HOST_NAME;
-var host = process.env.ENDPOINT;
-var env = process.env.NODE_ENV;
+var port = parseFloat(process.env.PORT) || 8181;
+var protocol = process.env.PROTOCOL || 'https';
+var hostName = process.env.HOST_NAME || 'localhost';
+var host = process.env.ENDPOINT || 'localhost';
+var env = process.env.NODE_ENV || 'development';
 
 
 //-------------------------------------

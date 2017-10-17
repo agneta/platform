@@ -15,7 +15,6 @@
  *   limitations under the License.
  */
 var extract = require('./extract');
-var path = require('path');
 
 module.exports = function(util) {
 
@@ -23,16 +22,9 @@ module.exports = function(util) {
 
   return extract(util, {
     name: 'theme',
-    base: projectPaths.baseTheme,
-    root: projectPaths.baseTheme
+    base: projectPaths.agneta,
+    root: projectPaths.agneta
   })
-    .then(function() {
-      return extract(util, {
-        name: 'portal',
-        base: path.join(projectPaths.portal, 'website'),
-        root: projectPaths.portal
-      });
-    })
     .then(function() {
       return extract(util, {
         name: 'project',

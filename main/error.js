@@ -20,6 +20,6 @@ module.exports = {
     if (env) {
       msg += ' You can also set an environment variable: ' + env + '.';
     }
-    throw msg;
+    throw new Error(msg);
   }
 };

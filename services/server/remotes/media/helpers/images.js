@@ -17,7 +17,7 @@
 const Promise = require('bluebird');
 const path = require('path');
 const _ = require('lodash');
-const sharp = require('sharp');
+const gm = require('gm');
 
 module.exports = function(Model, app) {
 
@@ -32,13 +32,13 @@ module.exports = function(Model, app) {
 
       var size = sizes[key];
 
-      var transformer = sharp()
-        .resize(size.width, size.height);
+      var transformer = gm(options.file);
 
       if (size.crop) {
-        transformer = transformer.crop(sharp.gravity.center);
+        transformer = transformer.thumb(size.width, size.height+'^');
+        transformer = transformer.gravity('center');
       } else {
-        transformer = transformer.max();
+        transformer = transformer.resize(size.width, size.height);
       }
 
       var parsed = path.parse(options.location);
@@ -46,7 +46,7 @@ module.exports = function(Model, app) {
       var location = path.format(parsed);
 
       operations.push({
-        file: options.file.pipe(transformer),
+        file: transformer.stream(),
         location: location,
         mimetype: options.mimetype,
         type: options.type,
