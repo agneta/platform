@@ -37,22 +37,25 @@ module.exports = function(locals) {
 
       var name = 'role-' + key;
 
+      var scripts = [
+        'partial/role'
+      ].concat(role.scripts);
+
       var pageData = _.extend({
         path: path.join('partial', name),
         template: 'role',
         isPartial: true,
         barebones: true,
         controller: 'FormRole',
-        scripts:[
-          'partial/role'
-        ]
-      }, role);
+      }, role, {
+        scripts: scripts
+      });
 
       pageData.form.name = 'formRole';
 
       result.push(pageData);
     })
-      .then(function(){
+      .then(function() {
         return result;
       });
   });
