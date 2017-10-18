@@ -15,35 +15,16 @@
  *   limitations under the License.
  */
 
-module.exports = function(Model, app) {
+module.exports = function(Model) {
 
-  Model.roleGet = function(accountId, roleName) {
+  Model.roleGetAdmin = function(accountId, roleName) {
 
-    return Model.__get(accountId)
-      .then(function(account) {
-
-        var role = Model.roleOptions[roleName];
-        var roleService = role.service || {};
-
-        if (!role) {
-          throw new Error('No role found: ' + roleName);
-        }
-
-        var RoleModel = app.models[role.model];
-
-        return RoleModel.findOne({
-          where: {
-            accountId: account.id
-          },
-          include: roleService.include
-        });
-
-      });
+    return Model.__roleGet(accountId, roleName);
 
   };
 
   Model.remoteMethod(
-    'roleGet', {
+    'roleGetAdmin', {
       description: '',
       accepts: [{
         arg: 'accountId',
@@ -61,7 +42,7 @@ module.exports = function(Model, app) {
       },
       http: {
         verb: 'post',
-        path: '/role-get'
+        path: '/role-get-admin'
       }
     }
   );

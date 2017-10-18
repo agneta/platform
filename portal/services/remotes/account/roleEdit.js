@@ -35,7 +35,7 @@ module.exports = function(Model, app) {
       }
     }
 
-    return Model.roleGet(accountId, roleName)
+    return Model.roleGetAdmin(accountId, roleName)
       .then(function(role) {
         console.log(fieldNames, data);
         data = _.pick(

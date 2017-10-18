@@ -96,6 +96,7 @@ module.exports = function(Model, app) {
   require('./account/signOut')(Model, app);
   require('./account/signOutAll')(Model, app);
   require('./account/roleAdd')(Model, app);
+  require('./account/roleGet')(Model, app);
   require('./account/verifyEmail')(Model, app);
 
 

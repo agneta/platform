@@ -29,7 +29,7 @@
 
     $scope.load = function() {
 
-      Account.roleGet({
+      Account.roleGetAdmin({
         accountId: data.accountId,
         roleName: data.roleName
       })

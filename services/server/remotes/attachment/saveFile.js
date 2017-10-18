@@ -17,7 +17,7 @@ module.exports = function(Model, app) {
           name: options.file.originalname,
           size: options.file.size,
           downloadDisabled: true,
-          data: app.secrets.encrypt(content)
+          data: content
         };
 
         return fs.remove(options.file.path);

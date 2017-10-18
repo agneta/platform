@@ -14,21 +14,25 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const fs = require('fs-extra');
 const path = require('path');
 const Promise = require('bluebird');
 const soap = require('soap');
 const uuidV1 = require('uuid/v1');
-const simpleParser = require('mailparser').simpleParser;
 const Request = require('request');
 const concatStream = require('concat-stream');
 const _ = require('lodash');
 const klaw = require('klaw');
 const S = require('string');
 
+const SoapResponse = require('./soap/response');
+const SoapSecurity = require('./soap/security');
+
 var credentials;
 
 module.exports = function(app) {
+
+  const soapResponse = SoapResponse();
+  const soapSecurity = SoapSecurity(app);
 
   app.soapServices = {};
   var config = app.get('wsdl');
@@ -72,8 +76,8 @@ module.exports = function(app) {
 
       var file = item.path;
 
-      var servicePath = path.relative(dirPath,file);
-      servicePath = S(servicePath).replaceAll('/','.').s;
+      var servicePath = path.relative(dirPath, file);
+      servicePath = S(servicePath).replaceAll('/', '.').s;
       servicePath = path.parse(servicePath).name;
 
       var fileConfig = _.get(config, `file.${servicePath}`) || {};
@@ -84,25 +88,29 @@ module.exports = function(app) {
         },
         request: function(options, cb) {
 
-          setSecurity({
+          soapSecurity({
             config: fileConfig,
             requestOptions: options
-          });
+          })
+            .then(function() {
 
-          //console.log(options);
-          //---------------------------------------------------
+              //console.log(options);
+              //---------------------------------------------------
 
-          var request = Request(options, cb);
+              var request = Request(options,cb);
 
-          request.on('response', function(response) {
-            response.pipe(concatStream({
-              encoding: 'buffer'
-            }, function(buffer) {
-              request.bufferResult = buffer;
-            }));
-          });
+              request.on('response', function(response) {
+                response.pipe(concatStream({
+                  encoding: 'buffer'
+                }, function(buffer) {
+                  request.bufferResult = buffer;
+                }));
+              });
 
-          return request;
+
+            })
+            .catch(cb);
+
         }
       })
         .then(function(client) {
@@ -124,7 +132,6 @@ module.exports = function(app) {
           var methodName = client.wsdl.definitions.$name;
           var method = client[methodName];
           var methodPromise = Promise.promisify(method);
-          var responses = {};
 
           //------------------------------------------------------------------------
 
@@ -132,19 +139,23 @@ module.exports = function(app) {
             console.log(arguments);
           });
 
-          client.on('response', onClientResponse);
+          client.on('response', soapResponse.listener);
 
           //------------------------------------------------------------------------
 
           var service = {
-            getResult: methodPromise,
+            getResult: function(query, options) {
+              return methodPromise(query, {
+                methodOptions: options
+              });
+            },
             getDetails: function(query, options) {
 
               return new Promise(function(resolve, reject) {
 
                 var uuid = uuidV1();
 
-                responses[uuid] = {
+                soapResponse.list[uuid] = {
                   resolve: resolve,
                   reject: reject
                 };
@@ -168,79 +179,13 @@ module.exports = function(app) {
           _.set(app.soapServices, servicePath, service);
 
 
-          //------------------------------------------------------------------------
-
-          function onClientResponse(result, incomingMessage, exchangeId) {
-
-            var responseParsed = responses[exchangeId];
-            if (!responseParsed) {
-              return;
-            }
-
-            delete responses[exchangeId];
-
-            if (!result) {
-              return responseParsed.reject('No incoming response. Check the log for errors');
-            }
-
-            var resContentType = incomingMessage.headers['content-type'];
-            var attachments = [];
-
-            Promise.resolve()
-              .then(function() {
-
-                var buffer = Buffer.concat([
-                  Buffer.from('content-type: ' + resContentType + '\r\n', 'utf8'),
-                  incomingMessage.request.bufferResult
-                ]);
-
-                return simpleParser(buffer)
-                  .then(function(parsed) {
-                    attachments = parsed.attachments;
-                  });
-
-              })
-              .then(function() {
-
-                responseParsed.resolve({
-                  attachments: attachments,
-                  raw: result
-                });
-
-              });
-
-          }
-
         });
     }
 
   }
 
 
-  function setSecurity(options) {
 
-    var config = options.config;
-    var requestOptions = options.requestOptions;
-
-    if (!config.security) {
-      return;
-    }
-
-    if (config.security.roleCertificate) {
-
-      requestOptions.agentOptions = {
-        pfx: fs.readFileSync(
-          path.join(process.cwd(), '..', 'certificates/wsdl/supplier.pfx')
-        ),
-        passphrase: '123!@#'
-      };
-
-      //var req = requestOptions.methodOptions.req;
-      //var clientCRT = req.socket.getPeerCertificate().raw.toString('base64');
-      return;
-    }
-
-  }
 
 
 

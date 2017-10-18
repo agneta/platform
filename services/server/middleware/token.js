@@ -111,6 +111,7 @@ module.exports = function(app) {
 
     token = token.__data;
     token.roles = roles;
+
     req.accessTokens[name] = token || null;
     rewriteUserLiteral(req, currentUserLiteral);
   }

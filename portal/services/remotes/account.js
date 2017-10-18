@@ -27,14 +27,14 @@ module.exports = function(Model, app) {
   require('./account/changePasswordAdmin')(Model, app);
   require('./account/recent')(Model, app);
   require('./account/remove')(Model, app);
-  require('./account/roleGet')(Model, app);
+  require('./account/roleGetAdmin')(Model, app);
   require('./account/roleEdit')(Model, app);
   require('./account/roleAdd')(Model, app);
   require('./account/roleRemove')(Model, app);
   require('./account/roles')(Model, app);
   require('./account/total')(Model, app);
   require('./account/update')(Model, app);
-  
+
   require('./account/ssh/add')(Model, app);
   require('./account/ssh/remove')(Model, app);
   require('./account/ssh/list')(Model, app);
