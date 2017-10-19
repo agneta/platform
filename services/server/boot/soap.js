@@ -175,7 +175,7 @@ module.exports = function(app) {
           if (_.get(app.soapServices, servicePath)) {
             throw new Error('Conflict: Service path already exists.');
           }
-
+          //console.log(servicePath);
           _.set(app.soapServices, servicePath, service);
 
 

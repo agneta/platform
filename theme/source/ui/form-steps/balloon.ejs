@@ -1,0 +1,17 @@
+<%
+  var _class='';
+  var _ngHide='';
+  if(locals.error){
+    _class = balloon.class;
+  }
+  else{
+    _ngHide = `ng-hide="hasError('${step.name}')"`;
+  }
+%>
+
+<div class="balloon <%-_class%>" <%-_ngHide%>>
+  <%if(balloon.notice){%>
+    <span class="notice"><%-lng(page.notice)%> </span>
+  <%}%>
+  <span class="text"><%-lng(balloon.text)%></span>
+</div>

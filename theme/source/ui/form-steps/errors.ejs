@@ -1,0 +1,18 @@
+<%if(step.error){%>
+  <div class="errors">
+<%for(var name in step.error){
+  var error = step.error[name];
+  error.name = name;
+  %>
+  <div class="error type-<%-error.type%>" ng-class="{active:hasError('<%-step.name%>','<%-name%>')}">
+    <%if(error.type=='balloon'){
+      error.class='red'%>
+    <%-template('ui/form-steps/balloon',{balloon:error,error:true})%>
+    <%}%>
+  <%if(error.type=='view'){%>
+  <%-template(error.template,{error:error})%>
+  <%}%>
+  </div>
+<%}%>
+</div>
+<%}%>
