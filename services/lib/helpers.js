@@ -43,6 +43,10 @@ module.exports = function(app) {
     omitDeep: _.omitDeep,
     mediaType: function(mimeType) {
 
+      if(!mimeType){
+        return;
+      }
+
       var typeParsed = mimeType.split('/');
       var mimetype = typeParsed[0];
       var mediatype = typeParsed[1];
