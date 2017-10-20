@@ -1,5 +1,5 @@
 <div layout="row" layout-align="center center">
-  <%for(var name of actions){
+  <%for(var name of step.actions){
     var action = page.action[name]%>
   <md-button ng-disabled="<%-action.disabled%>" class="md-primary round md-raised" ng-click="<%-action.click%>">
       <%-lng(action.title)%>

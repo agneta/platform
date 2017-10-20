@@ -1,0 +1,71 @@
+.ui-form-steps{
+
+
+  .balloon{
+    position: relative;
+    border-radius: 6px;
+    padding: 20px 10px;
+    margin-top: 20px;
+    background: white;
+    box-sizing: border-box;
+
+    &:after {
+      bottom: 100%;
+      left: 50%;
+      border: solid transparent;
+      border-bottom-color: white;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      border-width: 10px;
+      margin-left: -10px;
+    }
+
+    .notice{
+      color: color-red;
+      font-weight: bold;
+    }
+
+    &.red{
+      color: white;
+      background: color-red;
+      font-weight: bold;
+      &:after{
+        border-bottom-color: color-red;
+      }
+    }
+  }
+
+  .errors{
+
+    .error{
+      display: none;
+      &.active{
+        display: initial;
+        .balloon {
+          background: color-red;
+          color: white;
+          &:after {
+            border-bottom-color: color-red;
+          }
+        }
+      }
+
+
+      &.type-view{
+        .title{
+          color: color-red;
+          font-weight: bold;
+        }
+      }
+      .date-range{
+        font-size: 1.5em;
+        font-weight: bold;
+        color: color-primary;
+      }
+    }
+  }
+
+}
