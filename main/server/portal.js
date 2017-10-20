@@ -41,8 +41,6 @@ module.exports = function(options) {
     local: 'preview/local',
     production: 'preview/production'
   };
-
-  const url_services = '/services';
   // Ensure secure connection when not in development mode
 
   app.set('trust proxy', 1);
@@ -77,7 +75,7 @@ module.exports = function(options) {
   }
 
   var portalServices = setupServer('services',{
-    root: '',
+    root: 'services/portal',
     id: 'portal',
     include: [
       projectPaths.api,
@@ -93,7 +91,7 @@ module.exports = function(options) {
   });
 
   var webServices = setupServer('services',{
-    root: 'services',
+    root: 'services/preview',
     id: 'web',
     disableSocket: true,
     dir: projectPaths.project,
@@ -103,8 +101,7 @@ module.exports = function(options) {
   });
 
   var webPages = setupServer('website',{
-    root: appRoots.preview,
-    url_services: url_services
+    root: appRoots.preview
   });
 
   //-----------------------------------------------------
@@ -140,7 +137,6 @@ module.exports = function(options) {
       mode: 'default',
       locals: _.extend({}, config, {
         root: websiteRoot,
-        url_services: url_services,
         buildOptions: {
           assets: true,
           pages: true

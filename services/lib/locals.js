@@ -37,6 +37,15 @@ module.exports = function(app, options) {
   app.set('root', options.root);
 
   //---------------------------------------------
+
+  switch (env) {
+    case 'development':
+    case 'local':
+      app.set('services_url',urljoin('/', options.root));
+      break;
+  }
+
+  //---------------------------------------------
   // Merge Config
 
   var configurator = require('./configurator')(app);

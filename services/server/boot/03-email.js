@@ -14,13 +14,16 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var path = require('path');
-var ejs = require('ejs');
-var Promise = require('bluebird');
-var _ = require('lodash');
-var yaml = require('js-yaml');
-var fs = require('fs');
-var htmlToText = require('html-to-text');
+const path = require('path');
+const ejs = require('ejs');
+const Promise = require('bluebird');
+const _ = require('lodash');
+const yaml = require('js-yaml');
+const fs = require('fs-extra');
+const htmlToText = require('html-to-text');
+const juice = require('juice');
+const stylus = require('stylus');
+
 
 module.exports = function(app) {
 
@@ -104,23 +107,52 @@ module.exports = function(app) {
         return;
       }
 
-      var templateData = yaml.safeLoad(fs.readFileSync(path.join(pathTemplate, 'data.yml'), 'utf8'));
-      var renderer = ejs.compile(pathTemplate);
+      var templateData;
+      var templateStyle;
+      var templateStylePath = path.join(pathTemplate, 'style.stylus');
 
-      templates[templateDir] = {
-        renderer: renderer,
-        data: templateData,
-        render: function(data) {
+      return fs.readFile(templateStylePath,'utf8')
+        .then(function(content){
 
-          var html = renderer(_.extend({}, dataMain, templateData, data, helpers));
+          templateStyle = stylus(content)
+            .set('filename', templateStylePath)
+            .set('include css', true)
+            .render();
 
-          return {
-            html: html,
-            text: email.text(html)
+          return fs.readFile(path.join(pathTemplate, 'data.yml'));
+        })
+        .then(function(dataContent) {
+          templateData = yaml.safeLoad(dataContent);
+
+          var templateHtmlPath = path.join(pathTemplate, 'html.ejs');
+          //console.log('templateHtmlPath',templateHtmlPath);
+          return fs.readFile(templateHtmlPath,'utf8');
+        })
+        .then(function(templateContent) {
+          //console.log('templateContent',templateContent);
+          var renderer = ejs.compile(
+            templateContent
+          );
+
+          templates[templateDir] = {
+            renderer: renderer,
+            data: templateData,
+            render: function(data) {
+
+              var html = renderer(_.extend({}, dataMain, templateData, data, helpers));
+
+              html = juice.inlineContent(html, templateStyle);
+
+              return {
+                html: html,
+                text: email.text(html)
+              };
+
+            }
           };
 
-        }
-      };
+        });
+
 
     });
   })

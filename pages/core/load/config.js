@@ -34,9 +34,9 @@ module.exports = function(locals) {
     var websiteConfig;
 
     return readFile(
-      path.join(project.paths.baseTheme, 'config.yml'),
-      'utf8'
-    )
+        path.join(project.paths.baseTheme, 'config.yml'),
+        'utf8'
+      )
       .then(function(content) {
 
         themeConfig = yaml.safeLoad(content);
@@ -136,7 +136,6 @@ module.exports = function(locals) {
 
         if (project.config.services) {
 
-          var servicesUrl;
           var viewPath;
           switch (locals.env) {
             case 'local':
@@ -146,22 +145,13 @@ module.exports = function(locals) {
               viewPath = project.config.page.viewBase.default;
               break;
           }
-          switch (locals.env) {
-            case 'development':
-            case 'local':
-              servicesUrl = urljoin(hostPath, locals.url_services);
-              break;
-            default:
 
-              var servicesDomain = locals.services.get('domain');
+          var servicesUrl = locals.services.get('services_url');
 
-              if (servicesDomain) {
-                servicesUrl = project.site.protocol + '//' + servicesDomain;
-              }
-
-              break;
+          if (!servicesUrl) {
+            throw new Error('Services must have a url');
           }
-
+          console.log('servicesUrl',servicesUrl);
           var servicesParsed = url.parse(servicesUrl);
 
           project.site.services = {

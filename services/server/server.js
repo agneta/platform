@@ -77,11 +77,14 @@ module.exports = function(options) {
         .then(function() {
           return new Promise(function(resolve, reject) {
 
+            var middleware = app.configurator.load('middleware',true);
+            //console.log(middleware);
+
             var bootOptions = {
               appRootDir: __dirname,
               models: bootGenerated.models,
               modelDefinitions: bootGenerated.modelDefinitions,
-              middleware: app.configurator.load('middleware',true),
+              middleware: middleware,
               dataSources: app.configurator.load('datasources'),
               bootDirs: [
                 path.join(__dirname, 'boot'),

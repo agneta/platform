@@ -27,7 +27,7 @@ module.exports = function(Model) {
         });
       })
       .then(function(result) {
-
+        //console.log('email html',result);
         var $ = cheerio.load(result.html);
         var html = $.html(changeTag.call($('body'), $, 'div'));
         return {

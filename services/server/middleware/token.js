@@ -112,6 +112,8 @@ module.exports = function(app) {
     token = token.__data;
     token.roles = roles;
 
+    //console.log('middleware:token:save',name,token);
+
     req.accessTokens[name] = token || null;
     rewriteUserLiteral(req, currentUserLiteral);
   }

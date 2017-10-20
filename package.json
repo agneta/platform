@@ -59,6 +59,7 @@
     "htmlclean": "3.0.3",
     "image-size": "0.6.1",
     "js-yaml": "3.10.0",
+    "juice": "^4.2.1",
     "klaw": "2.1.0",
     "lockfile": "1.0.3",
     "lodash": "4.17.4",

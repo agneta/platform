@@ -27,7 +27,6 @@ module.exports = function(locals) {
   var app = locals.app;
   var project = locals.project;
 
-  require('./auth')(locals);
   var scriptCompiler = ScriptCompiler(locals);
   var stylusCompiler = StylusCompiler(locals);
 
