@@ -38,7 +38,9 @@ google_maps: ''
 
 #-----------------------------------------------
 
-auth: false
+authorization:
+  - administrator
+  - editor
 
 minify:
   html: true

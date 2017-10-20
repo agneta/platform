@@ -96,16 +96,18 @@ module.exports = function(app) {
 
           if (
             params.dir.indexOf(project.paths.dataTheme) === 0 ||
-                        params.dir.indexOf(project.paths.data) === 0
+            params.dir.indexOf(project.paths.data) === 0
           ) {
             locals.cache.data.invalidate(pathFile);
           }
 
           if (
             pathFile.indexOf(project.paths.configTheme) === 0 ||
-                        pathFile.indexOf(project.paths.config) === 0
+            pathFile.indexOf(project.paths.config) === 0
           ) {
-            promise = promise.then(locals.main.load.config());
+            promise = promise.then(function() {
+              return locals.main.load.config();
+            });
           }
 
           return promise

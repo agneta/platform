@@ -111,6 +111,17 @@ module.exports = function(locals) {
 
                     }
 
+                    //---------------------------------------
+                    // Default authorization
+
+                    if(project.config.authorization){
+
+                      _.mergePages(data,{
+                        authorization: project.config.authorization
+                      });
+                    }
+
+
                   })
                   .then(function() {
 
