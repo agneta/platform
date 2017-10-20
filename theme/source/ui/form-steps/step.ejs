@@ -1,5 +1,12 @@
-<%-template(stepTemplate)%>
-<%-template('ui/form-steps/errors')%>
-<%if(step.actions){%>
-  <%-template('ui/form-steps/actions')%>
-<%}%>
+<div class="step <%-step.name%>" ng-show="showSteps || currentStep=='<%-step.name%>'">
+  <div class="number"><%-number%>{{showSteps}}</div>
+  <div layout="column">
+
+    <%-template(stepTemplate)%>
+    <%-template('ui/form-steps/errors')%>
+    <%if(step.actions){%>
+      <%-template('ui/form-steps/actions')%>
+    <%}%>
+
+  </div>
+</div>
