@@ -27,8 +27,6 @@ const S = require('string');
 const SoapResponse = require('./soap/response');
 const SoapSecurity = require('./soap/security');
 
-var credentials;
-
 module.exports = function(app) {
 
   const soapResponse = SoapResponse();
@@ -38,10 +36,6 @@ module.exports = function(app) {
   var config = app.get('wsdl');
   if (!config) {
     return;
-  }
-
-  if (!credentials) {
-    credentials = app.secrets.get('wsdl');
   }
 
   var dirServices = config.path || path.join(app.get('services_dir'), 'wsdl');
@@ -80,8 +74,6 @@ module.exports = function(app) {
       servicePath = S(servicePath).replaceAll('/', '.').s;
       servicePath = path.parse(servicePath).name;
 
-      var fileConfig = _.get(config, `file.${servicePath}`) || {};
-
       return soap.createClientAsync(file, {
         wsdl_headers: {
           connection: 'keep-alive'
@@ -89,7 +81,7 @@ module.exports = function(app) {
         request: function(options, cb) {
 
           soapSecurity({
-            config: fileConfig,
+            servicePath: servicePath,
             requestOptions: options
           })
             .then(function() {
@@ -114,20 +106,6 @@ module.exports = function(app) {
         }
       })
         .then(function(client) {
-
-          if (!fileConfig.security) {
-            switch (credentials.scheme) {
-              case 'BasicAuth':
-                client.setSecurity(new soap.BasicAuthSecurity(
-                  credentials.username,
-                  credentials.password));
-                break;
-              default:
-            }
-
-          }
-
-          //------------------------------------------------------------------------
 
           var methodName = client.wsdl.definitions.$name;
           var method = client[methodName];
