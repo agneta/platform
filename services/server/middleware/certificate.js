@@ -11,10 +11,6 @@ module.exports = function(app) {
       .resolve()
       .then(function() {
 
-        if (req.accessToken) {
-          return;
-        }
-
         //--------------------------------------
         // Auto sign-in user with certificate
 
@@ -42,19 +38,28 @@ module.exports = function(app) {
 
             account = _account;
 
-            console.log('certificate:account',account);
-            console.log('certificate:accessToken',req.accessToken);
-            if(req.accessToken && req.accessToken.userId == account.id){
-              console.log(req.accessToken);
-              console.log('already logged in');
-              return;
-            }
-
             if (!account) {
               var error = new Error('Your certificate does not correspond to a registered user. Choose another one, register your account, or remove it.');
               error.statusCode = 400;
               return Promise.reject(error);
             }
+
+            //-------------------------------------------------------------------
+
+            //console.log('certificate:account',account);
+            //console.log('certificate:accessToken',req.accessToken);
+
+            var TokenuserId = _.get(req, 'accessToken.userId');
+            if (
+              TokenuserId &&
+              (TokenuserId.toString() == account.__data.id.toString())) {
+
+              console.log('already logged in');
+              return;
+
+            }
+
+            //-------------------------------------------------------------------
 
             return account.createAccessToken()
               .then(function(token) {
