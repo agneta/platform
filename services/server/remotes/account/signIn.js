@@ -168,20 +168,30 @@ module.exports = function(Model, app) {
 
   Model.afterRemote('signIn', function setLoginCookie(context, account, next) {
 
-    var accessToken = account.token;
+    Model.__setLoginCookie({
+      token: account.token,
+      res: context.res,
+      req: context.req
+    });
+    return next();
+  });
 
-    var res = context.res;
-    var req = context.req;
-    if (accessToken !== null) {
-      if (accessToken.id !== null) {
-        res.cookie(tokenName, accessToken.id, {
+  Model.__setLoginCookie = function(options){
+
+    var token = options.token;
+    var res = options.res;
+    var req = options.req;
+
+    if (token !== null) {
+      if (token.id !== null) {
+        res.cookie(tokenName, token.id, {
           signed: req.signedCookies ? true : false,
-          maxAge: 1000 * accessToken.ttl
+          maxAge: 1000 * token.ttl
         });
       }
     }
-    return next();
-  });
+
+  };
 
 
 };

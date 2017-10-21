@@ -42,6 +42,8 @@ module.exports = function(app) {
 
             account = _account;
 
+            console.log('certificate:account',account);
+            console.log('certificate:accessToken',req.accessToken);
             if(req.accessToken && req.accessToken.userId == account.id){
               console.log(req.accessToken);
               console.log('already logged in');
@@ -58,6 +60,12 @@ module.exports = function(app) {
               .then(function(token) {
 
                 //console.log('middleware:cretificate:token',token);
+
+                app.models.Account.__setLoginCookie({
+                  token: token,
+                  req: req,
+                  res: res
+                });
 
                 app.token.save({
                   account: account,
