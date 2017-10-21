@@ -3,6 +3,7 @@ title:
   gr: 'Σύνδεση'
 
 template: 'login'
+skipAuthorization: true
 
 hiddenToolbar: true
 hiddenFooter: true

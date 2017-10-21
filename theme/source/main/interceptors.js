@@ -70,7 +70,7 @@
 
             $mdDialog.open({
               partial: 'success',
-              nested: true,
+              //nested: true,
               data: {
                 title: success.title,
                 content: success.message || success.content || success
@@ -83,17 +83,18 @@
         },
         responseError: function(rejection) {
 
-          console.error(rejection);
+          console.error('responseError:rejection',rejection);
+          console.error('responseError:rejection:services:url',agneta.services.url);
 
           if (
             rejection.config &&
                         rejection.config.url &&
                         rejection.config.url.indexOf(agneta.services.url) !== 0) {
-            return;
+            return rejection;
           }
 
           if (!rejection.data) {
-            return;
+            return rejection;
           }
 
           var error = rejection.data.error || rejection.data || {

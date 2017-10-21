@@ -124,6 +124,9 @@ module.exports = function(locals) {
   project.extend.helper.register('viewAuthData', function() {
 
     var data = this.viewBasicData();
+    data.layoutClass = 'page-authorization';
+    data.styles = data.styles || [];
+    data.styles = data.styles.concat([this.get_asset('authorization.css')]);
     return JSON.stringify(data);
 
   });

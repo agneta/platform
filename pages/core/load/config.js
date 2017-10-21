@@ -151,7 +151,7 @@ module.exports = function(locals) {
           if (!servicesUrl) {
             throw new Error('Services must have a url');
           }
-          console.log('servicesUrl',servicesUrl);
+          //console.log('servicesUrl',servicesUrl);
           var servicesParsed = url.parse(servicesUrl);
 
           project.site.services = {

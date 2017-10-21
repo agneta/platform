@@ -2,3 +2,5 @@ title:
   en: Confirm
   gr: 'Επιβεβαίωση'
 controller: DialogConfirm
+
+skipAuthorization: true

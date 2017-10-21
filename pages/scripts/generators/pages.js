@@ -114,7 +114,7 @@ module.exports = function(locals) {
                     //---------------------------------------
                     // Default authorization
 
-                    if(project.config.authorization){
+                    if(project.config.authorization && !data.skipAuthorization){
 
                       _.mergePages(data,{
                         authorization: project.config.authorization

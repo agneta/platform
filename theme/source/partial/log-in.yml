@@ -11,3 +11,5 @@ controller: PopupLoginCtrl
 
 viewData:
   loginRedirect: '/'
+
+skipAuthorization: true

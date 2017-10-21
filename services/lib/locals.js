@@ -41,9 +41,16 @@ module.exports = function(app, options) {
   switch (env) {
     case 'development':
     case 'local':
-      app.set('services_url',urljoin('/', options.root));
+
+      var services_url = urljoin('/', options.root);
+      if(services_url.indexOf('//')==0){
+        services_url = services_url.substring(1);
+      }
+
+      app.set('services_url',services_url);
       break;
   }
+
 
   //---------------------------------------------
   // Merge Config
