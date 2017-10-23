@@ -4,6 +4,8 @@ _.mixin(require('lodash-deep'));
 
 const url = require('url');
 const Promise = require('bluebird');
+const path = require('path');
+const paths = require('../paths');
 //---------------------------------------------------
 // Look for server certificates
 
@@ -14,18 +16,14 @@ var port = 8080;
 module.exports = Promise.resolve()
   .then(function() {
 
-    if (
-      !process.env.SERVER_KEY &&
-      !process.env.SERVER_CERT &&
-      !process.env.CA_CERT
-    ) {
-      return;
-    }
+    var secrets = require(
+      path.join(paths.core.services,'lib/secrets')
+    )({});
 
     var protocolOptions = {
-      key: process.env.SERVER_KEY.replace(/\\n/g,'\n'),
-      cert: process.env.SERVER_CERT.replace(/\\n/g,'\n'),
-      ca: process.env.CA_CERT.replace(/\\n/g,'\n'),
+      key: secrets.get('keys.server.key'),
+      cert: secrets.get('keys.server.cert'),
+      ca: secrets.get('keys.server.ca'),
       requestCert: true,
       rejectUnauthorized: false
     };

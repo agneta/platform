@@ -3,63 +3,51 @@ const _ = require('lodash');
 const fs = require('fs-extra');
 const path = require('path');
 
-module.exports = function(app, options) {
+//---------------------------------------------
 
-  var secretKey = process.env.AGNETA_SECRET_KEY;
+var keyPath =path.join(
+  process.cwd(), '../secret.json'
+);
+var secretKey = fs.readFileSync(keyPath,'utf8');
 
-  if (!secretKey) {
+if (!secretKey) {
+  throw new Error('Could not find the secret key to set sensitive data');
+}
+//---------------------------------------------
 
-    var dirSecrets = path.join(process.cwd(), '..', 'secrets');
+var secretsPath = path.join(process.cwd(), 'secrets.json');
+var keys = fs.readJsonSync(secretsPath);
 
-    if (
-      fs.existsSync(dirSecrets)
-    ) {
-      secretKey = require(path.join(
-        dirSecrets, 'key.json'
-      ));
-    }
-  }
+//----------------------------------------------------
+// Check if secret key is valid
 
-  if (!secretKey) {
-    throw new Error('Could not find the secret key to set sensitive data');
-  }
+var isValid = keys.isValid;
 
-  //delete process.env.AGNETA_SECRET_KEY;
+if (!isValid) {
+  throw new Error('Not a correct secret file');
+}
 
-  var keys = fs.readJsonSync(
-    path.join(options.paths.project, 'secrets.json')
-  );
+isValid = cryptojs.AES.decrypt(
+  isValid.toString(), secretKey).toString(cryptojs.enc.Utf8);
 
-  //----------------------------------------------------
-  // Check if secret key is valid
+//console.log(keys);
+//console.log('isValid', isValid);
+//console.log('secretKey', secretKey);
 
-  var isValid = keys.isValid;
+if (isValid != 'yes') {
+  throw new Error('The secret key is incorrect');
+}
 
-  if (!isValid) {
-    throw new Error('Not a correct secret file');
-  }
+//----------------------------------------------------
+// Decrypt all the object values
 
-  isValid = cryptojs.AES.decrypt(
-    isValid.toString(), secretKey).toString(cryptojs.enc.Utf8);
+_.deepMapValues(keys, function(value, path) {
+  value = cryptojs.AES.decrypt(value, secretKey)
+    .toString(cryptojs.enc.Utf8);
+  _.set(keys, path, value);
+});
 
-  //console.log(keys);
-  //console.log('isValid', isValid);
-  //console.log('secretKey', secretKey);
-
-  if (isValid != 'yes') {
-    throw new Error('The secret key is incorrect');
-  }
-
-  //----------------------------------------------------
-  // Decrypt all the object values
-
-  _.deepMapValues(keys, function(value, path) {
-    value = cryptojs.AES.decrypt(value, secretKey)
-      .toString(cryptojs.enc.Utf8);
-    _.set(keys, path, value);
-  });
-
-  //----------------------------------------------------
+module.exports = function(app) {
 
   function getSecret(env, path, keep) {
 
@@ -81,20 +69,25 @@ module.exports = function(app, options) {
 
   }
 
+  var secrets = {
+    get: function(path, keep) {
 
-  app.secrets = {
-    get: function(path,keep) {
-
-      var env = app.get('env');
+      var env = process.env.NODE_ENV;
       return getSecret(env, path, keep);
 
     },
-    encrypt: function(value){
+    encrypt: function(value) {
       value = value.toString('utf8');
       return cryptojs.AES.encrypt(value, secretKey).toString();
     },
-    decrypt: function(value){
+    decrypt: function(value) {
       return cryptojs.AES.decrypt(value, secretKey).toString(cryptojs.enc.Utf8);
     }
   };
+
+  if(app){
+    app.secrets = secrets;
+  }
+
+  return secrets;
 };
