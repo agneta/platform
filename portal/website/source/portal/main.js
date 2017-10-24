@@ -59,11 +59,6 @@
       return toggle.value;
     };
 
-    if (!$rootScope.account.administrator) {
-      toggle.value = true;
-      return;
-    }
-
     $scope.onChange = function(value) {
       if(value==toggle.value){
         return;

@@ -1,0 +1,28 @@
+.has-role{
+
+  position: relative;
+
+  &.has-no-role{
+    pointer-events: none;
+    .container{
+      opacity: 0.2;
+    }
+    .ui-lock{
+      z-index: 2;
+      display: flex;
+      position: absolute;
+      top:0;
+      right:0;
+
+      md-icon{
+        margin: 0;
+        width: 40px;
+        height: 40px;
+      }
+    }
+  }
+
+  .ui-lock{
+    display: none;
+  }
+}

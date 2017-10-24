@@ -79,5 +79,8 @@
     en: "Explore your API."
   href_full: '/services/preview/explorer'
   icon: 'agneta/services'
+  authorization:
+    - administrator
+    - editor
 -
   page: 'docs'

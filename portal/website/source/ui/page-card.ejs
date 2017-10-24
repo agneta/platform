@@ -1,7 +1,7 @@
 <%
 
 var item = _.extend({},data);
-var roleShow;
+var hasRole;
 
 if(data.page){
   item = _.extend(data,get_page(data.page));
@@ -17,14 +17,11 @@ if(!url && item.path){
   url = get_path(item.path);
 }
 
-if(item.authorization){
-  roleShow = `show-on-role='${JSON.stringify(item.authorization)}'`;
-}
-
 %>
 
 
-<div class="page-card" class="page-card" layout="column" <%-roleShow%>>
+<div class="page-card" class="page-card" layout="column" has-role='<%-JSON.stringify(item.authorization)%>'>
+  <%-template('ui/lock')%>
   <div class="container">
 
     <div class="header" layout="row">
