@@ -18,7 +18,6 @@ function _e_login(app) {
 
   app.controller('LoginController', function($scope, $window, $location, $mdDialog, $rootScope, $routeParams, Account, LoopBackAuth) {
 
-    $location.url($location.path());
     var token;
 
     switch ($routeParams.action) {
@@ -85,10 +84,19 @@ function _e_login(app) {
         $scope.loading = false;
 
         if (!err) {
-          var redirect = $rootScope.viewData.extra.loginRedirect;
-          if (redirect) {
-            window.location.href = agneta.langPath(redirect);
+
+
+          var redirect = $routeParams.redirect;
+
+
+          if (!redirect) {
+            redirect = agneta.langPath($rootScope.viewData.extra.loginRedirect);
           }
+
+          if (redirect) {
+            $window.location.href = redirect;
+          }
+
           return;
         }
 

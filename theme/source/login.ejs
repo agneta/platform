@@ -13,7 +13,7 @@ var form =
   submit:{
     title: lng('general.login')
   },
-  onSubmit: 'signIn()'
+  onSubmit: locals.onSubmit||'signIn()'
 };
 
 %>

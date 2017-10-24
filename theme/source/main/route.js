@@ -78,6 +78,7 @@ function _e_Route(app) {
       $rootScope.loadingMain = true;
       var searchData = $location.search();
       delete searchData.version;
+      delete searchData.token;
       $location.search(searchData);
 
     });

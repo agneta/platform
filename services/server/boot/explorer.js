@@ -35,7 +35,17 @@ module.exports = function(app) {
     base = base.substring(1);
   }
 
-  app.use('/explorer', explorer.routes(app, {
-    basePath: base
-  }));
+  app.use('/explorer', function(req, res, next) {
+
+    app.auth.middleware({
+      req: req,
+      res: res,
+      next: next,
+      allow: ['administrator'],
+      route: explorer.routes(app, {
+        basePath: base
+      })
+    });
+
+  });
 };

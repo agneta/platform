@@ -46,36 +46,24 @@ module.exports = function(Model, app) {
           };
         }
 
-        var fields = {};
+        var has = [];
 
         for (role of roles) {
-          fields[role] = true;
+          if (req.accessToken.roles[role]) {
+            has.push(role);
+          }
         }
 
-        return Model.findById(req.accessToken.userId, {
-          include: roles,
-          fields: fields
-        })
-          .then(function(account) {
-            var has = [];
+        if (!has.length) {
+          return {
+            message: 'User does not have any of these roles'
+          };
+        }
 
-            for (role of roles) {
-              if (account[role]) {
-                has.push(role);
-              }
-            }
-
-            if (!has.length) {
-              return {
-                message: 'User does not have any of these roles'
-              };
-            }
-
-            return {
-              message: 'Found roles for user',
-              has: has
-            };
-          });
+        return {
+          message: 'Found roles for user',
+          has: has
+        };
       });
 
   };

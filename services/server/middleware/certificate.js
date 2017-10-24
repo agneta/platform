@@ -54,7 +54,7 @@ module.exports = function(app) {
               TokenuserId &&
               (TokenuserId.toString() == account.__data.id.toString())) {
 
-              console.log('already logged in');
+              //console.log('already logged in');
               return;
 
             }

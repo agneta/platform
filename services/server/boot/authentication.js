@@ -16,6 +16,33 @@
  */
 
 module.exports = function enableAuthentication(app) {
+
   // enable authentication
   app.enableAuth();
+
+  var auth = {};
+
+  //----------------------------------------
+
+  auth.middleware = function(options) {
+
+    app.models.Account.hasRoles(options.allow, options.req)
+      .then(function(result) {
+
+        if (!result.has) {
+          return options.res
+            .redirect(`/gr/authorization?redirect=${options.req.originalUrl}`);
+        }
+
+        options.route(
+          options.req,
+          options.res,
+          options.next
+        );
+
+      });
+
+  };
+
+  app.auth = auth;
 };

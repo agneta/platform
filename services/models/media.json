@@ -45,7 +45,7 @@
     }, {
         "accessType": "EXECUTE",
         "principalType": "ROLE",
-        "principalId": "reviewer",
+        "principalId": "editor",
         "permission": "ALLOW"
     }, {
         "accessType": "EXECUTE",
