@@ -79,6 +79,9 @@ module.exports = function(locals) {
         builtin: utility.builtin,
         path: 'utilities/' + utility.name,
         template: 'utility',
+        authorization: [
+          'administrator'
+        ],
         viewData: {
           name: utility.name
         }

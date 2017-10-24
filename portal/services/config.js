@@ -19,7 +19,6 @@ module.exports = {
     name: 'access_portal'
   },
   auth: true,
-  signinRoles: ['administrator', 'reviewer', 'editor'],
   limiter: {
     global: false
   },

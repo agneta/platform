@@ -5,3 +5,8 @@ description:
   en: "Upload, edit or event delete your images, videos, icons and other file types"
   gr: 'Ανεβάστε, επεξεργαστείτε ή διαγράψτε εικόνες, βίντεο, και άλλους τύπους αρχείων'
 icon: 'agneta/media'
+
+
+authorization:
+  - administrator
+  - editor

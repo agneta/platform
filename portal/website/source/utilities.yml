@@ -8,6 +8,9 @@ description:
 
 icon: agneta/utilities
 
+authorization:
+  - administrator
+
 builtin:
   en: Built-in Utilities
 

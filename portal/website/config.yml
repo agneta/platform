@@ -41,6 +41,7 @@ google_maps: ''
 authorization:
   - administrator
   - editor
+  - reviewer
 
 minify:
   html: true

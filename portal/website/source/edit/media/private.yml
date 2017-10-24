@@ -13,3 +13,7 @@ angular_libs:
 
 viewData:
   private: true
+
+authorization:
+  - administrator
+  - editor

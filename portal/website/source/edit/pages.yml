@@ -14,3 +14,7 @@ menuLock: true
 
 editor:
   main: true
+
+authorization:
+  - administrator
+  - editor

@@ -59,11 +59,11 @@ module.exports = function(locals) {
           });
 
           return new Promise(function(resolve, reject) {
-            walker.on('end', function() {
-              resolve(paths);
-            });
-            walker.on('error', reject);
-          })
+              walker.on('end', function() {
+                resolve(paths);
+              });
+              walker.on('error', reject);
+            })
             .then(function(files) {
 
               return Promise.map(files, function(path_file) {
@@ -105,7 +105,7 @@ module.exports = function(locals) {
                         .then(function(content) {
 
                           var extendedData = yaml.safeLoad(content) || {};
-                          _.mergePages(extendedData,data);
+                          _.mergePages(extendedData, data);
                           data = extendedData;
                         });
 
@@ -114,11 +114,12 @@ module.exports = function(locals) {
                     //---------------------------------------
                     // Default authorization
 
-                    if(project.config.authorization && !data.skipAuthorization){
+                    if (project.config.authorization && !data.skipAuthorization) {
 
-                      _.mergePages(data,{
-                        authorization: project.config.authorization
-                      });
+                      if (!data.authorization) {
+                        data.authorization = project.config.authorization;
+                      }
+
                     }
 
 

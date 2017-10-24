@@ -1,9 +1,14 @@
 title:
   en: 'Editor'
   gr: 'Επεξεργασία'
+  
 description:
   en: "Edit your pages and media files"
   gr: 'Επεξεργαστείτε τις σελίδες σας και τα αρχεία πολυμέσων'
 
 template: 'edit/home'
 icon: 'agneta/editor'
+
+authorization:
+  - administrator
+  - editor

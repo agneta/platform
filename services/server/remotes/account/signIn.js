@@ -18,8 +18,11 @@ const _ = require('lodash');
 
 module.exports = function(Model, app) {
 
-  var signinRoles = app.get('signinRoles');
   var tokenName = app.get('token').name;
+
+  var client = app.get('options').client;
+  var signinRoles = client.project.config.authorization;
+  //console.log('account:signin:signinRoles',signinRoles);
 
   Model.signIn = function(email, username, password,req) {
 

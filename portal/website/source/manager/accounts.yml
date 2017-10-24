@@ -4,7 +4,8 @@ title:
 
 template: 'manager/accounts'
 icon: 'material/group'
-
+authorization:
+  - administrator
 scripts:
   - manager/accounts/list
   - 'lib/moment/moment.min'

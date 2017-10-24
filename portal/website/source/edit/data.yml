@@ -9,5 +9,9 @@ template: edit/data
 controller: 'EditDataCtrl'
 menuLock: true
 
+authorization:
+  - administrator
+  - editor
+
 editor:
   main: false
