@@ -24,7 +24,9 @@ module.exports = function(options) {
 
   function init() {
     //console.log('URL:', url);
-    app.use(url, componentApp);
+    if (!options.detached) {
+      app.use(url, componentApp);
+    }
 
     if (component.init) {
       return component.init()
@@ -38,6 +40,7 @@ module.exports = function(options) {
 
   return {
     init: init,
+    app: componentApp,
     preInit: component.preInit,
     start: component.start,
     locals: component.locals

@@ -91,7 +91,7 @@ module.exports = function(app) {
 
         if (data.page.authorization) {
 
-          console.log('page:private:auth',data.page.title, data.page.authorization);
+          //console.log('page:private:auth',data.page.title, data.page.authorization);
           return app.models.Account.hasRoles(
             data.page.authorization,
             req

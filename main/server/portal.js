@@ -15,7 +15,6 @@
  *   limitations under the License.
  */
 const _ = require('lodash');
-const express = require('express');
 const path = require('path');
 const start = require('../start');
 const config = require('../config');
@@ -37,29 +36,12 @@ module.exports = function(options) {
   }, config);
 
   const appRoots = {
-    preview: 'preview/real-time',
-    local: 'preview/local',
-    production: 'preview/production'
+    preview: 'services/preview/real-time',
+    local: 'services/preview/local'
   };
   // Ensure secure connection when not in development mode
 
   app.set('trust proxy', 1);
-  app.use('/' + appRoots.local, staticMiddleware('local/public'));
-
-  function staticMiddleware(name) {
-    return function(req, res, next) {
-
-      var parsed = path.parse(req.path);
-      if (!parsed.ext) {
-        res.set('content-encoding', 'gzip');
-      }
-      express.static(path.join(projectPaths.build, name))(
-        req,
-        res,
-        next);
-    };
-
-  }
 
   //-----------------------------------------------------
   // Setup the preview components
@@ -70,12 +52,13 @@ module.exports = function(options) {
     return middleware({
       component: component,
       root: options.root,
-      mainApp: app
+      mainApp: options.mainApp || app,
+      detached: options.detached
     });
   }
 
   var portalServices = setupServer('services',{
-    root: 'services/portal',
+    root: 'services',
     id: 'portal',
     include: [
       projectPaths.api,
@@ -91,17 +74,19 @@ module.exports = function(options) {
   });
 
   var webServices = setupServer('services',{
-    root: 'services/preview',
+    root: 'services/preview/services',
     id: 'web',
     disableSocket: true,
     dir: projectPaths.project,
     website: {
       root: appRoots.preview
-    }
+    },
+    detached: true
   });
 
   var webPages = setupServer('website',{
-    root: appRoots.preview
+    root: appRoots.preview,
+    detached: true
   });
 
   //-----------------------------------------------------
