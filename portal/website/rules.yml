@@ -41,3 +41,11 @@
     menuLock: true
   templates:
     - "docs"
+-
+  data:
+    authorization:
+      - administrator
+      - editor
+  templates:
+    - docs
+    - doc

@@ -1,24 +1,31 @@
-<div class="page-card" class="page-card" layout="column">
+<%
+
+var item = _.extend({},data);
+var roleShow;
+
+if(data.page){
+  item = _.extend(data,get_page(data.page));
+}
+var url = item.href_full;
+var itemAttr = '';
+
+if(item.href_full){
+  itemAttr = 'target="_blank"';
+}
+
+if(!url && item.path){
+  url = get_path(item.path);
+}
+
+if(item.authorization){
+  roleShow = `show-on-role='${JSON.stringify(item.authorization)}'`;
+}
+
+%>
+
+
+<div class="page-card" class="page-card" layout="column" <%-roleShow%>>
   <div class="container">
-
-    <%
-
-    var item = _.extend({},data);
-    if(data.page){
-      item = _.extend(data,get_page(data.page));
-    }
-    var url = item.href_full;
-    var itemAttr = '';
-
-    if(item.href_full){
-      itemAttr = 'target="_blank"';
-    }
-
-    if(!url && item.path){
-      url = get_path(item.path);
-    }
-
-    %>
 
     <div class="header" layout="row">
       <%if(item.icon){%>

@@ -105,6 +105,10 @@ module.exports = function(locals) {
 
     _.mergePages = function(objValue, srcValue) {
 
+      if (srcValue && srcValue.authorization) {
+        objValue.authorization = srcValue.authorization;
+      }
+
       return _.mergeWith(objValue, srcValue, mergeFn);
 
       function mergeFn(objValue, srcValue) {

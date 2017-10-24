@@ -21,6 +21,7 @@
 /*global  _e_recovery*/
 /*global  _e_root*/
 /*global  _e_verification*/
+/*global  _e_directives*/
 
 (function() {
 
@@ -40,6 +41,7 @@
   _t_template('main/account/recovery');
   _t_template('main/account/root');
   _t_template('main/account/verification');
+  _t_template('main/account/directives');
 
   _e_login(app);
   _e_password(app);
@@ -47,5 +49,6 @@
   _e_recovery(app);
   _e_root(app);
   _e_verification(app);
+  _e_directives(app);
 
 })();

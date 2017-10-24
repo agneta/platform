@@ -60,6 +60,17 @@ module.exports = function(locals) {
               return Promise.resolve()
                 .then(function() {
 
+                  if (project.config.authorization && !page.skipAuthorization) {
+
+                    if (!page.authorization) {
+                      page.authorization = project.config.authorization;
+                    }
+
+                  }
+
+                })
+                .then(function() {
+
                   if (excludeConfig.pages || page.viewOnly) {
                     page.path = pageProcessor.parseFilename(page.path);
                     return generate(page);
@@ -90,6 +101,8 @@ module.exports = function(locals) {
       return project.site.pages.map(function(page) {
         rules.run(page);
         paths.run(page);
+
+
         page.save();
       });
 
@@ -149,12 +162,12 @@ module.exports = function(locals) {
         if (page.authorization) {
 
           return run(_.extend({},
-            page,
-            pageBase, {
-              isView: true,
-              path: nPath.join(page.path, 'view-auth'),
-              template: 'authorization'
-            }))
+              page,
+              pageBase, {
+                isView: true,
+                path: nPath.join(page.path, 'view-auth'),
+                template: 'authorization'
+              }))
             .then(function() {
 
               return run(_.extend({},
@@ -176,7 +189,7 @@ module.exports = function(locals) {
         }
 
         var template = page.template + '.sidebar';
-        if(_.isString(page.sidebar)){
+        if (_.isString(page.sidebar)) {
           template = page.sidebar;
         }
         if (!app.locals.has_template(template)) {

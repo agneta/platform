@@ -6,18 +6,21 @@
     en: "Preview in real-time or view the local build of your application"
     gr: 'Προεπισκόπηση σε πραγματικό χρόνο ή δείτε το τοπικό build της εφαρμογής σας'
   icon: 'agneta/website'
+  authorization:
+    - administrator
+    - editor
   menu:
     -
       title:
         en: Real Τime
         gr: Σε πραγματικό χρόνο
-      href_full: '/preview/real-time'
+      href_full: '/services/preview/real-time'
       icon: material/sync
     -
       title:
         en: Local Build
         gr: Τοπικό Build
-      href_full: '/preview/local'
+      href_full: '/services/preview/local'
       icon: material/location-on
     -
       title:

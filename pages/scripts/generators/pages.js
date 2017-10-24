@@ -111,18 +111,6 @@ module.exports = function(locals) {
 
                     }
 
-                    //---------------------------------------
-                    // Default authorization
-
-                    if (project.config.authorization && !data.skipAuthorization) {
-
-                      if (!data.authorization) {
-                        data.authorization = project.config.authorization;
-                      }
-
-                    }
-
-
                   })
                   .then(function() {
 
