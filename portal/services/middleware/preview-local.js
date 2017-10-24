@@ -7,16 +7,26 @@ module.exports = function(app) {
 
   return function(req, res, next) {
 
-    var parsed = path.parse(req.path);
+    app.auth.middleware({
+      req: req,
+      res: res,
+      next: next,
+      allow: ['administrator', 'editor'],
+      route: function() {
+        var parsed = path.parse(req.path);
 
-    if (!parsed.ext) {
-      res.set('content-encoding', 'gzip');
-    }
+        if (!parsed.ext) {
+          res.set('content-encoding', 'gzip');
+        }
 
-    express.static(path.join(projectPaths.build, 'local'))(
-      req,
-      res,
-      next);
+        express.static(path.join(projectPaths.build, 'local'))(
+          req,
+          res,
+          next);
+      }
+    });
+
+
   };
 
 };
