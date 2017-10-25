@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function(Model) {
+module.exports = function(Model,app) {
 
   Model.remoteMethod(
     'getByType', {
@@ -35,5 +35,7 @@ module.exports = function(Model) {
       }
     }
   );
+
+  Model.beforeRemote('getByType', app.activity.authCheck);
 
 };

@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function(Model) {
+module.exports = function(Model,app) {
 
   Model.remoteMethod(
     'details', {
@@ -83,5 +83,8 @@ module.exports = function(Model) {
       },
     }
   );
+
+  Model.beforeRemote('details', app.activity.authCheck);
+  Model.beforeRemote('latest', app.activity.authCheck);
 
 };
