@@ -22,7 +22,6 @@ module.exports = function(app) {
   if(!db){
     db = app.secrets.get('db');
   }
-
   var result = {
     db: _.extend({
       name: 'db',

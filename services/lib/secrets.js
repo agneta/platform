@@ -5,10 +5,10 @@ const path = require('path');
 
 //---------------------------------------------
 
-var keyPath =path.join(
+var keyPath = path.join(
   process.cwd(), '../secret.json'
 );
-var secretKey = fs.readFileSync(keyPath,'utf8');
+var secretKey = fs.readFileSync(keyPath, 'utf8');
 
 if (!secretKey) {
   throw new Error('Could not find the secret key to set sensitive data');
@@ -71,10 +71,12 @@ module.exports = function(app) {
 
   var secrets = {
     get: function(path, keep) {
-
-      var env = process.env.NODE_ENV;
+      var env;
+      if (_.isFunction(app.get)) {
+        env = app.get('env');
+      }
+      env = env || process.env.NODE_ENV;
       return getSecret(env, path, keep);
-
     },
     encrypt: function(value) {
       value = value.toString('utf8');
@@ -85,7 +87,7 @@ module.exports = function(app) {
     }
   };
 
-  if(app){
+  if (app) {
     app.secrets = secrets;
   }
 

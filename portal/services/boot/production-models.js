@@ -21,39 +21,41 @@ module.exports = function(app) {
 
   var instructions = [];
   var appOptions = app.get('options');
-  var locals = require(
-    path.join(appOptions.web.project.paths.services,'lib', 'locals')
-  );
 
   //--------------------------------------------------
   // Create the Production app
 
   var prdConfig = {};
-  var appPrd = _.extend({},app,{
-    get: function(name){
+  var appPrd = _.extend({}, app, {
+    get: function(name) {
       return prdConfig[name];
     },
-    set: function(name,value){
+    set: function(name, value) {
       prdConfig[name] = value;
     }
   });
 
-  locals(
-    appPrd,
-    _.extend({},appOptions,{
-      env: 'production'
-    })
-  );
+  var appOptionsPrd = _.extend({}, appOptions, {
+    env: 'production'
+  });
+
+  require(
+    path.join(appOptions.web.project.paths.services, 'lib', 'locals')
+  )(appPrd, appOptionsPrd);
+
+  require(
+    path.join(appOptions.web.project.paths.services, 'lib', 'secrets')
+  )(appPrd, appOptionsPrd);
+
 
   //--------------------------------------------------
   // Create the Production data source
 
-  var dbConfig = app.secrets.get('db');
-
-  app.dataSource('db_prd', _.extend({
+  var db_prd =  _.extend({
     connector: 'loopback-connector-mongodb'
   },
-  dbConfig));
+  appPrd.secrets.get('db'));
+  app.dataSource('db_prd', db_prd);
 
   //--------------------------------------------------
 
