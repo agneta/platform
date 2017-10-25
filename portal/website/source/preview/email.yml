@@ -3,3 +3,7 @@ title:
 icon: material/email
 controller: PreviewEmailCtrl
 menuLock: true
+
+authorization:
+  - administrator
+  - editor

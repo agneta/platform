@@ -20,8 +20,8 @@ if(!url && item.path){
 %>
 
 
-<div class="page-card" class="page-card" layout="column" has-role='<%-JSON.stringify(item.authorization)%>'>
-  <%-template('ui/lock')%>
+<div class="page-card" class="page-card" layout="column">
+  <%-template('ui/has-role',{authorization:item.authorization})%>
   <div class="container">
 
     <div class="header" layout="row">
@@ -69,7 +69,9 @@ if(!url && item.path){
             <div class="menu">
             <%if(optionURL){%>
 
-              <md-list-item <%-optionAttr%> ng-href="<%-optionURL%>" >
+              <a layout="row" layout-align="start center" layout-margin class="ag-list-item" <%-optionAttr%> ng-href="<%-optionURL%>" >
+
+              <%-template('ui/has-role',{authorization:option.authorization})%>
 
               <%if(option.icon){%>
                 <md-icon md-svg-src="<%-get_icon(option.icon)%>"></md-icon>
@@ -85,7 +87,7 @@ if(!url && item.path){
                 <%}%>
                 <%}%>
 
-                </md-list-item>
+                </a>
 
                 <%}else{%>
                   <span><%-lng(option.title)%></span>

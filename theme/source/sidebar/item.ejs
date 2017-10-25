@@ -1,5 +1,6 @@
 <%if(!item.menuHide){%>
-<a ng-href="<%-get_path(item)%>" class="md-padding item" layout="row" layout-align="start center">
+<a ng-href="<%-get_path(item)%>" class="ag-list-item item" layout="row" layout-align="start center">
+  <%-template('ui/has-role',{authorization:item.authorization})%>
   <span><%-lng(item.title)%></span>
   <span flex="auto"></span>
   <md-icon md-svg-src="<%-get_icon('material/keyboard-arrow-right')%>"></md-icon>

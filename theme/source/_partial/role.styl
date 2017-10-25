@@ -4,7 +4,7 @@
 
   &.has-no-role{
     pointer-events: none;
-    .container{
+    >*:not(.ui-lock){
       opacity: 0.2;
     }
     .ui-lock{
@@ -16,8 +16,9 @@
 
       md-icon{
         margin: 0;
-        width: 40px;
-        height: 40px;
+        width: 28px;
+        height: 28px;
+        color: #888888;
       }
     }
   }
