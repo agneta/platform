@@ -4,6 +4,7 @@ title:
 
 template: 'login'
 skipAuthorization: true
+menuHide: true
 
 hiddenToolbar: true
 hiddenFooter: true
