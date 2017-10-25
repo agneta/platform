@@ -1,18 +1,29 @@
+<%
+  var authAllow = services_config('activity').auth.allow;
+%>
+
 <md-list>
 
-    <div ng-repeat="group in viewData.extra.groups">
-    <md-subheader class="md-no-sticky">{{group.title}}</md-subheader>
-    <div ng-repeat="groupType in group.types" ng-switch on="groupType.value">
+    <%for(var group of page.viewData.groups){%>
+    <div>
+    <md-subheader class="md-no-sticky"><%-lng(group.title)%></md-subheader>
+    <%for(var groupType of group.types){
 
-        <md-divider ng-switch-when="divider"></md-divider>
+      var authorization = authAllow[groupType.value];
+      authorization = ['administrator'].concat(authorization);
+      %>
 
-        <md-list-item ng-switch-default class="md-long-text" md-no-ink ng-class="type.value == groupType.value ? 'active' : false" ng-click="changeType(groupType)">
-            <md-icon ng-if="groupType.icon" md-svg-src="{{get_icon(groupType.icon)}}"></md-icon>
-            {{groupType.title}}
-        </md-list-item>
-
-    </div>
+        <%if(groupType.value=='divider'){%>
+          <md-divider></md-divider>
+        <%}else{%>
+        <div class="ag-list-item" ng-class="type == '<%-groupType.value%>' ? 'active' : false" ng-click="changeType('<%-groupType.value%>')">
+            <%-template('ui/has-role',{authorization:authorization})%>
+            <%if(groupType.icon){%><md-icon md-svg-src="<%-get_icon(groupType.icon)%>"></md-icon><%}%>
+            <span flex="auto"><%-lng(groupType.title)%></span>
+        </div>
+        <%}%>
+    <%}%>
     <md-divider ></md-divider>
+    <%}%>
     </div>
-
 </md-list>

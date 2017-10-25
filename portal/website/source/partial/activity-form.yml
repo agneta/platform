@@ -6,3 +6,7 @@ controller: ActivityFormCtrl
 
 scripts:
   - partial/activity-form
+
+authorization:
+  - reviewer
+  - editor

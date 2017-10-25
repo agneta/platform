@@ -4,6 +4,9 @@ title:
 
 controller: PageSourceCtrl
 
+authorization:
+  - editor
+  
 scripts:
   - 'lib/editor/codemirror'
   - 'lib/editor/sublime'

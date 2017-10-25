@@ -6,3 +6,6 @@ placeholder:
   en: Name
 
 controller: NewFolder
+
+authorization:
+  - editor

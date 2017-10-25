@@ -1,1 +1,4 @@
 controller: 'EditFile'
+
+authorization:
+  - editor

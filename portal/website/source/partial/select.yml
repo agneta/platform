@@ -4,6 +4,9 @@ scripts:
   - 'media/file'
   - 'edit/media/main'
 
+authorization:
+  - editor
+
 styles:
   - 'edit/media/main'
 

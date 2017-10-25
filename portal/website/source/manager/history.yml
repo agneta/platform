@@ -12,6 +12,9 @@ scripts:
 
 controller: 'HistoryCtrl'
 menuLock: true
+authorization:
+  - reviewer
+  - editor
 
 sidebarTitle:
   en: 'Categories'

@@ -6,6 +6,10 @@ description:
   en: "User management, analytics, activities, etc."
   gr: "Διαχείριση χρηστών, analytics, δραστηριότητες, κ.α."
 
+authorization:
+  - reviewer
+  - editor
+
 template: 'manager/home'
 noHeader: true
 

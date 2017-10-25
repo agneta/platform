@@ -7,6 +7,10 @@ styles:
   - 'lib/editor/codemirror'
   - 'lib/editor/monokai'
 
+authorization:
+  - reviewer
+  - editor
+  
 request:
   -
     name: path

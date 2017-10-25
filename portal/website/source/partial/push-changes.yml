@@ -13,6 +13,9 @@ action:
   submit:
     en: 'Push'
 
+authorization:
+  - editor
+
 form:
   name: 'formSubmit'
   onSubmit: 'submit()'

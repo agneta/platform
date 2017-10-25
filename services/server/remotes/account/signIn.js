@@ -14,15 +14,11 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const _ = require('lodash');
 
 module.exports = function(Model, app) {
 
   var tokenName = app.get('token').name;
 
-  var client = app.get('options').client;
-  var signinRoles = client.project.config.authorization;
-  //console.log('account:signin:signinRoles',signinRoles);
 
   Model.signIn = function(email, username, password,req) {
 
@@ -70,25 +66,6 @@ module.exports = function(Model, app) {
           throw err2;
 
         }
-
-        if (signinRoles) {
-          if (!_.values(
-            _.pick(
-              account.__data,
-              signinRoles
-            )
-          )
-            .length
-          ) {
-
-            var err3 = new Error(app.lng('account.invalidRole',req));
-            err3.statusCode = 400;
-            err3.code = 'USER_ROLE_INVALID';
-
-            throw err3;
-          }
-        }
-
 
         return Model.login(credentials, null)
           .catch(function(){

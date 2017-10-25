@@ -54,9 +54,7 @@
     $scope.page = {
       feedSelected: null
     };
-    $scope.type = {
-      value: 'view_page'
-    };
+    $scope.type = 'view_page';
 
     $ocLazyLoad.load({
       name: 'angularMoment',
@@ -120,7 +118,7 @@
       } else if ($scope.type) {
 
         var query = {
-          type: $scope.type.value,
+          type: $scope.type,
           period: $scope.page.periodSelected,
           value: $scope.page.valueSelected
         };

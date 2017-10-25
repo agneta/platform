@@ -5,3 +5,7 @@ title:
 
 path: '/'
 menuHide: true
+
+authorization:
+  - reviewer
+  - editor
