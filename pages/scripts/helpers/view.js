@@ -65,7 +65,7 @@ module.exports = function(locals) {
 
     data.layoutClass = [
       'page-' + page.templateSource.split('/')
-        .join('-')
+      .join('-')
     ];
     if (page.class) {
       data.layoutClass.push(page.class);
@@ -175,6 +175,9 @@ module.exports = function(locals) {
         var script = pageScripts[y];
         if (_.isString(script)) {
           script += '.js';
+        }
+        if (!script) {
+          continue;
         }
         var asset = this.get_asset(script);
         if (asset) {

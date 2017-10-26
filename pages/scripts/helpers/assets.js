@@ -40,11 +40,16 @@ module.exports = function(locals) {
   });
 
   project.extend.helper.register('get_asset', function(path_check) {
-    
+
     if (_.isObject(path_check)) {
       if (path_check.services) {
         return urljoin(project.site.services.url, path_check.services);
       }
+    }
+
+    if(!_.isString(path_check)){
+      console.log('get_asset:path_check',path_check);
+      throw new Error('Could not process asset_path [NOT STRING]. Check the log above');
     }
 
     if (url.parse(path_check).protocol) {

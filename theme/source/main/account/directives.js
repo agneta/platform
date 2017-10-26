@@ -9,13 +9,17 @@ function _e_directives(app) {
         var parent = element.parent();
         parent.addClass('has-role');
 
+        if(attrs.$attr.roleHide){
+          parent.addClass('role-hide');
+        }
+
         function check() {
 
           var account = $rootScope.account;
           if(!account){
             return;
           }
-
+          console.log(account);
           var roles = JSON.parse(attrs.hasRole) || [];
           var hasRoles = [];
 
