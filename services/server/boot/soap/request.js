@@ -1,6 +1,7 @@
-var minimatch = require('minimatch');
+const minimatch = require('minimatch');
 const Request = require('request');
 const concatStream = require('concat-stream');
+const _ = require('lodash');
 
 module.exports = function(app) {
 
@@ -23,11 +24,55 @@ module.exports = function(app) {
           for (var key in overrideRules) {
 
             var isMatch = minimatch(options.serviceFilePath, key);
-            console.log('soap:request:isMatch',options.serviceFilePath,key,isMatch);
+            //console.log('soap:request:isMatch',options.serviceFilePath,key,isMatch);
             if (isMatch) {
               var rule = overrideRules[key];
               if (rule.endpoint) {
-                console.log(`change endpoint to ${rule.endpoint}`);
+
+                var req = requestOptions.methodOptions.req;
+
+                if(!req){
+                  return Promise.reject({
+                    message: 'Expected req object to be present in methodOptions.'
+                  });
+                }
+
+                //--------------------------------------------------------
+                var checkKey = _.get(req.accessToken,rule.endpoint.key);
+
+                if(!checkKey){
+                  return Promise.reject({
+                    statusCode: 401,
+                    message: 'Expected a rule key to be present in methodOptions.'
+                  });
+                }
+
+                //--------------------------------------------------------
+
+                var mapValue = rule.endpoint.map[checkKey];
+
+                if(!mapValue){
+                  return Promise.reject({
+                    statusCode: 401,
+                    message: 'Expected the Map key to be present in endpoint override config.'
+                  });
+                }
+
+                //--------------------------------------------------------
+
+                var checkValue = rule.endpoint.value[mapValue];
+
+                if(!checkValue){
+                  return Promise.reject({
+                    statusCode: 401,
+                    message: 'Expected the Value key to be present in endpoint override config.'
+                  });
+                }
+
+                //console.log(`change endpoint to ${checkValue}`);
+                //console.log(requestOptions);
+
+                requestOptions.uri = checkValue;
               }
             }
 

@@ -38,7 +38,7 @@ module.exports = function(app) {
             passphrase: app.secrets.decrypt(role[auth.prop.pass])
           };
 
-          console.log('soap:security:options.agentOptions', options.agentOptions);
+          //console.log('soap:security:options.agentOptions', options.agentOptions);
 
         });
 
