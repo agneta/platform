@@ -2,8 +2,9 @@ const cryptojs = require('crypto-js');
 const _ = require('lodash');
 const fs = require('fs-extra');
 const path = require('path');
-
+const filename = 'secrets.json';
 //---------------------------------------------
+var encryptionKey;
 
 var keyPath = path.join(
   process.cwd(), '../secret.json'
@@ -15,7 +16,7 @@ if (!secretKey) {
 }
 //---------------------------------------------
 
-var secretsPath = path.join(process.cwd(), 'secrets.json');
+var secretsPath = path.join(process.cwd(), filename);
 var keys = fs.readJsonSync(secretsPath);
 
 //----------------------------------------------------
@@ -80,12 +81,17 @@ module.exports = function(app) {
     },
     encrypt: function(value) {
       value = value.toString('utf8');
-      return cryptojs.AES.encrypt(value, secretKey).toString();
+      return cryptojs.AES.encrypt(value, encryptionKey).toString();
     },
     decrypt: function(value) {
-      return cryptojs.AES.decrypt(value, secretKey).toString(cryptojs.enc.Utf8);
+      return cryptojs.AES.decrypt(value, encryptionKey).toString(cryptojs.enc.Utf8);
     }
   };
+
+  encryptionKey = encryptionKey || secrets.get('encryptionKey');
+  if(!encryptionKey){
+    throw new Error(`The encryptionKey needs to be stored in ${filename}`);
+  }
 
   if (app) {
     app.secrets = secrets;

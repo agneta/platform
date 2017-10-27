@@ -18,19 +18,16 @@ const path = require('path');
 const Promise = require('bluebird');
 const soap = require('soap');
 const uuidV1 = require('uuid/v1');
-const Request = require('request');
-const concatStream = require('concat-stream');
 const _ = require('lodash');
 const klaw = require('klaw');
 const S = require('string');
 
 const SoapResponse = require('./soap/response');
-const SoapSecurity = require('./soap/security');
 
 module.exports = function(app) {
 
   const soapResponse = SoapResponse();
-  const soapSecurity = SoapSecurity(app);
+  const soapRequest = require('./soap/request')(app);
 
   app.soapServices = {};
   var config = app.get('wsdl');
@@ -70,40 +67,18 @@ module.exports = function(app) {
 
       var file = item.path;
 
-      var servicePath = path.relative(dirPath, file);
-      servicePath = S(servicePath).replaceAll('/', '.').s;
+      var serviceFilePath = path.relative(dirPath, file);
+      var servicePath = S(serviceFilePath).replaceAll('/', '.').s;
       servicePath = path.parse(servicePath).name;
 
       return soap.createClientAsync(file, {
         wsdl_headers: {
           connection: 'keep-alive'
         },
-        request: function(options, cb) {
-
-          soapSecurity({
-            servicePath: servicePath,
-            requestOptions: options
-          })
-            .then(function() {
-
-              //console.log(options);
-              //---------------------------------------------------
-
-              var request = Request(options,cb);
-
-              request.on('response', function(response) {
-                response.pipe(concatStream({
-                  encoding: 'buffer'
-                }, function(buffer) {
-                  request.bufferResult = buffer;
-                }));
-              });
-
-
-            })
-            .catch(cb);
-
-        }
+        request: soapRequest({
+          servicePath: servicePath,
+          serviceFilePath: serviceFilePath
+        })
       })
         .then(function(client) {
 

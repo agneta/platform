@@ -81,6 +81,7 @@
     "mime-db": "1.30.0",
     "mime-type": "3.0.5",
     "mime-types": "2.1.17",
+    "minimatch": "^3.0.4",
     "minimize": "2.1.0",
     "moment": "2.18.1",
     "moment-timezone": "0.5.13",
