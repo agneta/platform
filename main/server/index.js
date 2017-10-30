@@ -11,7 +11,7 @@ const paths = require('../paths');
 
 var options = {};
 var protocol = 'http';
-var port = 8080;
+var port = 443;
 
 module.exports = Promise.resolve()
   .then(function() {
@@ -42,6 +42,7 @@ module.exports = Promise.resolve()
 
     process.env.HOST_NAME = process.env.HOST_NAME || 'localhost';
     process.env.PORT = process.env.PORT || port;
+    process.env.PORT_HTTP = process.env.PORT_HTTP || 80;
     process.env.MODE = process.env.MODE || 'portal';
 
     process.env.ENDPOINT = process.env.ENDPOINT ||

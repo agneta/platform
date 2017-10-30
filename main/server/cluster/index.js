@@ -1,5 +1,6 @@
 const os = require('os');
 const path = require('path');
+const express = require('express');
 const SocketCluster = require('socketcluster')
   .SocketCluster;
 
@@ -33,6 +34,18 @@ module.exports = function(options) {
   }
 
   //---------------------------------------------------
+  // HTTP connections to redirect to HTTPS
+
+  var http = express();
+
+  http.get('*', function(req, res) {
+    res.redirect('https://' + req.headers['host'] + req.url);
+  });
+
+  http.listen(process.env.PORT_HTTP);
+
+  //---------------------------------------------------
+  // HTTPS connections with socket cluster
 
   var clusterOptions = {
     workers: workerCount,
