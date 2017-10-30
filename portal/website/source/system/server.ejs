@@ -9,26 +9,39 @@
       </p>
       <p>Agneta Platform:
         <%-site.version.agneta%></p>
-      <p>Node.js:
-        <%-site.version.node%></p>
-      <p>NPM:
-        <%-site.version.npm%></p>
-    </div>
+        <p>Node.js:
+          <%-site.version.node%></p>
+          <p>NPM:
+            <%-site.version.npm%></p>
+          </div>
 
-    <div layout="column" class="box">
-      <p class="title">
-        <b>Commit</b>
-      </p>
-      <p>Agneta Platform:
-        <%-site.version.agneta%></p>
-      <p>Node.js:
-        <%-site.version.node%></p>
-      <p>NPM:
-        <%-site.version.npm%></p>
-    </div>
+          <div layout="column" class="box git">
+            <p class="title">
+              <b>GIT branch: {{graph.branch}}</b>
+            </p>
+            <div class="warn" ng-if="graph.behind" layout="row" layout-align="start center">
+              <span class="message">Your branch is behind by {{graph.behind}} commits.<br>You will need to update before pushing changes.</span>
+              <span flex="auto"></span>
+              <md-button class="md-raised" ng-click="update()">Update</md-button>
+            </div>
+            <div layout="column" class="log">
+              <div class="commit" ng-repeat="commit in graph.shortLog" layout="row" layout-margin layout-align="start center">
+                <%-template('system/server/git-commit')%>
+              </div>
+              <span ng-if="graph.behind>graph.shortLog.length+1" class="rest">...</span>
+              <div ng-if="graph.behind>graph.shortLog.length" ng-init="commit=graph.current" class="commit current" layout="row" layout-margin layout-align="start center">
+                <%-template('system/server/git-commit')%>
+              </div>
+            </div>
+            <md-divider></md-divider>
+            <div layout="row">
+              <span flex="auto"></span>
+              <md-button class="md-raised" ng-click="fetch()">Fetch</md-button>
+            </div>
+          </div>
 
-    <span flex="auto"></span>
+          <span flex="auto"></span>
 
-  </div>
+        </div>
 
-</div>
+      </div>
