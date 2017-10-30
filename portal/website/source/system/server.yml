@@ -3,3 +3,4 @@ title:
   gr: Διακομιστής
 
 icon: material/router
+controller: SystemServerCtrl

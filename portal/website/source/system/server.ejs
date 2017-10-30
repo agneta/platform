@@ -1,10 +1,23 @@
 <div class="frame top" layout="column" layout-margin>
   <%-template('ui/page-title')%>
-  <div layout="row">
+
+  <div layout="row" layout-wrap layout-margin>
 
     <div layout="column" class="box">
       <p class="title">
         <b>Versions</b>
+      </p>
+      <p>Agneta Platform:
+        <%-site.version.agneta%></p>
+      <p>Node.js:
+        <%-site.version.node%></p>
+      <p>NPM:
+        <%-site.version.npm%></p>
+    </div>
+
+    <div layout="column" class="box">
+      <p class="title">
+        <b>Commit</b>
       </p>
       <p>Agneta Platform:
         <%-site.version.agneta%></p>
