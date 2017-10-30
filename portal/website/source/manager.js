@@ -46,7 +46,7 @@
         });
 
       Account.recent({
-        limit: 10
+        limit: 5
       }).$promise
         .then(function(recent) {
           $scope.accounts.recent = recent;

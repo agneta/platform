@@ -2,6 +2,10 @@ title:
   en: 'Activities'
   gr: 'Ενέργειες'
 
+description:
+  en: Visualize recorded activities in charts by a specified period of time.
+  gr: Δείτε τις καταγεγραμμένες δραστηριότητες σε γραφήματα για καθορισμένη χρονική περίοδο.
+
 icon: 'material/history'
 
 scripts:

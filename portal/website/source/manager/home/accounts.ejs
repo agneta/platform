@@ -21,7 +21,7 @@
  </p>
 
  <md-list-item ng-repeat="account in accounts.recent" layout="row" ng-click="openAccount(account)">
- <img ng-src="{{account.picture}}" class="md-avatar" alt="{{item.who}}" />
+   <%-template('ui/account-avatar')%>
  <div class="md-list-item-text" layout="column">
   <p>{{account.email}}</p>
 </div>

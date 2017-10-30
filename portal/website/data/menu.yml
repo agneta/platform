@@ -87,13 +87,24 @@
       page: 'utilities/services'
 -
   title:
-    en: 'Services'
-  description:
-    en: "Explore your API."
-  href_full: '/services/preview/explorer'
+    en: System
+    gr: Σύστημα
   icon: 'agneta/services'
   authorization:
     - administrator
-    - editor
+  menu:
+    -
+      page: 'system/server'
+    -
+      title:
+        en: 'API Explorer'
+        gr: 'Διερευνητής API'
+      description:
+        en: "Explore your API."
+      icon: material/settings-ethernet
+      href_full: '/services/preview/services/explorer'
+      authorization:
+        - administrator
+        - editor
 -
   page: 'docs'

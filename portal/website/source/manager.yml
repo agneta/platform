@@ -10,7 +10,6 @@ authorization:
   - reviewer
   - editor
 
-template: 'manager/home'
 noHeader: true
 
 icon: agneta/manager

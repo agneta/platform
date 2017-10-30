@@ -22,7 +22,8 @@ module.exports = function(Model) {
     limit = limit || 5;
 
     return Model.find({
-      order: 'createdAt',
+      order: 'createdAt DESC',
+
       limit: limit
     });
 

@@ -100,6 +100,7 @@ if(!url && item.path){
 
                 <span flex="auto"></span>
 
+                <%if(url){%>
                 <div layout="row" layout-align="end center">
                   <md-button class="md-primary" <%-itemAttr%> ng-href="<%-url%>" >
                     <md-icon aria-label="more" md-svg-src="<%-get_icon('material/add')%>">
@@ -107,6 +108,7 @@ if(!url && item.path){
                     <span>More</span>
                   </md-button>
                 </div>
+                <%}%>
 
               </div>
             </div>

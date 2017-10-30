@@ -19,7 +19,7 @@ function _e_directives(app) {
           if(!account){
             return;
           }
-          console.log(account);
+
           var roles = JSON.parse(attrs.hasRole) || [];
           var hasRoles = [];
 
