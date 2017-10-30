@@ -25,7 +25,7 @@ module.exports = function(Model, app) {
       .then(function(_remoteLog) {
         remoteLog = _remoteLog;
 
-        for(var commit of remoteLog.all){
+        for (var commit of remoteLog.all) {
           commitFix(commit);
         }
 
@@ -36,7 +36,10 @@ module.exports = function(Model, app) {
         commitFix(localLog.latest);
 
         return {
-          branch: branchName,
+          branch: {
+            local: branchName,
+            remote: remoteBranch
+          },
           behind: behind,
           ahead: ahead,
           shortLog: remoteLog.all,
@@ -48,7 +51,7 @@ module.exports = function(Model, app) {
       var message = commit.message.split(' (');
       commit.message = message[0];
       var point = message[1];
-      if(point){
+      if (point) {
         commit.point = `(${point}`;
       }
     }

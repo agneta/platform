@@ -17,8 +17,12 @@
 
           <div layout="column" class="box git">
             <p class="title">
-              <b>GIT branch: {{graph.branch}}</b>
+              <b>GIT</b>
             </p>
+            <div>
+              <p>Local branch: {{graph.branch.local}}</p>
+              <p>Remote branch: {{graph.branch.remote}}</p>
+            </div>
             <div class="warn" ng-if="graph.behind" layout="row" layout-align="start center">
               <span class="message">Your branch is behind by {{graph.behind}} commits.<br>You will need to update before pushing changes.</span>
               <span flex="auto"></span>
