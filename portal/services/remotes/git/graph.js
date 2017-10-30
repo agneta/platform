@@ -24,9 +24,17 @@ module.exports = function(Model, app) {
       })
       .then(function(_remoteLog) {
         remoteLog = _remoteLog;
+
+        for(var commit of remoteLog.all){
+          commitFix(commit);
+        }
+
         return app.git.native.log(['-1']);
       })
       .then(function(localLog) {
+
+        commitFix(localLog.latest);
+
         return {
           branch: branchName,
           behind: behind,
@@ -35,6 +43,15 @@ module.exports = function(Model, app) {
           current: localLog.latest
         };
       });
+
+    function commitFix(commit) {
+      var message = commit.message.split(' (');
+      commit.message = message[0];
+      var point = message[1];
+      if(point){
+        commit.point = `(${point}`;
+      }
+    }
   };
 
 

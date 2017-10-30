@@ -15,25 +15,35 @@
  *   limitations under the License.
  */
 const simplegit = require('simple-git/promise');
+const _ = require('lodash');
 
 module.exports = function(app) {
 
   var base_dir = process.cwd();
-
+  var config = app.get('git');
   app.git.native = simplegit(base_dir);
 
   return app.git.native.getRemotes()
     .then(function(remotes) {
 
-      app.git.remotes = remotes;
-      //console.log('remotes', app.git.remotes);
+      var foundRemote = _.find(remotes, {
+        name: config.remote.name
+      });
 
+      if (!foundRemote) {
+        return app.git.native.addRemote(config.remote.name, config.remote.url);
+      }
+
+    })
+    .then(function() {
       return app.git.native.branch();
     })
     .then(function(result) {
 
       //console.log('branch', result);
       app.git.branch = result;
+
+      return app.models.GIT.fetch();
 
     });
 

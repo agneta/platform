@@ -25,7 +25,7 @@
               <md-button class="md-raised" ng-click="update()">Update</md-button>
             </div>
             <div layout="column" class="log">
-              <div class="commit" ng-repeat="commit in graph.shortLog" layout="row" layout-margin layout-align="start center">
+              <div class="commit" ng-repeat="commit in graph.shortLog" ng-class="{current:graph.current.hash==commit.hash}" layout="row" layout-margin layout-align="start center">
                 <%-template('system/server/git-commit')%>
               </div>
               <span ng-if="graph.behind>graph.shortLog.length+1" class="rest">...</span>
