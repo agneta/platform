@@ -1,26 +1,18 @@
-const Tail = require('tail').Tail;
-const path = require('path');
 module.exports = function(Model, app) {
-
-  var paths = app.get('options').paths;
-
-  var tail = new Tail(
-    path.join(
-      paths.project
-    ), {
-      follow: true
-    }
-  );
-
-  tail.on('line', function(data) {
-    console.log(data);
-  });
-
 
   Model.logs = function() {
 
     return Promise.resolve()
       .then(function() {
+
+        return app.logs.output.readLast();
+
+      })
+      .then(function(lines) {
+
+        return {
+          lines: lines
+        };
 
       });
 

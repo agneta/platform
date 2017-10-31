@@ -6,7 +6,7 @@ const pm2 = Promise.promisifyAll(require('pm2'));
 const DATE_FORMAT = 'YYYY-MM-DD_HH-mm-ss';
 const moment = require('moment');
 
-module.exports = function() {
+module.exports = function(app) {
 
   function proceed(file) {
 
@@ -35,26 +35,33 @@ module.exports = function() {
 
   }
 
-  pm2.connectAsync()
+  return pm2.connectAsync()
     .then(function() {
 
-      var checkFiles = [];
+      var files;
 
       function findFiles() {
         return pm2.describeAsync('agneta')
           .then(function(data) {
             var instance = data[0].pm2_env;
-            checkFiles = [
-              instance.pm_out_log_path,
-              instance.pm_err_log_path
+
+            app.logs.file = {
+              output: instance.pm_out_log_path,
+              error: instance.pm_err_log_path
+            };
+
+            files = [
+              app.logs.file.output,
+              app.logs.file.error
             ];
+
           });
       }
 
       return findFiles()
         .then(function() {
           function rotateCheck() {
-            return Promise.map(checkFiles, function(filePath) {
+            return Promise.map(files, function(filePath) {
 
               return fs.stat(filePath)
                 .then(function(data) {
@@ -71,10 +78,9 @@ module.exports = function() {
               });
           }
 
-          return rotateCheck();
+          rotateCheck();
 
         });
 
     });
-
 };
