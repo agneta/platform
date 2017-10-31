@@ -89,7 +89,7 @@ module.exports = function(app) {
           //------------------------------------------------------------------------
 
           client.on('soapError', function() {
-            console.log(arguments);
+            console.error(arguments);
           });
 
           client.on('response', soapResponse.listener);

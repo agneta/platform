@@ -86,8 +86,5 @@ module.exports = function(Model, options) {
         Model.disableRemoteMethodByName(methodName, method.isStatic);
       }
     });
-    // if(hiddenMethods.length > 0) {
-    //     console.log('\nRemote mehtods hidden for', modelName, ':', hiddenMethods.join(', '), '\n');
-    // }
   }
 };

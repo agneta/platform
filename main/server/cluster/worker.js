@@ -14,12 +14,10 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const cluster = require('cluster');
 const express = require('express');
 const loopback = require('loopback');
 const chalk = require('chalk');
 const Promise = require('bluebird');
-var _ = require('lodash');
 
 Promise.config({
   // Enables all warnings except forgotten return statements.
@@ -48,14 +46,6 @@ module.exports.run = function(worker) {
   }
 
   //--------------------------------
-
-  var log = console.log;
-
-  console.log = function() {
-    var args = Array.prototype.slice.call(arguments);
-    log.apply(console, [chalk.cyan(`[worker:${cluster.worker.id}]`)].concat(args));
-  };
-
 
   var httpServer = worker.httpServer;
   var starting = true;

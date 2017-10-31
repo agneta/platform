@@ -3,7 +3,7 @@ const _ = require('lodash');
 module.exports = function(app) {
 
   function authCheck(ctx) {
-    console.log(ctx);
+
     var Activity_Feed = ctx.method.ctor.getModel('Activity_Feed');
     var auth = _.get(app.get('activity'), 'auth');
     var req = ctx.req;

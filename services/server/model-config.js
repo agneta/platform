@@ -105,6 +105,10 @@ module.exports = function() {
       dataSource: false,
       public: true
     },
+    System: {
+      dataSource: false,
+      public: true
+    },
     Session: {
       dataSource: 'db',
       public: false

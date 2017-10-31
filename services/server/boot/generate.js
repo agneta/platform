@@ -38,10 +38,7 @@ module.exports = function(app) {
       var target = options.filename || 'services.js';
       var outputPath = path.join(outputDir, target);
 
-      return fs.outputFile(outputPath, script)
-        .then(function() {
-          console.log('Exported service:', outputPath);
-        });
+      return fs.outputFile(outputPath, script);
 
     }
   };

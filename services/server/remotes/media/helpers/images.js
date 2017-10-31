@@ -80,7 +80,7 @@ module.exports = function(Model, app) {
       .then(function() {
 
         if (!instance.location) {
-          console.log(ctx);
+          console.error(ctx);
           throw new Error('No location found');
         }
 

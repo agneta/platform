@@ -20,6 +20,7 @@ const urljoin = require('url-join');
 
 module.exports = function(app, options) {
 
+  //console.log('options',options);
   options = options || {};
 
   var env = options.env || process.env.NODE_ENV || app.get('env');

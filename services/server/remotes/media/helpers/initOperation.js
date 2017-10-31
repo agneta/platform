@@ -80,7 +80,7 @@ module.exports = function(Model, app) {
           contentType: options.mimetype
         };
 
-        console.log('media:initOperation:fileProps',fileProps);
+        //console.log('media:initOperation:fileProps',fileProps);
 
         if (fileInstance) {
           //console.log('file update', fileProps);

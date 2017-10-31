@@ -1,12 +1,11 @@
 const Promise = require('bluebird');
 const fs = require('fs-extra');
 
-module.exports = function(Model, app) {
+module.exports = function(Model) {
 
 
   Model.__saveFile = function(options) {
 
-    console.log(options);
     var props;
     var relation = options.instance[options.prop];
 
@@ -28,7 +27,7 @@ module.exports = function(Model, app) {
         return Promise.promisify(relation)();
       })
       .then(function(attachment) {
-        console.log('attachment', attachment);
+        //console.log('attachment', attachment);
         if (!attachment) {
           return relation.create(props);
         }

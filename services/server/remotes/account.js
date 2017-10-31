@@ -55,7 +55,6 @@ module.exports = function(Model, app) {
 
     var accessToken = ctx.req.accessToken;
     if (accessToken && accessToken.ttl < 1000) {
-      console.log(accessToken);
       app.models.AccessToken.destroyById(accessToken.id, next);
 
     } else {

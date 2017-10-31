@@ -41,8 +41,8 @@ module.exports = function(Model, app) {
               //console.log('size', instance.location);
             })
             .catch(function(err) {
-              console.log('error', instance, headParams);
-              console.log(err);
+              console.error('error', instance, headParams);
+              console.error(err);
               throw err;
             });
         }

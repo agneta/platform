@@ -81,7 +81,7 @@ module.exports = function(Model, app, models) {
           return page.updateAttributes(options.attributes);
         } else {
           if (options.findOnly) {
-            console.log(options.where);
+            console.error(options.where);
             throw new Error('Could not find search item');
           } else {
             return Model.create(options.attributes);
