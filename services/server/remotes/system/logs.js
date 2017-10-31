@@ -8,10 +8,10 @@ module.exports = function(Model, app) {
         return app.logs.output.readLast();
 
       })
-      .then(function(lines) {
+      .then(function(entries) {
 
         return {
-          lines: lines
+          entries: entries
         };
 
       });

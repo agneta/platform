@@ -2,9 +2,9 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('SystemServerCtrl', function($scope,$rootScope, GIT) {
+  app.controller('SystemServerCtrl', function($scope, $rootScope, GIT, System) {
 
-    function check(){
+    function check() {
       GIT.graph()
         .$promise
         .then(function(result) {
@@ -25,6 +25,20 @@
           $rootScope.loadingMain = false;
         });
     };
+
+    //------------------------------------------------
+
+    var logs = $scope.logs = {};
+
+    logs.load = function() {
+      System.logs()
+        .$promise
+        .then(function(data) {
+          logs.output = data;
+        });
+    };
+
+    logs.load();
 
 
   });

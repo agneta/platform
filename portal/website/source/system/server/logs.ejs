@@ -3,4 +3,13 @@
     <b>Logs</b>
   </p>
 
+  <div class="entries" layout="column">
+    <div class="entry" ng-repeat="entry in logs.output.entries">
+      <p class="date">{{entry.date}}</p>
+      <div class="lines">
+      <p class="line" ng-repeat="line in entry.lines">{{line}}</p>
+      </div>
+    </div>
+  </div>
+
 </div>

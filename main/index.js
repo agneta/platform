@@ -17,7 +17,7 @@ pm2.connect(function(err) {
     name: name,
     script: path.join(__dirname, 'server', 'index.js'),
     exec_mode: 'fork',
-    logDateFormat: 'YYYY-MM-DD HH:mm Z',
+    logDateFormat: '>> YYYY-MM-DD HH:mm Z :',
     max_memory_restart: '400M',
     output: outputPath,
     error: errorPath
