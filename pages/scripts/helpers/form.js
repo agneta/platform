@@ -49,53 +49,35 @@ module.exports = function(locals) {
         preset
       );
       if (!field.name) {
-        field.name = fieldName || field.base;
+        field.name = fieldName;
       }
     }
 
-    this.field_props(form, field, fieldName);
+    this.field_props(form, field);
 
     return field;
 
   });
 
-  project.extend.helper.register('field_props', function(form, field, fieldName) {
+  project.extend.helper.register('field_props', function(fieldParent, field) {
 
-
-    if (form.parent) {
-      field.parent = form.parent;
-    } else if (form.name) {
-      field.parent = form.name + 'Fields';
+    if(fieldParent.lastWithName){
+      field.model = fieldParent.lastWithName.model;
+      field.prop = fieldParent.lastWithName.prop;
+    }else{
+      field.model = `${fieldParent.name}Fields`;
+      field.prop = fieldParent.name;
     }
-
-    if (form.parentForm) {
-      field.parentForm = form.parentForm;
-    } else if (form.name) {
-      field.parentForm = form.name;
-    }
-
-    field.name = field.name || fieldName;
 
     if (field.name) {
+      field.model += `.${field.name}`;
+      field.prop += `.${field.name}`;
 
-      if (field.parent) {
-        field.model = field.parent + '.' + field.name;
-      } else {
-        field.model = field.name;
-      }
-
-      if (form.parentForm) {
-        field.modelForm = form.parentForm + '.' + field.name;
-      } else if (form.name) {
-        field.modelForm = form.name + '.' + field.name;
-      } else {
-        field.modelForm = field.name;
-      }
-
-      field.prop = field.modelForm;
-    } else {
-      field.name = form.name || form.parent;
+      field.lastWithName = field;
+    }else{
+      field.lastWithName = fieldParent.lastWithName;
     }
+
   });
 
   project.extend.helper.register('formValidators', function(field) {

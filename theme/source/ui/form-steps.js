@@ -34,11 +34,12 @@
 
       var errors = {};
 
-      $scope.checkNext = function(stepName, data) {
-        var step = stepsDict[stepName];
-        errors[stepName] = data.invalid;
+      $scope.checkNext = function(data) {
+        data = data || {};
+        var nextStep = stepsDict[$scope.currentStep].next;
+        errors[$scope.currentStep] = data.invalid;
         if (!data.invalid) {
-          $scope.currentStep = step.next;
+          $scope.currentStep = nextStep;
         }
       };
 

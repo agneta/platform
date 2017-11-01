@@ -4,8 +4,14 @@
       action = page.action[action]
     }
 
+    var ngShow;
+
+    if(action.show){
+      ngShow = `ng-show="${action.show}"`;
+    }
+
     %>
-  <md-button ng-disabled="<%-action.disabled%>" class="md-primary round md-raised" ng-click="<%-action.click%>">
+  <md-button ng-disabled="<%-action.disabled%>" <%-ngShow%> class="md-primary round md-raised" ng-click="<%-action.click%>">
       <%-lng(action.title)%>
   </md-button>
   <%}%>

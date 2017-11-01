@@ -31,16 +31,16 @@ module.exports = function(app) {
 
                 var req = requestOptions.methodOptions.req;
 
-                if(!req){
+                if (!req) {
                   return Promise.reject({
                     message: 'Expected req object to be present in methodOptions.'
                   });
                 }
 
                 //--------------------------------------------------------
-                var checkKey = _.get(req.accessToken,rule.endpoint.key);
+                var checkKey = _.get(req.accessToken, rule.endpoint.key);
 
-                if(!checkKey){
+                if (!checkKey) {
                   return Promise.reject({
                     statusCode: 401,
                     message: 'Expected a rule key to be present in methodOptions.'
@@ -51,7 +51,7 @@ module.exports = function(app) {
 
                 var mapValue = rule.endpoint.map[checkKey];
 
-                if(!mapValue){
+                if (!mapValue) {
                   return Promise.reject({
                     statusCode: 401,
                     message: 'Expected the Map key to be present in endpoint override config.'
@@ -62,23 +62,22 @@ module.exports = function(app) {
 
                 var checkValue = rule.endpoint.value[mapValue];
 
-                if(!checkValue){
+                if (!checkValue) {
                   return Promise.reject({
                     statusCode: 401,
                     message: 'Expected the Value key to be present in endpoint override config.'
                   });
                 }
 
-                //console.log(`change endpoint to ${checkValue}`);
-                //console.log(requestOptions);
-
-                requestOptions.uri = checkValue;
+                requestOptions.uri = _.template(requestOptions.uri.href, {
+                  interpolate: /__:(.+?):__/g
+                })(checkValue);
               }
             }
 
           }
 
-          var request = Request(requestOptions,cb);
+          var request = Request(requestOptions, cb);
 
           request.on('response', function(response) {
             response.pipe(concatStream({

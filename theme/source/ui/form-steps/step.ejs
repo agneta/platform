@@ -1,5 +1,9 @@
 <div class="step <%-step.name%>" ng-show="showSteps || currentStep=='<%-step.name%>'">
-  <div class="number"><%-number%></div>
+  <div class="step <%-step.name%>">
+    <div class="header" layout="row" layout-align="start">
+      <div class="number"><%-number%></div>
+    </div>
+  </div>
   <div layout="column">
 
     <%-template(stepTemplate)%>
