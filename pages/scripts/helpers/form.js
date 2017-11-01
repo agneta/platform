@@ -48,9 +48,11 @@ module.exports = function(locals) {
         field,
         preset
       );
-      if (!field.name) {
-        field.name = fieldName;
-      }
+
+    }
+
+    if (!field.name) {
+      field.name = fieldName;
     }
 
     this.field_props(form, field);
@@ -61,12 +63,20 @@ module.exports = function(locals) {
 
   project.extend.helper.register('field_props', function(fieldParent, field) {
 
-    if(fieldParent.lastWithName){
+    if (fieldParent.lastWithName) {
       field.model = fieldParent.lastWithName.model;
       field.prop = fieldParent.lastWithName.prop;
-    }else{
+    } else {
+
+      if (!fieldParent.name) {
+        console.error(fieldParent);
+        throw new Error('Parent form must have a name');
+      }
+
       field.model = `${fieldParent.name}Fields`;
       field.prop = fieldParent.name;
+      field.lastWithName = field;
+
     }
 
     if (field.name) {
@@ -74,9 +84,14 @@ module.exports = function(locals) {
       field.prop += `.${field.name}`;
 
       field.lastWithName = field;
-    }else{
+    } else if(fieldParent.lastWithName) {
       field.lastWithName = fieldParent.lastWithName;
     }
+
+    field.name = field.prop.split('.');
+    var formName = field.name.shift();
+    field.name = field.name.join('_');
+    field.prop = `${formName}.${field.name}`;
 
   });
 

@@ -9,16 +9,21 @@ module.exports = function(Model) {
     var onField = options.onField;
     var formFields = {};
 
-    if(_.isString(form)){
+
+    if (_.isString(form)) {
       form = {
         name: form,
-        data: Model.clientHelpers.get_data('form/presets/'+form)
+        data: Model.clientHelpers.get_data('form/presets/' + form)
       };
+    }
+
+    if(!form.data.name){
+      form.data.name = form.name;
     }
 
     scan(form.data);
 
-    function scan(data){
+    function scan(data) {
 
       if (_.isString(data)) {
         data = Model.clientHelpers.get_data(data);
@@ -26,7 +31,7 @@ module.exports = function(Model) {
 
       for (var field of data.fields) {
 
-        field = Model.clientHelpers.form_field(field, form);
+        field = Model.clientHelpers.form_field(field, data);
         if (field.fields) {
           scan(field);
           continue;
@@ -42,7 +47,7 @@ module.exports = function(Model) {
 
         formFields[field.name] = field;
 
-        if(onField){
+        if (onField) {
           onField(field);
         }
 

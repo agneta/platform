@@ -1,16 +1,9 @@
-<div class="step <%-step.name%>" ng-show="showSteps || currentStep=='<%-step.name%>'">
-  <div class="step <%-step.name%>">
-    <div class="header" layout="row" layout-align="start">
-      <div class="number"><%-number%></div>
-    </div>
-  </div>
-  <div layout="column">
+<div class="step <%-step.name%>" ng-show="showSteps || currentStep=='<%-step.name%>'" layout="column">
 
-    <%-template(stepTemplate)%>
-    <%-template('ui/form-steps/errors')%>
-    <%if(step.actions){%>
-      <%-template('ui/form-steps/actions')%>
+  <%-template(stepTemplate)%>
+  <%-template('ui/form-steps/errors')%>
+  <%if(step.actions){%>
+    <%-template('ui/form-steps/actions')%>
     <%}%>
 
   </div>
-</div>

@@ -1,5 +1,37 @@
+number-width=38px;
+number-border=4px;
 .ui-form-steps{
 
+  >.header{
+    margin-bottom: 20px;
+    .numbers{
+      border-bottom: solid number-border grey;
+      height: number-width*0.5 + number-border;
+      margin-bottom: number-width*0.5;
+    }
+    .number{
+      background: white;
+      border: solid 2px color-primary;
+      color: color-primary;
+      width: number-width;
+      height: number-width;
+      border-radius: 100%;
+      line-height: number-width;
+      text-align: center;
+      font-size: 1.3em;
+      margin-left: 20px;
+
+      &.active{
+        transform: scale(1.2);
+        background: color-primary;
+        color: white;
+      }
+
+      &:first-child{
+        margin-left: 0;
+      }
+    }
+  }
 
   .balloon{
     position: relative;
