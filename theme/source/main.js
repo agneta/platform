@@ -263,6 +263,17 @@
     };
   });
 
+  app.directive('agKeydown', function() {
+    return {
+      restrict: 'A',
+      link: function(scope, elem) {
+        elem.on('keydown', function(ev) {
+          ev.stopPropagation();
+        });
+      }
+    };
+  });
+
   app.directive('onEnter', function() {
     return function(scope, element, attrs) {
       element.bind('keydown keypress', function(event) {

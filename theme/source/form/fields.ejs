@@ -19,6 +19,10 @@ for(var fieldProp of form.fields){
 	if(field.if){
 		ngIf = 'ng-if="'+field.if+'"';
 	}
+	
+	if(field.if_relative){
+		ngIf = `ng-if="${field.lastWithName.model}.${field.if_relative}"`;
+	}
 
 	%>
     <div class="field <%-field.class%>" <%-ngShow%> <%-ngIf%> <%-field.attr_base%>>

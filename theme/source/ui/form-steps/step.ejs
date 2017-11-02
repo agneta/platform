@@ -1,4 +1,4 @@
-<div class="step <%-step.name%>" ng-show="showSteps || currentStep=='<%-step.name%>'" layout="column">
+<div class="step <%-step.name%>" ng-class="{active:showSteps || currentStep=='<%-step.name%>'}" layout="column">
 
   <%-template(stepTemplate)%>
   <%-template('ui/form-steps/errors')%>

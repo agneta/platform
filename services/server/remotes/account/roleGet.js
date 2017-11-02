@@ -4,6 +4,13 @@ module.exports = function(Model, app) {
 
   Model.roleGet = function(roleName, req) {
 
+    if(!req.accessToken){
+      return Promise.reject({
+        statusCode: 401,
+        message: 'You need to be logged in to continue'
+      });
+    }
+
     return Model.__roleGet(req.accessToken.userId, roleName);
 
   };

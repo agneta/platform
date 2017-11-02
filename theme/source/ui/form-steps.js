@@ -34,7 +34,7 @@
 
       var errors = {};
 
-      $scope.checkNext = function(data) {
+      $scope.next = function(data) {
         data = data || {};
         var nextStep = stepsDict[$scope.currentStep].next;
         errors[$scope.currentStep] = data.invalid;

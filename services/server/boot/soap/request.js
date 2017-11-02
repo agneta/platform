@@ -9,15 +9,14 @@ module.exports = function(app) {
   const soapSecurity = require('./security')(app);
 
   return function(options) {
-    //console.log('soap:request:options',options);
 
     return function(requestOptions, cb) {
+
       soapSecurity({
         servicePath: options.servicePath,
         requestOptions: requestOptions
       })
         .then(function() {
-
           //console.log(options);
           //---------------------------------------------------
           //console.log('soap:request:requestOptions',requestOptions);

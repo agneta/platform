@@ -10,7 +10,8 @@
     <%}%>
   </div>
 </div>
-
+<div class="steps">
+  <%-template('ui/loader')%>
 <%for(var index in page.steps){
       var step = page.steps[index];
       var stepTemplate = path.join(page.formSteps.stepBase,step.name);
@@ -22,4 +23,5 @@
     %>
 <%-template('ui/form-steps/step',stepLocals)%>
 <%}%>
+</div>
 </div>

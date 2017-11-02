@@ -88,6 +88,7 @@ module.exports = function(locals) {
       field.lastWithName = fieldParent.lastWithName;
     }
 
+    // Fix name and prop to for proper error name validation
     field.name = field.prop.split('.');
     var formName = field.name.shift();
     field.name = field.name.join('_');
