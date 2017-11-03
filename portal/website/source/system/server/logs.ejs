@@ -7,7 +7,7 @@
       <span am-time-ago="entry.date"></span>
     </div>
     <div class="lines">
-      <p class="line" ng-repeat="line in entry.lines">{{line}}</p>
+      <p class="line" ng-repeat="line in entry.lines track by $index">{{line}}</p>
     </div>
   </div>
 </div>

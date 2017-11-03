@@ -1,11 +1,20 @@
 module.exports = function(Model, app) {
 
-  Model.logs = function() {
+  Model.logs = function(name) {
+
+    var log = app.logs[name];
+
+    if (!log) {
+      return Promise.reject({
+        statusCode: 400,
+        message: 'The name of the log is invalid'
+      });
+    }
 
     return Promise.resolve()
       .then(function() {
 
-        return app.logs.output.readLast();
+        return log.readLast();
 
       })
       .then(function(entries) {
@@ -21,7 +30,11 @@ module.exports = function(Model, app) {
   Model.remoteMethod(
     'logs', {
       description: 'Get application logs',
-      accepts: [],
+      accepts: [{
+        arg: 'name',
+        type: 'string',
+        required: true
+      }],
       returns: {
         arg: 'result',
         type: 'object',

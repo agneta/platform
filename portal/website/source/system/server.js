@@ -40,13 +40,16 @@
       function selectAction(action) {
 
         logs.actionSelected = action;
-        logs.load();
+        logs.load(action);
 
       }
 
       logs.load = function() {
+        var action = logs.actionSelected;
         logs.loading = true;
-        System.logs()
+        System.logs({
+          name: action.name
+        })
           .$promise
           .then(function(data) {
             logs.output = data;
