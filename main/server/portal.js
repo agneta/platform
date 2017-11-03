@@ -76,8 +76,8 @@ module.exports = function(options) {
   var webServices = setupServer('services',{
     root: 'services/preview/services',
     id: 'web',
-    disableSocket: true,
     dir: projectPaths.project,
+    disableLogWatch: true,
     website: {
       root: appRoots.preview
     },

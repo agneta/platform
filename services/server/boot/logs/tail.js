@@ -2,6 +2,7 @@ const chokidar = require('chokidar');
 const fs = require('fs-extra');
 const os = require('os');
 const Promise = require('bluebird');
+const EventEmitter = require('events').EventEmitter;
 
 function Tail(filename, options) {
 
@@ -13,6 +14,7 @@ function Tail(filename, options) {
 
   var watcher;
   var fd;
+  var events = new EventEmitter();
 
   function closeFile() {
     return fs.close(fd);
@@ -28,25 +30,34 @@ function Tail(filename, options) {
 
   function watch() {
 
-    var lastSize = 0;
+    if (watcher) {
+      console.warn('already watching');
+      return;
+    }
 
+    var lastSize = fs.statSync(filename).size;
+    var ignoreNext = false;
+    
     watcher = chokidar.watch(filename, options)
-      .on('add', (path, stats) => {
-        lastSize = stats.size;
-      })
       .on('change', function(path, stats) {
 
-        var diff = stats.size - lastSize;
+        if (!ignoreNext) {
+          ignoreNext = true;
+          var diff = stats.size - lastSize;
 
-        if (diff <= 0) {
-          lastSize = stats.size;
-          return;
+          if (diff <= 0) {
+            lastSize = stats.size;
+            return;
+          }
+
+          onChange(path, diff, lastSize)
+            .then(function(result) {
+              lastSize = stats.size;
+              events.emit('change', result);
+              ignoreNext = false;
+            });
         }
 
-        onChange(path, diff, lastSize, stats)
-          .then(function() {
-            lastSize = stats.size;
-          });
       })
       .on('unlink', () => {
         lastSize = 0;
@@ -62,27 +73,28 @@ function Tail(filename, options) {
     return fs.read(fd, buffer, 0, diff, position)
       .then(function() {
         fs.closeSync(fd);
-        var entries = buffer.toString('utf8').split('>> ');
+        var entries = buffer.toString('utf8');
+        entries = entries.split('>> ');
         entries.shift(1);
 
         var entriesFinal = [];
         var lastEntry = {};
 
-        return Promise.map(entries,function(entry) {
+        return Promise.map(entries, function(entry) {
           entry = entry.split(' :: ');
           var date = entry[0];
           var message = entry[1];
           var lines = message.split(os.EOL);
           var linesFinal = [];
-          return Promise.map(lines,function(line) {
-            if(!line || !line.length){
+          return Promise.map(lines, function(line) {
+            if (!line || !line.length) {
               return;
             }
             linesFinal.push(line);
           })
-            .then(function(){
+            .then(function() {
 
-              if(lastEntry.date!=date){
+              if (lastEntry.date != date) {
 
                 lastEntry = {
                   date: date,
@@ -90,14 +102,14 @@ function Tail(filename, options) {
                 };
 
                 entriesFinal.push(lastEntry);
-                
-              }else{
+
+              } else {
                 lastEntry.lines = lastEntry.lines.concat(linesFinal);
               }
             });
 
         })
-          .then(function(){
+          .then(function() {
             return entriesFinal;
           });
       });
@@ -113,10 +125,13 @@ function Tail(filename, options) {
   }
 
   return {
+    events: events,
     close: close,
     watch: watch,
     readLast: readLast
   };
 }
+
+Tail.prototype.__proto__ = EventEmitter.prototype;
 
 module.exports = Tail;

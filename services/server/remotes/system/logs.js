@@ -1,5 +1,17 @@
 module.exports = function(Model, app) {
 
+  if (!app.get('options').disableLogWatch) {
+
+    var logNames = ['output', 'error'];
+    for (var name of logNames) {
+      var log = app.logs[name];
+      log.events.on('change', function(result) {
+        Model.io.emit(`logs:change:${name}`, result);
+      });
+    }
+
+  }
+
   Model.logs = function(name) {
 
     var log = app.logs[name];

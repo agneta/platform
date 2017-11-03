@@ -29,7 +29,7 @@ module.exports = function(options) {
 
   //-------------------------------------------------------
 
-  require('../lib/secrets')(app,options);
+  require('../lib/secrets')(app, options);
   require('../lib/moment');
   require('../lib/helpers')(app);
   require('../lib/log')(app);
@@ -51,12 +51,10 @@ module.exports = function(options) {
 
       require('../lib/locals')(app, options);
 
-      if (!options.disableSocket) {
-        require('../lib/socket')({
-          worker: options.worker,
-          app: app
-        });
-      }
+      require('../lib/socket')({
+        appOptions: options,
+        app: app,
+      });
 
       return Promise.resolve();
 
@@ -77,7 +75,7 @@ module.exports = function(options) {
         .then(function() {
           return new Promise(function(resolve, reject) {
 
-            var middleware = app.configurator.load('middleware',true);
+            var middleware = app.configurator.load('middleware', true);
             //console.log(middleware);
 
             var bootOptions = {

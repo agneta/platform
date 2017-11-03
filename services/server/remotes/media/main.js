@@ -18,6 +18,15 @@ const path = require('path');
 
 module.exports = function(Model, app, options) {
 
+  var mediaOptions = {
+    name: 'media',
+    auth: {
+      allow: ['editor']
+    }
+  };
+
+  Model.io = app.socket.namespace(mediaOptions);
+
   Model.__tempUploads = path.join('temp/uploads', options.name);
   Model.__bucket = options.bucket;
 

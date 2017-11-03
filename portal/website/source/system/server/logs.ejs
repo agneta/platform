@@ -1,6 +1,6 @@
 <%-template('ui/loader',{prop:'logs.loading'})%>
-<div class="entries" layout="column">
-  <div class="entry" ng-repeat="entry in logs.output.entries">
+<md-virtual-repeat-container class="entries" layout="column">
+  <div class="entry" md-virtual-repeat="entry in logs.output.entries">
     <div class="header" layout="row" layout-align="start center">
       <span>{{entry.date | amUtc | amLocal | amDateFormat:'DD MMMM YYYY HH:mm:ss'}}</span>
       <span flex="auto"></span>
@@ -10,4 +10,4 @@
       <p class="line" ng-repeat="line in entry.lines track by $index">{{line}}</p>
     </div>
   </div>
-</div>
+</md-virtual-repeat-container>

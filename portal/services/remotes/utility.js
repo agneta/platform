@@ -19,6 +19,15 @@ var shortid = require('shortid');
 
 module.exports = function(Model, app) {
 
+  Model.io = app.socket.namespace({
+    name: 'utilities',
+    auth: {
+      allow: [
+        'administrator'
+      ]
+    }
+  });
+
   app.helpers.mixin('disableAllMethods', Model);
 
   var locals = app.get('options').client;

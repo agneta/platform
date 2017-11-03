@@ -18,8 +18,8 @@ const _ = require('lodash');
 const Promise = require('bluebird');
 
 module.exports = function(options) {
-
-  var worker = options.worker;
+  
+  var worker = options.appOptions.worker;
 
   if(!worker){
     return;
