@@ -4,3 +4,40 @@ title:
 
 icon: material/router
 controller: SystemServerCtrl
+
+scripts:
+  - 'lib/moment/moment.min'
+
+angular_libs:
+  -
+    js: lib/angular-moment.min
+    dep: angularMoment
+
+box:
+  versions:
+    title:
+      en: Versions
+    name: versions
+    flex: 40
+  git:
+    title:
+      en: GIT
+    name: git
+    flex: 60
+  logs:
+    title:
+      en: Application Logs
+    name: logs
+    actions:
+      -
+        title:
+          en: Output
+        click: logs.output()
+      -
+        title:
+          en: Errors
+        click: logs.errors()
+  instances:
+    title:
+      en: Instances
+    name: instances

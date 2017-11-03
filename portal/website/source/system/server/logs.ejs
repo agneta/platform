@@ -1,15 +1,12 @@
-<div layout="column" class="box logs">
-  <p class="title">
-    <b>Logs</b>
-  </p>
-
-  <div class="entries" layout="column">
-    <div class="entry" ng-repeat="entry in logs.output.entries">
-      <p class="date">{{entry.date}}</p>
-      <div class="lines">
+<div class="entries" layout="column">
+  <div class="entry" ng-repeat="entry in logs.output.entries">
+    <div class="header" layout="row" layout-align="start center">
+      <span>{{entry.date | amUtc | amLocal | amDateFormat:'DD MMMM YYYY HH:mm:ss'}}</span>
+      <span flex="auto"></span>
+      <span am-time-ago="entry.date"></span>
+    </div>
+    <div class="lines">
       <p class="line" ng-repeat="line in entry.lines">{{line}}</p>
-      </div>
     </div>
   </div>
-
 </div>

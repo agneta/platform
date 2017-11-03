@@ -1,89 +1,29 @@
 .page-system-server{
   .box{
 
+    overflow: hidden;
+    box-shadow: 0 2px 6px grey
+    border-radius: 7px;
     background: whitesmoke;
-    padding: 14px;
-    border-radius: 3px;
-
-    >.title{
-      color: color-primary;
-      font-size: 1.4em;
-      margin-bottom: 12px;
-    }
-
-    &.git{
-      .log{
-        border-left: solid 4px color-primary;
-        margin: 24px 0;
-        .commit{
-          &.current{
-            font-weight: bold;
-            .bullet{
-              background: color-primary;
-            }
-          }
-          &:first-child{
-            margin-top: 0;
-            >*{
-              margin-top: 0;
-            }
-          }
-          &:last-child{
-            margin-bottom: 0;
-            >*{
-              margin-bottom: 0;
-            }
-          }
-          position: relative;
-          .bullet{
-            left: -30px;
-            top: 0;
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            background: white;
-            border: solid 3px color-primary;
-            border-radius: 100%;
-          }
-        }
-        .rest{
-          color: color-primary;
-          padding: 0px 14px;
-          font-size: 2em;
-        }
-      }
-      .warn{
-        background: color-red;
-        color: white;
-        border-radius: 4px;
-        .message{
-          padding: 10px;
-          line-height: 1.6em;
-        }
+    
+    >.header{
+      padding: 10px;
+      box-shadow: 0 4px 10px #afafaf;
+      background: white;
+      z-index: 12;
+      .title{
+        color: color-primary;
+        font-size: 1.4em;
       }
     }
 
-    &.logs{
-      .entries{
-        max-height: 400px !important;
-        overflow: auto;
-        .entry{
-          border-left: solid 3px color-primary;
-          margin: 10px 0;
-          padding: 0 10px;
-          .date{
-            font-weight: bold;
-            font-size: 1.2em;
-            margin-bottom: 20px;
-          }
-
-          .line{
-            border-bottom: solid 1px #c2c2c2;
-            padding: 5px 0;
-          }
-        }
-      }
+    >.content{
+      padding: 14px;
     }
+
+    @import './server/git'
+    @import './server/logs'
+
   }
 
 }

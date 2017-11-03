@@ -1,13 +1,11 @@
 <div class="frame top" layout="column" layout-margin>
   <%-template('ui/page-title')%>
 
-  <div layout="row" layout-wrap layout-margin>
-
-    <%-template('system/server/versions')%>
-    <%-template('system/server/git')%>
-    <%-template('system/server/logs')%>
-    <%-template('system/server/instances')%>
-
+  <div layout="row" layout-margin>
+    <%-template('system/server/box',page.box.versions)%>
+    <%-template('system/server/box',page.box.git)%>
   </div>
+  <%-template('system/server/box',page.box.logs)%>
+  <%-template('system/server/box',page.box.instances)%>
 
 </div>
