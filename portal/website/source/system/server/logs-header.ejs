@@ -1,5 +1,8 @@
 <p class="title"><%-lng(box.title)%> - {{logs.actionSelected.title}}</p>
 <span flex="auto"></span>
+<md-button aria-label="Expand" class="md-icon-button" ng-click="logs.fullscreen=!logs.fullscreen">
+  <md-icon md-menu-origin md-svg-src="<%-get_icon('material/aspect-ratio')%>"></md-icon>
+</md-button>
 <span>Other Logs: </span>
 
   <md-button ng-repeat="action in viewData.extra.logs.actions" class="md-raised action" ng-hide="logs.actionSelected.name==action.name" ng-click="logs.action.onClick(action)">{{action.title}}%></md-button>

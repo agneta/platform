@@ -29,6 +29,7 @@ box:
       en: Application Logs
     name: logs
     header: logs-header
+    attr: ng-class="{'ui-fullscreen':logs.fullscreen}"
   instances:
     title:
       en: Instances

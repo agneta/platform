@@ -4,7 +4,7 @@
     <div class="header" layout="row" layout-align="start center">
       <span>{{entry.date | amUtc | amLocal | amDateFormat:'DD MMMM YYYY HH:mm:ss'}}</span>
       <span flex="auto"></span>
-      <span am-time-ago="entry.date"></span>
+      <span am-time-ago="entry.date | amUtc | amLocal"></span>
     </div>
     <div class="lines">
       <p class="line" ng-repeat="line in entry.lines track by $index">{{line}}</p>

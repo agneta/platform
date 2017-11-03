@@ -50,6 +50,7 @@
         on: function(name, cb) {
           var channel = socket.subscribe(getName(name));
           channel.watch(cb);
+          return channel;
         },
         once: function(name, cb) {
           name = getName(name);

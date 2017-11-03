@@ -36,27 +36,43 @@ function Tail(filename, options) {
     }
 
     var lastSize = fs.statSync(filename).size;
-    var ignoreNext = false;
-    
+    var pending = false;
     watcher = chokidar.watch(filename, options)
-      .on('change', function(path, stats) {
+      .on('change', function(path) {
 
-        if (!ignoreNext) {
-          ignoreNext = true;
-          var diff = stats.size - lastSize;
-
-          if (diff <= 0) {
-            lastSize = stats.size;
-            return;
-          }
-
-          onChange(path, diff, lastSize)
-            .then(function(result) {
-              lastSize = stats.size;
-              events.emit('change', result);
-              ignoreNext = false;
-            });
+        if (pending) {
+          return;
         }
+
+        pending = true;
+        var stats;
+
+        return Promise.resolve()
+          .then(function() {
+            return Promise.delay(400);
+          })
+          .then(function() {
+
+            stats = fs.statSync(filename);
+            var diff = stats.size - lastSize;
+            if (diff > 0) {
+
+              return onChange(path, diff, lastSize)
+                .then(function(result) {
+                  events.emit('change', result);
+                });
+
+            }
+
+          })
+          .then(function() {
+            return Promise.delay(300);
+          })
+          .then(function() {
+            lastSize = stats.size;
+            pending = false;
+          });
+
 
       })
       .on('unlink', () => {
@@ -81,34 +97,34 @@ function Tail(filename, options) {
         var lastEntry = {};
 
         return Promise.map(entries, function(entry) {
-          entry = entry.split(' :: ');
-          var date = entry[0];
-          var message = entry[1];
-          var lines = message.split(os.EOL);
-          var linesFinal = [];
-          return Promise.map(lines, function(line) {
-            if (!line || !line.length) {
-              return;
-            }
-            linesFinal.push(line);
+            entry = entry.split(' :: ');
+            var date = entry[0];
+            var message = entry[1];
+            var lines = message.split(os.EOL);
+            var linesFinal = [];
+            return Promise.map(lines, function(line) {
+                if (!line || !line.length) {
+                  return;
+                }
+                linesFinal.push(line);
+              })
+              .then(function() {
+
+                if (lastEntry.date != date) {
+
+                  lastEntry = {
+                    date: date,
+                    lines: linesFinal
+                  };
+
+                  entriesFinal.push(lastEntry);
+
+                } else {
+                  lastEntry.lines = lastEntry.lines.concat(linesFinal);
+                }
+              });
+
           })
-            .then(function() {
-
-              if (lastEntry.date != date) {
-
-                lastEntry = {
-                  date: date,
-                  lines: linesFinal
-                };
-
-                entriesFinal.push(lastEntry);
-
-              } else {
-                lastEntry.lines = lastEntry.lines.concat(linesFinal);
-              }
-            });
-
-        })
           .then(function() {
             return entriesFinal;
           });

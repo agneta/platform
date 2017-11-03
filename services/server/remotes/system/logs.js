@@ -1,14 +1,18 @@
+const Promise = require('bluebird');
+
 module.exports = function(Model, app) {
 
   if (!app.get('options').disableLogWatch) {
 
     var logNames = ['output', 'error'];
-    for (var name of logNames) {
+    Promise.map(logNames, function(name) {
+
       var log = app.logs[name];
       log.events.on('change', function(result) {
         Model.io.emit(`logs:change:${name}`, result);
       });
-    }
+
+    });
 
   }
 

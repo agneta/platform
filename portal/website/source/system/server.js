@@ -40,11 +40,23 @@
       };
 
       var entryLimit = 1000;
+      var channel;
 
       function selectAction(action) {
 
         logs.actionSelected = action;
         logs.load(action);
+
+        if(channel){
+          channel.unsubscribe();
+        }
+        console.log(action.name);
+        channel = socket.on('logs:change:'+action.name, function(entries){
+          console.log(entries);
+          for(var entry of entries){
+            logs.output.entries.unshift(entry);
+          }
+        });
 
       }
 
@@ -56,6 +68,7 @@
         })
           .$promise
           .then(function(data) {
+            data.entries.reverse();
             logs.output = data;
           })
           .finally(function() {
@@ -69,10 +82,6 @@
           $scope.logLines.pop();
         }
       };
-
-      socket.on('logs:change:error', function(result){
-        console.log(result);
-      });
 
       selectAction($rootScope.viewData.extra.logs.actions[0]);
 
