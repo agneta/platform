@@ -1,18 +1,18 @@
 <%
-var flex = locals.flex||100;
+var flex = box.flex||100;
 %>
-<div flex="<%-flex%>" class="box <%-locals.name%>">
+<div flex="<%-flex%>" class="box <%-box.name%>">
 
   <div class="header" layout="row" layout-align="start center">
-    <p class="title"><%-lng(locals.title)%></p>
-    <span flex="auto"></span>
-    <%if(locals.actions){for(var action of locals.actions){%>
-      <md-button class="md-raised" ng-click="<%-action.click%>"><%-lng(action.title)%></md-button>
-    <%}}%>
+    <%if(box.header){%>
+    <%-template(`system/server/${box.header}`)%>
+    <%}else{%>
+    <p class="title"><%-lng(box.title)%></p>
+    <%}%>
   </div>
 
   <div class="content" layout="column">
-    <%-template(`system/server/${locals.name}`)%>
+    <%-template(`system/server/${box.name}`)%>
   </div>
 
 </div>

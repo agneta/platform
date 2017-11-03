@@ -28,17 +28,38 @@
 
     //------------------------------------------------
 
-    var logs = $scope.logs = {};
+    (function() {
 
-    logs.load = function() {
-      System.logs()
-        .$promise
-        .then(function(data) {
-          logs.output = data;
-        });
-    };
+      var logs = $scope.logs = {
+        action: {
+          onClick: selectAction
+        }
 
-    logs.load();
+      };
+
+      function selectAction(action) {
+
+        logs.actionSelected = action;
+        logs.load();
+
+      }
+
+      logs.load = function() {
+        logs.loading = true;
+        System.logs()
+          .$promise
+          .then(function(data) {
+            logs.output = data;
+          })
+          .finally(function() {
+            logs.loading = false;
+          });
+      };
+
+      selectAction($rootScope.viewData.extra.logs.actions[0]);
+
+    })();
+
 
 
   });

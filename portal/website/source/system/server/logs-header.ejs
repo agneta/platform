@@ -1,0 +1,5 @@
+<p class="title"><%-lng(box.title)%> - {{logs.actionSelected.title}}</p>
+<span flex="auto"></span>
+<span>Other Logs: </span>
+
+  <md-button ng-repeat="action in viewData.extra.logs.actions" class="md-raised action" ng-hide="logs.actionSelected.name==action.name" ng-click="logs.action.onClick(action)">{{action.title}}%></md-button>

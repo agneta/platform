@@ -1,7 +1,9 @@
 <div class="bullet"></div>
-<div layout="column">
+<div layout="column" flex="auto">
   <span>{{commit.message}}</span>
   <span>{{commit.point}}</span>
 </div>
-<span flex="auto"></span>
-<span>{{commit.date}}</span>
+<div class="date" layout="column">
+<p am-time-ago="commit.date"></p>
+<p>{{commit.date | amUtc | amLocal | amDateFormat:'DD MMMM YYYY HH:mm:ss'}}</p>
+</div>

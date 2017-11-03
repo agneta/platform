@@ -2,10 +2,10 @@
   <%-template('ui/page-title')%>
 
   <div layout="row" layout-margin>
-    <%-template('system/server/box',page.box.versions)%>
-    <%-template('system/server/box',page.box.git)%>
+    <%-template('system/server/box',{box:page.box.versions})%>
+    <%-template('system/server/box',{box:page.box.git})%>
   </div>
-  <%-template('system/server/box',page.box.logs)%>
-  <%-template('system/server/box',page.box.instances)%>
+  <%-template('system/server/box',{box:page.box.logs})%>
+  <%-template('system/server/box',{box:page.box.instances})%>
 
 </div>

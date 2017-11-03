@@ -4,6 +4,7 @@
   <p>Remote branch:
     {{graph.branch.remote}}</p>
 </div>
+
 <div class="warn" ng-if="graph.behind" layout="row" layout-align="start center">
   <span class="message">Your branch is behind by
     {{graph.behind}}
@@ -11,6 +12,7 @@
   <span flex="auto"></span>
   <md-button class="md-raised" ng-click="update()">Update</md-button>
 </div>
+
 <div layout="column" class="log">
   <div class="commit" ng-repeat="commit in graph.shortLog" ng-class="{current:graph.current.hash==commit.hash}" layout="row" layout-margin layout-align="start center">
     <%-template('system/server/git-commit')%>
@@ -20,7 +22,9 @@
     <%-template('system/server/git-commit')%>
   </div>
 </div>
+
 <md-divider></md-divider>
+
 <div layout="row">
   <span flex="auto"></span>
   <md-button class="md-raised" ng-click="fetch()">Fetch</md-button>
