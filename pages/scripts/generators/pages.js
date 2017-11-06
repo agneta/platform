@@ -59,11 +59,11 @@ module.exports = function(locals) {
           });
 
           return new Promise(function(resolve, reject) {
-              walker.on('end', function() {
-                resolve(paths);
-              });
-              walker.on('error', reject);
-            })
+            walker.on('end', function() {
+              resolve(paths);
+            });
+            walker.on('error', reject);
+          })
             .then(function(files) {
 
               return Promise.map(files, function(path_file) {

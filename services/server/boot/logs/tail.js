@@ -21,7 +21,7 @@ function Tail(filename, options) {
   }
 
   function readLast() {
-    var chunk = 3000;
+    var chunk = 30000;
     return fs.stat(filename)
       .then(function(stats) {
         return onChange(filename, chunk, stats.size - chunk);
@@ -97,34 +97,37 @@ function Tail(filename, options) {
         var lastEntry = {};
 
         return Promise.map(entries, function(entry) {
-            entry = entry.split(' :: ');
-            var date = entry[0];
-            var message = entry[1];
-            var lines = message.split(os.EOL);
-            var linesFinal = [];
-            return Promise.map(lines, function(line) {
-                if (!line || !line.length) {
-                  return;
-                }
-                linesFinal.push(line);
-              })
-              .then(function() {
-
-                if (lastEntry.date != date) {
-
-                  lastEntry = {
-                    date: date,
-                    lines: linesFinal
-                  };
-
-                  entriesFinal.push(lastEntry);
-
-                } else {
-                  lastEntry.lines = lastEntry.lines.concat(linesFinal);
-                }
-              });
-
+          entry = entry.split(' :: ');
+          var date = entry[0];
+          var message = entry[1];
+          if(!message){
+            return;
+          }
+          var lines = message.split(os.EOL);
+          var linesFinal = [];
+          return Promise.map(lines, function(line) {
+            if (!line || !line.length) {
+              return;
+            }
+            linesFinal.push(line);
           })
+            .then(function() {
+
+              if (lastEntry.date != date) {
+
+                lastEntry = {
+                  date: date,
+                  lines: linesFinal
+                };
+
+                entriesFinal.push(lastEntry);
+
+              } else {
+                lastEntry.lines = lastEntry.lines.concat(linesFinal);
+              }
+            });
+
+        })
           .then(function() {
             return entriesFinal;
           });
