@@ -10,6 +10,7 @@
       var steps = options.steps;
 
       $scope.currentStep = steps[0];
+      //$scope.loading = true;
 
       var stepsDict = {};
 

@@ -34,15 +34,30 @@ module.exports = function(locals) {
 
       //-----------------------------------------
 
-      var basePage = path.parse(page.pathSource || page.path)
-        .dir;
+      function findBase(basePage) {
 
-      if (basePage) {
         basePage = helpers.get_page(basePage);
+
         if (basePage) {
           page.parentPath = basePage.path;
         }
+
       }
+
+      var basePath = page.pathSource || page.path;
+
+      while (!page.parentPath) {
+
+        basePath = path.parse(basePath)
+          .dir;
+
+        if (!basePath) {
+          break;
+        }
+
+        findBase(basePath);
+      }
+
 
       //-----------------------------------------
 
@@ -54,7 +69,7 @@ module.exports = function(locals) {
         page.parentPath = null;
       }
 
-      if(page.isPartial){
+      if (page.isPartial) {
         delete page.parentPath;
       }
 

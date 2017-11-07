@@ -83,7 +83,7 @@ module.exports = function(locals) {
     var sourceStyle = this.layout_style(page.pathSource);
 
     if (sourceStyle) {
-      data.scripts.push(sourceStyle);
+      data.styles.push(sourceStyle);
     }
 
     //----------------------------------------
@@ -183,7 +183,7 @@ module.exports = function(locals) {
         if(asset.indexOf(ext)<0){
           asset += ext;
         }
-        
+
         asset = self.get_asset(asset);
 
         if (!asset) {
