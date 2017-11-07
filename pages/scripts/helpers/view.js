@@ -65,7 +65,7 @@ module.exports = function(locals) {
 
     data.layoutClass = [
       'page-' + page.templateSource.split('/')
-      .join('-')
+        .join('-')
     ];
     if (page.class) {
       data.layoutClass.push(page.class);
@@ -74,19 +74,13 @@ module.exports = function(locals) {
 
     //----------------------------------------------------
 
-    var templateStyle = this.layout_style({
-      source: true,
-      template: page.templateSource
-    });
+    var templateStyle = this.layout_style(page.templateSource);
 
     if (templateStyle) {
       data.styles.push(templateStyle);
     }
 
-    var sourceStyle = this.layout_style({
-      source: true,
-      template: page.pathSource
-    });
+    var sourceStyle = this.layout_style(page.pathSource);
 
     if (sourceStyle) {
       data.scripts.push(sourceStyle);
@@ -94,19 +88,13 @@ module.exports = function(locals) {
 
     //----------------------------------------
 
-    var templateScript = this.layout_script({
-      source: true,
-      template: page.templateSource
-    });
+    var templateScript = this.layout_script(page.templateSource);
 
     if (templateScript) {
       data.scripts.push(templateScript);
     }
 
-    var sourceScript = this.layout_script({
-      source: true,
-      template: page.pathSource
-    });
+    var sourceScript = this.layout_script(page.pathSource);
 
     if (sourceScript) {
       data.scripts.push(sourceScript);
@@ -169,27 +157,43 @@ module.exports = function(locals) {
 
     //----------------------------------------
 
-    if (page.scripts) {
-      var pageScripts = this.lngScan(page.scripts);
-      for (var y in pageScripts) {
-        var script = pageScripts[y];
-        if (_.isString(script)) {
-          script += '.js';
-        }
-        if (!script) {
-          continue;
-        }
-        var asset = this.get_asset(script);
-        if (asset) {
-          data.scripts.push(asset);
-        }
-      }
-    }
+    data.scripts = data.scripts.concat(page.scripts);
+    data.styles = data.styles.concat(page.styles);
 
-    if (page.styles) {
-      for (var style of page.styles) {
-        data.styles.push(this.get_asset(style + '.css'));
+    setAssets(data.scripts, '.js');
+    setAssets(data.styles, '.css');
+
+    function setAssets(assets, ext) {
+
+      for (var y in assets) {
+
+        var asset = assets[y];
+        var priority = 0;
+
+        if (_.isObject(asset)) {
+          asset = asset.path;
+          priority = asset.priority || priority;
+        }
+
+        if (!_.isString(asset)) {
+          console.error(asset);
+          throw new Error('Could not find asset path');
+        }
+
+        if(asset.indexOf(ext)<0){
+          asset += ext;
+        }
+        
+        asset = self.get_asset(asset);
+
+        if (!asset) {
+          throw new Error(`Could not find asset ${asset}`);
+        }
+
+        assets[y] = asset;
+
       }
+
     }
 
     return JSON.stringify(data);

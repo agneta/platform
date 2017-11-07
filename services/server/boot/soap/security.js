@@ -26,7 +26,7 @@ module.exports = function(app) {
           //console.log(role);
           var pfx = role[auth.prop.pfx];
 
-          if(!pfx){
+          if (!pfx) {
             return Promise.reject({
               message: 'Must have a certificate assigned to your role',
               statusCode: 401
@@ -45,8 +45,11 @@ module.exports = function(app) {
     },
     basic: function(options, auth) {
 
-      options.headers = options.headers || {};
-      options.headers.Authorization = 'Basic ' + new Buffer((auth.username + ':' + auth.password) || '').toString('base64');
+      return Promise.resolve()
+        .then(function() {
+          options.headers = options.headers || {};
+          options.headers.Authorization = 'Basic ' + new Buffer((auth.username + ':' + auth.password) || '').toString('base64');
+        });
 
     }
   };

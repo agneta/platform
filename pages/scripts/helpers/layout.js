@@ -14,8 +14,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var path = require('path');
-
 module.exports = function(locals) {
 
   var project = locals.project;
@@ -24,26 +22,14 @@ module.exports = function(locals) {
   //
   /////////////////////////////////////////////////////////////////
 
-  function layoutResource(options, config) {
+  function layoutResource(filePath, config) {
 
-
-    options = options || {};
-
-    var _this = this;
-    var template = options.template || this.page.template;
-    var filePath = template + config.extOut;
+    filePath = filePath || this.page.template;
+    filePath = filePath + config.extOut;
     var stat = this.has_file(filePath);
 
     if (stat) {
-      var resPath = _this.get_asset(filePath);
-      if (options.source) {
-        return resPath;
-      }
-
-      return _this[config.type](resPath);
-
-    }else{
-      //console.warn('Resource not found',filePath);
+      return filePath;
     }
 
   }
@@ -53,9 +39,9 @@ module.exports = function(locals) {
   /////////////////////////////////////////////////////////////////
 
 
-  project.extend.helper.register('layout_style', function(options) {
+  project.extend.helper.register('layout_style', function(filePath) {
 
-    return layoutResource.call(this, options, {
+    return layoutResource.call(this, filePath, {
       type: 'css',
       ext: '.styl',
       extOut: '.css'

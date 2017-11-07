@@ -1,7 +1,7 @@
 <div layout="row" layout-align="center center">
   <%for(var action of step.actions){
     if(_.isString(action)){
-      action = page.action[action]
+      action = data.action[action]
     }
 
     var ngShow;

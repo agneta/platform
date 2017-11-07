@@ -1,9 +1,13 @@
-<div class="md-padding steps md-margin ui-form-steps" layout-align="space-between start" align="center" ng-controller="<%-page.formSteps.controller%>">
+<%
+  var data = locals.data || page;
+%>
+
+<div class="md-padding steps md-margin ui-form-steps" layout-align="space-between start" align="center" ng-controller="<%-data.formSteps.controller%>">
 
   <div class="header" layout="row" layout-align="center">
     <div class="numbers" layout="row">
-      <%for(var index in page.steps){
-    var step = page.steps[index];
+      <%for(var index in data.steps){
+    var step = data.steps[index];
     var number = Number(index) + 1;
     %>
       <div class="number" ng-class="{active:currentStep=='<%-step.name%>'}"><%-number%></div>
@@ -12,9 +16,9 @@
 </div>
 <div class="steps">
   <%-template('ui/loader')%>
-<%for(var index in page.steps){
-      var step = page.steps[index];
-      var stepTemplate = path.join(page.formSteps.stepBase,step.name);
+<%for(var index in data.steps){
+      var step = data.steps[index];
+      var stepTemplate = path.join(data.formSteps.stepBase,step.name);
 
       var stepLocals = {
         step:step,

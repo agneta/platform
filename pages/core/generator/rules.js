@@ -23,7 +23,6 @@ var yaml = require('js-yaml');
 module.exports = function(locals) {
 
   var project = locals.project;
-  var templates = {};
 
   var dataPathTheme = path.join(project.paths.baseTheme, 'rules.yml');
   var dataPath = path.join(project.paths.base, 'rules.yml');
@@ -36,23 +35,51 @@ module.exports = function(locals) {
 
   _.mergePages(data, dataTheme);
 
+  var dict = {
+    templates:{},
+    paths: {}
+  };
+
   if (data) {
 
     for (var props of data) {
 
-      if (props.templates) {
-
-        for (var name of props.templates) {
-
-          var template = templates[name] || {
-            scripts: [],
-            styles: []
-          };
-          _.mergePages(template, props.data);
-          templates[name] = template;
-        }
-      }
+      addToDict('paths',props);
+      addToDict('templates',props);
     }
+  }
+
+  function addToDict(dictName,props){
+
+    var propData = props[dictName];
+
+    if(!propData){
+      return;
+    }
+
+    for (var name of propData) {
+
+      var ruleData = dict[dictName][name] || {
+        scripts: [],
+        styles: []
+      };
+      _.mergePages(ruleData, props.data);
+      dict[dictName][name] = ruleData;
+    }
+
+  }
+
+  function getFromDict(data,dictName,property){
+
+    var ruleData = dict[dictName];
+    if(!ruleData){
+      return;
+    }
+    var dictData = ruleData[property];
+    if (dictData) {
+      _.mergePages(data, dictData);
+    }
+
   }
 
   function run(data) {
@@ -69,10 +96,9 @@ module.exports = function(locals) {
 
     /////////////////////////////////////
 
-    var templateData = templates[data.templateSource || data.template];
-    if (templateData) {
-      _.mergePages(data, templateData);
-    }
+    getFromDict(data,'templates',data.templateSource || data.template);
+    //console.log(data.path);
+    getFromDict(data,'paths',data.pathSource || data.path);
 
     return data;
 
