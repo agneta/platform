@@ -160,46 +160,51 @@
       return $http.get(dataPath)
         .then(function(response) {
 
+          var promises = [];
           data = response.data;
 
           //----------------------------------------------
+          // Load page dependencies
 
-          var files = [];
+          var dependencies = data.dependencies || [];
+          dependencies.map(function(priority) {
 
-          files = files.concat(data.scripts, data.styles);
+            var promise = $q(function(resolve) {
 
-          return $q(function(resolve) {
+              if (priority.length) {
 
-            if (files.length) {
+                $ocLazyLoad.load([{
+                  serie: true,
+                  name: 'MainApp',
+                  files: priority
+                }]).then(resolve);
 
-              $ocLazyLoad.load([{
-                serie: true,
-                name: 'MainApp',
-                files: files
-              }]).then(resolve);
+              } else {
+                resolve();
+              }
 
-            } else {
-              resolve();
-            }
-
-          })
-            .then(function() {
-
-              var dependencies = data.dependencies || [];
-              var promises = [];
-
-              dependencies.map(function(dependency) {
-                var promise = $ocLazyLoad.load({
-                  name: dependency.dep,
-                  files: [
-                    dependency.js
-                  ]
-                });
-                promises.push(promise);
-              });
-
-              return $q.all(promises);
             });
+
+            promises.push(promise);
+
+          });
+
+          //----------------------------------------------
+          // Load angular modules
+
+          var modules = data.modules || [];
+          modules.map(function(dependency) {
+            var promise = $ocLazyLoad.load({
+              name: dependency.dep,
+              files: [
+                dependency.js
+              ]
+            });
+            promises.push(promise);
+          });
+
+          return $q.all(promises);
+
 
         })
         .then(function() {
@@ -289,7 +294,7 @@
         for (var keyIndices in match.indices) {
           var indice = match.indices[keyIndices];
           var start = indice[0] + offset;
-          var end = indice[1] + offset+ 1;
+          var end = indice[1] + offset + 1;
           text = text.substring(0, start) + wrapStart + text.substring(start, end) + wrapEnd + text.substring(end);
           offset += wrapSize;
         }

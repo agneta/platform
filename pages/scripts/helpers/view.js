@@ -147,7 +147,7 @@ module.exports = function(locals) {
     //----------------------------------------
 
     if (page.angular_libs) {
-      data.dependencies = _.map(page.angular_libs, function(value) {
+      data.modules = _.map(page.angular_libs, function(value) {
         return {
           dep: value.dep,
           js: self.get_asset(value.js + '.js')
@@ -157,22 +157,33 @@ module.exports = function(locals) {
 
     //----------------------------------------
 
+    var tmpDependencies = [];
+    data.dependencies = [];
+
     data.scripts = data.scripts.concat(page.scripts);
     data.styles = data.styles.concat(page.styles);
 
     setAssets(data.scripts, '.js');
     setAssets(data.styles, '.css');
 
+    for (var index in tmpDependencies) {
+      var value = tmpDependencies[index];
+      data.dependencies.push(value);
+    }
+
+    delete data.scripts;
+    delete data.styles;
+
     function setAssets(assets, ext) {
 
       for (var y in assets) {
 
         var asset = assets[y];
-        var priority = 0;
+        var priority = 999;
 
         if (_.isObject(asset)) {
           asset = asset.path;
-          priority = asset.priority || priority;
+          priority = _.isNumber(asset.priority)?asset.priority:priority;
         }
 
         if (!_.isString(asset)) {
@@ -180,7 +191,7 @@ module.exports = function(locals) {
           throw new Error('Could not find asset path');
         }
 
-        if(asset.indexOf(ext)<0){
+        if (asset.indexOf(ext) < 0) {
           asset += ext;
         }
 
@@ -190,7 +201,9 @@ module.exports = function(locals) {
           throw new Error(`Could not find asset ${asset}`);
         }
 
-        assets[y] = asset;
+        var dependencies = tmpDependencies[priority] || [];
+        dependencies.push(asset);
+        tmpDependencies[priority] = dependencies;
 
       }
 
