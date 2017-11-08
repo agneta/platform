@@ -14,7 +14,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const cluster = require('cluster');
 
 module.exports.run = function(socketCluster) {
   return new Promise(function(resolve) {
@@ -23,49 +22,16 @@ module.exports.run = function(socketCluster) {
       console.log('Listening');
     });
 
-    socketCluster.on('fail',console.error);
-    socketCluster.on('warning',console.warn);
+    socketCluster.on('fail', console.error);
+    socketCluster.on('warning', console.warn);
 
     socketCluster.on('workerMessage', function(workerId, msg) {
-      
+
       if (msg.started) {
         resolve(msg.result);
       }
-      if (msg.restart) {
-        console.log('TODO: restart apps');
-        sendStatus();
-      }
+
     });
-
-    socketCluster.on('workerStart', function() {
-      sendStatus();
-    });
-
-    function sendStatus() {
-
-      var result = [];
-      var id;
-      var worker;
-
-      for (id in cluster.workers) {
-        worker = cluster.workers[id];
-        result.push({
-          id: worker.id,
-          connected: worker.isConnected(),
-          dead: worker.isDead()
-        });
-      }
-
-      for (id in cluster.workers) {
-        worker = cluster.workers[id];
-        if (worker.isConnected()) {
-          worker.send({
-            workers: result
-          });
-        }
-      }
-
-    }
 
   });
 

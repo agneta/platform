@@ -18,6 +18,8 @@ const express = require('express');
 const loopback = require('loopback');
 const chalk = require('chalk');
 const Promise = require('bluebird');
+const EventEmitter = require('events').EventEmitter;
+
 
 Promise.config({
   // Enables all warnings except forgotten return statements.
@@ -31,6 +33,8 @@ module.exports.run = function(worker) {
 
   var app;
   var server;
+  var emitter = new EventEmitter();
+
 
   switch (process.env.MODE) {
     case 'services':
@@ -53,7 +57,8 @@ module.exports.run = function(worker) {
 
   app.use(function(req, res, next) {
     if (starting) {
-      return res.send('Starting the Application. Try refreshing again in a couple of seconds.');
+      emitter.on('available',next);
+      return;
     }
     next();
   });
@@ -66,6 +71,7 @@ module.exports.run = function(worker) {
     .then(function(result) {
       starting = false;
       console.log(chalk.bold.green('Application is available'));
+      emitter.emit('available');
       worker.sendToMaster({
         started: true,
         result: result
