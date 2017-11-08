@@ -2,11 +2,11 @@ module.exports = function(Model, app) {
 
   var config = app.get('git');
 
-  Model.fetch = function() {
+  Model.changesRefresh = function() {
 
-    var branchName = app.git.branch.current;
+    var branchName = app.process.git.branch.current;
 
-    return app.git.native.fetch(config.remote.name, branchName)
+    return app.process.git.native.fetch(config.remote.name, branchName)
       .then(function(result) {
         return {
           success: `Fetched commit from remote ${result.remote} on branch ${branchName}`
@@ -17,7 +17,7 @@ module.exports = function(Model, app) {
 
 
   Model.remoteMethod(
-    'fetch', {
+    'changesRefresh', {
       description: '',
       accepts: [],
       returns: {
@@ -27,7 +27,7 @@ module.exports = function(Model, app) {
       },
       http: {
         verb: 'post',
-        path: '/fetch'
+        path: '/changes-refresh'
       }
     }
   );

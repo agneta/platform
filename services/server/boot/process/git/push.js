@@ -18,12 +18,12 @@ var Promise = require('bluebird');
 
 module.exports = function(app) {
 
-  app.git.push = function(message, req) {
+  app.process.git.push = function(message, req) {
 
     var Account = app.models.Account;
     var commit;
 
-    var git = app.git.native;
+    var git = app.process.git.native;
     var config = app.get('git');
 
     return git.status()
@@ -56,10 +56,10 @@ module.exports = function(app) {
       .then(function(result) {
 
         commit = result.commit;
-        var branchName = app.git.branch.current;
+        var branchName = app.process.git.branch.current;
         //console.log(config.remote.name, branchName);
 
-        return app.git.native.push(config.remote.name,branchName);
+        return app.process.git.native.push(config.remote.name,branchName);
 
       })
       .then(function() {

@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/boot/git/update.js
+ *   Source file: portal/services/boot/git/readYaml.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,13 +14,17 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+var yaml = require('js-yaml');
+
 
 module.exports = function(app) {
 
+  app.process.git.readYaml = function(options) {
 
-  app.git.update = function() {
-
-    console.warn('Update is not available yet');
+    return app.process.git.readFile(options)
+      .then(function(content) {
+        return yaml.safeLoad(content);
+      });
 
   };
 };

@@ -18,7 +18,5 @@ module.exports = function(Model, app) {
 
   require('./git/push')(Model, app);
   require('./git/status')(Model, app);
-  require('./git/graph')(Model, app);
-  require('./git/fetch')(Model, app);
 
 };

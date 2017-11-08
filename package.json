@@ -94,6 +94,7 @@
     "pm2": "^2.7.1",
     "pretty-bytes": "4.0.2",
     "progress": "2.0.0",
+    "public-ip": "^2.3.5",
     "randomcolor": "0.5.3",
     "read-chunk": "2.1.0",
     "replace-ext": "1.0.0",

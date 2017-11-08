@@ -77,7 +77,6 @@ module.exports = function(options) {
     root: 'services/preview/services',
     id: 'web',
     dir: projectPaths.project,
-    disableLogWatch: true,
     website: {
       root: appRoots.preview
     },
@@ -95,6 +94,7 @@ module.exports = function(options) {
   portalServices.locals.client = portalPages.locals;
   portalServices.locals.web = webPages.locals;
   webServices.locals.client = webPages.locals;
+  webServices.locals.portal = portalServices.locals;
 
   portalPages.locals.services = portalServices.locals.app;
   portalPages.locals.web = webPages.locals;

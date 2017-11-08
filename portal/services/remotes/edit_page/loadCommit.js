@@ -21,7 +21,7 @@ module.exports = function(Model, app) {
     return Model.getPage(id)
       .then(function(page) {
         var source = Model.pageSource(page);
-        return app.git.readYaml({
+        return app.process.git.readYaml({
           file: source,
           commit: commit
         })

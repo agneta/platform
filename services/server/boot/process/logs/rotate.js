@@ -42,14 +42,14 @@ module.exports = function(app) {
       .then(function(data) {
         var instance = data[0].pm2_env;
 
-        app.logs.file = {
+        app.process.logs.file = {
           output: instance.pm_out_log_path,
           error: instance.pm_err_log_path
         };
 
         files = [
-          app.logs.file.output,
-          app.logs.file.error
+          app.process.logs.file.output,
+          app.process.logs.file.error
         ];
 
       });

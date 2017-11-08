@@ -2,7 +2,7 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('SystemServerCtrl', function($scope, $rootScope, GIT, System, SocketIO, $mdDialog) {
+  app.controller('SystemServerCtrl', function($scope, $rootScope, Process, SocketIO, $mdDialog) {
 
     var socket = SocketIO.connect('system');
 
@@ -11,7 +11,9 @@
       var git = $scope.git = {};
 
       function check() {
-        GIT.graph()
+        Process.changesList({
+          __endpoint: 'aaaaaa'
+        })
           .$promise
           .then(function(result) {
             console.log(result);
@@ -22,7 +24,9 @@
 
       git.fetch = function() {
         $rootScope.loadingMain = true;
-        GIT.fetch()
+        Process.changesRefresh({
+          __endpoint: 'aaaaaa'
+        })
           .$promise
           .then(function() {
             check();

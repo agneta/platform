@@ -38,7 +38,7 @@ module.exports = function(Model, app) {
       template = _template;
       template.id = parsedId.templateId;
 
-      return app.git.log({
+      return app.process.git.log({
         file: parsedId.source
       });
     })

@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/boot/git.js
+ *   Source file: portal/services/boot/git/addAll.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,36 +14,12 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var path = require('path');
-
 module.exports = function(app) {
 
-  var webPrj = app.get('options').web.project;
+  app.process.git.addAll = function() {
 
-  function getPath(value) {
-    if (value.indexOf(webPrj.paths.project) === 0) {
-      return path.relative(
-        webPrj.paths.project,
-        value);
-    }
+    return app.process.git.native.add('./*');
 
-    return value;
-  }
-
-  app.git = {
-    getPath: getPath,
-    name: '.git'
   };
-
-  require('./git/addAll')(app);
-  require('./git/createYaml')(app);
-  require('./git/update')(app);
-  require('./git/log')(app);
-  require('./git/status')(app);
-  require('./git/readFile')(app);
-  require('./git/readYaml')(app);
-  require('./git/push')(app);
-
-  return require('./git/init')(app);
 
 };

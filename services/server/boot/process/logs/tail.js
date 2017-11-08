@@ -14,7 +14,7 @@ function Tail(filename, options) {
 
   var watcher;
   var fd;
-  var events = new EventEmitter();
+  var emitter = new EventEmitter();
 
   function closeFile() {
     return fs.close(fd);
@@ -59,7 +59,7 @@ function Tail(filename, options) {
 
               return onChange(path, diff, lastSize)
                 .then(function(result) {
-                  events.emit('change', result);
+                  emitter.emit('change', result);
                 });
 
             }
@@ -144,13 +144,11 @@ function Tail(filename, options) {
   }
 
   return {
-    events: events,
+    emitter: emitter,
     close: close,
     watch: watch,
     readLast: readLast
   };
 }
-
-Tail.prototype.__proto__ = EventEmitter.prototype;
 
 module.exports = Tail;

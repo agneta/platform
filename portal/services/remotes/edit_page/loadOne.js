@@ -41,7 +41,7 @@ module.exports = function(Model, app) {
         page = _page;
         source = Model.pageSource(page);
 
-        return app.git.log({
+        return app.process.git.log({
           file: source
         });
 

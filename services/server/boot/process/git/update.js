@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/boot/git/readFile.js
+ *   Source file: portal/services/boot/git/update.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,12 +17,10 @@
 
 module.exports = function(app) {
 
-  app.git.readFile = function(options) {
 
-    var file = app.git.getPath(options.file);
-    var command = `${options.commit}:${file}`;
+  app.process.git.update = function() {
 
-    return app.git.native.show([command]);
+    console.warn('Update is not available yet');
+
   };
-
 };

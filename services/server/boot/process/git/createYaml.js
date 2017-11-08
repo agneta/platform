@@ -20,7 +20,7 @@ var fs = require('fs-extra');
 
 module.exports = function(app) {
 
-  app.git.createYaml = function(filePath, data) {
+  app.process.git.createYaml = function(filePath, data) {
 
     if (fs.existsSync(filePath)) {
       return Promise.reject({

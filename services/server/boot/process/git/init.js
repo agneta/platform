@@ -21,9 +21,9 @@ module.exports = function(app) {
 
   var base_dir = process.cwd();
   var config = app.get('git');
-  app.git.native = simplegit(base_dir);
+  app.process.git.native = simplegit(base_dir);
 
-  return app.git.native.getRemotes()
+  return app.process.git.native.getRemotes()
     .then(function(remotes) {
 
       var foundRemote = _.find(remotes, {
@@ -31,19 +31,19 @@ module.exports = function(app) {
       });
 
       if (!foundRemote) {
-        return app.git.native.addRemote(config.remote.name, config.remote.url);
+        return app.process.git.native.addRemote(config.remote.name, config.remote.url);
       }
 
     })
     .then(function() {
-      return app.git.native.branch();
+      return app.process.git.native.branch();
     })
     .then(function(result) {
 
       //console.log('branch', result);
-      app.git.branch = result;
+      app.process.git.branch = result;
 
-      return app.models.GIT.fetch();
+      return app.models.Process.changesRefresh();
 
     });
 

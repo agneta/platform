@@ -28,7 +28,7 @@ module.exports = function(Model, app) {
     var yamlTitle = {};
     yamlTitle[app.getLng(req)] = title;
 
-    return app.git.createYaml(source, {
+    return app.process.git.createYaml(source, {
       title: yamlTitle,
       template: template
     })

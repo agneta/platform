@@ -2,7 +2,7 @@ module.exports = function(Model, app) {
 
 
   Model.push = function(message, req) {
-    return app.git.push(message, req)
+    return app.process.git.push(message, req)
       .then(function(result) {
 
         app.models.Account.activity({

@@ -31,7 +31,7 @@ module.exports = function(Model, app) {
 
     var name = path.parse(dataPath).name;
 
-    return app.git.createYaml(source, {
+    return app.process.git.createYaml(source, {
       name: name,
       title: yamlTitle
     })
