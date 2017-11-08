@@ -1,4 +1,6 @@
 const path = require('path');
+const _ = require('lodash');
+
 
 module.exports = function(watcher) {
 
@@ -11,7 +13,11 @@ module.exports = function(watcher) {
       case '.js':
 
         delete require.cache[require.resolve(pathFile)];
-        require(pathFile)(locals);
+        var script = require(pathFile);
+
+        if (_.isFunction(script)) {
+          script(locals);
+        }
 
         break;
     }

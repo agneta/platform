@@ -100,9 +100,6 @@ module.exports = function(locals) {
       data.scripts.push(sourceScript);
     }
 
-    data.scripts = _.uniq(data.scripts);
-    data.styles = _.uniq(data.styles);
-
     return data;
 
 
@@ -147,11 +144,9 @@ module.exports = function(locals) {
     //----------------------------------------
 
     if (page.angular_libs) {
-      data.modules = _.map(page.angular_libs, function(value) {
-        return {
-          dep: value.dep,
-          js: self.get_asset(value.js + '.js')
-        };
+      data.inject = _.map(page.angular_libs, function(value) {
+        data.scripts.push(value.js);
+        return value.dep;
       });
     }
 
@@ -168,6 +163,7 @@ module.exports = function(locals) {
 
     for (var index in tmpDependencies) {
       var value = tmpDependencies[index];
+      value = _.uniq(value);
       data.dependencies.push(value);
     }
 
@@ -175,34 +171,34 @@ module.exports = function(locals) {
     delete data.styles;
 
     function setAssets(assets, ext) {
-
       for (var y in assets) {
 
         var asset = assets[y];
         var priority = 999;
+        var assetPath = asset;
 
         if (_.isObject(asset)) {
-          asset = asset.path;
+          assetPath = asset.path;
           priority = _.isNumber(asset.priority)?asset.priority:priority;
         }
 
-        if (!_.isString(asset)) {
+        if (!_.isString(assetPath)) {
           console.error(asset);
           throw new Error('Could not find asset path');
         }
 
-        if (asset.indexOf(ext) < 0) {
-          asset += ext;
+        if (assetPath.indexOf(ext) < 0) {
+          assetPath += ext;
         }
 
-        asset = self.get_asset(asset);
+        assetPath = self.get_asset(assetPath);
 
-        if (!asset) {
+        if (!assetPath) {
           throw new Error(`Could not find asset ${asset}`);
         }
 
         var dependencies = tmpDependencies[priority] || [];
-        dependencies.push(asset);
+        dependencies.push(assetPath);
         tmpDependencies[priority] = dependencies;
 
       }

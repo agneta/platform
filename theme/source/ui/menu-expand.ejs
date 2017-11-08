@@ -1,4 +1,8 @@
-<md-sidemenu class="menu-expand" locked="false">
+<%
+  var lock = locals.lock?'lock':null;
+%>
+
+<md-sidemenu class="menu-expand <%-lock%>" locked="false">
   <md-sidemenu-group>
     <%for(var item of locals.list){%>
 

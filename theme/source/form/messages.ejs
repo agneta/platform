@@ -1,8 +1,6 @@
 <div class="error-messages" ng-messages="<%-field.prop%>.$error" <%-locals.attr%> role="alert">
 <%
 
-var dataValidators = get_data('form/validators');
-
 for(var name in field.validators){
 
   var message = name;
@@ -19,7 +17,11 @@ for(var name in field.validators){
     value: value
   };
 
-  text = lng(dataValidators[message].message);
+  var text = get_data('form/validators/'+message);
+  if(!text){
+    throw new Error(`Could not find validator: ${message}`);
+  }
+  text = lng(validator.message);
   %>
 
   <div ng-message="<%-name%>" class="error">

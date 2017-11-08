@@ -160,21 +160,29 @@
       return $http.get(dataPath)
         .then(function(response) {
 
-          var promises = [];
           data = response.data;
 
           //----------------------------------------------
           // Load page dependencies
 
           var dependencies = data.dependencies || [];
-          dependencies.map(function(priority) {
+          var priorityIndex = 0;
 
-            var promise = $q(function(resolve) {
+          function loadPriority() {
+
+            var priority = dependencies[priorityIndex];
+
+            if(!priority){
+              return;
+            }
+
+            priorityIndex++;
+
+            return $q(function(resolve) {
 
               if (priority.length) {
 
                 $ocLazyLoad.load([{
-                  serie: true,
                   name: 'MainApp',
                   files: priority
                 }]).then(resolve);
@@ -183,27 +191,19 @@
                 resolve();
               }
 
-            });
+            })
+              .then(loadPriority);
 
-            promises.push(promise);
-
-          });
+          }
 
           //----------------------------------------------
           // Load angular modules
 
-          var modules = data.modules || [];
-          modules.map(function(dependency) {
-            var promise = $ocLazyLoad.load({
-              name: dependency.dep,
-              files: [
-                dependency.js
-              ]
-            });
-            promises.push(promise);
-          });
+          if(data.inject && data.inject.length){
+            $ocLazyLoad.inject(data.inject);
+          }
 
-          return $q.all(promises);
+          return loadPriority();
 
 
         })
