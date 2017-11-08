@@ -21,7 +21,9 @@
 
   var app = angular.module('MainApp');
 
-  app.factory('SocketIO', function() {
+  app.factory('SocketIO', function($rootScope) {
+
+    $rootScope.system = {};
 
     var socket = socketCluster.connect({
       host: agneta.services.host,
@@ -29,8 +31,16 @@
       autoReconnect: true
     });
 
+    socket.on('disconnect', function() {
+      $rootScope.system.notification = {
+        level: 'error',
+        message: 'You are disconnected from the server.'
+      };
+    });
+
     socket.on('connect', function() {
-      console.log('CONNECTED');
+      //console.log('CONNECTED');
+      $rootScope.system.notification = null;
     });
 
     socket.on('unauthorized', function() {
@@ -75,7 +85,8 @@
     }
 
     return {
-      connect: connect
+      connect: connect,
+      socket: socket
     };
 
   });

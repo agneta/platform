@@ -1,4 +1,29 @@
 &.git{
+
+  position: relative;
+
+  .updating{
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    background: alpha(white,0.8);
+    text-align: center;
+
+    md-icon{
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+      color: color-primary;
+    }
+    
+    .title{
+      font-size: 2em;
+      color: color-primary;
+    }
+  }
+
   .log{
     border-left: solid 4px color-primary;
     margin: 24px 0;

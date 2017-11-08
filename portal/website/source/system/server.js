@@ -2,31 +2,64 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('SystemServerCtrl', function($scope, $rootScope, GIT, System, SocketIO) {
+  app.controller('SystemServerCtrl', function($scope, $rootScope, GIT, System, SocketIO, $mdDialog) {
 
     var socket = SocketIO.connect('system');
 
-    function check() {
-      GIT.graph()
-        .$promise
-        .then(function(result) {
-          console.log(result);
-          $scope.graph = result;
-        });
-    }
-    check();
+    (function() {
 
-    $scope.fetch = function() {
-      $rootScope.loadingMain = true;
-      GIT.fetch()
-        .$promise
-        .then(function() {
-          check();
+      var git = $scope.git = {};
+
+      function check() {
+        GIT.graph()
+          .$promise
+          .then(function(result) {
+            console.log(result);
+            $scope.graph = result;
+          });
+      }
+      check();
+
+      git.fetch = function() {
+        $rootScope.loadingMain = true;
+        GIT.fetch()
+          .$promise
+          .then(function() {
+            check();
+          })
+          .finally(function() {
+            $rootScope.loadingMain = false;
+          });
+      };
+
+      git.update = function() {
+
+        git.updating = true;
+        System.restart({
+
         })
-        .finally(function() {
-          $rootScope.loadingMain = false;
-        });
-    };
+          .$promise
+          .then(function() {
+
+            SocketIO.socket.once('connect', function() {
+
+              git.updating = false;
+
+              $mdDialog.open({
+                partial: 'success',
+                //nested: true,
+                data: {
+                  content: 'System is now updated'
+                }
+              });
+
+            });
+
+          });
+      };
+
+    })();
+
 
     //------------------------------------------------
 
@@ -35,8 +68,10 @@
       var logs = $scope.logs = {
         action: {
           onClick: selectAction
+        },
+        output: {
+          entries: []
         }
-
       };
 
       var entryLimit = 1000;
@@ -47,13 +82,13 @@
         logs.actionSelected = action;
         logs.load(action);
 
-        if(channel){
+        if (channel) {
           channel.unsubscribe();
         }
-        console.log(action.name);
-        channel = socket.on('logs:change:'+action.name, function(entries){
-          console.log(entries);
-          for(var entry of entries){
+        //console.log(action.name);
+        channel = socket.on('logs:change:' + action.name, function(entries) {
+          //console.log(entries);
+          for (var entry of entries) {
             logs.output.entries.unshift(entry);
           }
         });

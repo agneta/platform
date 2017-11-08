@@ -13,7 +13,7 @@ box:
     flex: 40
   git:
     title:
-      en: GIT
+      en: Repository
     name: git
     flex: 60
   logs:
