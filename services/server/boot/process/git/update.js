@@ -15,12 +15,20 @@
  *   limitations under the License.
  */
 
+const Promise = require('bluebird');
 module.exports = function(app) {
 
+  var git = app.process.git.native;
 
   app.process.git.update = function() {
 
-    console.warn('Update is not available yet');
+    return Promise.resolve()
+      .then(function() {
+        return git.reset(['--hard', 'FETCH_HEAD']);
+      })
+      .then(function() {
+        return git.clean('f', ['-d']);
+      });
 
   };
 };

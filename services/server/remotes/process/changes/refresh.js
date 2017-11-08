@@ -9,7 +9,7 @@ module.exports = function(Model, app) {
     return app.process.git.native.fetch(config.remote.name, branchName)
       .then(function(result) {
         return {
-          success: `Fetched commit from remote ${result.remote} on branch ${branchName}`
+          success: `Fetched changes from remote ${result.remote} on branch ${branchName}`
         };
       });
   };
