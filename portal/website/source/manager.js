@@ -18,12 +18,7 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('HomeCtrl', function($scope, $rootScope, $location, Account, $route, $timeout, $ocLazyLoad) {
-
-    $ocLazyLoad.load({
-      name: 'angularMoment',
-      files: [agneta.get_lib('angular-moment.min.js')]
-    });
+  app.controller('HomeCtrl', function($scope, $rootScope, $location, Account) {
 
     $scope.accounts = {};
     $scope.activities = {};

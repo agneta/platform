@@ -9,9 +9,6 @@ description:
 icon: 'material/history'
 
 scripts:
-  - 'lib/moment/moment.min'
-  - 'lib/moment/el'
-  - 'moment.extend'
   - 'lib/Chart.min'
 
 controller: 'HistoryCtrl'

@@ -14,9 +14,6 @@ noHeader: true
 
 icon: agneta/manager
 
-scripts:
-  - 'lib/moment/moment.min'
-
 feeds:
   -
     title:

@@ -14,7 +14,9 @@
       - 'lib/js-yaml.min'
       - 'lib/lodash.min'
       - 'lib/fuse.min'
-      - 'lib/moment/moment.min'
+      -
+        path: 'lib/moment/moment.min'
+        priority: 0
       - 'edit/main'
       - 'media/file'
     styles:
@@ -31,6 +33,9 @@
       -
         js: 'lib/ng-file-upload.min'
         dep: 'ngFileUpload'
+      -
+        js: lib/angular-moment.min
+        dep: angularMoment
     keypress: true
     class: 'page-editor'
   templates:
@@ -41,6 +46,23 @@
     menuLock: true
   templates:
     - "docs"
+-
+  data:
+    scripts:
+      - 'lib/moment/el'
+      - 'moment.extend'
+      -
+        path: 'lib/moment/moment.min'
+        priority: 0
+    angular_libs:
+      -
+        js: lib/angular-moment.min
+        dep: angularMoment
+  templates:
+    - "manager"
+    - "manager/accounts"
+    - "manager/history"
+    - "system/server"
 -
   data:
     authorization:

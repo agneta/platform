@@ -8,7 +8,6 @@ authorization:
   - administrator
 scripts:
   - manager/accounts/list
-  - 'lib/moment/moment.min'
 
 controller: AccountCtrl
 menuLock: true
@@ -32,9 +31,3 @@ fields:
     icon: material/email
     prop: email
     type: input
-
-
-angular_libs:
-  -
-    js: lib/angular-moment.min
-    dep: angularMoment

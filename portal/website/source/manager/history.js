@@ -56,10 +56,6 @@
     };
     $scope.type = 'view_page';
 
-    $ocLazyLoad.load({
-      name: 'angularMoment',
-      files: [agneta.get_lib('angular-moment.min.js')]
-    });
 
     /////////////////////////////////////////////////////////////
 
