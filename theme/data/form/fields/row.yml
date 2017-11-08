@@ -1,0 +1,4 @@
+group: 'fields'
+class: 'row'
+attr_base: 'layout="row" flex="100" layout-align="start center"'
+ui: true

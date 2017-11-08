@@ -51,8 +51,10 @@ module.exports = function(locals) {
 
     }
 
-    if (!field.name) {
-      field.name = fieldName;
+    if (field.ui) {
+      field.name = null;
+    } else {
+      field.name = field.name || fieldName || field.base;
     }
 
     this.field_props(form, field);
@@ -84,7 +86,7 @@ module.exports = function(locals) {
       field.prop += `.${field.name}`;
 
       field.lastWithName = field;
-    } else if(fieldParent.lastWithName) {
+    } else if (fieldParent.lastWithName) {
       field.lastWithName = fieldParent.lastWithName;
     }
 

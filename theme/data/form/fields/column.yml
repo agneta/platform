@@ -1,0 +1,4 @@
+group: 'fields'
+class: 'column'
+attr_base: 'layout="column" flex="100"'
+ui: true
