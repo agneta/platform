@@ -18,13 +18,8 @@ const _ = require('lodash');
 const Promise = require('bluebird');
 
 module.exports = function(options) {
-  
+
   var worker = options.appOptions.worker;
-
-  if(!worker){
-    return;
-  }
-
   var app = options.app;
   var server = worker.scServer;
   var cookieParser = require('cookie-parser')(

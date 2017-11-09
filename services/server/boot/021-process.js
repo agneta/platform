@@ -3,7 +3,7 @@ const pm2 = Promise.promisifyAll(require('pm2'));
 
 module.exports = function(app) {
 
-  if (app.get('options').portal) {
+  if (app.get('options').web) {
     return;
   }
 
