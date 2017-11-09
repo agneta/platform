@@ -116,8 +116,7 @@ var start = {
 
 function getComponent(name, componentPath, options) {
 
-  options.locals = options.locals || {};
-  _.extend(options.locals, config);
+  _.extend(options, config);
 
   var component = require(componentPath)(options);
 

@@ -4,9 +4,9 @@ const path = require('path');
 pm2.connect(function(err) {
 
   var name = 'agneta';
-  var base = path.join(process.cwd(),'.pm2/logs');
-  var outputPath = path.join(base,'output.log');
-  var errorPath = path.join(base,'error.log');
+  var base = path.join(process.env.HOME,'.pm2/logs');
+  var outputPath = path.join(base,`${name}-output.log`);
+  var errorPath = path.join(base,`${name}-error.log`);
 
   if (err) {
     console.error(err);
@@ -22,7 +22,6 @@ pm2.connect(function(err) {
     output: outputPath,
     error: errorPath
   }, function(err) {
-    console.log('pm2',arguments);
     if (err) throw err;
 
   });

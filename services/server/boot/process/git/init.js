@@ -43,8 +43,6 @@ module.exports = function(app) {
       //console.log('branch', result);
       app.process.git.branch = result;
 
-      return app.models.Process.changesRefresh();
-
     });
 
 };

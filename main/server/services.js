@@ -51,6 +51,7 @@ module.exports = function(options) {
   });
 
   webPages.locals.services = services.locals.app;
+  services.locals.client = webPages.locals;
 
   return start.init([
     services,

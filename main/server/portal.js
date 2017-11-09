@@ -29,19 +29,16 @@ module.exports = function(options) {
   var app = options.app;
   //-------------------------------------
 
-  var commonOptions = _.extend({
+  var commonOptions = {
     mainApp: app,
     worker: options.worker,
     server: server
-  }, config);
+  };
 
   const appRoots = {
     preview: 'services/preview/real-time',
     local: 'services/preview/local'
   };
-  // Ensure secure connection when not in development mode
-
-  app.set('trust proxy', 1);
 
   //-----------------------------------------------------
   // Setup the preview components

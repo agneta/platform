@@ -47,11 +47,10 @@ module.exports = function(locals) {
       var basePath = page.pathSource || page.path;
 
       while (!page.parentPath) {
-
         basePath = path.parse(basePath)
           .dir;
 
-        if (!basePath) {
+        if (!basePath || basePath == '/') {
           break;
         }
 

@@ -1,4 +1,3 @@
-const os = require('os');
 const path = require('path');
 const express = require('express');
 const SocketCluster = require('socketcluster')
@@ -10,28 +9,8 @@ const SocketCluster = require('socketcluster')
 
 module.exports = function(options) {
 
-  var workerCount = 1;
-  workerCount = workerCount || os.cpus()
-    .length;
-  console.log(`Starting ${workerCount} workers`);
-
-  //-------------------------------------------------
-
   var socketPath = '/socket';
   process.env.PATH_SOCKET = process.env.PATH_SOCKET || socketPath;
-
-  //-------------------------------------------------
-
-  var environment = process.env.NODE_ENV;
-
-  switch (environment) {
-    case 'production':
-      environment = 'prod';
-      break;
-    default:
-      environment = 'dev';
-      break;
-  }
 
   //---------------------------------------------------
   // HTTP connections to redirect to HTTPS
@@ -46,14 +25,13 @@ module.exports = function(options) {
 
   //---------------------------------------------------
   // HTTPS connections with socket cluster
-
   var clusterOptions = {
-    workers: workerCount,
+    workers: 1,
     port: process.env.PORT,
     protocol: process.env.PROTOCOL,
     path: socketPath,
+    environment: 'dev',
     workerController: path.join(__dirname, 'worker.js'),
-    environment: environment,
     logLevel: 3,
     protocolOptions: options.protocolOptions
   };

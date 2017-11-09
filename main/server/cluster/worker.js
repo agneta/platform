@@ -37,6 +37,10 @@ module.exports.run = function(worker) {
 
 
   switch (process.env.MODE) {
+    case 'pages':
+      app = express();
+      server = require('../pages');
+      break;
     case 'services':
       app = loopback();
       server = require('../services');
@@ -46,7 +50,7 @@ module.exports.run = function(worker) {
       server = require('../portal');
       break;
     default:
-      throw new Error('Unrecognized process mode:',process.env.MODE);
+      throw new Error('Unrecognized process mode:', process.env.MODE);
   }
 
   //--------------------------------
@@ -55,19 +59,25 @@ module.exports.run = function(worker) {
   var starting = true;
   httpServer.on('request', app);
 
+  app.set('trust proxy', 1);
+
   app.use(function(req, res, next) {
     if (starting) {
-      emitter.on('available',next);
+      emitter.on('available', next);
       return;
     }
     next();
   });
 
-  server({
-    worker: worker,
-    server: httpServer,
-    app: app
-  })
+  Promise.resolve()
+    .then(function() {
+
+      return server({
+        worker: worker,
+        server: httpServer,
+        app: app
+      });
+    })
     .then(function(result) {
       starting = false;
       console.log(chalk.bold.green('Application is available'));

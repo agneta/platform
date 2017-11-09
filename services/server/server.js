@@ -48,7 +48,6 @@ module.exports = function(options) {
   return {
     locals: options,
     init: function() {
-
       require('../lib/locals')(app, options);
 
       require('../lib/socket')({
