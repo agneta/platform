@@ -14,10 +14,14 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+const _ = require('lodash');
+const request = require('request');
+const url = require('url');
+
 var projectPaths = require('../paths').core;
 var config = require('../config');
 var start = require('../start');
-
 module.exports = function(options) {
 
   options = options || {};
@@ -42,6 +46,38 @@ module.exports = function(options) {
     host: config.host
   });
 
+  var project;
+  var languages;
+  var storageConfig;
+
+  options.app.use(function(req, res, next) {
+
+    var pathParts = req.path.split('/');
+
+    pathParts = pathParts.filter(function(n) {
+      return _.isString(n) && n.length;
+    });
+
+    if (pathParts.length == 0 ||
+      languages[pathParts[0]]
+    ) {
+
+      var reqPath = url.format({
+        hostname: storageConfig.buckets.assets.host,
+        protocol: 'https',
+        pathname: req.path
+      });
+
+      request
+        .get(reqPath)
+        .pipe(res);
+      return;
+
+    }
+
+    next();
+  });
+
   var services = start.services({
     worker: options.worker,
     dir: projectPaths.project,
@@ -58,10 +94,9 @@ module.exports = function(options) {
     webPages
   ])
     .then(function() {
-      return {
-        services: services.locals,
-        pages: webPages.locals
-      };
+      project = webPages.locals.project;
+      languages = _.get(project, 'site.languages');
+      storageConfig = services.locals.app.get('storage');
     });
 
 };

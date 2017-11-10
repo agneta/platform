@@ -126,6 +126,11 @@ module.exports = function(app, options) {
           name: `${domain}`,
           private: `private.${domain}`,
         }
+      },
+      assets: {
+        name: `assets-staging.${domain}`,
+        host: `assets-staging.${domain}`,
+        production: `assets.${domain}`
       }
     };
 
