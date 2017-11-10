@@ -23,6 +23,7 @@ var urljoin = require('url-join');
 module.exports = function(locals) {
 
   var project = locals.project;
+  var buckets = locals.services.get('storage').buckets;
 
   project.extend.helper.register('asset_page', function(assetPath, page) {
     page = page || this.page;
@@ -47,8 +48,8 @@ module.exports = function(locals) {
       }
     }
 
-    if(!_.isString(path_check)){
-      console.log('get_asset:path_check',path_check);
+    if (!_.isString(path_check)) {
+      console.log('get_asset:path_check', path_check);
       throw new Error('Could not process asset_path [NOT STRING]. Check the log above');
     }
 
@@ -80,6 +81,15 @@ module.exports = function(locals) {
 
     result = this.getVersion(result);
     result = this.url_for(result);
+
+    switch (project.site.env) {
+      case 'staging':
+        result = `https://${buckets.assets.host}${result}`;
+        break;
+      case 'production':
+        result = `https://${buckets.assets.production}${result}`;
+        break;
+    }
 
     return result;
   });

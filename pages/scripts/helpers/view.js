@@ -177,6 +177,10 @@ module.exports = function(locals) {
         var priority = 999;
         var assetPath = asset;
 
+        if(!asset){
+          continue;
+        }
+
         if (_.isObject(asset)) {
           assetPath = asset.path;
           priority = _.isNumber(asset.priority)?asset.priority:priority;

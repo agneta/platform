@@ -19,7 +19,8 @@ for(var name in field.validators){
 
   var text = get_data('form/validators/'+message);
   if(!text){
-    throw new Error(`Could not find validator: ${message}`);
+    console.warn(`Could not find validator: ${message}`);
+    continue;
   }
   text = lng(validator.message);
   %>

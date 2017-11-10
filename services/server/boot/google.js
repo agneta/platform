@@ -15,21 +15,15 @@
  *   limitations under the License.
  */
 const request = require('request-promise');
-var config;
+var secretConfig;
 
 module.exports = function(app) {
 
-  if (!config) {
-    config = app.secrets.get('google');
+  if (!secretConfig) {
+    secretConfig = app.secrets.get('google');
   }
 
-  //---------------------------------------------------
-  //
-
-  app.set('google', {
-    api: config.apiKey,
-    recaptcha: config.recaptcha.siteKey
-  });
+  var config = app.get('google');
 
   //---------------------------------------------------
   // Recaptcha
@@ -42,7 +36,7 @@ module.exports = function(app) {
   app.recaptcha = {
     verify: function(response) {
 
-      var verificationUrl = 'https://www.google.com/recaptcha/api/siteverify?secret=' + config.recaptcha.secretKey + '&response=' + response;
+      var verificationUrl = 'https://www.google.com/recaptcha/api/siteverify?secret=' + secretConfig.recaptcha.secretKey + '&response=' + response;
 
       return request({
         uri: verificationUrl,

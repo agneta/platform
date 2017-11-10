@@ -72,7 +72,7 @@ module.exports = function(locals) {
       return loadFile(pathAbs, objPath);
     }
 
-    throw new Error('Could not find the request data: ' + pathReq);
+    console.warn('Could not find the request data: ' + pathReq);
 
     //-----------------------------------------------------------------------
     // Helper Functions
