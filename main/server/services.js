@@ -28,20 +28,7 @@ module.exports = function(options) {
 
   var webPages = start.default({
     load: {
-      media: false,
-      pages: {
-        fields: {
-          title: true,
-          authorization: true,
-          path: true,
-          isView: true,
-          isViewData: true
-        },
-        exclude: {
-          pages: true,
-          sidebar: true
-        }
-      }
+      media: false
     },
     host: config.host
   });
