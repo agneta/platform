@@ -100,7 +100,7 @@ module.exports = function(locals) {
   project.extend.helper.register('has_lang', function(page, lang) {
 
     lang = lang || project.site.lang;
-    var title = this.get_title(page, lang, true);
+    var title = this.get_title(page, lang);
     return title ? true : false;
   });
 

@@ -62,7 +62,7 @@ module.exports = function(util) {
         method: sync,
         options: {
           source: path.join(webProject.paths.build, 'production', 'public'),
-          target: storageConfig.buckets.app.production.name
+          target: storageConfig.buckets.assets.production
         }
       });
 
@@ -82,7 +82,7 @@ module.exports = function(util) {
         method: sync,
         options: {
           source: path.join(webProject.paths.build, 'staging', 'public'),
-          target: storageConfig.buckets.app.name
+          target: storageConfig.buckets.assets.name
         }
       });
 
