@@ -3,6 +3,8 @@ const Promise = require('bluebird');
 
 module.exports = function(app) {
 
+  var config = app.get('certificate');
+
   return function(req, res, next) {
 
     var account = null;
@@ -15,14 +17,18 @@ module.exports = function(app) {
         // Auto sign-in user with certificate
 
         var cert = req.socket.getPeerCertificate();
-        var certEmail = _.get(cert, 'subject.emailAddress');
+        var certEmail = _.get(cert, config.map);
 
-        if (!cert) {
+        if (!cert || !cert.subject){
           return;
         }
 
         if (!certEmail) {
-          return;
+          console.log('cert.subject',cert.subject);
+          return Promise.reject({
+            statusCode: 400,
+            message: 'Could not find field on certificate to map with'
+          });
         }
 
         return app.models.Account.findOne({
@@ -39,7 +45,7 @@ module.exports = function(app) {
             account = _account;
 
             if (!account) {
-              var error = new Error('Your certificate does not correspond to a registered user. Choose another one, register your account, or remove it.');
+              var error = new Error(`Your certificate email ${certEmail} does not correspond to a registered user. Choose another one, register your account, or remove it.`);
               error.statusCode = 400;
               return Promise.reject(error);
             }

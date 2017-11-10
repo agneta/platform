@@ -22,7 +22,7 @@ for(var name in field.validators){
     console.warn(`Could not find validator: ${message}`);
     continue;
   }
-  text = lng(validator.message);
+  text = lng(text.message);
   %>
 
   <div ng-message="<%-name%>" class="error">
