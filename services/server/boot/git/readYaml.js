@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/boot/git/update.js
+ *   Source file: portal/services/boot/git/readYaml.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,20 +14,16 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+var yaml = require('js-yaml');
 
-const Promise = require('bluebird');
+
 module.exports = function(app) {
 
-  var git = app.process.git.native;
+  app.git.readYaml = function(options) {
 
-  app.process.git.update = function() {
-
-    return Promise.resolve()
-      .then(function() {
-        return git.reset(['--hard', 'FETCH_HEAD']);
-      })
-      .then(function() {
-        return git.clean('f', ['-d']);
+    return app.git.readFile(options)
+      .then(function(content) {
+        return yaml.safeLoad(content);
       });
 
   };

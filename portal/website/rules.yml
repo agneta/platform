@@ -10,7 +10,9 @@
 -
   data:
     scripts:
-      - 'lib/quill.min'
+      -
+        path: 'lib/quill.min'
+        priority: 0
       - 'lib/js-yaml.min'
       - 'lib/lodash.min'
       - 'lib/fuse.min'

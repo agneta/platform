@@ -20,14 +20,14 @@ module.exports = function(app) {
 
   var config = app.get('git');
 
-  app.process.git.log = function(options) {
+  app.git.log = function(options) {
 
     var filePath;
     if (options.file) {
-      filePath = app.process.git.getPath(options.file);
+      filePath = app.git.getPath(options.file);
     }
 
-    return app.process.git.native.log({
+    return app.git.native.log({
       file: filePath
     })
       .then(function(result) {

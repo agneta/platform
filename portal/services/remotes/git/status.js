@@ -1,7 +1,7 @@
 module.exports = function(Model, app) {
 
   Model.status = function() {
-    return app.process.git.status()
+    return app.git.status()
       .then(function(files) {
         return {
           files: files

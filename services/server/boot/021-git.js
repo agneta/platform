@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/boot/git/createYaml.js
+ *   Source file: portal/services/boot/git.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,23 +14,36 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var Promise = require('bluebird');
-var yaml = require('js-yaml');
-var fs = require('fs-extra');
+var path = require('path');
 
 module.exports = function(app) {
 
-  app.process.git.createYaml = function(filePath, data) {
+  var webPrj = app.get('options').client.project;
 
-    if (fs.existsSync(filePath)) {
-      return Promise.reject({
-        statusCode: 400,
-        message: 'File already exists'
-      });
+  function getPath(value) {
+    if (value.indexOf(webPrj.paths.project) === 0) {
+      return path.relative(
+        webPrj.paths.project,
+        value);
     }
 
-    return fs.outputFile(filePath, yaml.safeDump(data));
+    return value;
+  }
 
+  app.git = {
+    getPath: getPath,
+    name: '.git'
   };
+
+  require('./git/addAll')(app);
+  require('./git/createYaml')(app);
+  require('./git/update')(app);
+  require('./git/log')(app);
+  require('./git/status')(app);
+  require('./git/readFile')(app);
+  require('./git/readYaml')(app);
+  require('./git/push')(app);
+
+  return require('./git/init')(app);
 
 };

@@ -21,7 +21,7 @@ module.exports = function(Model, app) {
 
     var parsedId = Model.parseId(id);
 
-    return app.process.git.readYaml({
+    return app.git.readYaml({
       file: parsedId.source,
       commit: commit
     })

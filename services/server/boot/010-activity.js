@@ -44,15 +44,14 @@ module.exports = function(app) {
         if (type) {
           allowRoles = allowRoles.concat(auth.allow[type]);
         }
-
         return app.models.Account.hasRoles(allowRoles, req);
       })
       .then(function(result) {
-
+        console.log(result);
         if (!result.has) {
           return Promise.reject({
             statusCode: 401,
-            message: 'You are not allowed to access this information'
+            message: result.message
           });
         }
       });

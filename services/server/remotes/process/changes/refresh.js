@@ -4,9 +4,9 @@ module.exports = function(Model, app) {
 
   Model.changesRefresh = function() {
 
-    var branchName = app.process.git.branch.current;
+    var branchName = app.git.branch.current;
 
-    return app.process.git.native.fetch(config.remote.name, branchName)
+    return app.git.native.fetch(config.remote.name, branchName)
       .then(function(result) {
         return {
           success: `Fetched changes from remote ${result.remote} on branch ${branchName}`

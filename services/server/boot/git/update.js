@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/boot/git/addAll.js
+ *   Source file: portal/services/boot/git/update.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,12 +14,21 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+const Promise = require('bluebird');
 module.exports = function(app) {
 
-  app.process.git.addAll = function() {
+  var git = app.git.native;
 
-    return app.process.git.native.add('./*');
+  app.git.update = function() {
+
+    return Promise.resolve()
+      .then(function() {
+        return git.reset(['--hard', 'FETCH_HEAD']);
+      })
+      .then(function() {
+        return git.clean('f', ['-d']);
+      });
 
   };
-
 };

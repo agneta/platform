@@ -22,10 +22,6 @@ module.exports = function(app) {
   return Promise.resolve()
 
     .then(function() {
-      return require('./process/git')(app);
-    })
-
-    .then(function() {
       return require('./process/init')(app);
     })
 

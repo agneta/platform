@@ -18,11 +18,11 @@ var Promise = require('bluebird');
 
 module.exports = function(app) {
 
-  app.process.git.status = function() {
+  app.git.status = function() {
 
-    return app.process.git.addAll()
+    return app.git.addAll()
       .then(function() {
-        return app.process.git.native.status();
+        return app.git.native.status();
       })
       .then(function(statuses) {
         console.log(statuses);

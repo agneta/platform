@@ -15,13 +15,10 @@
  *   limitations under the License.
  */
 
-const _ = require('lodash');
-const request = require('request');
-const url = require('url');
-
 var projectPaths = require('../paths').core;
 var config = require('../config');
 var start = require('../start');
+
 module.exports = function(options) {
 
   options = options || {};
@@ -31,38 +28,6 @@ module.exports = function(options) {
       media: false
     },
     host: config.host
-  });
-
-  var project;
-  var languages;
-  var storageConfig;
-
-  options.app.use(function(req, res, next) {
-
-    var pathParts = req.path.split('/');
-
-    pathParts = pathParts.filter(function(n) {
-      return _.isString(n) && n.length;
-    });
-
-    if (pathParts.length == 0 ||
-      languages[pathParts[0]]
-    ) {
-
-      var reqPath = url.format({
-        hostname: storageConfig.buckets.assets.host,
-        protocol: 'https',
-        pathname: req.path
-      });
-
-      request
-        .get(reqPath)
-        .pipe(res);
-      return;
-
-    }
-
-    next();
   });
 
   var services = start.services({
@@ -76,14 +41,9 @@ module.exports = function(options) {
   webPages.locals.services = services.locals.app;
   services.locals.client = webPages.locals;
 
-  return start.init([
-    services,
-    webPages
-  ])
-    .then(function() {
-      project = webPages.locals.project;
-      languages = _.get(project, 'site.languages');
-      storageConfig = services.locals.app.get('storage');
-    });
+  return start.init({
+    services: services,
+    pages: webPages
+  });
 
 };

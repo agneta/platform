@@ -31,6 +31,9 @@ module.exports = function(Model, app) {
         var role;
 
         for (role of roles) {
+          if(!role){
+            continue;
+          }
           if (!configRoles[role]) {
             return {
               message: 'Role does not exist',
@@ -56,7 +59,7 @@ module.exports = function(Model, app) {
 
         if (!has.length) {
           return {
-            message: 'User does not have any of these roles'
+            message: 'User does not have a role that is required'
           };
         }
 

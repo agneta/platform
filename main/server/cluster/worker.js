@@ -45,6 +45,10 @@ module.exports.run = function(worker) {
       app = loopback();
       server = require('../services');
       break;
+    case 'live':
+      app = loopback();
+      server = require('../live');
+      break;
     case 'portal':
       app = express();
       server = require('../portal');
