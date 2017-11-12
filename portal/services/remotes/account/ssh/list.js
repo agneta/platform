@@ -4,6 +4,10 @@ module.exports = function(Model) {
 
     return Model.__get(accountId)
       .then(function(account) {
+        if(!account.ssh){
+          return [];
+        }
+
         return account.ssh();
       })
       .then(function(keys) {

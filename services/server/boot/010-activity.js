@@ -47,7 +47,7 @@ module.exports = function(app) {
         return app.models.Account.hasRoles(allowRoles, req);
       })
       .then(function(result) {
-        console.log(result);
+
         if (!result.has) {
           return Promise.reject({
             statusCode: 401,
