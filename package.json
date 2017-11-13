@@ -4,15 +4,17 @@
   "description": "Agneta Platform - Integrate and customize business applications",
   "main": "main",
   "scripts": {
-    "audit": "nsp check"
+    "audit": "nsp check",
+    "license": "node scripts/license",
+    "lint": "node node_modules/eslint/bin/eslint --fix --ignore-path .gitignore ./ --ext .js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/agneta/platform.git"
   },
   "pre-commit": [
-    "node scripts/license",
-    "node node_modules/eslint/bin/eslint --fix --ignore-path .gitignore ./ --ext .js"
+    "license",
+    "lint"
   ],
   "author": "Agneta Network Applications",
   "license": "Apache-2.0",
