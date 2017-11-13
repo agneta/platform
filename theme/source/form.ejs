@@ -11,30 +11,29 @@ if(form.onSubmit){
 }
 
 if(form.disableAutocomplete){
-autocomplete = 'autocomplete="off"';
+	autocomplete = 'autocomplete="off"';
 }
 
 %>
 
-<form layout="column" layout-margin <%-onSubmit%> <%-autocomplete%> <%-form.attr%> method="post" name="<%-form.name%>">
+<form layout="column" layout-margin="layout-margin" <%-onSubmit%> <%-autocomplete%> <%-form.attr%> method="post" name="<%-form.name%>">
 
-<%-template('form/fields',{
-	data: form
-})%>
+	<%-template('form/fields',{data: form
+	})%>
 
-<%
-if(form.submit){
-	var title = form.submit.title;
+	<%
+	if(form.submit){
+		var title = form.submit.title;
+		%>
+		<div layout="row" layout-align="end">
+		<input class="md-raised md-primary md-button" ng-disabled="<%-form.name%>.$invalid" type="submit" value="<%-title%>"/>
+		</div>
+		<%
+	}else{
+		%>
+		<input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
+		<%
+	}
 	%>
-<div layout="row" layout-align="end">
-    <input class="md-raised md-primary md-button" ng-disabled="<%-form.name%>.$invalid" type="submit" value="<%-title%>"/>
-</div>
-<%
-}else{
-	%>
-<input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
-<%
-}
-%>
 
 </form>
