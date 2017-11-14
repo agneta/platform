@@ -34,9 +34,9 @@ module.exports = function(locals) {
     var websiteConfig;
 
     return readFile(
-        path.join(project.paths.baseTheme, 'config.yml'),
-        'utf8'
-      )
+      path.join(project.paths.baseTheme, 'config.yml'),
+      'utf8'
+    )
       .then(function(content) {
 
         themeConfig = yaml.safeLoad(content);

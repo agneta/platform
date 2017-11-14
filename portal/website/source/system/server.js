@@ -55,7 +55,7 @@
       git.update = function() {
 
         git.updating = true;
-        System.restart({
+        Process.restart({
 
         })
           .$promise
@@ -118,7 +118,7 @@
       logs.load = function() {
         var action = logs.actionSelected;
         logs.loading = true;
-        System.logs({
+        Process.logs({
           name: action.name
         })
           .$promise
