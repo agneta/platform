@@ -22,11 +22,11 @@ module.exports = function(locals) {
 
   var project = locals.project;
 
-  project.extend.helper.register('viewBasicData', function() {
+  project.extend.helper.register('viewBasicData', function(page) {
 
     var data = {};
     var site = this.site;
-    var page = this.page;
+    page = page || this.page;
 
     data.title = this.get_title(page);
     data.path = page.pathSource;
@@ -65,7 +65,7 @@ module.exports = function(locals) {
 
     data.layoutClass = [
       'page-' + page.templateSource.split('/')
-        .join('-')
+      .join('-')
     ];
     if (page.class) {
       data.layoutClass.push(page.class);
@@ -108,20 +108,19 @@ module.exports = function(locals) {
 
   project.extend.helper.register('viewAuthData', function() {
 
-    var data = this.viewBasicData();
-    data.layoutClass = 'page-authorization';
-    data.styles = data.styles || [];
-    data.styles = data.styles.concat([this.get_asset('authorization.css')]);
-    return JSON.stringify(data);
-
+    var page = _.extend({}, this.page, {
+      styles: ['authorization'],
+      class: 'page-authorization'
+    });
+    return this.viewData(page);
   });
 
 
-  project.extend.helper.register('viewData', function() {
+  project.extend.helper.register('viewData', function(page) {
 
-    var data = this.viewBasicData();
+    page = page || this.page;
+    var data = this.viewBasicData(page);
 
-    var page = this.page;
     var config = this.config;
     var self = this;
 
@@ -177,13 +176,13 @@ module.exports = function(locals) {
         var priority = 999;
         var assetPath = asset;
 
-        if(!asset){
+        if (!asset) {
           continue;
         }
 
         if (_.isObject(asset)) {
           assetPath = asset.path;
-          priority = _.isNumber(asset.priority)?asset.priority:priority;
+          priority = _.isNumber(asset.priority) ? asset.priority : priority;
         }
 
         if (!_.isString(assetPath)) {
