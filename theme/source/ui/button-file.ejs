@@ -3,5 +3,5 @@ var title = locals.title || 'Choose File'
 var id = _.uniqueId('buttonFile_');
 %>
 
-<input id="<%-id%>" class="ng-hide" type="file" multiple="false" <%-locals.attrs%>/>
-<label for="<%-id%>" class="md-button md-raised md-primary"><%-title%></label>
+<input id="<%-id%>" class="ng-hide" type="file" multiple="false" <%-locals.attrsInput%>/>
+<label for="<%-id%>" class="md-button md-raised md-primary" <%-locals.attrs%>><%-title%></label>

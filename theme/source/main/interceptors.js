@@ -68,14 +68,16 @@
 
             var $mdDialog = $injector.get('$mdDialog');
 
-            $mdDialog.open({
-              partial: 'success',
-              //nested: true,
-              data: {
-                title: success.title,
-                content: success.message || success.content || success
-              }
-            });
+            if (!response.config.data.__skipDialog) {
+              $mdDialog.open({
+                partial: 'success',
+                //nested: true,
+                data: {
+                  title: success.title,
+                  content: success.message || success.content || success
+                }
+              });
+            }
 
           }
 
@@ -83,13 +85,13 @@
         },
         responseError: function(rejection) {
 
-          console.error('responseError:rejection',rejection);
+          console.error('responseError:rejection', rejection);
           //console.error('responseError:rejection:services:url',agneta.services.url);
 
           if (
             rejection.config &&
-                        rejection.config.url &&
-                        rejection.config.url.indexOf(agneta.services.url) !== 0) {
+            rejection.config.url &&
+            rejection.config.url.indexOf(agneta.services.url) !== 0) {
             return rejection;
           }
 
@@ -115,45 +117,24 @@
           }
 
           var $mdDialog = $injector.get('$mdDialog');
-          var messages = [];
 
           var message = error.message || error.errmsg;
 
           if (message) {
-            messages.push(message);
-          }
 
-          var details = error.details;
-          if (details) {
-            for (var key in details) {
-              var detail = details[key];
-              messages.push(detail.message);
-            }
-          }
-
-          var html;
-
-          if (messages.length == 1) {
-            html = messages[0];
-          }
-
-          if (messages.length > 1) {
-            html = messages.join('</li><li>');
-            html = '<ul class="bullet"><li>' + html + '</li></ul>';
-          }
-
-          if (html) {
-
+            rejection.message = message;
             $rootScope.$emit('error');
 
-            $mdDialog.open({
-              partial: 'error',
-              nested: true,
-              data: {
-                title: error.title || errors.title,
-                content: html
-              }
-            });
+            if (!rejection.config.data.__skipDialog) {
+              $mdDialog.open({
+                partial: 'error',
+                nested: true,
+                data: {
+                  title: error.title || errors.title,
+                  content: message
+                }
+              });
+            }
 
           }
 
