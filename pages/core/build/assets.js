@@ -184,7 +184,7 @@ module.exports = function(locals, options) {
 
             if (code.error) {
               console.error(code.error);
-              throw new Error(code.error.message);
+              throw new Error('JS Error at file ['+source_file_path+'] '+code.error.message);
             }
 
             code = code.code;

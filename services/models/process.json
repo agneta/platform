@@ -6,14 +6,6 @@
       "type": "string",
       "required": true
     },
-    "ipv4": {
-      "type": "string",
-      "required": true
-    },
-    "ipv6": {
-      "type": "string",
-      "required": true
-    },
     "endpoint": {
       "type": "string",
       "required": true
@@ -28,6 +20,10 @@
     },
     "branch": {
       "type": "string",
+      "required": true
+    },
+    "lastStarted": {
+      "type": "date",
       "required": true
     }
   },
@@ -68,6 +64,11 @@
         "validate": true,
         "forceId": false
       }
+    },
+    "processServer": {
+        "type": "belongsTo",
+        "model": "Process_Server",
+        "foreign_key": "processServerId"
     }
   },
   "acls": [{
