@@ -92,9 +92,6 @@
         },
         responseError: function(rejection) {
 
-          console.error('responseError:rejection', rejection);
-          //console.error('responseError:rejection:services:url',agneta.services.url);
-
           if (
             rejection.config &&
             rejection.config.url &&

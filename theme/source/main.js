@@ -24,12 +24,18 @@
 /*global _e_Dialog*/
 /*global _e_menuSide*/
 /*global _e_menuSide*/
+/*global _e_menuSide*/
+/*global _e_promise*/
 
 (function() {
 
+  _t_template('main/promise');
+  _e_promise();
 
   var agneta = window.agneta;
-  var app = window.angular.module('MainApp', window.angularDeps);
+  var app = window.angular.module('MainApp',
+    window.angularDeps.concat(['angular-q-limit'])
+  );
 
   _t_template('main/helpers');
   _e_helpers();
