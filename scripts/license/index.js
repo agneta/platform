@@ -51,6 +51,7 @@ Promise.resolve()
     var walker = klaw(pathSources);
     var exclude = [
       'node_modules',
+      'bower_components',
       'theme/bower_components',
       'portal/bower_components'
     ];
