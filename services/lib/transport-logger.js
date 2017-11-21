@@ -90,7 +90,7 @@ module.exports = function(app) {
     delete dataShow.req;
 
     if (!this.silent) {
-      console.error(JSON.stringify(dataShow, null, 4));
+      console.error(util.inspect(dataShow,{colors:true,depth:3}));
     }
 
     if (!action) {

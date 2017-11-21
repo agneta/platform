@@ -57,7 +57,6 @@ function _e_promise() {
                     options.onCatch(err);
                   }
                   defer.reject(err);
-
                 })
                 .finally(function(err) {
                   isDone = true;

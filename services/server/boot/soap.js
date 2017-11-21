@@ -84,19 +84,31 @@ module.exports = function(app) {
 
           var methodName = client.wsdl.definitions.$name;
           var method = client[methodName];
-          var methodPromise = Promise.promisify(method);
 
           //------------------------------------------------------------------------
 
-          client.on('soapError', soapResponse.listener);
           client.on('response', soapResponse.listener);
 
           //------------------------------------------------------------------------
 
           var service = {
             getResult: function(query, options) {
-              return methodPromise(query, {
-                methodOptions: options
+              return new Promise(function(resolve, reject) {
+                method(query, function(err,result) {
+
+                  if (err) {
+                    err = _.get(err,'root.Envelope.Body.Fault.detail.SystemError');
+                    return reject(_.extend(new Error(),{
+                      statusCode: 400,
+                      message: 'Soap Server Error',
+                    },err));
+                  }
+                  return resolve(result);
+
+                }, {
+                  methodOptions: options
+                });
+
               });
             },
             getDetails: function(query, options) {

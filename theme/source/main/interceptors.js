@@ -24,6 +24,7 @@
   app.config(function($httpProvider) {
 
     $httpProvider.defaults.useXDomain = true;
+
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
     var errors = agneta.errors;
@@ -59,6 +60,7 @@
             }
 
             config.withCredentials = true;
+
           }
 
           return config;
@@ -92,58 +94,66 @@
         },
         responseError: function(rejection) {
 
-          if (
-            rejection.config &&
-            rejection.config.url &&
-            rejection.config.url.indexOf(agneta.services.url) !== 0) {
-            return rejection;
-          }
-
-          if (!rejection.data) {
-            return rejection;
-          }
-
           var error = rejection.data.error || rejection.data || {
             message: errors.message
           };
-          var code = error && error.code;
 
-          switch (code) {
-            case 'NO_USER_WITH_TOKEN':
-              console.warn('No user with token.');
-              LoopBackAuth.clearUser();
-              LoopBackAuth.clearStorage();
-              LoopBackAuth.save();
+          function handleRejection(){
+
+            if (
+              rejection.config &&
+            rejection.config.url &&
+            rejection.config.url.indexOf(agneta.services.url) !== 0) {
+              return;
+            }
+            console.error(rejection);
+            if (!rejection.data) {
+              return;
+            }
+
+            var code = error && error.code;
+
+            switch (code) {
+              case 'NO_USER_WITH_TOKEN':
+                console.warn('No user with token.');
+                LoopBackAuth.clearUser();
+                LoopBackAuth.clearStorage();
+                LoopBackAuth.save();
               // falls through
-            case 'LOGIN_FAILED_EMAIL_NOT_VERIFIED':
-            case 'USER_DEACTIVATED':
-              return $q.reject(error);
-          }
+              case 'LOGIN_FAILED_EMAIL_NOT_VERIFIED':
+              case 'USER_DEACTIVATED':
+                return;
+            }
 
-          var $mdDialog = $injector.get('$mdDialog');
+            var $mdDialog = $injector.get('$mdDialog');
 
-          var message = error.message || error.errmsg;
+            var message = error.message || error.errmsg;
 
-          if (message) {
+            if (message) {
 
-            rejection.message = message;
-            $rootScope.$emit('error');
+              rejection.message = message;
+              $rootScope.$emit('error');
 
-            if (!rejection.config.data.__skipDialog) {
-              $mdDialog.open({
-                partial: 'error',
-                nested: true,
-                data: {
-                  title: error.title || errors.title,
-                  content: message
-                }
-              });
+              if (!rejection.config.data.__skipDialog) {
+                $mdDialog.open({
+                  partial: 'error',
+                  nested: true,
+                  data: {
+                    title: error.title || errors.title,
+                    content: message
+                  }
+                });
+              }
+
             }
 
           }
 
-          return rejection;
+          handleRejection();
+          return $q.reject(error);
+
         }
+
       };
     });
 
