@@ -43,7 +43,7 @@ module.exports = function(app) {
     omitDeep: _.omitDeep,
     mediaType: function(mimeType) {
 
-      if(!mimeType){
+      if (!mimeType) {
         return;
       }
 
@@ -98,11 +98,11 @@ module.exports = function(app) {
       mediaPath = path.normalize(mediaPath);
 
       if (mediaPath[0] == '/') {
-        mediaPath =  mediaPath.substring(1);
+        mediaPath = mediaPath.substring(1);
       }
 
-      if(mediaPath.substr(-1) === '/') {
-        mediaPath =  mediaPath.substr(0, mediaPath.length - 1);
+      if (mediaPath.substr(-1) === '/') {
+        mediaPath = mediaPath.substr(0, mediaPath.length - 1);
       }
 
       return mediaPath;
@@ -133,6 +133,56 @@ module.exports = function(app) {
           return app.indexes.autoupdate(names);
         });
 
+    },
+    limitObject: function(data, options) {
+
+      var depth = options.depth || 3;
+
+      function check(collection,options) {
+
+        //console.log('depthIndex',options.depth,depth);
+        var newCollection;
+        if (_.isObject(collection)) {
+          newCollection = {};
+        }
+
+        if (_.isArray(collection)) {
+          newCollection = [];
+        }
+
+        if (!newCollection) {
+          return collection;
+        }
+
+        if (options.depth > depth) {
+          return;
+        }
+
+        var keys = _.keys(collection);
+
+        keys.map(function(key) {
+          var value = collection[key];
+
+          if (_.isFunction(value)) {
+            return;
+          }
+          var checkValue = check(value,{
+            depth: options.depth +1
+          });
+          if(!_.isUndefined(checkValue)){
+            newCollection[key] = checkValue;
+          }
+        });
+
+        if(!_.size(newCollection)){
+          return;
+        }
+        return newCollection;
+      }
+
+      return check(data,{
+        depth: 1
+      });
     },
     resubmitPassword: function(ctx, user, next) {
 

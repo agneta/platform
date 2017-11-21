@@ -20,10 +20,22 @@ const Promise = require('bluebird');
 module.exports = function(options) {
 
   var worker = options.appOptions.worker;
+  var app = options.app;
   if(!worker){
+    app.socket = {
+      namespace: function(){
+        return {
+          on: function(){
+
+          },
+          emit: function(){
+
+          }
+        };
+      }
+    };
     return;
   }
-  var app = options.app;
   var server = worker.scServer;
   var cookieParser = require('cookie-parser')(
     app.get('cookie_secret')

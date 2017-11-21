@@ -142,7 +142,7 @@
 
           }
 
-          return $q.reject(rejection);
+          return rejection;
         }
       };
     });

@@ -111,6 +111,10 @@ module.exports = function(Model, app) {
           });
         }
 
+        data = app.helpers.limitObject(data,{
+          depth:2
+        });
+
         var createOptions = {
           accountId: options.accountId,
           actionId: feedAction.id,
@@ -123,7 +127,7 @@ module.exports = function(Model, app) {
           data: data,
           feeds: feedIds
         };
-
+        //console.log('----------------------',createOptions);
         return Model.create(createOptions);
 
       })

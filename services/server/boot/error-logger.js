@@ -41,7 +41,7 @@ module.exports = function(app) {
       var uid = (req.accessToken && req.accessToken.userId) || 'guest';
 
       app.logger.error(errorLog.message || errorLog.code || errorLog.name || 'Error' , {
-        uid: uid,
+        uid: uid+'',
         error: errorLog,
         req: req
       });
