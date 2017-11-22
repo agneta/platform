@@ -36,7 +36,7 @@
             $scope.graph = result;
           });
       }
-      check();
+      //check();
 
       git.fetch = function() {
         $rootScope.loadingMain = true;
@@ -138,7 +138,20 @@
         }
       };
 
-      selectAction($rootScope.viewData.extra.logs.actions[0]);
+      //selectAction($rootScope.viewData.extra.logs.actions[0]);
+
+    })();
+
+
+    (function() {
+
+      Process.servers()
+        .$promise
+        .then(function(result) {
+          $scope.servers = result.list;
+          console.log($scope.servers);
+        });
+
 
     })();
 

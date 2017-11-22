@@ -1,11 +1,19 @@
-<div class="frame top" layout="column" layout-margin>
+<div class="frame top" layout="column">
   <%-template('ui/page-title')%>
 
-  <div layout="row" layout-margin>
-    <%-template('system/server/box',{box:page.box.versions})%>
-    <%-template('system/server/box',{box:page.box.git})%>
+  <div class="servers" layout="row" layout-align="start center" layout-wrap>
+    <div class="server" layout="column" ng-repeat="server in servers">
+      <p class="title">{{server.name}}</p>
+      <p>instances: {{server.processes.length}}</p>
+    </div>
   </div>
-  <%-template('system/server/box',{box:page.box.logs})%>
-  <%-template('system/server/box',{box:page.box.instances})%>
 
+  <div class="details" layout="column">
+    <div layout="row">
+      <%-template('system/server/box',{box:page.box.versions})%>
+      <%-template('system/server/box',{box:page.box.git})%>
+    </div>
+    <%-template('system/server/box',{box:page.box.logs})%>
+    <%-template('system/server/box',{box:page.box.instances})%>
+  </div>
 </div>
