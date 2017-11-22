@@ -75,7 +75,8 @@ module.exports = function(locals) {
         }
 
         if (!data) {
-          throw new Error('No Data found for ' + target);
+          //throw new Error('No Data found for ' + target);
+          return;
         }
 
         //-----------------------------------------------------------
@@ -87,7 +88,8 @@ module.exports = function(locals) {
         //-----------------------------------------------------------
 
         if (data.if && !project.config[data.if]) {
-          throw new Error('Page does not meet condition');
+          //throw new Error('Page does not meet condition');
+          return;
         }
 
         //-----------------------------------------------------------

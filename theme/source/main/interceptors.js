@@ -53,10 +53,13 @@
 
             data.language = agneta.lang;
             if (data.__endpoint) {
-              console.log(config, data.__endpoint);
+              //console.log(config, data.__endpoint);
+
               var overrideURL = config.url;
               overrideURL = overrideURL.replace(agneta.services.url, data.__endpoint);
-              console.log(overrideURL);
+              config.url = overrideURL;
+
+              //console.log(overrideURL);
             }
 
             config.withCredentials = true;
