@@ -29,9 +29,9 @@ module.exports = function(app) {
   var Process = app.models.Process;
   var Process_Server = app.models.Process_Server;
 
-  var serverName = app.configstore.get('server.name');
+  var serverName = app.configstore.get('server.name') || process.env.SERVER_NAME;
   if (!serverName) {
-    throw new Error('Your agneta configuration does not have a value at: server.name');
+    throw new Error('Coould not find the name of the server.');
   }
 
   var processServer;

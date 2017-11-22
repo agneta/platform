@@ -83,9 +83,10 @@ module.exports = function(Model) {
 
     if (error.stack) {
       var entry = error.stack[0];
-      var file = path.parse(entry.file).base;
-
-      activity.subtitle = `${file} [${entry.lineNumber},${entry.column}]`;
+      if(entry && entry.file){
+        var file = path.parse(entry.file).base;
+        activity.subtitle = `${file} [${entry.lineNumber},${entry.column}]`;
+      }
     }
 
   });
