@@ -30,35 +30,38 @@ module.exports = function(options){
       project = result.webPages.locals.project;
       languages = _.get(project, 'site.languages');
       storageConfig = result.services.locals.app.get('storage');
-    });
 
+      options.app.use(function(req, res, next) {
+        
+        var pathParts = req.path.split('/');
 
-  options.app.use(function(req, res, next) {
+        pathParts = pathParts.filter(function(n) {
+          return _.isString(n) && n.length;
+        });
 
-    var pathParts = req.path.split('/');
+        if (pathParts.length == 0 ||
+          languages[pathParts[0]]
+        ) {
 
-    pathParts = pathParts.filter(function(n) {
-      return _.isString(n) && n.length;
-    });
+          var reqPath = url.format({
+            hostname: storageConfig.buckets.assets.host,
+            protocol: 'https',
+            pathname: req.path
+          });
 
-    if (pathParts.length == 0 ||
-      languages[pathParts[0]]
-    ) {
+          request
+            .get(reqPath)
+            .pipe(res);
+          return;
 
-      var reqPath = url.format({
-        hostname: storageConfig.buckets.assets.host,
-        protocol: 'https',
-        pathname: req.path
+        }
+
+        next();
       });
 
-      request
-        .get(reqPath)
-        .pipe(res);
-      return;
+    });
 
-    }
 
-    next();
-  });
+
 
 };

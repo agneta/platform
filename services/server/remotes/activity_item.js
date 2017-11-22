@@ -103,15 +103,15 @@ module.exports = function(Model, app) {
         var feedIds = _.map(feeds, 'id');
         var data = options.data || {};
 
+        data = app.helpers.limitObject(data,{
+          depth:2
+        });
+
         if (options.req && options.req.dataParsed) {
           _.extend(data, {
             request: options.req.dataParsed
           });
         }
-
-        data = app.helpers.limitObject(data,{
-          depth:2
-        });
 
         var createOptions = {
           accountId: options.accountId,
