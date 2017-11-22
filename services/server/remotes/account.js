@@ -18,7 +18,7 @@ module.exports = function(Model, app) {
 
   var tokenName = app.get('token').name;
 
-  require('../mixins/disableAllMethods')(Model);
+
 
   //---------------------------------------------------
 

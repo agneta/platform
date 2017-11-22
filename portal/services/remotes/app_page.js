@@ -16,8 +16,6 @@
  */
 module.exports = function(Model, app) {
 
-  app.helpers.mixin('disableAllMethods', Model);
-
   Model.save = function(data) {
 
     if (!data.path) {

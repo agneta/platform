@@ -38,11 +38,11 @@ module.exports = function(Model,app) {
 
   };
 
-  var fields = app.models.Form.scanFields({
+  var fields = app.form.fields({
     form: 'ssh-add-key'
   });
 
-  Model.beforeRemote('sshAdd',  app.models.Form.checkProperties(fields));
+  Model.beforeRemote('sshAdd',  app.form.check(fields));
 
   Model.remoteMethod(
     'sshAdd', {

@@ -19,8 +19,6 @@ var Promise = require('bluebird');
 
 module.exports = function(Model, app) {
 
-  app.helpers.mixin('disableAllMethods', Model);
-
   Model.omitData = [
     '_model',
     '_schema',

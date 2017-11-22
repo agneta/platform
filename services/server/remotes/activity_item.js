@@ -21,7 +21,6 @@ var ObjectID = require('mongodb').ObjectID;
 
 module.exports = function(Model, app) {
 
-  require('../mixins/disableAllMethods')(Model);
   require('./activity_item/getInfo')(Model, app);
 
   Model.new = function(options) {

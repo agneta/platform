@@ -30,8 +30,6 @@ module.exports = function(Model, app, options) {
   Model.__tempUploads = path.join('temp/uploads', options.name);
   Model.__bucket = options.bucket;
 
-  app.helpers.mixin('disableAllMethods', Model);
-
   //------------------------------------------------------------------
 
   require('./helpers/download')(Model, app);

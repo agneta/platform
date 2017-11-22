@@ -28,8 +28,6 @@ module.exports = function(Model, app) {
     }
   });
 
-  app.helpers.mixin('disableAllMethods', Model);
-
   var locals = app.get('options').client;
   var project = locals.project;
 

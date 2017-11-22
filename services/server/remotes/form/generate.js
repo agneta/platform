@@ -157,7 +157,7 @@ module.exports = function(Model, app) {
       }
     );
 
-    Model.beforeRemote(formMethod.name, Model.checkProperties(result.fields));
+    Model.beforeRemote(formMethod.name, app.form.check(result.fields));
 
   });
 

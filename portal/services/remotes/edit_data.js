@@ -18,7 +18,6 @@ var path = require('path');
 
 module.exports = function(Model, app) {
 
-  app.helpers.mixin('disableAllMethods', Model);
   var webPrj = app.get('options').web.project;
 
   Model.editConfigDir = path.join(webPrj.paths.project, 'edit', 'data');

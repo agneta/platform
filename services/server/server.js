@@ -31,7 +31,6 @@ module.exports = function(options) {
 
   require('../lib/secrets')(app, options);
   require('../lib/moment');
-  require('../lib/helpers')(app);
   require('../lib/log')(app);
   require('../lib/gis')(app);
   require('../lib/require')(app);

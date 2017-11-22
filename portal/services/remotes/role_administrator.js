@@ -18,7 +18,6 @@
 module.exports = function(Model, app) {
 
   var Account = app.models.Account;
-  app.helpers.mixin('disableAllMethods', Model);
 
   Model.validatesUniquenessOf('accountId', {
     message: 'Account is already an administrator'

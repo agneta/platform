@@ -17,7 +17,7 @@
 
 module.exports = function(Model, app) {
 
-  require('../mixins/disableAllMethods')(Model);
+
 
   var client = app.get('options');
   client = client.web || client.client;
@@ -35,8 +35,6 @@ module.exports = function(Model, app) {
   Model.formServices = formServices;
   Model.clientHelpers = clientHelpers;
 
-  require('./form/scanFields')(Model, app);
-  require('./form/checkProperties')(Model, app);
   require('./form/newMethod')(Model, app);
   require('./form/generate')(Model, app);
   require('./form/new')(Model, app);

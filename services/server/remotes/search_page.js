@@ -18,7 +18,7 @@ var _ = require('lodash');
 
 module.exports = function(Model, app) {
 
-  require('../mixins/disableAllMethods')(Model);
+  
 
   Model.validatesUniquenessOf('path');
 

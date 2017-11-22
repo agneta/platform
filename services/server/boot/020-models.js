@@ -17,6 +17,7 @@
 var path = require('path');
 var fs = require('fs');
 var _ = require('lodash');
+var disableAllMethods = require('./models/disableAllMethods');
 
 module.exports = function(app) {
 
@@ -44,12 +45,8 @@ module.exports = function(app) {
 
   function runRemotes(keys) {
 
-    dirs.forEach(function(dir) {
-
-      keys.forEach(function(key) {
-        _runRemote(key, dir);
-      });
-
+    keys.forEach(function(key) {
+      runRemote(key);
     });
 
   }
@@ -58,17 +55,6 @@ module.exports = function(app) {
 
   function runRemote(key) {
 
-    dirs.forEach(function(dir) {
-
-      _runRemote(key, dir);
-
-    });
-
-  }
-
-  //--------------------------------------------------------
-
-  function _runRemote(key, dir) {
     var name = key;
     var map = null;
     var Model = null;
@@ -81,15 +67,17 @@ module.exports = function(app) {
       Model = app.models[name];
     }
 
+    disableAllMethods(Model);
+
     //--------------------------------
 
     var __findOrCreate = Model.findOrCreate;
     Model.findOrCreate = function(findOptions) {
-      return __findOrCreate.apply(Model,arguments)
+      return __findOrCreate.apply(Model, arguments)
         .catch(function(err) {
           if (err.code == 11000) {
             return Model.findOne(findOptions)
-              .then(function(item){
+              .then(function(item) {
                 return [item];
               });
           }
@@ -105,16 +93,25 @@ module.exports = function(app) {
       name = map.toLowerCase();
     }
 
-    var file = path.join(dir, name) + '.js';
 
-    if (fs.existsSync(file)) {
-      require(file)(Model, Model.app);
-    }
 
     //--------------------------------
 
     Model.getModel = getModel;
+
+    dirs.forEach(function(dir) {
+
+      var file = path.join(dir, name) + '.js';
+
+      if (fs.existsSync(file)) {
+        require(file)(Model, Model.app);
+      }
+
+    });
+
   }
+
+  //--------------------------------------------------------
 
   runRemotes(
     _.keys(app.models)

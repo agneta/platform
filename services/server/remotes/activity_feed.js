@@ -22,7 +22,7 @@ var refreshRate = 3000;
 
 module.exports = function(Model, app) {
 
-  require('../mixins/disableAllMethods')(Model);
+  
   require('./activity_feed/getInfo')(Model, app);
 
   Model.observe('access', function(ctx) {

@@ -26,6 +26,7 @@ module.exports = function(Model, app) {
   });
 
 
+  require('./process/servers')(Model, app);
   require('./process/logs')(Model, app);
   require('./process/metrics')(Model, app);
   require('./process/restart')(Model, app);

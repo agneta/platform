@@ -20,7 +20,7 @@ var _ = require('lodash');
 
 module.exports = function(Model) {
 
-  require('../mixins/disableAllMethods')(Model);
+  
 
   Model.details = function(feedId, period, value, year) {
 
