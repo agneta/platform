@@ -102,15 +102,26 @@ module.exports = function(app) {
         return;
     }
 
+    var feeds = [];
+
+    if(data.req){
+      feeds.push({
+        value: data.req.dataParsed.path,
+        type: `${level}_request`
+      });
+    }else{
+      feeds.push({
+        value: action,
+        type: `${level}_system`
+      });
+    }
+
     var accountId = data.uid;
     var options = {
       accountId: accountId,
-      feed: level,
+      feeds: feeds,
       req: data.req,
-      action: {
-        value: action,
-        type: level
-      },
+      action: level,
       data: dataShow
     };
     if (app.models.Activity_Item && app.models.Activity_Item.new) {

@@ -27,10 +27,10 @@ viewData:
       title:
         en: 'Searches'
         gr: 'Aναζητήσεις'
+      icon: material/search
       types:
         -
           value: 'search_page'
-          icon: 'material/insert-drive-file'
           title:
             en: 'Pages'
             gr: 'Σελίδες'
@@ -39,7 +39,6 @@ viewData:
             gr: Σελίδα
         -
           value: 'search_keyword'
-          icon: 'material/vpn-key'
           title:
             en: 'Keywords'
             gr: 'Λέξεις-κλειδιά'
@@ -50,10 +49,10 @@ viewData:
       title:
         en: 'Interaction'
         gr: 'Διαδραστικότητα'
+      icon: 'material/touch-app'
       types:
         -
           value: 'engagement'
-          icon: 'material/touch-app'
           title:
             en: 'Engagements'
             gr: 'Eνασχόλησεις'
@@ -62,7 +61,6 @@ viewData:
             gr: 'Eνασχόληση'
         -
           value: 'account'
-          icon: 'material/person'
           title:
             en: 'Users'
             gr: 'Χρήστες'
@@ -71,33 +69,56 @@ viewData:
             gr: 'Χρήστης'
     -
       title:
-        en: 'System'
-        gr: 'Σύστημα'
+        en: 'Errors'
+        gr: 'Σφάλματα'
+      icon: 'material/bug-report'
       types:
         -
           value: 'error'
-          icon: 'material/bug-report'
           title:
-            en: 'Errors'
-            gr: 'Σφάλματα'
+            en: 'All'
+            gr: 'Όλα'
           single:
             en: 'Error'
             gr: 'Σφάλμα'
         -
-          value: 'form'
-          icon: 'material/view-list'
+          value: 'error_request'
           title:
-            en: 'Forms'
+            en: 'Request Errors'
+            gr: 'Από αιτήματα'
+          single:
+            en: 'Request Error'
+            gr: 'Από αίτημα'
+        -
+          value: 'error_system'
+          title:
+            en: 'System Errors'
+            gr: 'Από σύστημα'
+          single:
+            en: 'System Error'
+            gr: 'Από σύστημα'
+    -
+      title:
+        en: 'Forms'
+        gr: 'Φόρμες'
+      icon: 'material/view-list'
+      types:
+        -
+          value: 'form'
+          title:
+            en: 'All'
+            gr: 'Όλα'
           single:
             en: 'Form'
+            gr: 'Φόρμα'
     -
       title:
         en: 'Navigation'
         gr: 'Πλοήγηση'
+      icon: material/navigation
       types:
         -
           value: 'session'
-          icon: 'material/account-box'
           title:
             en: 'Visitors'
             gr: 'Επισκέπτες'
@@ -106,7 +127,6 @@ viewData:
             gr: 'Επισκέπτης'
         -
           value: 'view_page'
-          icon: 'material/insert-drive-file'
           title:
             en: 'Pages'
             gr: 'Σελίδες'
@@ -117,7 +137,6 @@ viewData:
           value: 'divider'
         -
           value: 'view_browser'
-          icon: 'material/open-in-browser'
           title:
             en: 'Browsers'
             gr: 'Πρόγραμματα Περιήγησης'
@@ -127,16 +146,15 @@ viewData:
         -
           value: 'view_browser_version'
           title:
-            en: 'Versions'
-            gr: 'Εκδόσεις'
+            en: 'Browser Versions'
+            gr: 'Εκδόσεις προγραμμάτων'
           single:
-            en: 'Version'
-            gr: 'Εκδόση'
+            en: 'Browser Version'
+            gr: 'Εκδόση προγράμμάτος'
         -
           value: 'divider'
         -
           value: 'view_os'
-          icon: 'material/android'
           title:
             en: 'Operating Systems'
             gr: 'Λειτουργικά Συστήματα'
@@ -146,16 +164,15 @@ viewData:
         -
           value: 'view_os_version'
           title:
-            en: 'Versions'
-            gr: 'Εκδόσεις'
+            en: 'System Versions'
+            gr: 'Εκδόσεις συστημάτων'
           single:
-            en: 'Version'
-            gr: 'Εκδόση'
+            en: 'System Version'
+            gr: 'Έκδοση συστήματος'
         -
           value: 'divider'
         -
           value: 'view_vendor'
-          icon: 'material/computer'
           title:
             en: 'Devices'
             gr: 'Συσκευές'
@@ -165,18 +182,18 @@ viewData:
         -
           value: 'view_device'
           title:
-            en: 'Types'
-            gr: 'Τύποι'
+            en: 'Device types'
+            gr: 'Τύποι συσκευών'
           single:
-            en: 'Type'
-            gr: 'Τύπος'
+            en: 'Device type'
+            gr: 'Τύπος συσκευής'
         -
           value: 'view_vendor_model'
           title:
-            en: 'Models'
-            gr: 'Μοντέλα'
+            en: 'Device models'
+            gr: 'Μοντέλα συσκευών'
           single:
-            en: 'Model'
-            gr: 'Μοντέλο'
+            en: 'Device model'
+            gr: 'Μοντέλο συσκευής'
         -
           value: 'divider'

@@ -6,7 +6,10 @@
 
     <%for(var group of page.viewData.groups){%>
     <div>
-    <md-subheader class="md-no-sticky"><%-lng(group.title)%></md-subheader>
+    <md-subheader class="md-no-sticky">
+    <%if(group.icon){%><md-icon md-svg-src="<%-get_icon(group.icon)%>"></md-icon><%}%>
+    <span flex="auto"><%-lng(group.title)%></span>
+    </md-subheader>
     <%for(var groupType of group.types){
 
       var authorization = authAllow[groupType.value];
@@ -18,7 +21,6 @@
         <%}else{%>
         <div class="ag-list-item" ng-class="type == '<%-groupType.value%>' ? 'active' : false" ng-click="changeType('<%-groupType.value%>')">
             <%-template('ui/has-role',{authorization:authorization})%>
-            <%if(groupType.icon){%><md-icon md-svg-src="<%-get_icon(groupType.icon)%>"></md-icon><%}%>
             <span flex="auto"><%-lng(groupType.title)%></span>
         </div>
         <%}%>
