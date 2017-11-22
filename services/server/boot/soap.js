@@ -97,7 +97,12 @@ module.exports = function(app) {
                 method(query, function(err,result) {
 
                   if (err) {
+
                     err = _.get(err,'root.Envelope.Body.Fault.detail.SystemError');
+                    if(!err){
+                      err = err.Fault;
+                    }
+
                     return reject(_.extend(new Error(),{
                       statusCode: 400,
                       message: 'Soap Server Error',

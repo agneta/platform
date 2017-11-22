@@ -52,10 +52,10 @@
             }
 
             data.language = agneta.lang;
-            if(data.__endpoint){
-              console.log(config,data.__endpoint);
+            if (data.__endpoint) {
+              console.log(config, data.__endpoint);
               var overrideURL = config.url;
-              overrideURL = overrideURL.replace(agneta.services.url,data.__endpoint);
+              overrideURL = overrideURL.replace(agneta.services.url, data.__endpoint);
               console.log(overrideURL);
             }
 
@@ -94,22 +94,25 @@
         },
         responseError: function(rejection) {
 
-          var error = rejection.data.error || rejection.data || {
-            message: errors.message
-          };
+          var error;
+          if (rejection.data) {
+            error = rejection.data.error || rejection.data;
+          }
+          if (!error) {
+            error = {
+              message: errors.message
+            };
+          }
 
-          function handleRejection(){
+          function handleRejection() {
 
             if (
               rejection.config &&
-            rejection.config.url &&
-            rejection.config.url.indexOf(agneta.services.url) !== 0) {
+              rejection.config.url &&
+              rejection.config.url.indexOf(agneta.services.url) !== 0) {
               return;
             }
-            console.error(rejection);
-            if (!rejection.data) {
-              return;
-            }
+            //console.error(rejection);
 
             var code = error && error.code;
 
@@ -119,14 +122,13 @@
                 LoopBackAuth.clearUser();
                 LoopBackAuth.clearStorage();
                 LoopBackAuth.save();
-              // falls through
+                // falls through
               case 'LOGIN_FAILED_EMAIL_NOT_VERIFIED':
               case 'USER_DEACTIVATED':
                 return;
             }
 
             var $mdDialog = $injector.get('$mdDialog');
-
             var message = error.message || error.errmsg;
 
             if (message) {
