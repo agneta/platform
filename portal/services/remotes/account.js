@@ -17,6 +17,7 @@
 
 module.exports = function(Model, app) {
 
+  require('./account/clearLimits')(Model, app);
   require('./account/activitiesAdmin')(Model, app);
   require('./account/activateAdmin')(Model, app);
   require('./account/deactivateAdmin')(Model, app);

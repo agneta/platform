@@ -76,14 +76,6 @@ module.exports = function(app) {
         'enabled': false
       },
       './middleware/limiter': limiterOptions,
-      './middleware/limits/clear': {
-        params: [app],
-        paths: ['/limits/:name/clear']
-      },
-      './middleware/limits/list': {
-        params: [app],
-        paths: ['/limits']
-      }
     },
     'initial:after': {},
     'session': {

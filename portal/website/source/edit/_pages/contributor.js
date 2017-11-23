@@ -63,10 +63,12 @@ function _e_contributor($scope, $rootScope, Account, Portal, $timeout, Role_Edit
     }
 
     Role_Editor.contentChange({
-      id: child.__id,
-      path: $scope.pagePath,
-      lang: $scope.edit.lang,
-      value: value
+      data: {
+        id: child.__id,
+        path: $scope.pagePath,
+        lang: $scope.edit.lang,
+        value: value
+      }
     });
 
   };
@@ -81,7 +83,7 @@ function _e_contributor($scope, $rootScope, Account, Portal, $timeout, Role_Edit
         return;
       }
 
-      if(!$scope.edit.realtime){
+      if (!$scope.edit.realtime) {
         return;
       }
 
@@ -100,14 +102,14 @@ function _e_contributor($scope, $rootScope, Account, Portal, $timeout, Role_Edit
       }
 
       var contributor = child.$$contributors[data.actor] =
-                $scope.contributors[data.actor] =
-                $scope.contributors[data.actor] || {};
+        $scope.contributors[data.actor] =
+        $scope.contributors[data.actor] || {};
 
       contributor.data = child;
 
       loadContributor(data.actor);
 
-      $timeout(function () {
+      $timeout(function() {
 
       }, 10);
     });
