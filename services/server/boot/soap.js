@@ -51,7 +51,11 @@ module.exports = function(app) {
         return;
       }
 
-      onItem(item);
+      onItem(item)
+        .catch(function(error){
+          console.error(error);
+          throw new Error(`Error on Item ${item.path}`);
+        });
 
     });
 
@@ -91,30 +95,35 @@ module.exports = function(app) {
 
           //------------------------------------------------------------------------
 
+          function handleError(error){
+
+            var errShow = _.get(error,'root.Envelope.Body.Fault.detail.SystemError');
+
+            if(!errShow){
+              errShow = error.Fault;
+            }
+
+            if(!errShow){
+              errShow = error;
+            }
+
+            return _.extend(new Error(),{
+              statusCode: 400,
+              message: 'Soap Server Error',
+            },errShow);
+          }
+
           var service = {
             getResult: function(query, options) {
               return new Promise(function(resolve, reject) {
 
                 query = _.pickBy(query, _.identity);
-                console.log('query',query);
+                console.log(query);
+
                 method(query, function(error,result) {
 
                   if (error) {
-
-                    var errShow = _.get(error,'root.Envelope.Body.Fault.detail.SystemError');
-
-                    if(!errShow){
-                      errShow = error.Fault;
-                    }
-
-                    if(!errShow){
-                      errShow = error;
-                    }
-
-                    return reject(_.extend(new Error(),{
-                      statusCode: 400,
-                      message: 'Soap Server Error',
-                    },errShow));
+                    return reject(handleError(error));
                   }
                   return resolve(result);
 
@@ -135,9 +144,9 @@ module.exports = function(app) {
                   reject: reject
                 };
 
-                method(query, function(err) {
-                  if (err) {
-                    return reject(err);
+                method(query, function(error) {
+                  if (error) {
+                    return reject(handleError(error));
                   }
                 }, {
                   methodOptions: options,
