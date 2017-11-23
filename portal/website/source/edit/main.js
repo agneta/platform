@@ -32,7 +32,7 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('EditMainCtrl', function($scope, $rootScope, $routeParams, $parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, MediaOpt) {
+  app.controller('EditMainCtrl', function($scope, $rootScope, $routeParams, $parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, MediaOpt, Role_Editor) {
 
     var fuse;
     var fuseOptions = {
@@ -88,7 +88,7 @@
     _e_main($scope, $rootScope, helpers, $location, $timeout, $mdDialog, scopeEdit, Portal, GIT);
     _e_search($scope, $timeout, fuse, itemsLoaded);
     _e_source($scope, $mdDialog, $timeout);
-    _e_contributor($scope, $rootScope, Account, Portal, $timeout);
+    _e_contributor($scope, $rootScope, Account, Portal, $timeout, Role_Editor);
 
     $scope.onKeyPress = function(event) {
 

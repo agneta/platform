@@ -48,7 +48,7 @@ module.exports = function() {
     },
     Role_Editor: {
       dataSource: 'db',
-      public: false
+      public: true
     },
     AccessToken: {
       dataSource: 'db',

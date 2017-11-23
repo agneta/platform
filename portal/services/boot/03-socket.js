@@ -32,7 +32,6 @@ module.exports = function(app) {
 
   require('./socket/memory')(app);
   require('./socket/activity')(app);
-  require('./socket/editor')(app);
   require('./socket/activities')(app);
 
 };

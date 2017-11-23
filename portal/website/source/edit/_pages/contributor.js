@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-function _e_contributor($scope, $rootScope, Account, Portal, $timeout) {
+function _e_contributor($scope, $rootScope, Account, Portal, $timeout, Role_Editor) {
 
   $scope.contributors = {};
 
@@ -62,7 +62,7 @@ function _e_contributor($scope, $rootScope, Account, Portal, $timeout) {
       return;
     }
 
-    Portal.socket.emit('content-change', {
+    Role_Editor.contentChange({
       id: child.__id,
       path: $scope.pagePath,
       lang: $scope.edit.lang,
