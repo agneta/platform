@@ -17,12 +17,12 @@ for(var name in field.validators){
     value: value
   };
 
-  var text = get_data('form/validators/'+message);
-  if(!text){
+  var validatorData = get_data('form/validators/'+message);
+  if(!validatorData){
     console.warn(`Could not find validator: ${message}`);
     continue;
   }
-  text = lng(text.message);
+  text = lng(validatorData.message);
   %>
 
   <div ng-message="<%-name%>" class="error">
