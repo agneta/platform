@@ -106,7 +106,7 @@
     "request-promise": "4.2.2",
     "shortid": "2.2.8",
     "simple-git": "1.77.0",
-    "soap": "0.22.0",
+    "soap": "^0.23.0",
     "socketcluster": "8.0.2",
     "ssh2": "0.5.5",
     "ssh2-streams": "0.1.20",

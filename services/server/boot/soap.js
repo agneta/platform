@@ -94,19 +94,27 @@ module.exports = function(app) {
           var service = {
             getResult: function(query, options) {
               return new Promise(function(resolve, reject) {
-                method(query, function(err,result) {
 
-                  if (err) {
+                query = _.pickBy(query, _.identity);
+                console.log('query',query);
+                method(query, function(error,result) {
 
-                    err = _.get(err,'root.Envelope.Body.Fault.detail.SystemError');
-                    if(!err){
-                      err = err.Fault;
+                  if (error) {
+
+                    var errShow = _.get(error,'root.Envelope.Body.Fault.detail.SystemError');
+
+                    if(!errShow){
+                      errShow = error.Fault;
+                    }
+
+                    if(!errShow){
+                      errShow = error;
                     }
 
                     return reject(_.extend(new Error(),{
                       statusCode: 400,
                       message: 'Soap Server Error',
-                    },err));
+                    },errShow));
                   }
                   return resolve(result);
 
