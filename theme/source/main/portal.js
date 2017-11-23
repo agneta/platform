@@ -24,7 +24,7 @@
     this.socket = socket;
 
     socket.media = SocketIO.connect('media');
-
+    socket.editor = SocketIO.connect('editor');
 
     socket.on('page-saved', function(id) {
 
@@ -50,7 +50,7 @@
         var listener = 'content-change:' + $rootScope.viewData.path + ':' + contentId;
         //console.log(listener);
 
-        Portal.socket.on(listener, function(data) {
+        Portal.socket.editor.on(listener, function(data) {
 
           //console.log(data);
           var value = data.value;

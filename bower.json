@@ -61,6 +61,7 @@
     "scrollmagic": "2.0.5",
     "filesize": "3.5.10",
     "js-xlsx": "https://github.com/protobi/js-xlsx/archive/v0.87.zip",
-    "file-saver": "1.3.3"
+    "file-saver": "1.3.3",
+    "md-date-range-picker": "^0.7.2"
   }
 }

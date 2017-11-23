@@ -2,8 +2,16 @@ const _ = require('lodash');
 
 module.exports = function(Model, app) {
 
+  var mediaOptions = {
+    name: 'editor',
+    auth: {
+      allow: ['editor']
+    }
+  };
+
+  Model.io = app.socket.namespace(mediaOptions);
+
   var web = app.get('options').web;
-  var socket = app.portal.socket;
 
   Model.contentChange = function(data,req){
 
@@ -20,7 +28,7 @@ module.exports = function(Model, app) {
       data.value = web.app.locals.render(data.value);
     }
 
-    socket.emit(listener, data);
+    Model.io.emit(listener, data);
 
   };
 

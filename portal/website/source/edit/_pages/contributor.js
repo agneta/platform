@@ -76,8 +76,7 @@ function _e_contributor($scope, $rootScope, Account, Portal, $timeout, Role_Edit
   $scope.registerInput = function(child) {
 
     var listener = 'content-change:' + $scope.pagePath + ':' + child.__id;
-    Portal.socket.on(listener, function(data) {
-
+    Portal.socket.editor.on(listener, function(data) {
 
       if (child.__value[data.lang] == data.value) {
         return;

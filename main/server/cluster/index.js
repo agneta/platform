@@ -16,8 +16,7 @@
  */
 const path = require('path');
 const express = require('express');
-const SocketCluster = require('socketcluster')
-  .SocketCluster;
+const SocketCluster = require('socketcluster').SocketCluster;
 
 //var workerCount = process.env.WEB_CONCURRENCY || 1;
 // TODO: Make more stable the multiple workers
@@ -43,10 +42,11 @@ module.exports = function(options) {
   // HTTPS connections with socket cluster
   var clusterOptions = {
     workers: 1,
+    brokers: 1,
     port: process.env.PORT,
     protocol: process.env.PROTOCOL,
     path: socketPath,
-    environment: 'dev',
+    environment: 'prod',
     workerController: path.join(__dirname, 'worker.js'),
     logLevel: 3,
     protocolOptions: options.protocolOptions

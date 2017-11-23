@@ -111,10 +111,17 @@ module.exports = function(locals) {
         continue;
       }
 
+      var validator = validatorData[value];
+
+      if(!validator){
+        console.error(validatorData);
+        throw new Error(`Could not find validator with name: ${name} and value: ${value}`);
+      }
+
       switch (name) {
         case 'pattern':
           name = 'ng-pattern';
-          value = '/' + validatorData[value].pattern + '/';
+          value = '/' + validator.pattern + '/';
           break;
         case 'compareTo':
           name = 'compare-to';
