@@ -77,7 +77,9 @@ module.exports = function(app) {
     var authName = config.acl[options.servicePath];
 
     if (!authName) {
-      return;
+      return Promise.reject(
+        new Error(`Could not find ACL for wsdl (${options.servicePath}) in config`)
+      );
     }
 
     var auth = config.auth[authName];

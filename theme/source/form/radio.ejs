@@ -1,7 +1,9 @@
 <%-template('form/description')%>
 
-<md-radio-group ng-model="<%-field.model%>">
+<md-radio-group  name="<%-field.name%>" ng-model="<%-field.model%>" <%-formValidators(field)%>>
 <%for(var option of field.options){%>
   <md-radio-button value="<%-option.value%>" class="md-primary"><%-lng(option.title)%></md-radio-button>
   <%}%>
 </md-radio-group>
+
+<%-template('form/messages')%>

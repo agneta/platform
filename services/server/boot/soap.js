@@ -108,8 +108,8 @@ module.exports = function(app) {
             }
 
             return _.extend(new Error(),{
-              statusCode: 400,
-              message: 'Soap Server Error',
+              statusCode: 500,
+              message: errShow.message||'Soap Server Error',
             },errShow);
           }
 

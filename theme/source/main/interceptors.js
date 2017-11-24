@@ -80,7 +80,7 @@
 
             var $mdDialog = $injector.get('$mdDialog');
 
-            if (!response.config.data.__skipDialog) {
+            if (!(response.config.data && response.config.data.__skipDialog)) {
               $mdDialog.open({
                 partial: 'success',
                 //nested: true,
@@ -139,7 +139,7 @@
               rejection.message = message;
               $rootScope.$emit('error');
 
-              if (!rejection.config.data.__skipDialog) {
+              if (!(rejection.config.data && rejection.config.data.__skipDialog)) {
                 $mdDialog.open({
                   partial: 'error',
                   nested: true,
