@@ -28,9 +28,9 @@ module.exports = function() {
       mixins: [
         'loopback/common/mixins',
         'loopback/server/mixins',
-        '../../node_modules/loopback-ds-timestamp-mixin',
-        '../../../loopback-ds-timestamp-mixin',
-        '../common/mixins',
+        '../node_modules/loopback-ds-timestamp-mixin',
+        '../../loopback-ds-timestamp-mixin',
+        'common/mixins',
         './mixins'
       ]
     },

@@ -73,7 +73,7 @@ module.exports = function(app) {
   }
 
   var dirs = [
-    path.join(__dirname, '../server'),
+    path.join(__dirname, '..'),
   ];
 
 

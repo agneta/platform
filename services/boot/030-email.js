@@ -55,7 +55,7 @@ module.exports = function(app) {
 
   var dataMain = {};
   var templatePaths = [
-    path.join(__dirname, '../../templates'),
+    path.join(__dirname, '../templates'),
     path.join(project.paths.project, 'email')
   ];
 

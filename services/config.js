@@ -14,13 +14,28 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+var env;
+switch(process.env.NODE_ENV){
+  case 'production':
+    env = 'prd';
+    break;
+  case 'staging':
+    env = 'stg';
+    break;
+  default:
+    env = 'dev';
+    break;
+}
+var mode = process.env.MODE || 'portal';
+
 module.exports = {
+  token: {
+    name: 'access_app'
+  },
   restApiRoot: '/api',
   host: 'locahost',
   domain: 'locahost',
-  token: {
-    name: 'access_token'
-  },
   roles: {
     administrator: {
       model: 'Role_Administrator'
@@ -66,6 +81,29 @@ module.exports = {
       limit: '100kb'
     },
     cors: false
+  },
+  activity: {
+    auth: {
+      allow: {
+        view_page: ['reviewer'],
+        session: ['reviewer'],
+        view_browser: ['reviewer'],
+        view_browser_version: ['reviewer'],
+        view_os: ['reviewer'],
+        view_os_version: ['reviewer'],
+        view_vendor: ['reviewer'],
+        view_device: ['reviewer'],
+        view_vendor_model: ['reviewer'],
+        engagement: ['reviewer'],
+        search_keyword: ['reviewer'],
+        search_page: ['reviewer']
+      }
+    }
+  },
+  git: {
+    branch: `agneta-${env}-${mode}`,
+    remote:{
+    }
   },
   language: require('./config/language'),
   media: require('./config/media'),

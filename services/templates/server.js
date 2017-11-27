@@ -16,7 +16,7 @@
  */
 const express = require('express');
 const app = express();
-const Email = require('../server/boot/02-email');
+const Email = require('../boot/02-email');
 
 app.get('/:lang/:template', function(req, res, next)
 {

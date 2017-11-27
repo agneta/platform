@@ -38,7 +38,7 @@ module.exports = function(options) {
   }
   var server = worker.scServer;
   var cookieParser = require('cookie-parser')(
-    app.get('cookie_secret')
+    app.secrets.get('cookie',true)
   );
 
   var connections = {};

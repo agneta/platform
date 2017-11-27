@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: main/generate/index.js
+ *   Source file: portal/services/remotes/media.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,7 +14,20 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var services = require('./services');
+module.exports = function(Model, app) {
 
+  var config = app.get('storage');
+  var prjHelpers = app.get('options').client.app.locals;
+  var bucket = config.buckets.media;
 
-module.exports = services();
+  Model._url = prjHelpers.get_media;
+
+  app.requireServices('models/media/main')(Model, app, {
+    name: 'public',
+    bucket: {
+      name: bucket.name,
+      host: bucket.host,
+    }
+  });
+
+};

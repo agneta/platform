@@ -22,14 +22,14 @@ var disableAllMethods = require('./models/disableAllMethods');
 module.exports = function(app) {
 
   var dirs = [
-    path.join(__dirname, '../remotes'),
-    path.join(app.get('services_dir'), 'remotes')
+    path.join(__dirname, '../models'),
+    path.join(app.get('services_dir'), 'models')
   ];
 
   var servicesInclude = app.get('services_include');
 
   for (var dir of servicesInclude) {
-    dirs.push(path.join(dir, 'remotes'));
+    dirs.push(path.join(dir, 'models'));
   }
 
   //--------------------------------------------------------

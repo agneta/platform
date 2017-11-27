@@ -26,7 +26,7 @@ module.exports = function(app, generated) {
   var servicesInclude = app.get('services_include');
 
   var dirs = [
-    path.join(__dirname, '../models'),
+    path.join(__dirname, 'models'),
     path.join(app.get('services_dir'), 'models')
   ];
 
@@ -50,6 +50,10 @@ module.exports = function(app, generated) {
       .then(function(files) {
 
         return Promise.map(files, function(file) {
+
+          if(path.parse(file).ext != '.json'){
+            return;
+          }
 
           var filePath = path.join(dir, file);
           var data = require(filePath);
