@@ -80,16 +80,7 @@ module.exports = function(locals) {
     var result = tmp.join('/');
 
     result = this.getVersion(result);
-    result = this.url_for(result);
-
-    switch (project.site.env) {
-      case 'staging':
-        result = `https://${buckets.assets.host}${result}`;
-        break;
-      case 'production':
-        result = `https://${buckets.assets.production}${result}`;
-        break;
-    }
+    result = urljoin(project.site.servers.assets,result);
 
     return result;
   });

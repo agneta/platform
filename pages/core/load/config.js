@@ -72,8 +72,8 @@ module.exports = function(locals) {
     return Promise.resolve()
       .then(function() {
 
-        var hostPath = locals.services.get('website') || {};
-        hostPath = hostPath.host || locals.host;
+        var websiteConfig = locals.services.get('website') || {};
+        var hostPath = websiteConfig.host || locals.host;
         //console.log('config:hostPath',hostPath);
 
         if (!hostPath) {
@@ -81,7 +81,7 @@ module.exports = function(locals) {
         }
 
         project.site.host_web = hostPath;
-        project.site.url_web = urljoin(project.site.host_web, project.config.root);
+        project.site.url_web = websiteConfig.url;
 
         //console.log('pages:url_web', project.site.url_web);
 
@@ -131,13 +131,20 @@ module.exports = function(locals) {
           project.site.servers[key] = project.site.protocol + '//' + server.host;
         }
 
+        switch (project.site.env) {
+          case 'development':
+          case 'local':
+            project.site.servers.assets = project.site.url_web;
+            break;
+        }
+
         //-------------------------------------------
         //
 
         if (project.config.services) {
 
           var viewPath;
-          switch (locals.env) {
+          switch (project.site.env) {
             case 'local':
               viewPath = project.config.page.viewBase.local;
               break;

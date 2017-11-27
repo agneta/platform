@@ -28,7 +28,7 @@ function _e_helpers() {
   };
 
   agneta.get_asset = function(path) {
-    return agneta.url(path);
+    return agneta.urljoin(agneta.server.assets,path);
   };
 
   agneta.get_media = function() {

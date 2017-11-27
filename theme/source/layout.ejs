@@ -33,6 +33,9 @@
       </div>
 
       <%-template('layout/scripts')%>
+      <%if(has_template('layout/body-end')){%>
+      <%-template('layout/body-end')%>
+      <%}%>
 
     </body>
   </html>
