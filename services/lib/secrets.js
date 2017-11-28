@@ -25,8 +25,7 @@ var encryptionKey;
 var keyPath = path.join(
   process.cwd(), '../secret.json'
 );
-var secretKey = fs.readFileSync(keyPath, 'utf8');
-
+var secretKey = fs.readJsonSync(keyPath, 'utf8');
 if (!secretKey) {
   throw new Error('Could not find the secret key to set sensitive data');
 }
