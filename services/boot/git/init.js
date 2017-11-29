@@ -16,14 +16,29 @@
  */
 const simplegit = require('simple-git/promise');
 const _ = require('lodash');
+const fs = require('fs-extra');
+const path = require('path');
 
 module.exports = function(app) {
 
   var base_dir = process.cwd();
   var config = app.get('git');
-  app.git.native = simplegit(base_dir);
 
-  return app.git.native.getRemotes()
+  app.git.native = simplegit(base_dir);
+  return Promise.resolve()
+    .then(function() {
+      return fs.exists(
+        path.join(base_dir, '.git')
+      );
+    })
+    .then(function(exists) {
+      if (!exists) {
+        return app.git.native.init();
+      }
+    })
+    .then(function() {
+      return app.git.native.getRemotes();
+    })
     .then(function(remotes) {
 
       var foundRemote = _.find(remotes, {
