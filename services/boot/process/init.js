@@ -29,7 +29,7 @@ module.exports = function(app) {
   var Process = app.models.Process;
   var Process_Server = app.models.Process_Server;
 
-  var serverName = app.configstore.get('server.name') || process.env.SERVER_NAME;
+  var serverName = process.env.SERVER_NAME;
   if (!serverName) {
     throw new Error('Coould not find the name of the server.');
   }

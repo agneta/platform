@@ -16,6 +16,7 @@
  */
 var Promise = require('bluebird');
 const path = require('path');
+const _ = require('lodash');
 
 module.exports = function(Model) {
 
@@ -43,7 +44,11 @@ module.exports = function(Model) {
         var method = infoMethods[type];
 
         if (!method) {
-          activity.title = activity.data.message;
+          activity.title = _.get(activity,'data.message') || _.get(activity,'action.value');
+          if(!activity.title){
+            console.warn('No title found for activity:',activity);
+            activity.title = 'untitled';
+          }
           return activity;
         }
         return method(activity, req);
