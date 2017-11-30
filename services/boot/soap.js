@@ -118,7 +118,7 @@ module.exports = function(app) {
               return new Promise(function(resolve, reject) {
 
                 query = _.pickBy(query, _.identity);
-                console.log(query);
+                //console.log(query);
 
                 method(query, function(error,result) {
 
