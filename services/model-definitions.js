@@ -15,10 +15,9 @@
  *   limitations under the License.
  */
 var path = require('path');
-var fs = require('fs');
+var fs = require('fs-extra');
 var Promise = require('bluebird');
 var _ = require('lodash');
-var readdir = Promise.promisify(fs.readdir);
 
 module.exports = function(app, generated) {
 
@@ -46,7 +45,10 @@ module.exports = function(app, generated) {
 
   return Promise.map(dirs, function(dir) {
 
-    return readdir(dir)
+    return fs.ensureDir(dir)
+      .then(function() {
+        return fs.readdir(dir);
+      })
       .then(function(files) {
 
         return Promise.map(files, function(file) {

@@ -25,10 +25,6 @@ module.exports = function(Model, app) {
   var source;
   var template;
 
-  if (!fs.existsSync(Model.editConfigDir)) {
-    throw new Error('Create an edit directory and add your configurations: ' + Model.editConfigDir);
-  }
-
   Model.loadOne = function(id, req) {
 
     var page;

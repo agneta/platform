@@ -46,7 +46,10 @@ module.exports = function(app) {
       });
 
       if (!foundRemote) {
-        return app.git.native.addRemote(config.remote.name, config.remote.url);
+
+        if (config.remote.name && config.remote.url) {
+          return app.git.native.addRemote(config.remote.name, config.remote.url);
+        }
       }
 
     })

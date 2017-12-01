@@ -33,7 +33,7 @@
     }
   },
   "indexes": {
-    "uniqueEmail": {
+    "unique": {
       "keys": {
         "host": 1,
         "ip": 1,
@@ -41,8 +41,7 @@
         "email": 1
       },
       "options": {
-        "unique": true,
-        "required": true
+        "unique": true
       }
     }
   },

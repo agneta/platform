@@ -158,8 +158,7 @@
         "email": 1
       },
       "options": {
-        "unique": true,
-        "required": true
+        "unique": true
       }
     },
     "uniqueUsername": {

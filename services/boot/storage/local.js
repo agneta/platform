@@ -16,4 +16,22 @@
  */
 module.exports = function() {
 
+  return {
+    listObjects: function() {
+    },
+    headObject: function() {
+    },
+    copyObject: function() {
+    },
+    deleteObjects: function() {
+    },
+    deleteObject: function() {
+    },
+    getObjectStream: function() {
+    },
+    upload: function() {
+    },
+
+  };
+
 };

@@ -19,16 +19,20 @@ var secretConfig;
 
 module.exports = function(app) {
 
+  var config = app.get('google');
+
+  if(!config){
+    return;
+  }
+
   if (!secretConfig) {
     secretConfig = app.secrets.get('google');
   }
-
-  var config = app.get('google');
-
+  
   //---------------------------------------------------
   // Recaptcha
 
-  if (!config.recaptcha) {
+  if (config.recaptcha) {
     console.warn('Could not find Recaptcha configuration');
     return;
   }

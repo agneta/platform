@@ -26,14 +26,15 @@ const SoapResponse = require('./soap/response');
 
 module.exports = function(app) {
 
-  const soapResponse = SoapResponse();
-  const soapRequest = require('./soap/request')(app);
-
-  app.soapServices = {};
   var config = app.get('wsdl');
   if (!config) {
     return;
   }
+
+  const soapResponse = SoapResponse();
+  const soapRequest = require('./soap/request')(app);
+
+  app.soapServices = {};
 
   var dirServices = config.path || path.join(app.get('services_dir'), 'wsdl');
 
