@@ -23,6 +23,10 @@ module.exports = function(app) {
     return;
   }
 
+  if(process.env.MODE == 'terminal'){
+    return;
+  }
+
   var processName = 'agneta';
 
   app.process = {

@@ -25,7 +25,7 @@ var encryptionKey;
 var keyPath = path.join(
   process.cwd(), '../secret.json'
 );
-var secretKey = fs.readJsonSync(keyPath, 'utf8');
+var secretKey = process.env.SECRET_KEY || fs.readJsonSync(keyPath, 'utf8');
 if (!secretKey) {
   throw new Error('Could not find the secret key to set sensitive data');
 }
@@ -92,7 +92,15 @@ module.exports = function(app) {
         env = app.get('env');
       }
       env = env || process.env.NODE_ENV;
-      return getSecret(env, path, keep);
+      var result =  getSecret(env, path, keep);
+
+      if(path == 'db'){
+        if(result.host=='mongoDB' && (process.env.MODE == 'terminal')){
+          result.host='localhost';
+        }
+      }
+
+      return result;
     },
     encrypt: function(value) {
       value = value.toString('utf8');

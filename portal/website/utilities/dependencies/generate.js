@@ -15,16 +15,21 @@
  *   limitations under the License.
  */
 var extract = require('./extract');
-
+const Promise = require('bluebird');
 module.exports = function(util) {
 
   var projectPaths = util.locals.web.project.paths;
 
-  return extract(util, {
-    name: 'theme',
-    base: projectPaths.agneta,
-    root: projectPaths.agneta
-  })
+  return Promise.resolve()
+    .then(function() {
+
+      return extract(util, {
+        name: 'theme',
+        base: projectPaths.agneta,
+        root: projectPaths.agneta
+      });
+
+    })
     .then(function() {
       return extract(util, {
         name: 'project',

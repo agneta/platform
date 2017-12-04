@@ -19,7 +19,6 @@ var path = require('path');
 var _ = require('lodash');
 var fs = require('fs-extra');
 var Promise = require('bluebird');
-var promiseCopy = Promise.promisify(fs.copy);
 var yaml = require('js-yaml');
 var bower = require('../lib/bower');
 
@@ -27,9 +26,10 @@ module.exports = function(util, dir) {
 
   var projectPaths = util.locals.web.project.paths;
 
-  try {
-    fs.statSync(path.join(dir.root, 'bower.json'));
-  } catch (e) {
+  if(
+    !fs.pathExistsSync(path.join(dir.root, 'bower.json')) ||
+    !fs.pathExistsSync(dir.modules)
+  ){
     util.log('No Bower Compoments found at ' + dir.name + ' dir.');
     return;
   }
@@ -51,22 +51,20 @@ module.exports = function(util, dir) {
 
   var rules = {};
 
-
   return bower(util, dir.root)
     .then(function() {
 
-      return Promise.promisify(fs.readFile)(
+      return fs.readFile(
         path.join(dir.base, 'config.yml'),
         'utf8'
       );
 
     })
     .then(function(content) {
-
       var config = yaml.safeLoad(content);
       rules = config.libraries;
 
-      return Promise.promisify(fs.readdir)(dir.modules);
+      return fs.readdir(dir.modules);
 
     })
     .then(function(libraries) {
@@ -119,6 +117,7 @@ module.exports = function(util, dir) {
               util.log('No files found for library: ' + library);
               return;
             }
+            util.log(`Found ${moduleFiles.length} files for library: ${library}`);
 
             totalFiles += moduleFiles.length;
 
@@ -151,7 +150,7 @@ module.exports = function(util, dir) {
             rule.dir || '',
             parsed.base);
 
-          return promiseCopy(sourcePath, destPath)
+          return fs.copy(sourcePath, destPath)
             .then(function() {
               bar.tick({
                 title: path.join(rule.dir || '', parsed.base)
