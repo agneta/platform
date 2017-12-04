@@ -28,11 +28,11 @@ module.exports = function(app) {
   if (!secretConfig) {
     secretConfig = app.secrets.get('google');
   }
-  
+
   //---------------------------------------------------
   // Recaptcha
 
-  if (config.recaptcha) {
+  if (!config.recaptcha) {
     console.warn('Could not find Recaptcha configuration');
     return;
   }

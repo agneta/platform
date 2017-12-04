@@ -83,8 +83,7 @@ module.exports = Promise.resolve()
     process.env.ENDPOINT = process.env.ENDPOINT ||
       url.format({
         protocol: protocol,
-        hostname: process.env.HOST_NAME,
-        port: process.env.PORT
+        hostname: process.env.HOST_NAME
       });
 
     process.env.NODE_ENV = process.env.NODE_ENV || 'development';
