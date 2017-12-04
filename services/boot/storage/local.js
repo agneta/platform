@@ -18,6 +18,8 @@ const klaw = require('klaw');
 const Promise = require('bluebird');
 const fs = require('fs-extra');
 const path = require('path');
+const crypto = require('crypto');
+const _ = require('lodash');
 
 module.exports = function(app) {
 
@@ -37,20 +39,42 @@ module.exports = function(app) {
         .then(function() {
 
           var walker = klaw(dir);
-
-          walker.on('data', function(item) {
-
-            if (!item.stats.isFile()) {
-              return;
-            }
-            result.push(getItem({
-              item: item,
-              dir: dir
-            }));
-          });
+          var check;
+          var items = 0;
 
           return new Promise(function(resolve, reject) {
-            walker.on('end', resolve);
+
+            walker.on('data', function(item) {
+
+              if (!item.stats.isFile()) {
+                return;
+              }
+              if (item.path.indexOf('meta.json') > 0) {
+                return;
+              }
+              items++;
+              Promise.resolve()
+                .then(function() {
+                  return getItem({
+                    item: item,
+                    dir: dir
+                  });
+                })
+                .then(function(item) {
+                  result.push(item);
+                  if (!check) {
+                    return;
+                  }
+                  if (items == result.length) {
+                    resolve();
+                  }
+                })
+                .catch(reject);
+            });
+
+            walker.on('end', function() {
+              check = true;
+            });
             walker.on('error', reject);
           });
 
@@ -71,25 +95,48 @@ module.exports = function(app) {
     upload: function(options) {
 
       var target = path.join(root, options.Bucket, options.Key);
+      var ETag;
 
       return Promise.resolve()
         .then(function() {
-          return fs.outputJson(`${target}.meta.json`,{
-            ContentType: options.ContentType,
-            ContentEncoding: options.ContentEncoding
-          });
-        })
-        .then(function() {
-          return fs.ensureFile(target);
-        })
-        .then(function() {
-          return new Promise(
+
+          var promiseHash = new Promise(function(resolve, reject) {
+
+            var output = crypto.createHash('md5');
+            output.once('readable', function() {
+              resolve(output.read().toString('hex'));
+            });
+            options.Body.on('error', reject);
+            options.Body.pipe(output);
+          })
+            .then(function(hash) {
+              ETag = hash;
+            });
+
+          var promiseOutput = new Promise(
             function(resolve, reject) {
               const file = fs.createWriteStream(target);
               file.on('finish', resolve);
               file.on('error', reject);
               options.Body.pipe(file);
             });
+
+          return Promise.all([promiseHash, promiseOutput]);
+
+        })
+        .then(function() {
+
+          return fs.outputJson(`${target}.meta.json`, {
+            ContentType: options.ContentType,
+            ContentEncoding: options.ContentEncoding,
+            ETag: ETag
+          });
+        })
+        .then(function() {
+          return fs.ensureFile(target);
+        })
+        .then(function() {
+
         });
 
     },
@@ -97,10 +144,17 @@ module.exports = function(app) {
   };
 
   function getItem(options) {
-    return {
-      Key: path.relative(options.dir, options.item.path),
-      Size: options.item.stats.size
-    };
+    return Promise.resolve()
+      .then(function() {
+        return fs.readJson(`${options.item.path}.meta.json`);
+      })
+      .then(function(meta) {
+        meta.ETag = `"${meta.ETag}"`;
+        return _.extend(meta, {
+          Key: path.relative(options.dir, options.item.path),
+          Size: options.item.stats.size
+        });
+      });
   }
 
 };
