@@ -41,6 +41,13 @@ core.sourceTheme = path.join(core.baseTheme, 'source');
 core.assetsTheme = path.join(core.sourceTheme, 'assets');
 core.configTheme = path.join(core.baseTheme, 'config.yml');
 
+// Storage
+var storage = path.join(core.project, 'storage');
+core.storage = {
+  buckets: path.join(storage, 'buckets'),
+  root: storage
+};
+
 // Services
 core.api = path.join(core.project, 'services');
 core.models = path.join(core.api, 'models');
@@ -54,7 +61,7 @@ core.portalAssets = path.join(core.portalSource, 'assets');
 core.portalProject = path.join(core.project, 'portal');
 core.portalProjectServices = path.join(core.portalProject, 'services');
 core.portalProjectSource = path.join(core.portalProject, 'source');
-core.portalProjectGenerated = path.join(core.portalProjectSource,'generated');
+core.portalProjectGenerated = path.join(core.portalProjectSource, 'generated');
 
 
 //--------------------------------------------------------------------
@@ -83,7 +90,7 @@ function app(options) {
   paths.tmp = path.join(paths.base, 'tmp');
   paths.scripts = path.join(paths.base, 'scripts');
 
-  _.extend(paths,core);
+  _.extend(paths, core);
 
   return paths;
 }
