@@ -19,7 +19,7 @@
   var scopeCount = 0;
 
   var app = window.angular.module('MainApp', window.angularDeps);
-  app.controller('MenuItemCtrl', function($rootScope, $element, $timeout) {
+  app.page('MenuItemCtrl', function($rootScope, $element, $timeout) {
     var vm = this;
     vm.expanded = false;
     vm.id = scopeCount++;

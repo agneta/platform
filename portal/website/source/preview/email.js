@@ -18,7 +18,7 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('PreviewEmailCtrl', function($sce, $rootScope, Email_Template) {
+  app.page('PreviewEmailCtrl', function($sce, $rootScope, Email_Template) {
 
     var vm = this;
 

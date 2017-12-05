@@ -2,3 +2,4 @@ title:
   en: 'Success'
   gr: 'Επιτυχία'
 skipAuthorization: true
+controller: DialogCtrl

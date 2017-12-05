@@ -18,7 +18,7 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('EditPagesCtrl', function($controller, Edit_Page) {
+  app.page('EditPagesCtrl', function($controller, Edit_Page) {
     var vm = this;
 
     angular.extend(this, $controller('EditMainCtrl', {

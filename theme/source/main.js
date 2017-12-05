@@ -37,6 +37,43 @@
     window.angularDeps.concat(['angular-q-limit'])
   );
 
+  //---------------------------------------------------------------
+
+  app.page = function(name, link) {
+    name = name[0].toLowerCase() + name.slice(1);
+    var parameters;
+    if(link){
+      parameters = getParamNames(link);
+    }else{
+      parameters = [];
+    }
+    parameters.push(function(){
+
+      var args = Array.prototype.slice.call(arguments);
+      return {
+        link: function(vm){
+          if(link){
+            link.apply(vm,args);
+          }
+        }
+      };
+    });
+    app.directive(name, parameters);
+  };
+
+  var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+  var ARGUMENT_NAMES = /([^\s,]+)/g;
+
+  function getParamNames(func) {
+    var fnStr = func.toString().replace(STRIP_COMMENTS, '');
+    var result = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
+    if (result === null)
+      result = [];
+    return result;
+  }
+
+  //---------------------------------------------------------------
+
   _t_template('main/helpers');
   _e_helpers();
 
@@ -178,7 +215,7 @@
 
             var priority = dependencies[priorityIndex];
 
-            if(!priority){
+            if (!priority) {
               return;
             }
 
@@ -186,18 +223,18 @@
 
             return $q(function(resolve) {
 
-              if (priority.length) {
+                if (priority.length) {
 
-                $ocLazyLoad.load([{
-                  name: 'MainApp',
-                  files: priority
-                }]).then(resolve);
+                  $ocLazyLoad.load([{
+                    name: 'MainApp',
+                    files: priority
+                  }]).then(resolve);
 
-              } else {
-                resolve();
-              }
+                } else {
+                  resolve();
+                }
 
-            })
+              })
               .then(loadPriority);
 
           }
@@ -205,7 +242,7 @@
           //----------------------------------------------
           // Load angular modules
 
-          if(data.inject && data.inject.length){
+          if (data.inject && data.inject.length) {
             $ocLazyLoad.inject(data.inject);
           }
 
@@ -334,28 +371,6 @@
       });
     };
   });
-
-  app.directive('dynamicCtrl', ['$controller', function($controller) {
-    return {
-      restrict: 'A',
-      scope: true,
-      link: function(scope, elem, attrs) {
-
-        var model = elem.attr('dynamic-ctrl');
-
-        scope.$watch(model, function(name) {
-          if (name) {
-            elem.data('$Controller', $controller(name, {
-              $scope: scope,
-              $element: elem,
-              $attrs: attrs
-            }));
-          }
-        });
-
-      }
-    };
-  }]);
 
   app.directive('focusMe', function($timeout) {
     return {

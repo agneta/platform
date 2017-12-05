@@ -18,7 +18,7 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('FilterAccount', function($controller, $rootScope, data) {
+  app.page('FilterAccount', function($controller, $rootScope, data) {
 
     var vm = this;
 

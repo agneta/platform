@@ -22,6 +22,20 @@ module.exports = function(locals) {
 
   var project = locals.project;
 
+  project.extend.helper.register('viewTag', function(page) {
+    page = page || this.page;
+
+    var tag = page.controller;
+    if(tag){
+      tag = tag.replace(/([a-z](?=[A-Z]))/g, '$1 ').split(' ').join('-').toLowerCase();
+    }else{
+      tag = 'div';
+    }
+
+    return tag;
+
+  });
+
   project.extend.helper.register('viewBasicData', function(page) {
 
     var data = {};

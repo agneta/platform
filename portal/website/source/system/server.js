@@ -18,7 +18,7 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('SystemServerCtrl', function($rootScope, Process, SocketIO, $mdDialog) {
+  app.page('SystemServerCtrl', function($rootScope, Process, SocketIO, $mdDialog) {
 
     var socket = SocketIO.connect('system');
     var vm = this;

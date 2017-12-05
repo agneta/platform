@@ -1,3 +1,4 @@
 title:
   en: Logged out
 skipAuthorization: true
+controller: DialogCtrl

@@ -18,7 +18,7 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('PassChangeAdminCtrl', function(data, $rootScope, $controller, Account, LoopBackAuth) {
+  app.page('PassChangeAdminCtrl', function(data, $rootScope, $controller, Account, LoopBackAuth) {
 
     var vm = this;
 

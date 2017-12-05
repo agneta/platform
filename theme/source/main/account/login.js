@@ -16,7 +16,7 @@
  */
 function _e_login(app) {
 
-  app.controller('LoginController', function($window, $location, $mdDialog, $rootScope, $routeParams, Account, LoopBackAuth) {
+  app.page('LoginController', function($window, $location, $mdDialog, $rootScope, $routeParams, Account, LoopBackAuth) {
 
     var token;
     var vm = this;

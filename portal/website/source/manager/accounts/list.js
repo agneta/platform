@@ -18,34 +18,31 @@ var app = angular.module('MainApp');
 
 app.service('AccountList', function($rootScope, Production_Account, Account, $timeout) {
 
-  var AccountModel = $rootScope.isProduction() ? Production_Account : Account;
   var accounts = {};
+  var self = this;
   var search = {
     loading: false
   };
-  var self = this;
 
-  self.model = AccountModel;
-
-  $rootScope.$on('productionMode', function(evt, enabled) {
-    if (enabled) {
-      AccountModel = Production_Account;
-    } else {
-      AccountModel = Account;
-    }
+  function check() {
+    var AccountModel = $rootScope.isProduction() ? Production_Account : Account;
     self.model = AccountModel;
+  }
+
+  $rootScope.$on('productionMode', function() {
+    check();
     self.loadAccounts();
   });
 
   this.loadAccounts = function(result) {
-    console.warn('loadAccounts');
+    //console.warn('loadAccounts');
     if (result) {
       accounts.list = result.accounts;
       accounts.count = result.count;
       return;
     }
 
-    AccountModel.recent({
+    self.model.recent({
       limit: 20
     })
       .$promise
@@ -57,7 +54,10 @@ app.service('AccountList', function($rootScope, Production_Account, Account, $ti
   };
 
   if (!accounts.list) {
-    self.loadAccounts();
+    $timeout(function() {
+      check();
+      self.loadAccounts();
+    });
   }
 
   search.query = function() {
@@ -68,7 +68,7 @@ app.service('AccountList', function($rootScope, Production_Account, Account, $ti
     search.loading = true;
     search.active = true;
 
-    AccountModel.search({
+    self.model.search({
       query: search.text
     })
       .$promise

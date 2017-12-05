@@ -18,7 +18,7 @@
 
   var app = window.angular.module('MainApp');
 
-  app.controller('FormRole', function($controller, data, Account) {
+  app.page('FormRole', function($controller, data, Account) {
 
     var vm = this;
 

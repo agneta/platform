@@ -19,7 +19,7 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('SearchAccounts', function(AccountList, $rootScope, $mdDialog, Production_Account, Account, $location) {
+  app.page('SearchAccounts', function(AccountList, $rootScope, $mdDialog, Production_Account, Account, $location) {
 
     var vm = this;
 

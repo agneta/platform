@@ -34,7 +34,7 @@
     };
   });
 
-  app.controller('LogUserCtrl', function($controller, $mdDialog, result) {
+  app.page('LogUserCtrl', function($controller, $mdDialog, result) {
 
     var vm = this;
 

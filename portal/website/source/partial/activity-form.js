@@ -18,7 +18,7 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('ActivityFormCtrl', function($controller, $rootScope, data, Form, Production_Form) {
+  app.page('ActivityFormCtrl', function($controller, $rootScope, data, Form, Production_Form) {
 
     var vm = this;
 

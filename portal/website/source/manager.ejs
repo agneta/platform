@@ -1,8 +1,8 @@
-<div class="md-padding" ng-show="account" layout-xs="column" layout="row" ng-controller="HomeCtrl">
+<home-ctrl class="md-padding" ng-show="account" layout-xs="column" layout="row">
     <div flex-xs flex-gt-xs="50" layout="column">
            <%-template('manager/home/accounts')%>
     </div>
     <div flex-xs flex-gt-xs="50" layout="column">
       <%-template('ui/page-card',{data:{page:'manager/history'}})%>
     </div>
-</div>
+</home-ctrl>

@@ -30,7 +30,7 @@
     hourOfYear: 'ha'
   };
 
-  app.controller('HistoryCtrl', function($ocLazyLoad, $rootScope, $mdDialog, $mdSidenav, $timeout, Production_Activity_Count, Activity_Count, Production_Activity_Item, Portal, Activity_Item) {
+  app.page('HistoryCtrl', function($ocLazyLoad, $rootScope, $mdDialog, $mdSidenav, $timeout, Production_Activity_Count, Activity_Count, Production_Activity_Item, Portal, Activity_Item) {
 
     var vm = this;
 
@@ -438,7 +438,7 @@
 
   ///////////////////////////////////////////////////////////////////////////
 
-  app.controller('ActivitiesCtrl', function($rootScope, $mdDialog, $controller, data) {
+  app.page('ActivitiesCtrl', function($rootScope, $mdDialog, $controller, data) {
 
     var vm = this;
 
@@ -487,7 +487,7 @@
 
   ///////////////////////////////////////////////////////////////////////////
 
-  app.controller('ActivityCtrl', function($rootScope, $mdDialog, $controller, data) {
+  app.page('ActivityCtrl', function($rootScope, $mdDialog, $controller, data) {
 
     var vm = this;
 

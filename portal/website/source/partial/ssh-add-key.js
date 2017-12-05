@@ -18,7 +18,7 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('AddSSHCtrl', function($timeout, $controller, $element, $mdDialog, data) {
+  app.page('AddSSHCtrl', function($timeout, $controller, $element, $mdDialog, data) {
 
     var vm = this;
 

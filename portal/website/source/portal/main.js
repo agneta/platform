@@ -51,12 +51,11 @@
     value: false
   };
 
-  app.controller('LiveToggleCtrl', function($rootScope) {
+  app.page('LiveToggleCtrl', function($rootScope) {
 
     var vm = this;
 
     vm.value = toggle.value;
-
     $rootScope.isProduction = function() {
       return toggle.value;
     };

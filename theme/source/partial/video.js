@@ -18,7 +18,7 @@
 
   var app = window.angular.module('MainApp');
 
-  app.controller('VideoCtrl', function(data) {
+  app.page('VideoCtrl', function(data) {
 
     var vm = this;
 

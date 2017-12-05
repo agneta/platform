@@ -9,7 +9,7 @@
 
         <md-fab-actions>
             <md-list class="list md-whiteframe-1dp">
-                <div ng-controller="PortalCtrl">
+                <portal-ctrl>
                     <md-list-item ng-click="home()">
                         <md-icon md-svg-src="<%-get_icon('material/home')%>" aria-label="Home"></md-icon>
                         <p>Portal</p>
@@ -21,7 +21,7 @@
                             <md-option ng-repeat="limit in limits" class="portal-option" ng-value="limit.name">{{limit.title}}</md-option>
                         </md-select>
                     </md-list-item>
-                </div>
+                </portal-ctrl>
             </md-list>
         </md-fab-actions>
     </md-fab-speed-dial>

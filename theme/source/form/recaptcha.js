@@ -18,7 +18,7 @@
 
   var app = window.angular.module('MainApp');
 
-  app.controller('RecaptchaCtrl', function($element, $attrs, $timeout, $parse, $ocLazyLoad) {
+  app.page('RecaptchaCtrl', function($element, $attrs, $timeout, $parse, $ocLazyLoad) {
 
     var element = $element[0];
     var vm = this;

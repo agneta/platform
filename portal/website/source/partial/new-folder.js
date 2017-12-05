@@ -18,7 +18,7 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('NewFolder', function($controller, $rootScope, data) {
+  app.page('NewFolder', function($controller, $rootScope, data) {
 
     var vm = this;
 

@@ -15,7 +15,7 @@
  *   limitations under the License.
  */
 function _e_verification(app) {
-  app.controller('ResendVrfCtrl', function(Account, $controller, $mdDialog, data) {
+  app.page('ResendVrfCtrl', function(Account, $controller, $mdDialog, data) {
 
     var vm = this;
 

@@ -18,7 +18,7 @@
 
   var app = window.angular.module('MainApp');
 
-  app.controller('ModalFrame', function($controller, data) {
+  app.page('ModalFrame', function($controller, data) {
 
     var vm = this;
     

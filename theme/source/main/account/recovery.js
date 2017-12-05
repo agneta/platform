@@ -16,7 +16,7 @@
  */
 function _e_recovery(app) {
 
-  app.controller('AccountRecoverCtrl', function($controller, Account) {
+  app.page('AccountRecoverCtrl', function($controller, Account) {
 
     var vm = this;
 
@@ -37,7 +37,7 @@ function _e_recovery(app) {
 
   });
 
-  app.controller('RequestRecoveryCtrl', function(Account, $controller, $mdDialog, email) {
+  app.page('RequestRecoveryCtrl', function(Account, $controller, $mdDialog, email) {
 
     var vm = this;
 

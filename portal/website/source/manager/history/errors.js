@@ -38,7 +38,7 @@
     };
   });
 
-  app.controller('LogErrorCtrl', function($controller, $mdDialog, result) {
+  app.page('LogErrorCtrl', function($controller, $mdDialog, result) {
 
     var vm = this;
 

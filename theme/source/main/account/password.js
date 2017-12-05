@@ -16,7 +16,7 @@
  */
 function _e_password(app) {
 
-  app.controller('PassLostCtrl', function($controller,data, Account) {
+  app.page('PassLostCtrl', function($controller,data, Account) {
 
     var vm = this;
 
@@ -36,7 +36,7 @@ function _e_password(app) {
 
   });
 
-  app.controller('PassChangeCtrl', function($rootScope, $mdDialog, $controller, LoopBackAuth, Account) {
+  app.page('PassChangeCtrl', function($rootScope, $mdDialog, $controller, LoopBackAuth, Account) {
 
     var vm = this;
 

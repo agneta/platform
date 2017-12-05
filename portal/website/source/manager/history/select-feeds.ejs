@@ -1,4 +1,4 @@
-<div ng-controller="SelectSearchCtrl">
+<select-search-ctrl>
     <md-select md-on-open="clearSearchTerm()" md-container-class="select-search" placeholder="{{type.single}}" ng-show="feeds" ng-model="page.feedSelected" ng-change="loadTotals()" ng-model-options="{trackBy: '$value.id'}">
 
         <md-select-header>
@@ -11,4 +11,4 @@
         </md-optgroup>
 
     </md-select>
-</div>
+</select-search-ctrl>

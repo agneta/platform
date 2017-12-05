@@ -15,7 +15,7 @@
  *   limitations under the License.
  */
 function _e_popup(app) {
-  app.controller('PopupLoginCtrl', function($rootScope, $mdDialog, $controller) {
+  app.page('PopupLoginCtrl', function($rootScope, $mdDialog, $controller) {
 
     var vm = this;
 

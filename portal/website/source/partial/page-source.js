@@ -21,7 +21,7 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('PageSourceCtrl', function($scope,$timeout, $controller, $element,$mdDialog, data) {
+  app.page('PageSourceCtrl', function($scope,$timeout, $controller, $element,$mdDialog, data) {
 
     var myCodeMirror;
     var vm = this;

@@ -18,7 +18,7 @@
 
   var app = window.angular.module('MainApp');
 
-  app.controller('ContactCtrl', function($rootScope, $mdDialog) {
+  app.page('ContactCtrl', function($rootScope, $mdDialog) {
 
     var vm = this;
 
@@ -32,7 +32,7 @@
 
   });
 
-  app.controller('ContactDialogCtrl', function($rootScope, $timeout, $controller, $mdDialog, Contact) {
+  app.page('ContactDialogCtrl', function($rootScope, $timeout, $controller, $mdDialog, Contact) {
 
     var vm = this;
 

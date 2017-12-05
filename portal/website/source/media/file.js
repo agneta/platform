@@ -226,7 +226,7 @@
     };
   });
 
-  app.controller('MediaSelect', function($controller, data, $mdDialog) {
+  app.page('MediaSelect', function($controller, data, $mdDialog) {
 
     var vm = this;
 
@@ -255,7 +255,7 @@
 
   });
 
-  app.controller('EditFile', function($controller, data, EditFile,MediaOpt) {
+  app.page('EditFile', function($controller, data, EditFile,MediaOpt) {
 
     var vm = this;
 
@@ -304,7 +304,7 @@
 
   });
 
-  app.controller('EditFilePrivate', function($controller, data, MediaOpt, Account) {
+  app.page('EditFilePrivate', function($controller, data, MediaOpt, Account) {
 
     var onFile = data.onFile;
     var vm = this;

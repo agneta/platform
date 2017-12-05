@@ -19,12 +19,9 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('AccountCtrl', function($rootScope, AccountList, $routeParams, $mdToast, $mdDialog, Production_Account, Account, $location) {
-
+  app.page('AccountCtrl', function($rootScope, AccountList, $routeParams, $mdToast, $mdDialog, Production_Account, Account, $location) {
     var vm = this;
-
     AccountList.useScope(vm);
-
     function reloadAccount() {
       if (!vm.viewAccount) {
         return;

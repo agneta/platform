@@ -18,7 +18,7 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('HomeCtrl', function($rootScope, $location, Account) {
+  app.page('HomeCtrl', function($rootScope, $location, Account) {
 
     var vm = this;
     vm.accounts = {};
@@ -58,7 +58,7 @@
 
   });
 
-  app.controller('HomeActivitiesCtrl', function($rootScope, $q, $timeout) {
+  app.page('HomeActivitiesCtrl', function($rootScope, $q, $timeout) {
     ///////////////////////////////////////////
 
     var vm = this;
