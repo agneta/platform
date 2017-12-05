@@ -23,7 +23,6 @@ var urljoin = require('url-join');
 module.exports = function(locals) {
 
   var project = locals.project;
-  var buckets = locals.services.get('storage').buckets;
 
   project.extend.helper.register('asset_page', function(assetPath, page) {
     page = page || this.page;

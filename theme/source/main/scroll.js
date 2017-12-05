@@ -36,7 +36,7 @@ function _e_Scroll(app) {
   app.directive('docsScrollClass', function() {
     return {
       restrict: 'A',
-      link: function($scope, element, attr) {
+      link: function(scope, element, attr) {
 
         scrollParent = element.parent().parent()[0];
         var isScrolling = false;

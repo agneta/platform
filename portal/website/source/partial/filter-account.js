@@ -18,16 +18,18 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('FilterAccount', function($controller, $scope, $rootScope, data) {
+  app.controller('FilterAccount', function($controller, $rootScope, data) {
+
+    var vm = this;
 
     angular.extend(this, $controller('DialogCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
-    $scope.apply = function(){
-      data.onApply($scope.filters)
+    vm.apply = function(){
+      data.onApply(vm.filters)
         .then(function(){
-          $scope.close();
+          vm.close();
         });
     };
 

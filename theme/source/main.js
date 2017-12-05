@@ -92,14 +92,15 @@
       })
       .warnPalette('red');
 
-  }).controller('AppCtrl', function($scope, $mdMedia, $http, Account, $rootScope, $ocLazyLoad, $route, $timeout, $location, $mdSidenav, $q, $log, $mdDialog) {
+  }).controller('AppCtrl', function($mdMedia, $http, Account, $rootScope, $ocLazyLoad, $route, $timeout, $location, $mdSidenav, $q, $log, $mdDialog) {
 
+    var vm = this;
     $location.path(agneta.url(agneta.path), false);
 
     ////////////////////////////////////////////////////////////////
 
 
-    $scope.$mdMedia = $mdMedia;
+    vm.$mdMedia = $mdMedia;
 
     $rootScope.mediaClass = function() {
       var result = [];
@@ -220,29 +221,29 @@
 
     ////////////////////////////////////////////////////////////////
 
-    $scope.urlActive = function(viewLocation) {
+    vm.urlActive = function(viewLocation) {
       return viewLocation === $location.path();
     };
 
-    $scope.urlActiveClass = function(viewLocation) {
-      if ($scope.urlActive(viewLocation)) {
+    vm.urlActiveClass = function(viewLocation) {
+      if (vm.urlActive(viewLocation)) {
         return 'active';
       } else {
         return '';
       }
     };
 
-    $scope.get_media = agneta.get_media;
-    $scope.get_avatar = agneta.get_avatar;
-    $scope.get_asset = agneta.get_asset;
-    $scope.get_icon = agneta.get_icon;
-    $scope.get_path = agneta.langPath;
+    vm.get_media = agneta.get_media;
+    vm.get_avatar = agneta.get_avatar;
+    vm.get_asset = agneta.get_asset;
+    vm.get_icon = agneta.get_icon;
+    vm.get_path = agneta.langPath;
 
 
-    $scope.url = agneta.url;
-    $scope.lng = agneta.lng;
+    vm.url = agneta.url;
+    vm.lng = agneta.lng;
 
-    $scope.loggedClass = function() {
+    $rootScope.loggedClass = function() {
       return $rootScope.account ? 'logged-in' : 'logged-out';
     };
   });

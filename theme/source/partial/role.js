@@ -18,16 +18,18 @@
 
   var app = window.angular.module('MainApp');
 
-  app.controller('FormRole', function($scope, $controller, data, Account) {
+  app.controller('FormRole', function($controller, data, Account) {
+
+    var vm = this;
 
     angular.extend(this, $controller('DialogCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
-    $scope.loading = true;
-    $scope.formRoleFields = {};
+    vm.loading = true;
+    vm.formRoleFields = {};
 
-    $scope.load = function() {
+    vm.load = function() {
 
       Account.roleGetAdmin({
         accountId: data.accountId,
@@ -36,23 +38,23 @@
         .$promise
         .then(function(role) {
           for (var key in role) {
-            $scope.formRoleFields[key] = role[key];
+            vm.formRoleFields[key] = role[key];
           }
         })
         .finally(function() {
-          $scope.loading = false;
+          vm.loading = false;
         });
 
     };
 
-    $scope.load();
+    vm.load();
 
-    $scope.update = function() {
-      $scope.loading = true;
+    vm.update = function() {
+      vm.loading = true;
       Account.roleEdit({
         accountId: data.accountId,
         roleName: data.roleName,
-        data: $scope.formRoleFields
+        data: vm.formRoleFields
       });
     };
 

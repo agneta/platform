@@ -16,9 +16,10 @@
  */
 function _e_login(app) {
 
-  app.controller('LoginController', function($scope, $window, $location, $mdDialog, $rootScope, $routeParams, Account, LoopBackAuth) {
+  app.controller('LoginController', function($window, $location, $mdDialog, $rootScope, $routeParams, Account, LoopBackAuth) {
 
     var token;
+    var vm = this;
 
     switch ($routeParams.action) {
       case 'recover-account':
@@ -58,7 +59,7 @@ function _e_login(app) {
         break;
     }
 
-    $scope.lostPassword = function(options) {
+    vm.lostPassword = function(options) {
       options = options || {};
       $mdDialog.open({
         partial: 'password-lost',
@@ -69,19 +70,19 @@ function _e_login(app) {
 
     };
 
-    $scope.signIn = function() {
+    vm.signIn = function() {
 
-      var email = $scope.loginFields.email;
-      var password = $scope.loginFields.password;
+      var email = vm.loginFields.email;
+      var password = vm.loginFields.password;
 
-      $scope.loading = true;
+      vm.loading = true;
 
       $rootScope.signIn({
         email: email,
         password: password
       }, function(err) {
 
-        $scope.loading = false;
+        vm.loading = false;
 
         if (!err) {
 

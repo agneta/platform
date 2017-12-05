@@ -18,13 +18,15 @@
 
   var app = window.angular.module('MainApp');
 
-  app.controller('ModalFrame', function($scope, $controller, data) {
+  app.controller('ModalFrame', function($controller, data) {
 
+    var vm = this;
+    
     angular.extend(this, $controller('DialogCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
-    $scope.data = data;
+    vm.data = data;
 
   });
 

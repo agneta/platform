@@ -19,19 +19,21 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('SearchAccounts', function($scope, AccountList, $rootScope, $mdDialog, Production_Account, Account, $location) {
+  app.controller('SearchAccounts', function(AccountList, $rootScope, $mdDialog, Production_Account, Account, $location) {
 
-    AccountList.useScope($scope);
+    var vm = this;
+
+    AccountList.useScope(vm);
 
     var filters = {};
 
-    $scope.select = function(account){
+    vm.select = function(account){
       $location.path(agneta.langPath('manager/accounts')).search({
         account: account.id
       });
     };
 
-    $scope.filter = function(){
+    vm.filter = function(){
 
       $mdDialog.open({
         partial: 'filter-account',

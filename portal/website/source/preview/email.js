@@ -18,16 +18,18 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('PreviewEmailCtrl', function($scope, $sce, $rootScope, Email_Template) {
+  app.controller('PreviewEmailCtrl', function($sce, $rootScope, Email_Template) {
+
+    var vm = this;
 
     Email_Template.getAll()
       .$promise
       .then(function(result) {
-        $scope.templates = result.list;
-        $scope.loadTemplate(result.list[0]);
+        vm.templates = result.list;
+        vm.loadTemplate(result.list[0]);
       });
 
-    $scope.loadTemplate = function(item) {
+    vm.loadTemplate = function(item) {
 
       $rootScope.loadingMain = true;
 
@@ -39,7 +41,7 @@
         .then(function(result) {
           $rootScope.loadingMain = false;
           result.html = $sce.trustAsHtml(result.html);
-          $scope.template = result;
+          vm.template = result;
         });
 
     };

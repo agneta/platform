@@ -15,13 +15,15 @@
  *   limitations under the License.
  */
 function _e_verification(app) {
-  app.controller('ResendVrfCtrl', function($scope, Account, $controller, $mdDialog, data) {
+  app.controller('ResendVrfCtrl', function(Account, $controller, $mdDialog, data) {
+
+    var vm = this;
 
     angular.extend(this, $controller('DialogCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
-    $scope.data = {
+    vm.data = {
       title: 'Warning',
       content: data.html,
       action: {
@@ -29,8 +31,8 @@ function _e_verification(app) {
       }
     };
 
-    $scope.action = function() {
-      $scope.loading = true;
+    vm.action = function() {
+      vm.loading = true;
       Account.resendVerification({
         email: data.email
       });

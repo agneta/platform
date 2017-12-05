@@ -51,15 +51,17 @@
     value: false
   };
 
-  app.controller('LiveToggleCtrl', function($scope, $rootScope) {
+  app.controller('LiveToggleCtrl', function($rootScope) {
 
-    $scope.value = toggle.value;
+    var vm = this;
+
+    vm.value = toggle.value;
 
     $rootScope.isProduction = function() {
       return toggle.value;
     };
 
-    $scope.onChange = function(value) {
+    vm.onChange = function(value) {
       if(value==toggle.value){
         return;
       }
@@ -67,30 +69,32 @@
       $rootScope.$broadcast('productionMode', value);
     };
 
-    $scope.onChange(toggle.value);
+    vm.onChange(toggle.value);
 
   });
 
   app.component('fileUploader',{
     templateUrl: 'file-uploader.html',
     bindings: {},
-    controller: function($scope, Portal,$timeout) {
+    controller: function(Portal,$timeout) {
+
+      var vm = this;
 
       var socket =  Portal.socket.media;
-      $scope.files = {};
-      $scope.filesCount;
+      vm.files = {};
+      vm.filesCount;
 
       socket.on('file:operation:error', function(error) {
         console.error(error);
       });
 
       socket.on('file:operation:progress', function(result){
-        $scope.files[result.location] = result;
+        vm.files[result.location] = result;
         onUpdate();
       });
 
       socket.on('file:operation:complete', function(result) {
-        delete $scope.files[result.location];
+        delete vm.files[result.location];
         onUpdate();
       });
 
@@ -98,13 +102,13 @@
 
         var progress = 0;
         var count = 0;
-        for(var location in $scope.files){
-          var file = $scope.files[location];
+        for(var location in vm.files){
+          var file = vm.files[location];
           progress += file.percentage;
           count++;
         }
-        $scope.filesCount = count;
-        $scope.progress = progress / count;
+        vm.filesCount = count;
+        vm.progress = progress / count;
 
         $timeout();
 
@@ -118,14 +122,15 @@
     bindings: {
       update: '&'
     },
-    controller: function($scope, Portal) {
+    controller: function(Portal,$timeout) {
+
       var ctrl = this;
 
       this.$onInit = function() {
 
         Portal.socket.on('memory:update', function(update) {
           ctrl.update = update;
-          $scope.$apply();
+          $timeout();
         });
       };
     }

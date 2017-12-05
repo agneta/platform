@@ -18,13 +18,14 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('EditPagesCtrl', function($scope, $controller, Edit_Page) {
+  app.controller('EditPagesCtrl', function($controller, Edit_Page) {
+    var vm = this;
 
     angular.extend(this, $controller('EditMainCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
-    $scope.init(Edit_Page);
+    vm.init(Edit_Page);
 
   });
 

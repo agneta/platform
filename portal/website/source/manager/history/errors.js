@@ -27,8 +27,8 @@
   app.directive('visError', function() {
 
     return {
-      link: function($scope, $element) {
-        $scope.createTimeline({
+      link: function(vm, $element) {
+        vm.createTimeline({
           $element: $element,
           getTitle: getTitle,
           dialogController: 'LogErrorCtrl',
@@ -38,24 +38,26 @@
     };
   });
 
-  app.controller('LogErrorCtrl', function($scope, $controller, $mdDialog, result) {
+  app.controller('LogErrorCtrl', function($controller, $mdDialog, result) {
+
+    var vm = this;
 
     angular.extend(this, $controller('DialogCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
-    $scope.fromNow = moment.utc(result.time).local().fromNow();
+    vm.fromNow = moment.utc(result.time).local().fromNow();
 
     var data = result.meta || result.data;
     var error = data.error;
-    $scope.error = error;
+    vm.error = error;
 
     var request = data.request;
     var agent = request.agent;
 
-    $scope.title = getTitle(error);
+    vm.title = getTitle(error);
 
-    $scope.raw = {
+    vm.raw = {
       error: beautifyJSON(error),
       request: beautifyJSON(request)
     };
@@ -66,7 +68,7 @@
       agent = parser.getResult();
     }
 
-    $scope.request = {
+    vm.request = {
       path: request.path,
       browser: agent.browser.name + ' ' + agent.browser.major,
       device: agent.device.name,
@@ -76,7 +78,7 @@
       method: request.method
     };
 
-    $scope.params = request.query || request.body;
+    vm.params = request.query || request.body;
 
   });
 

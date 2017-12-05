@@ -18,18 +18,21 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('PassChangeAdminCtrl', function($scope, data, $rootScope, $controller, Account, LoopBackAuth) {
+  app.controller('PassChangeAdminCtrl', function(data, $rootScope, $controller, Account, LoopBackAuth) {
+
+    var vm = this;
+
     //console.log(data);
     angular.extend(this, $controller('DialogCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
-    $scope.submitPassword = function() {
+    vm.submitPassword = function() {
 
-      $scope.loading = true;
+      vm.loading = true;
 
       Account.changePasswordAdmin({
-        password: $scope.formPassFields.password_new,
+        password: vm.formPassFields.password_new,
         accountId: data.account.id
       })
         .$promise
@@ -43,7 +46,7 @@
 
         })
         .finally(function() {
-          $scope.loading = true;
+          vm.loading = true;
           data.onFinally();
         });
     };

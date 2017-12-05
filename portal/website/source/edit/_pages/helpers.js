@@ -17,7 +17,7 @@
 
 /*global _:true*/
 
-function _e_helpers($scope, $mdToast, $timeout, helpers) {
+function _e_helpers(vm, $mdToast, $timeout, helpers) {
 
   //---------------------------------------
   helpers.setFilePath = function(file, location) {
@@ -42,7 +42,7 @@ function _e_helpers($scope, $mdToast, $timeout, helpers) {
   };
   //------------------------------------------
   helpers.getBasePath = function() {
-    var base = agneta.urljoin('_t_configPrj("media.storageRoot");',$scope.page.path);
+    var base = agneta.urljoin('_t_configPrj("media.storageRoot");',vm.page.path);
     return helpers.fixPath(base);
   };
   //------------------------------------------
@@ -186,9 +186,9 @@ function _e_helpers($scope, $mdToast, $timeout, helpers) {
   };
   //------------------------------------------
   helpers.setData = function(data) {
-    $scope.page.data = null;
+    vm.page.data = null;
     $timeout(function() {
-      $scope.page.data = data;
+      vm.page.data = data;
     }, 100);
   };
 

@@ -15,18 +15,20 @@
  *   limitations under the License.
  */
 function _e_popup(app) {
-  app.controller('PopupLoginCtrl', function($rootScope, $scope, $mdDialog, $controller) {
+  app.controller('PopupLoginCtrl', function($rootScope, $mdDialog, $controller) {
+
+    var vm = this;
 
     angular.extend(this, $controller('DialogCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
-    $scope.submit = function() {
+    vm.submit = function() {
 
-      var email = $scope.formLoginFields.email;
-      var password = $scope.formLoginFields.password;
+      var email = vm.formLoginFields.email;
+      var password = vm.formLoginFields.password;
 
-      $scope.loading = true;
+      vm.loading = true;
 
       $rootScope.signIn({
         email: email,
@@ -34,7 +36,7 @@ function _e_popup(app) {
       },
       function(err) {
 
-        $scope.loading = false;
+        vm.loading = false;
 
         if (err) {
           return;

@@ -17,16 +17,16 @@
 
 /*global jsyaml:true*/
 
-function _e_source($scope, $mdDialog,$timeout) {
+function _e_source(vm, $mdDialog,$timeout) {
 
-  $scope.openSource = function() {
+  vm.openSource = function() {
 
     $mdDialog.open({
       partial: 'page-source',
       data: {
         onDone: function(newVal) {
 
-          if (!$scope.page) {
+          if (!vm.page) {
             return;
           }
           var data;
@@ -35,16 +35,16 @@ function _e_source($scope, $mdDialog,$timeout) {
           } catch (e) {
             return;
           }
-          $scope.page.data = null;
+          vm.page.data = null;
 
           $timeout(function() {
-            $scope.page.data = data;
+            vm.page.data = data;
           }, 100);
 
         },
         getData: function() {
-          $scope.clearHiddenData();
-          var data = angular.copy($scope.page.data);
+          vm.clearHiddenData();
+          var data = angular.copy(vm.page.data);
           delete data.undefined;
           return jsyaml.dump(data);
         }

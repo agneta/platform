@@ -226,16 +226,18 @@
     };
   });
 
-  app.controller('MediaSelect', function($scope, $controller, data, $mdDialog) {
+  app.controller('MediaSelect', function($controller, data, $mdDialog) {
 
-    $scope.startingLocation = data.file.dir;
+    var vm = this;
 
-    $scope.openObject = function(object) {
+    vm.startingLocation = data.file.dir;
+
+    vm.openObject = function(object) {
       data.onSelect(object);
       $mdDialog.hide();
     };
 
-    $scope.onObjects = function(objects) {
+    vm.onObjects = function(objects) {
       for (var index in objects) {
         var object = objects[index];
         if (object.location == data.file.location) {
@@ -247,16 +249,18 @@
 
     angular.extend(this, $controller('MediaCtrl', {
       MediaOpt: data.media,
-      $scope: $scope
+      $scope: vm
     }));
 
 
   });
 
-  app.controller('EditFile', function($scope, $controller, data, EditFile,MediaOpt) {
+  app.controller('EditFile', function($controller, data, EditFile,MediaOpt) {
+
+    var vm = this;
 
     angular.extend(this, $controller('DialogCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
     data.config = data.config || {};
@@ -274,9 +278,9 @@
       data.dir = dir.join('/');
     }
 
-    $scope.getIcon = function() {
+    vm.getIcon = function() {
 
-      var icon = MediaPreview.objectIcon($scope.file);
+      var icon = MediaPreview.objectIcon(vm.file);
       if (!icon) {
         icon = agneta.get_media('icons/agneta/media');
       }
@@ -285,11 +289,11 @@
 
     EditFile.init({
       data: data,
-      scope: $scope,
+      scope: vm,
       onFile: function(file) {
         //console.log('EditFile.init',file);
         if (file.location) {
-          $scope.preview_src = MediaPreview.image(file, 'medium');
+          vm.preview_src = MediaPreview.image(file, 'medium');
         }
 
         if (data.onFile) {
@@ -300,9 +304,10 @@
 
   });
 
-  app.controller('EditFilePrivate', function($scope, $controller, data, MediaOpt, Account) {
+  app.controller('EditFilePrivate', function($controller, data, MediaOpt, Account) {
 
     var onFile = data.onFile;
+    var vm = this;
     var items;
     var fuse;
 
@@ -315,11 +320,11 @@
 
     data.media = MediaOpt.private;
 
-    $scope.loading = true;
+    vm.loading = true;
     Account.roles()
       .$promise
       .then(function(result) {
-        $scope.loading = false;
+        vm.loading = false;
 
         items = result;
         fuse = new Fuse(items, {
@@ -346,11 +351,10 @@
       }
     };
 
-    $scope.roles = roles;
-
+    vm.roles = roles;
 
     angular.extend(this, $controller('EditFile', {
-      $scope: $scope,
+      $scope: vm,
       data: data
     }));
 

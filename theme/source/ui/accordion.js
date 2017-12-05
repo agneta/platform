@@ -19,41 +19,41 @@
   var scopeCount = 0;
 
   var app = window.angular.module('MainApp', window.angularDeps);
-  app.controller('MenuItemCtrl', function($rootScope, $scope, $element, $timeout) {
-
-    $scope.expanded = false;
-    $scope.id = scopeCount++;
+  app.controller('MenuItemCtrl', function($rootScope, $element, $timeout) {
+    var vm = this;
+    vm.expanded = false;
+    vm.id = scopeCount++;
     var element = $element[0];
     var list = element.querySelector('.list');
-    $scope.$watch('expanded', function() {
+    vm.$watch('expanded', function() {
 
-      if ($scope.expanded) {
+      if (vm.expanded) {
         list.style.transition = 'none';
         list.style['margin-top'] = -list.offsetHeight;
         $timeout(function() {
           list.style.transition = null;
           list.style['margin-top'] = null;
         }, 100);
-        $scope.expandedClass = true;
+        vm.expandedClass = true;
       } else {
         if(list.offsetHeight>0){
           list.style['margin-top'] = -list.offsetHeight;
         }
         $timeout(function() {
-          $scope.expandedClass = false;
+          vm.expandedClass = false;
         }, 600);
       }
     });
 
-    $scope.toggleView = function() {
+    vm.toggleView = function() {
 
-      $scope.expanded = !$scope.expanded;
+      vm.expanded = !vm.expanded;
 
       //
 
       var skip = (function() {
 
-        var parent = $scope.$parent;
+        var parent = vm.$parent;
 
         while (parent) {
           if (parent.expanded) {
@@ -76,7 +76,7 @@
         if (activeScope) {
           var parent = activeScope.$parent;
           while (parent) {
-            if (!$scope.$parent.id) {
+            if (!vm.$parent.id) {
               parent.expanded = false;
             }
             parent = parent.$parent;
@@ -86,7 +86,7 @@
       }
 
       //
-      activeScope = $scope.expanded ? $scope : null;
+      activeScope = vm.expanded ? vm : null;
 
     };
   });

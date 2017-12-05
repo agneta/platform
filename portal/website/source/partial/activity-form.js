@@ -18,13 +18,15 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('ActivityFormCtrl', function($controller, $scope, $rootScope, data, Form, Production_Form) {
+  app.controller('ActivityFormCtrl', function($controller, $rootScope, data, Form, Production_Form) {
+
+    var vm = this;
 
     angular.extend(this, $controller('DialogCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
-    $scope.loading = true;
+    vm.loading = true;
     var Model = $rootScope.isProduction() ? Production_Form : Form;
 
     data.Model_Item.details({
@@ -43,10 +45,10 @@
       })
       .then(function(result) {
         result.time = result.time || result.createdAt;
-        $scope.activity = result;
+        vm.activity = result;
       })
       .finally(function() {
-        $scope.loading = false;
+        vm.loading = false;
       });
 
   });

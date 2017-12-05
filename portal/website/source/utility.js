@@ -19,21 +19,23 @@
   var app = angular.module('MainApp');
   var logLimit = 3000;
 
-  app.controller('UtilityCtrl', function($scope, $rootScope, $mdToast, Utility, SocketIO, $parse) {
+  app.controller('UtilityCtrl', function($rootScope, $mdToast, Utility, SocketIO, $parse, $timeout) {
 
-    $scope.logLines = [];
-    $scope.progressBars = {};
-    $scope.runOptions = {};
+    var vm = this;
+
+    vm.logLines = [];
+    vm.progressBars = {};
+    vm.runOptions = {};
 
     var socket = SocketIO.connect('utilities');
     var utilityName = $rootScope.viewData.extra.name;
 
-    $scope.checkCondition = function(parameter) {
+    vm.checkCondition = function(parameter) {
       if (parameter.if) {
         if (angular.isObject(parameter.if)) {
-          return $parse(parameter.if.prop)($scope.runOptions) == parameter.if.equals;
+          return $parse(parameter.if.prop)(vm.runOptions) == parameter.if.equals;
         }
-        return $parse(parameter.if)($scope.runOptions);
+        return $parse(parameter.if)(vm.runOptions);
       }
       return true;
     };
@@ -47,47 +49,47 @@
     })
       .$promise
       .then(function(options) {
-        $scope.parameters = options.parameters;
+        vm.parameters = options.parameters;
       });
 
     socketOn('notify', $rootScope.notify);
     socketOn('init', function(options) {
-      $scope.parameters = options.parameters;
-      $scope.$apply();
+      vm.parameters = options.parameters;
+      $timeout();
     });
 
     socketOn('status', function(data) {
-      $scope.status = data;
-      $scope.$apply();
+      vm.status = data;
+      $timeout();
     });
 
     socketOn('addLine', function(options) {
       options[options.type] = true;
-      $scope.addLine(options);
-      $scope.$apply();
+      vm.addLine(options);
+      $timeout();
     });
 
     socketOn('progress:new', function(data) {
       console.log(data);
-      $scope.progressBars[data.id] = {
+      vm.progressBars[data.id] = {
         value: 0,
         count: 0,
         length: data.length,
         title: data.options.title
       };
-      $scope.$apply();
+      $timeout();
     });
 
     socketOn('progress:update', function(data) {
-      var progressBar = $scope.progressBars[data.id];
+      var progressBar = vm.progressBars[data.id];
       progressBar.length = data.length;
       onProgressUpdate(progressBar);
-      $scope.$apply();
+      $timeout();
     });
 
     socketOn('progress:tick', function(data) {
 
-      var progressBar = $scope.progressBars[data.id];
+      var progressBar = vm.progressBars[data.id];
       if (!progressBar) {
         return;
       }
@@ -99,7 +101,7 @@
       progressBar.current = data.options;
       progressBar.count++;
       onProgressUpdate(progressBar);
-      $scope.$apply();
+      $timeout();
 
     });
 
@@ -116,37 +118,37 @@
       }
     }
 
-    $scope.run = function() {
-      $scope.clear();
-      $scope.log('Starting...');
+    vm.run = function() {
+      vm.clear();
+      vm.log('Starting...');
       Utility.start({
         name: utilityName,
-        options: $scope.runOptions
+        options: vm.runOptions
       });
     };
 
-    $scope.clear = function() {
-      $scope.logLines = [];
-      $scope.progressBars = {};
+    vm.clear = function() {
+      vm.logLines = [];
+      vm.progressBars = {};
     };
 
-    $scope.log = function(message) {
-      $scope.addLine({
+    vm.log = function(message) {
+      vm.addLine({
         log: true,
         message: message
       });
     };
 
-    $scope.addLine = function(line) {
-      $scope.logLines.unshift(line);
-      while ($scope.logLines.length > logLimit) {
-        $scope.logLines.pop();
+    vm.addLine = function(line) {
+      vm.logLines.unshift(line);
+      while (vm.logLines.length > logLimit) {
+        vm.logLines.pop();
       }
     };
 
-    $scope.socket = socket;
+    vm.socket = socket;
 
-    $scope.log('Click "start" to run the utility...');
+    vm.log('Click "start" to run the utility...');
 
   });
 

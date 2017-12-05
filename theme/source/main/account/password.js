@@ -16,42 +16,46 @@
  */
 function _e_password(app) {
 
-  app.controller('PassLostCtrl', function($scope, $controller,data, Account) {
+  app.controller('PassLostCtrl', function($controller,data, Account) {
+
+    var vm = this;
 
     angular.extend(this, $controller('DialogCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
-    $scope.submit = function() {
-      $scope.loading = true;
+    vm.submit = function() {
+      vm.loading = true;
       Account.requestPassword({
-        email: $scope.passLostFields.email,
+        email: vm.passLostFields.email,
         callback: data.callback
       }, function() {
-        $scope.loading = false;
+        vm.loading = false;
       });
     };
 
   });
 
-  app.controller('PassChangeCtrl', function($scope, $rootScope, $mdDialog, $controller, LoopBackAuth, Account) {
+  app.controller('PassChangeCtrl', function($rootScope, $mdDialog, $controller, LoopBackAuth, Account) {
+
+    var vm = this;
 
     angular.extend(this, $controller('DialogCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
-    $scope.submitPassword = function() {
+    vm.submitPassword = function() {
 
-      $scope.loading = true;
+      vm.loading = true;
 
-      Account.passwordChange($scope.formPassFields)
+      Account.passwordChange(vm.formPassFields)
         .$promise
         .then(function(res) {
 
-          $scope.loading = false;
+          vm.loading = false;
           var credentials = {
             email: res.email,
-            password: $scope.formPassFields.password_new
+            password: vm.formPassFields.password_new
           };
           $rootScope.signIn(credentials);
 

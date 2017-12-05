@@ -14,13 +14,13 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-function _e_contributor($scope, $rootScope, Account, Portal, $timeout, Role_Editor) {
+function _e_contributor(vm, $rootScope, Account, Portal, $timeout, Role_Editor) {
 
-  $scope.contributors = {};
+  vm.contributors = {};
 
   function loadContributor(id) {
 
-    if ($scope.contributors[id].info) {
+    if (vm.contributors[id].info) {
       return;
     }
 
@@ -30,13 +30,13 @@ function _e_contributor($scope, $rootScope, Account, Portal, $timeout, Role_Edit
       .$promise
       .then(function(result) {
         //console.log(result);
-        $scope.contributors[id].info = result;
+        vm.contributors[id].info = result;
       });
 
   }
 
-  $scope.contributorInitials = function(id) {
-    var result = $scope.contributors[id];
+  vm.contributorInitials = function(id) {
+    var result = vm.contributors[id];
     if (!result) {
       return;
     }
@@ -50,12 +50,12 @@ function _e_contributor($scope, $rootScope, Account, Portal, $timeout, Role_Edit
 
   var lastEdit = {};
 
-  $scope.onFieldChange = function(child) {
+  vm.onFieldChange = function(child) {
 
     var value = child.__value;
 
     if (angular.isObject(value)) {
-      value = value[$scope.edit.lang];
+      value = value[vm.edit.lang];
     }
     //console.log('emit');
     if (lastEdit.id == child.__id && lastEdit.value == value) {
@@ -65,24 +65,24 @@ function _e_contributor($scope, $rootScope, Account, Portal, $timeout, Role_Edit
     Role_Editor.contentChange({
       data: {
         id: child.__id,
-        path: $scope.pagePath,
-        lang: $scope.edit.lang,
+        path: vm.pagePath,
+        lang: vm.edit.lang,
         value: value
       }
     });
 
   };
 
-  $scope.registerInput = function(child) {
+  vm.registerInput = function(child) {
 
-    var listener = 'content-change:' + $scope.pagePath + ':' + child.__id;
+    var listener = 'content-change:' + vm.pagePath + ':' + child.__id;
     Portal.socket.editor.on(listener, function(data) {
 
       if (child.__value[data.lang] == data.value) {
         return;
       }
 
-      if (!$scope.edit.realtime) {
+      if (!vm.edit.realtime) {
         return;
       }
 
@@ -95,14 +95,14 @@ function _e_contributor($scope, $rootScope, Account, Portal, $timeout, Role_Edit
 
       child.$$contributors = child.$$contributors || {};
 
-      var contribution = $scope.contributors[data.actor];
+      var contribution = vm.contributors[data.actor];
       if (contribution) {
         delete contribution.data.$$contributors[data.actor];
       }
 
       var contributor = child.$$contributors[data.actor] =
-        $scope.contributors[data.actor] =
-        $scope.contributors[data.actor] || {};
+        vm.contributors[data.actor] =
+        vm.contributors[data.actor] || {};
 
       contributor.data = child;
 

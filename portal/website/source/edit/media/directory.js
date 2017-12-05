@@ -15,7 +15,7 @@
  *   limitations under the License.
  */
 
-function _e_directory($scope, Portal, $location, $rootScope, Media, MediaPreview, $mdDialog, Upload, apiMedia, partialFile) {
+function _e_directory(vm, Portal, $location, $rootScope, Media, MediaPreview, $mdDialog, Upload, apiMedia, partialFile) {
 
   var socket = Portal.socket.media;
   var objects = [];
@@ -24,7 +24,7 @@ function _e_directory($scope, Portal, $location, $rootScope, Media, MediaPreview
 
   function readdir() {
 
-    var dir = $scope.dir;
+    var dir = vm.dir;
 
     if (dir.location.length) {
       $location.search('location', dir.location);
@@ -34,20 +34,20 @@ function _e_directory($scope, Portal, $location, $rootScope, Media, MediaPreview
 
     objects = [];
     lastResult = null;
-    $scope.objectsOnDemand.numLoaded_ = 0;
-    $scope.objectsOnDemand.toLoad_ = 0;
-    $scope.objectsOnDemand.fetchMoreItems_(1);
+    vm.objectsOnDemand.numLoaded_ = 0;
+    vm.objectsOnDemand.toLoad_ = 0;
+    vm.objectsOnDemand.fetchMoreItems_(1);
 
   }
 
-  $scope.refresh = readdir;
+  vm.refresh = readdir;
 
   socket.on('file:upload:complete', readdir);
   socket.on('files:upload:complete', readdir);
 
   //---------------------------------------------------
 
-  $scope.objectsOnDemand = {
+  vm.objectsOnDemand = {
     numLoaded_: 0,
     toLoad_: 0,
     getItemAtIndex: function(index) {
@@ -87,8 +87,8 @@ function _e_directory($scope, Portal, $location, $rootScope, Media, MediaPreview
 
         var params = {};
 
-        if ($scope.dir.location) {
-          params.dir = $scope.dir.location;
+        if (vm.dir.location) {
+          params.dir = vm.dir.location;
         }
         if (marker) {
           params.marker = marker;
@@ -108,11 +108,11 @@ function _e_directory($scope, Portal, $location, $rootScope, Media, MediaPreview
             }
 
             $rootScope.loadingMain = false;
-            $scope.count = result.count;
+            vm.count = result.count;
             objects = objects.concat(result.objects);
 
-            if ($scope.onObjects) {
-              $scope.onObjects(objects);
+            if (vm.onObjects) {
+              vm.onObjects(objects);
             }
 
             self.numLoaded_ = objects.length;
@@ -123,11 +123,11 @@ function _e_directory($scope, Portal, $location, $rootScope, Media, MediaPreview
   };
 
   //---------------------------------------------------
-  $scope.isLoadingMore = function(object) {
+  vm.isLoadingMore = function(object) {
     return !object &&
       (
-        $scope.objectsOnDemand.numLoaded_ === 0 ||
-        $scope.objectsOnDemand.numLoaded_ < $scope.count
+        vm.objectsOnDemand.numLoaded_ === 0 ||
+        vm.objectsOnDemand.numLoaded_ < vm.count
       );
   };
   //---------------------------------------------------
@@ -135,7 +135,7 @@ function _e_directory($scope, Portal, $location, $rootScope, Media, MediaPreview
 
   var selectedObjects = [];
 
-  $scope.selection = {
+  vm.selection = {
     count: function() {
       return selectedObjects.length;
     },
@@ -153,7 +153,7 @@ function _e_directory($scope, Portal, $location, $rootScope, Media, MediaPreview
 
   //---------------------------------------------------
 
-  $scope.newFolder = function() {
+  vm.newFolder = function() {
 
     $mdDialog.open({
       nested: true,
@@ -161,7 +161,7 @@ function _e_directory($scope, Portal, $location, $rootScope, Media, MediaPreview
       data: {
         onApply: function(name) {
           return Media.newFolder({
-            dir: $scope.dir.location,
+            dir: vm.dir.location,
             name: name
           })
             .$promise
@@ -172,14 +172,14 @@ function _e_directory($scope, Portal, $location, $rootScope, Media, MediaPreview
 
   };
 
-  $scope.objectClick = function(object) {
+  vm.objectClick = function(object) {
 
     switch (object.type) {
       case 'folder':
-        $scope.openFolder(object);
+        vm.openFolder(object);
         break;
       default:
-        $scope.openObject(object);
+        vm.openObject(object);
         break;
 
     }
@@ -187,19 +187,19 @@ function _e_directory($scope, Portal, $location, $rootScope, Media, MediaPreview
 
   // Helps to use toolbar without propagating to another function
   // For example: to prevent folder from opening
-  $scope.toolbarClick = function($event) {
+  vm.toolbarClick = function($event) {
     $event.stopPropagation();
   };
 
-  $scope.isFolder = function(object) {
+  vm.isFolder = function(object) {
     return object.type == 'folder';
   };
 
-  $scope.contextMenu = function(object) {
+  vm.contextMenu = function(object) {
     console.log('menu', object);
   };
 
-  $scope.openObject = $scope.openObject || function(object) {
+  vm.openObject = vm.openObject || function(object) {
     $mdDialog.open({
       partial: partialFile,
       data: {
@@ -208,13 +208,13 @@ function _e_directory($scope, Portal, $location, $rootScope, Media, MediaPreview
         MediaPreview: MediaPreview,
         location: object.location,
         onChange: function() {
-          $scope.refresh();
+          vm.refresh();
         }
       }
     });
   };
 
-  $scope.uploadFiles = function(objects, errFiles) {
+  vm.uploadFiles = function(objects, errFiles) {
 
     if (errFiles && errFiles.length) {
       console.error(errFiles);
@@ -224,7 +224,7 @@ function _e_directory($scope, Portal, $location, $rootScope, Media, MediaPreview
       Upload.upload({
         url: agneta.url(apiMedia + 'upload-files'),
         data: {
-          dir: $scope.dir.location,
+          dir: vm.dir.location,
           objects: objects
         },
         arrayKey: ''
@@ -232,10 +232,10 @@ function _e_directory($scope, Portal, $location, $rootScope, Media, MediaPreview
         .then(function() {},
           function(response) {
             if (response.status > 0)
-              $scope.errorMsg = response.status + ': ' + response.data;
+              vm.errorMsg = response.status + ': ' + response.data;
           },
           function(evt) {
-            $scope.uploadProgress = Math.min(100, parseInt(100.0 *
+            vm.uploadProgress = Math.min(100, parseInt(100.0 *
               evt.loaded / evt.total));
           });
 

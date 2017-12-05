@@ -22,11 +22,11 @@
 
     this.init = function(options) {
 
-      var $scope = options.scope;
+      var vm = options.scope;
       var steps = options.steps;
 
-      $scope.currentStep = steps[0];
-      //$scope.loading = true;
+      vm.currentStep = steps[0];
+      //vm.loading = true;
 
       var stepsDict = {};
 
@@ -40,10 +40,10 @@
 
       //-------------------------------------------------
 
-      $scope.back = function() {
-        var step = stepsDict[$scope.currentStep];
+      vm.back = function() {
+        var step = stepsDict[vm.currentStep];
         if (step.previous) {
-          $scope.currentStep = step.previous;
+          vm.currentStep = step.previous;
         }
       };
 
@@ -51,25 +51,25 @@
 
       var errors = {};
 
-      $scope.next = function(data) {
+      vm.next = function(data) {
         data = data || {};
-        var nextStep = stepsDict[$scope.currentStep].next;
-        errors[$scope.currentStep] = data.invalid;
+        var nextStep = stepsDict[vm.currentStep].next;
+        errors[vm.currentStep] = data.invalid;
         if (!data.invalid) {
-          $scope.currentStep = nextStep;
+          vm.currentStep = nextStep;
         }
       };
 
-      $scope.getError = function(step) {
+      vm.getError = function(step) {
         return errors[step];
       };
 
-      $scope.hasError = function(step, name) {
+      vm.hasError = function(step, name) {
         var error = errors[step];
         return error && (name ? (error.name == name) : true);
       };
 
-      $scope.clearErrors = function() {
+      vm.clearErrors = function() {
         errors = {};
       };
 

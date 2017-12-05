@@ -19,19 +19,21 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('AccountCtrl', function($scope, $rootScope, AccountList, $routeParams, $mdToast, $mdDialog, Production_Account, Account, $location) {
+  app.controller('AccountCtrl', function($rootScope, AccountList, $routeParams, $mdToast, $mdDialog, Production_Account, Account, $location) {
 
-    AccountList.useScope($scope);
+    var vm = this;
+
+    AccountList.useScope(vm);
 
     function reloadAccount() {
-      if (!$scope.viewAccount) {
+      if (!vm.viewAccount) {
         return;
       }
-      getAccount($scope.viewAccount.id);
+      getAccount(vm.viewAccount.id);
 
     }
 
-    $scope.reloadAccount = reloadAccount;
+    vm.reloadAccount = reloadAccount;
 
     function getAccount(id) {
 
@@ -44,7 +46,7 @@
         .$promise
         .then(function(account) {
 
-          $scope.viewAccount = account;
+          vm.viewAccount = account;
 
           AccountList.model.activitiesAdmin({
             accountId: id,
@@ -53,10 +55,10 @@
           })
             .$promise
             .then(function(result) {
-              $scope.activities = result.activities;
+              vm.activities = result.activities;
             });
 
-          $scope.ssh.load();
+          vm.ssh.load();
 
         })
         .finally(function() {
@@ -68,9 +70,9 @@
       getAccount($routeParams.account);
     }
 
-    $scope.save = function() {
+    vm.save = function() {
       AccountList.model.update({
-        data: $scope.viewAccount
+        data: vm.viewAccount
       })
         .$promise
         .then(function() {
@@ -88,12 +90,12 @@
 
     //---------------------------------------------------------
 
-    $scope.editRole = function(roleName) {
+    vm.editRole = function(roleName) {
 
       $mdDialog.open({
         partial: 'role-' + roleName,
         data: {
-          accountId: $scope.viewAccount.id,
+          accountId: vm.viewAccount.id,
           roleName: roleName
         }
       });
@@ -102,7 +104,7 @@
 
     //---------------------------------------------------------
 
-    $scope.removeRole = function(role) {
+    vm.removeRole = function(role) {
 
       var confirm = $mdDialog.confirm()
         .title('Role Removal')
@@ -112,7 +114,7 @@
 
       $mdDialog.show(confirm).then(function() {
         AccountList.model.roleRemove({
-          id: $scope.viewAccount.id,
+          id: vm.viewAccount.id,
           name: role,
         })
           .$promise
@@ -127,32 +129,32 @@
 
     //---------------------------------------------------------
 
-    $scope.addRole = function() {
+    vm.addRole = function() {
 
       AccountList.model.roles()
         .$promise
         .then(function(roles) {
 
           $mdDialog.show({
-            controller: function($scope, $controller, data) {
-              $scope.data = data;
+            controller: function($controller, data) {
+              vm.data = data;
 
               angular.extend(this, $controller('DialogCtrl', {
-                $scope: $scope
+                $scope: vm
               }));
 
-              $scope.submit = function() {
+              vm.submit = function() {
 
-                $scope.loading = true;
+                vm.loading = true;
 
                 AccountList.model.roleAdd({
                   id: data.account.id,
-                  name: $scope.role
+                  name: vm.role
                 })
                   .$promise
                   .finally(function() {
 
-                    $scope.loading = false;
+                    vm.loading = false;
                     reloadAccount();
 
                   });
@@ -163,7 +165,7 @@
             locals: {
               data: {
                 roles: roles,
-                account: $scope.viewAccount
+                account: vm.viewAccount
               }
             },
             templateUrl: agneta.partial('role-add')
@@ -175,24 +177,24 @@
 
     //------------------------------------------------------------
 
-    $scope.change = function(account) {
+    vm.change = function(account) {
       getAccount(account.id);
     };
 
     //------------------------------------------------------------
 
-    $scope.createAccount = function() {
+    vm.createAccount = function() {
 
       $mdDialog.show({
-        controller: function($scope, $controller) {
+        controller: function($controller) {
 
           angular.extend(this, $controller('DialogCtrl', {
-            $scope: $scope
+            $scope: vm
           }));
 
-          $scope.submit = function() {
-            $scope.loading = true;
-            AccountList.model.new($scope.formSubmitFields);
+          vm.submit = function() {
+            vm.loading = true;
+            AccountList.model.new(vm.formSubmitFields);
           };
 
         },
@@ -204,7 +206,7 @@
 
     //------------------------------------------------------------
 
-    $scope.changePassword = function() {
+    vm.changePassword = function() {
 
       $mdDialog.open({
         partial: 'password-change-admin',
@@ -212,7 +214,7 @@
           onFinally: function() {
             AccountList.loadAccounts();
           },
-          account: $scope.viewAccount
+          account: vm.viewAccount
         }
       });
 
@@ -220,15 +222,15 @@
 
     //------------------------------------------------------------
 
-    $scope.resendVerification = function() {
+    vm.resendVerification = function() {
       AccountList.model.resendVerification({
-        email: $scope.viewAccount.email
+        email: vm.viewAccount.email
       });
     };
 
     //------------------------------------------------------------
 
-    $scope.activateAccount = function() {
+    vm.activateAccount = function() {
 
       var confirm = $mdDialog.confirm()
         .title('Activate Account')
@@ -238,7 +240,7 @@
 
       $mdDialog.show(confirm).then(function() {
         AccountList.model.activateAdmin({
-          id: $scope.viewAccount.id
+          id: vm.viewAccount.id
         })
           .$promise
           .then(function() {
@@ -250,7 +252,7 @@
 
     //------------------------------------------------------------
 
-    $scope.deactivateAccount = function() {
+    vm.deactivateAccount = function() {
 
       var confirm = $mdDialog.confirm()
         .title('Deactivate Account')
@@ -260,7 +262,7 @@
 
       $mdDialog.show(confirm).then(function() {
         AccountList.model.deactivateAdmin({
-          id: $scope.viewAccount.id
+          id: vm.viewAccount.id
         })
           .$promise
           .then(function() {
@@ -277,19 +279,19 @@
 
 
       var ssh = {};
-      $scope.ssh = ssh;
+      vm.ssh = ssh;
 
       ssh.load = function() {
 
         ssh.loading = true;
 
         AccountList.model.sshList({
-          accountId: $scope.viewAccount.id
+          accountId: vm.viewAccount.id
         })
           .$promise
           .then(function(result) {
             console.log(result);
-            $scope.ssh.keys = result.keys;
+            vm.ssh.keys = result.keys;
           })
           .finally(function() {
             ssh.loading = false;
@@ -309,7 +311,7 @@
               ssh.loading = true;
 
               AccountList.model.sshAdd({
-                accountId: $scope.viewAccount.id,
+                accountId: vm.viewAccount.id,
                 title: form.title,
                 content: form.content
               })
@@ -339,7 +341,7 @@
           ssh.loading = true;
 
           AccountList.model.sshRemove({
-            accountId: $scope.viewAccount.id,
+            accountId: vm.viewAccount.id,
             keyId: key.id
           })
             .$promise

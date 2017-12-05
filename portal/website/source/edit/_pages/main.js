@@ -15,9 +15,9 @@
  *   limitations under the License.
  */
 
-function _e_main($scope, $rootScope, helpers, $location, $timeout, $mdDialog, scopeEdit, Portal, GIT) {
+function _e_main(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeEdit, Portal, GIT) {
 
-  $scope.getPage = function(obj) {
+  vm.getPage = function(obj) {
     var id = obj.id || obj;
     $rootScope.loadingMain = true;
     return helpers.Model.loadOne({
@@ -28,30 +28,30 @@ function _e_main($scope, $rootScope, helpers, $location, $timeout, $mdDialog, sc
 
         var data = result.page.data;
 
-        if ($scope.template) {
-          for (var i in $scope.template.fields) {
-            var field = $scope.template.fields[i];
+        if (vm.template) {
+          for (var i in vm.template.fields) {
+            var field = vm.template.fields[i];
             data[field.name] = data[field.name] || helpers.fieldValue(field);
           }
         }
 
-        $scope.template = result.template;
-        $scope.pagePath = result.page.path;
-        helpers.structureData($scope.template, data);
+        vm.template = result.template;
+        vm.pagePath = result.page.path;
+        helpers.structureData(vm.template, data);
 
         $location.search({
           id: id,
         });
 
-        if (!$scope.pages) {
-          $scope.selectTemplate($scope.template);
+        if (!vm.pages) {
+          vm.selectTemplate(vm.template);
         }
 
-        $scope.work = null;
-        $scope.page = null;
+        vm.work = null;
+        vm.page = null;
 
         $timeout(function() {
-          $scope.page = result.page;
+          vm.page = result.page;
         }, 300);
 
       })
@@ -61,15 +61,15 @@ function _e_main($scope, $rootScope, helpers, $location, $timeout, $mdDialog, sc
   };
 
 
-  $scope.pageActive = function(id) {
+  vm.pageActive = function(id) {
 
-    if ($scope.page) {
-      return (id == $scope.page.id) ? 'active' : null;
+    if (vm.page) {
+      return (id == vm.page.id) ? 'active' : null;
     }
 
   };
 
-  $scope.pageDelete = function() {
+  vm.pageDelete = function() {
 
     var confirm = $mdDialog.confirm()
       .title('Deleting Page')
@@ -79,15 +79,15 @@ function _e_main($scope, $rootScope, helpers, $location, $timeout, $mdDialog, sc
 
     $mdDialog.show(confirm).then(function() {
       helpers.Model.delete({
-        id: $scope.page.id,
+        id: vm.page.id,
       })
         .$promise
         .then(function() {
           helpers.toast('File deleted');
           Portal.socket.once('page-reload', function() {
             $timeout(function() {
-              $scope.page = null;
-              $scope.selectTemplate();
+              vm.page = null;
+              vm.selectTemplate();
             }, 10);
           });
         });
@@ -95,13 +95,13 @@ function _e_main($scope, $rootScope, helpers, $location, $timeout, $mdDialog, sc
 
   };
 
-  $scope.pageAdd = function() {
+  vm.pageAdd = function() {
     $mdDialog.open({
       partial: 'page-add',
-      controller: function($scope, $controller) {
+      controller: function($controller) {
 
         angular.extend(this, $controller('DialogCtrl', {
-          $scope: $scope
+          $scope: vm
         }));
 
         if (!scopeEdit.template) {
@@ -122,21 +122,21 @@ function _e_main($scope, $rootScope, helpers, $location, $timeout, $mdDialog, sc
         if (defaultPath[0] != '/')
           defaultPath = '/' + defaultPath;
 
-        $scope.formSubmitFields = {
+        vm.formSubmitFields = {
           path: defaultPath
         };
 
-        $scope.template = scopeEdit.template;
+        vm.template = scopeEdit.template;
 
-        $scope.submit = function() {
+        vm.submit = function() {
 
-          var fields = $scope.formSubmitFields;
-          $scope.loading = true;
+          var fields = vm.formSubmitFields;
+          vm.loading = true;
 
           helpers.Model.new({
             title: fields.title,
             path: fields.path,
-            template: $scope.template.id
+            template: vm.template.id
           })
             .$promise
             .then(function(result) {
@@ -145,11 +145,11 @@ function _e_main($scope, $rootScope, helpers, $location, $timeout, $mdDialog, sc
               Portal.socket.once('page-reload', function() {
                 return scopeEdit.getPage(result.id)
                   .then(function() {
-                    $scope.close();
+                    vm.close();
                     return scopeEdit.selectTemplate();
                   })
                   .finally(function() {
-                    $scope.loading = false;
+                    vm.loading = false;
                   });
               });
 
@@ -160,39 +160,39 @@ function _e_main($scope, $rootScope, helpers, $location, $timeout, $mdDialog, sc
     });
   };
 
-  $scope.push = function() {
+  vm.push = function() {
 
     $mdDialog.open({
       partial: 'push-changes',
-      controller: function($scope, $controller) {
+      controller: function($controller) {
 
         angular.extend(this, $controller('DialogCtrl', {
-          $scope: $scope
+          $scope: vm
         }));
 
-        $scope.loading = true;
+        vm.loading = true;
         GIT.status()
           .$promise
           .then(function(result) {
             //console.log(result);
-            $scope.files = result.files;
+            vm.files = result.files;
           })
           .finally(function() {
-            $scope.loading = false;
+            vm.loading = false;
           });
 
-        $scope.submit = function() {
-          $scope.loading = true;
+        vm.submit = function() {
+          vm.loading = true;
           GIT.push({
-            message: $scope.formSubmitFields.message
+            message: vm.formSubmitFields.message
           })
             .$promise
             .then(function() {
-              $scope.close();
+              vm.close();
               helpers.toast('Changes are pushed to repository');
             })
             .finally(function() {
-              $scope.loading = false;
+              vm.loading = false;
             });
         };
 
@@ -205,9 +205,9 @@ function _e_main($scope, $rootScope, helpers, $location, $timeout, $mdDialog, sc
 
     var pending = false;
 
-    $scope.save = function(autosave) {
+    vm.save = function(autosave) {
 
-      if (!$scope.page) {
+      if (!vm.page) {
         return;
       }
 
@@ -221,11 +221,11 @@ function _e_main($scope, $rootScope, helpers, $location, $timeout, $mdDialog, sc
 
         pending = false;
 
-        $scope.clearHiddenData();
+        vm.clearHiddenData();
 
         helpers.Model.save({
-          id: $scope.page.id,
-          data: $scope.page.data
+          id: vm.page.id,
+          data: vm.page.data
         })
           .$promise
           .then(function(result) {

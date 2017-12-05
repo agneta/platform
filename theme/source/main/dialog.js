@@ -87,39 +87,45 @@ function _e_Dialog(app) {
   });
 
 
-  app.controller('DialogController', function($scope, $mdDialog, data) {
+  app.controller('DialogController', function($mdDialog, data) {
 
-    $scope.data = data;
+    var vm = this;
+    vm.data = data;
 
   });
 
-  app.controller('DialogCtrl', function($rootScope, $scope, $mdDialog) {
-    $scope.close = function() {
+  app.controller('DialogCtrl', function($rootScope, $mdDialog) {
+
+    var vm = this;
+
+    vm.close = function() {
       $mdDialog.hide();
     };
 
-    $scope.cancel = function() {
+    vm.cancel = function() {
       $mdDialog.cancel();
     };
 
-    $scope.next = function(data) {
+    vm.next = function(data) {
       $mdDialog.hide(data);
     };
 
     $rootScope.$on('error', function() {
-      $scope.loading = false;
+      vm.loading = false;
     });
   });
 
-  app.controller('DialogConfirm', function($rootScope, $scope, data, $mdDialog) {
+  app.controller('DialogConfirm', function($rootScope, data, $mdDialog) {
 
-    $scope.confirm = function() {
+    var vm = this;
+
+    vm.confirm = function() {
       if (data.onConfirm) {
         data.onConfirm();
       }
       $mdDialog.hide();
     };
-    $scope.reject = function() {
+    vm.reject = function() {
       if (data.onReject) {
         data.onReject();
       }

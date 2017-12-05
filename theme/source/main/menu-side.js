@@ -26,12 +26,13 @@ function _e_menuSide(app) {
     });
   });
 
-  app.controller('MenuSide', function($rootScope, $element, $scope, $timeout, $mdSidenav, $mdMedia, $http, $compile, $log) {
+  app.controller('MenuSide', function($rootScope, $element, $timeout, $mdSidenav, $mdMedia, $http, $compile, $log) {
 
     menu = $mdSidenav('menu');
     var locked = false;
     var sidebarPath;
     var contentElement = angular.element($element.find('md-content')[0]);
+    var vm = this;
 
     $rootScope.$on('$routeChangeSuccess', function(event, current) {
 
@@ -54,7 +55,7 @@ function _e_menuSide(app) {
       $http.get(sidebarPath).then(function(result) {
 
         $timeout(function() {
-          var sidebarHTML = $compile(result.data)($scope);
+          var sidebarHTML = $compile(result.data)($rootScope);
           for (var key in sidebarHTML) {
             var node = sidebarHTML[key];
             if (node instanceof HTMLElement) {
@@ -81,13 +82,13 @@ function _e_menuSide(app) {
     function remove() {
       $rootScope.hideMenu();
       $timeout(function() {
-        $scope.sidebarHTML = null;
+        vm.sidebarHTML = null;
       }, 1400);
     }
 
     $rootScope.menuLock = function() {
-      $scope.isLocked = locked && $mdMedia('gt-sm');
-      return $scope.isLocked;
+      vm.isLocked = locked && $mdMedia('gt-sm');
+      return vm.isLocked;
     };
 
     $rootScope.toggleMenu = function() {
@@ -102,7 +103,7 @@ function _e_menuSide(app) {
       return menu.close();
     };
 
-    $scope.close = function() {
+    vm.close = function() {
       $rootScope.hideMenu()
         .then(function() {
           $log.debug('Navigation close is done');

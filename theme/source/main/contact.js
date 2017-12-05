@@ -18,9 +18,11 @@
 
   var app = window.angular.module('MainApp');
 
-  app.controller('ContactCtrl', function($rootScope, $scope, $mdDialog) {
+  app.controller('ContactCtrl', function($rootScope, $mdDialog) {
 
-    $scope.open = function() {
+    var vm = this;
+
+    vm.open = function() {
       $mdDialog.show({
         clickOutsideToClose: true,
         templateUrl: agneta.partial('contact'),
@@ -30,37 +32,39 @@
 
   });
 
-  app.controller('ContactDialogCtrl', function($rootScope, $scope, $timeout, $controller, $mdDialog, Contact) {
+  app.controller('ContactDialogCtrl', function($rootScope, $timeout, $controller, $mdDialog, Contact) {
 
-    $scope.tabSelected = 0;
+    var vm = this;
 
-    $scope.isTabActive = function(index) {
-      return index == $scope.tabSelected;
+    vm.tabSelected = 0;
+
+    vm.isTabActive = function(index) {
+      return index == vm.tabSelected;
     };
 
-    $scope.onTabSelected = function(index) {
-      $scope.tabSelected = index;
+    vm.onTabSelected = function(index) {
+      vm.tabSelected = index;
     };
 
     angular.extend(this, $controller('DialogCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
-    $scope.select = function(name) {
-      $scope.selected = name;
+    vm.select = function(name) {
+      vm.selected = name;
       $timeout(function() {
-        $scope.tabSelected = 1;
+        vm.tabSelected = 1;
       }, 100);
     };
 
-    $scope.send = function(name) {
-      var fields = $scope[name+'Fields'];
+    vm.send = function(name) {
+      var fields = vm[name+'Fields'];
       //console.log(fields);
-      $scope.loading = true;
+      vm.loading = true;
       Contact[name](fields)
         .$promise
         .finally(function() {
-          $scope.loading = false;
+          vm.loading = false;
         });
     };
 

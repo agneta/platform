@@ -15,32 +15,32 @@
  *   limitations under the License.
  */
 
-function _e_search($scope, $timeout, fuse, itemsLoaded) {
+function _e_search(vm, $timeout, fuse, itemsLoaded) {
 
-  $scope.onSearch = function(value) {
+  vm.onSearch = function(value) {
 
     var scopeName;
 
-    if ($scope.pages) {
+    if (vm.pages) {
       scopeName = 'pages';
     }
-    if ($scope.templates) {
+    if (vm.templates) {
       scopeName = 'templates';
     }
 
     if (!value) {
 
 
-      $scope[scopeName] = null;
+      vm[scopeName] = null;
       $timeout(function() {
-        $scope[scopeName] = itemsLoaded;
+        vm[scopeName] = itemsLoaded;
       }, 100);
 
       return;
     }
 
     var result = fuse.search(value).slice(0, 6);
-    $scope[scopeName] = result;
+    vm[scopeName] = result;
   };
 
 }

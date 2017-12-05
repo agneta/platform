@@ -18,10 +18,11 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('HomeCtrl', function($scope, $rootScope, $location, Account) {
+  app.controller('HomeCtrl', function($rootScope, $location, Account) {
 
-    $scope.accounts = {};
-    $scope.activities = {};
+    var vm = this;
+    vm.accounts = {};
+    vm.activities = {};
 
     $rootScope.$on('accountCheck', function(event, account) {
       if (account) {
@@ -37,19 +38,19 @@
 
       Account.total({}).$promise
         .then(function(res) {
-          $scope.accounts.count = res.count;
+          vm.accounts.count = res.count;
         });
 
       Account.recent({
         limit: 5
       }).$promise
         .then(function(recent) {
-          $scope.accounts.recent = recent;
+          vm.accounts.recent = recent;
         });
 
     }
 
-    $scope.openAccount = function(account) {
+    vm.openAccount = function(account) {
       $location.path(agneta.langPath('manager/accounts')).search({
         account: account.id
       });
@@ -57,49 +58,50 @@
 
   });
 
-  app.controller('HomeActivitiesCtrl', function($scope, $rootScope, $q, $timeout) {
+  app.controller('HomeActivitiesCtrl', function($rootScope, $q, $timeout) {
     ///////////////////////////////////////////
 
-    $scope.feeds = {};
-    $scope.periodSelected = 'dayOfYear';
+    var vm = this;
+    vm.feeds = {};
+    vm.periodSelected = 'dayOfYear';
 
-    $scope.onPeriodChange = function() {
+    vm.onPeriodChange = function() {
 
-      $scope.promises = [];
-      $scope.$broadcast('periodChanged');
-      $scope.progressMode = 'indeterminate';
+      vm.promises = [];
+      vm.$broadcast('periodChanged');
+      vm.progressMode = 'indeterminate';
 
-      $q.all($scope.promises)
+      $q.all(vm.promises)
         .then(function() {
-          $scope.progressMode = 'determinate';
+          vm.progressMode = 'determinate';
           //console.log('dooone');
         });
     };
 
-    $timeout($scope.onPeriodChange, 100);
+    $timeout(vm.onPeriodChange, 100);
 
   });
 
   app.directive('agnetaHomeFeed', function(Activity_Count) {
 
     return {
-      link: function($scope, $element, $attrs) {
+      link: function(vm, $element, $attrs) {
 
-        $scope.$on('periodChanged', init);
+        vm.$on('periodChanged', init);
 
         function init() {
 
           var promise = Activity_Count.totals({
             feed: $attrs.name,
-            period: $scope.periodSelected
+            period: vm.periodSelected
           }).$promise
             .then(function(res) {
 
-              $scope.feeds[$attrs.name] = res.count;
+              vm.feeds[$attrs.name] = res.count;
 
             });
 
-          $scope.promises.push(promise);
+          vm.promises.push(promise);
 
         }
       }

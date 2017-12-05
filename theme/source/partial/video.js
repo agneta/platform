@@ -18,7 +18,9 @@
 
   var app = window.angular.module('MainApp');
 
-  app.controller('VideoCtrl', function($scope, data) {
+  app.controller('VideoCtrl', function(data) {
+
+    var vm = this;
 
     var sources = [];
     for (var i in data.sources) {
@@ -29,7 +31,7 @@
       });
     }
 
-    $scope.config = {
+    vm.config = {
       sources: sources,
       theme: agneta.get_lib('videogular.min.css')
     };

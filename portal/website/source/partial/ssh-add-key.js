@@ -18,16 +18,18 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('AddSSHCtrl', function($scope, $timeout, $controller, $element, $mdDialog, data) {
+  app.controller('AddSSHCtrl', function($timeout, $controller, $element, $mdDialog, data) {
+
+    var vm = this;
 
     angular.extend(this, $controller('DialogCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
-    $scope.submit = function() {
+    vm.submit = function() {
 
-      data.onSubmit($scope.formSSHFields);
-      $scope.close();
+      data.onSubmit(vm.formSSHFields);
+      vm.close();
 
     };
 

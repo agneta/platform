@@ -22,12 +22,13 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('MediaCtrl', function($scope, $rootScope, Upload, MediaOpt, SocketIO, $timeout, $mdToast, $mdDialog, $location, $sce, $routeParams, Search_Engine, Portal) {
+  app.controller('MediaCtrl', function($rootScope, Upload, MediaOpt, SocketIO, $timeout, $mdToast, $mdDialog, $location, $sce, $routeParams, Search_Engine, Portal) {
 
     var apiMedia = MediaOpt.api;
     var partialFile = MediaOpt.partial;
     var Media = MediaOpt.model;
     var MediaPreview = MediaOpt.preview;
+    var vm = this;
 
     if (MediaOpt.public) {
       apiMedia = MediaOpt.public.api;
@@ -44,10 +45,10 @@
         MediaPreview = MediaOpt.private.preview;
       }
     }
-    $scope.mediaModel = Media;
+    vm.mediaModel = Media;
 
     Search_Engine.init({
-      scope: $scope,
+      scope: vm,
       model: Media,
       keywords: agneta.get_asset('generated/keywords_media.json'),
       onResult: function(result) {
@@ -58,20 +59,20 @@
       }
     });
 
-    MediaPreview.toScope($scope);
+    MediaPreview.toScope(vm);
 
     var dirRoot = {
       name: 'root',
       location: ''
     };
 
-    $scope.dirs = [dirRoot];
+    vm.dirs = [dirRoot];
 
     //-----------------------------------------
 
-    $scope.openFolder = function(location) {
+    vm.openFolder = function(location) {
 
-      $scope.searchClear();
+      vm.searchClear();
 
       location = location || '';
       location = location.location || location;
@@ -99,22 +100,22 @@
 
       }
 
-      $scope.dirs = result;
-      $scope.selectDir($scope.dirs[result.length - 1]);
+      vm.dirs = result;
+      vm.selectDir(vm.dirs[result.length - 1]);
 
     };
 
-    var startingLocation = $scope.startingLocation || $routeParams.location;
+    var startingLocation = vm.startingLocation || $routeParams.location;
 
-    $scope.selectDir = function(dir) {
-      $scope.dir = dir;
-      $scope.refresh();
+    vm.selectDir = function(dir) {
+      vm.dir = dir;
+      vm.refresh();
     };
 
     _t_template('edit/media/directory');
-    _e_directory($scope, Portal, $location, $rootScope, Media, MediaPreview, $mdDialog, Upload, apiMedia, partialFile);
+    _e_directory(vm, Portal, $location, $rootScope, Media, MediaPreview, $mdDialog, Upload, apiMedia, partialFile);
 
-    $scope.openFolder(startingLocation);
+    vm.openFolder(startingLocation);
 
   });
 

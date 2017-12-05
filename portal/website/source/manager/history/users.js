@@ -23,8 +23,8 @@
   app.directive('visUser', function() {
 
     return {
-      link: function($scope, $element) {
-        $scope.createTimeline({
+      link: function(vm, $element) {
+        vm.createTimeline({
           $element: $element,
           getTitle: getTitle,
           dialogController: 'LogUserCtrl',
@@ -34,14 +34,16 @@
     };
   });
 
-  app.controller('LogUserCtrl', function($scope, $controller, $mdDialog, result) {
+  app.controller('LogUserCtrl', function($controller, $mdDialog, result) {
+
+    var vm = this;
 
     angular.extend(this, $controller('DialogCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
 
-    $scope.fromNow = moment.utc(result.time).local().fromNow();
+    vm.fromNow = moment.utc(result.time).local().fromNow();
 
 
   });

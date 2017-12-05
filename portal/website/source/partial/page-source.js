@@ -22,7 +22,10 @@
   var app = angular.module('MainApp');
 
   app.controller('PageSourceCtrl', function($scope,$timeout, $controller, $element,$mdDialog, data) {
+
     var myCodeMirror;
+    var vm = this;
+
 
     angular.extend(this, $controller('DialogCtrl', {
       $scope: $scope
@@ -51,7 +54,7 @@
       }, 100);
     }
 
-    $scope.done = function() {
+    vm.done = function() {
       data.onDone(
         myCodeMirror.getValue()
       );

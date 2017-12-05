@@ -18,16 +18,17 @@
 
   var app = window.angular.module('MainApp');
 
-  app.controller('RecaptchaCtrl', function($scope, $element, $attrs, $timeout, $parse, $ocLazyLoad) {
+  app.controller('RecaptchaCtrl', function($element, $attrs, $timeout, $parse, $ocLazyLoad) {
 
     var element = $element[0];
+    var vm = this;
 
     window.onloadRecaptcha = function() {
       window.grecaptcha.render(element, {
         sitekey: agneta.keys.recaptcha,
         callback: function(response) {
           $timeout(function() {
-            $parse($attrs.ngModel).assign($scope.$parent, response);
+            $parse($attrs.ngModel).assign(vm.$parent, response);
           }, 10);
         }
       });

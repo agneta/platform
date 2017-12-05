@@ -18,16 +18,18 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('NewFolder', function($controller, $scope, $rootScope, data) {
+  app.controller('NewFolder', function($controller, $rootScope, data) {
+
+    var vm = this;
 
     angular.extend(this, $controller('DialogCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
-    $scope.apply = function(){
-      data.onApply($scope.name)
+    vm.apply = function(){
+      data.onApply(vm.name)
         .then(function(){
-          $scope.close();
+          vm.close();
         });
     };
 

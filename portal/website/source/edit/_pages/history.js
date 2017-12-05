@@ -15,27 +15,27 @@
  *   limitations under the License.
  */
 
-function _e_history($scope, helpers) {
-  $scope.showCommit = function(commit) {
+function _e_history(vm, helpers) {
+  vm.showCommit = function(commit) {
     helpers.Model.loadCommit({
-      id: $scope.page.id,
+      id: vm.page.id,
       commit: commit.hash
     })
       .$promise
       .then(function(result) {
-        $scope.work = $scope.page.data;
-        helpers.structureData($scope.template, result.data);
+        vm.work = vm.page.data;
+        helpers.structureData(vm.template, result.data);
         helpers.setData(result.data);
       });
   };
 
-  $scope.rollback = function() {
-    $scope.save();
-    $scope.work = null;
+  vm.rollback = function() {
+    vm.save();
+    vm.work = null;
   };
 
-  $scope.cancelRollback = function() {
-    helpers.setData($scope.work);
-    $scope.work = null;
+  vm.cancelRollback = function() {
+    helpers.setData(vm.work);
+    vm.work = null;
   };
 }

@@ -86,10 +86,10 @@ app.service('AccountList', function($rootScope, Production_Account, Account, $ti
 
   //------------------------------------
 
-  self.useScope = function($scope) {
+  self.useScope = function(vm) {
 
-    $scope.search = search;
-    $scope.accounts = accounts;
+    vm.search = search;
+    vm.accounts = accounts;
 
   };
 

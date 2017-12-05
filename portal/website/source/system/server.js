@@ -18,13 +18,14 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('SystemServerCtrl', function($scope, $rootScope, Process, SocketIO, $mdDialog) {
+  app.controller('SystemServerCtrl', function($rootScope, Process, SocketIO, $mdDialog) {
 
     var socket = SocketIO.connect('system');
+    var vm = this;
 
     (function() {
 
-      var git = $scope.git = {};
+      var git = vm.git = {};
 
       function check() {
         Process.changesList({
@@ -33,7 +34,7 @@
           .$promise
           .then(function(result) {
             console.log(result);
-            $scope.graph = result;
+            vm.graph = result;
           });
       }
       //check();
@@ -85,7 +86,7 @@
 
     (function() {
 
-      var logs = $scope.logs = {
+      var logs = vm.logs = {
         action: {
           onClick: selectAction
         },
@@ -133,8 +134,8 @@
 
       logs.onEntry = function(entry) {
         logs.output.unshift(entry);
-        while ($scope.logLines.length > entryLimit) {
-          $scope.logLines.pop();
+        while (vm.logLines.length > entryLimit) {
+          vm.logLines.pop();
         }
       };
 
@@ -148,8 +149,8 @@
       Process.servers()
         .$promise
         .then(function(result) {
-          $scope.servers = result.list;
-          console.log($scope.servers);
+          vm.servers = result.list;
+          console.log(vm.servers);
         });
 
 

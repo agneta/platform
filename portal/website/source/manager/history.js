@@ -30,12 +30,14 @@
     hourOfYear: 'ha'
   };
 
-  app.controller('HistoryCtrl', function($scope, $ocLazyLoad, $rootScope, $mdDialog, $mdSidenav, $timeout, Production_Activity_Count, Activity_Count, Production_Activity_Item, Portal, Activity_Item) {
+  app.controller('HistoryCtrl', function($ocLazyLoad, $rootScope, $mdDialog, $mdSidenav, $timeout, Production_Activity_Count, Activity_Count, Production_Activity_Item, Portal, Activity_Item) {
+
+    var vm = this;
 
     var Model_Count = $rootScope.isProduction() ? Production_Activity_Count : Activity_Count;
     var Model_Item = $rootScope.isProduction() ? Production_Activity_Item : Activity_Item;
 
-    $scope.$on('productionMode', function(evt, enabled) {
+    vm.$on('productionMode', function(evt, enabled) {
       if (enabled) {
         Model_Count = Production_Activity_Count;
         Model_Item = Production_Activity_Item;
@@ -43,7 +45,7 @@
         Model_Count = Activity_Count;
         Model_Item = Activity_Item;
       }
-      $scope.loadTotals();
+      vm.loadTotals();
     });
 
     //-----------------------------------------
@@ -51,17 +53,17 @@
     var feedData;
     var utc;
 
-    $scope.page = {
+    vm.page = {
       feedSelected: null
     };
-    $scope.type = 'view_page';
+    vm.type = 'view_page';
 
 
     /////////////////////////////////////////////////////////////
 
-    $scope.selectFeed = function(feed) {
-      $scope.page.feedSelected = feed;
-      $scope.loadTotals();
+    vm.selectFeed = function(feed) {
+      vm.page.feedSelected = feed;
+      vm.loadTotals();
     };
 
     /////////////////////////////////////////////////////////////
@@ -69,9 +71,9 @@
     var socketListeners = [];
     var timeOffset = parseInt(moment().utcOffset() / 60);
 
-    $scope.loadTotals = function() {
+    vm.loadTotals = function() {
 
-      if ((!$scope.page.feedSelected && !$scope.type) || !$scope.page.periodSelected) {
+      if ((!vm.page.feedSelected && !vm.type) || !vm.page.periodSelected) {
         return;
       }
 
@@ -86,24 +88,24 @@
       utc.minutes(0);
       utc.seconds(0);
 
-      $scope.progressMode = 'indeterminate';
+      vm.progressMode = 'indeterminate';
 
       var chartData = {
         datasets: []
       };
 
 
-      if ($scope.page.feedSelected) {
+      if (vm.page.feedSelected) {
 
         return Model_Count.totals({
-          feed: $scope.page.feedSelected.id,
-          period: $scope.page.periodSelected,
-          value: $scope.page.valueSelected
+          feed: vm.page.feedSelected.id,
+          period: vm.page.periodSelected,
+          value: vm.page.valueSelected
         })
           .$promise
           .then(function(result) {
-            $scope.progressMode = 'determinate';
-            result.color = $scope.page.feedSelected.color;
+            vm.progressMode = 'determinate';
+            result.color = vm.page.feedSelected.color;
 
             onLoaded(result);
             loadLabels(result, result.counts);
@@ -111,12 +113,12 @@
             updateChart();
           });
 
-      } else if ($scope.type) {
+      } else if (vm.type) {
 
         var query = {
-          type: $scope.type,
-          period: $scope.page.periodSelected,
-          value: $scope.page.valueSelected
+          type: vm.type,
+          period: vm.page.periodSelected,
+          value: vm.page.valueSelected
         };
 
         return Model_Count.totalsByType(query)
@@ -124,7 +126,7 @@
           .then(function(result) {
 
             if (!result.feeds.length) {
-              $scope.feeds = null;
+              vm.feeds = null;
               return;
             }
 
@@ -137,11 +139,11 @@
             }
 
             updateChart();
-            $scope.feeds = result.feeds;
+            vm.feeds = result.feeds;
 
           })
           .finally(function() {
-            $scope.progressMode = 'determinate';
+            vm.progressMode = 'determinate';
           });
 
       }
@@ -218,8 +220,8 @@
 
           Model_Count.totals({
             feed: res.id,
-            period: $scope.page.periodSelected,
-            value: $scope.page.valueSelected
+            period: vm.page.periodSelected,
+            value: vm.page.valueSelected
           })
             .$promise
             .then(function(result) {
@@ -245,7 +247,7 @@
       }
     };
 
-    $scope.onChartClick = function(e) {
+    vm.onChartClick = function(e) {
 
       var activeElm = chart.getElementAtEvent(e);
 
@@ -268,7 +270,7 @@
           templateUrl: agneta.partial('activities'),
           locals: {
             data: {
-              feed: $scope.page.feedSelected.id,
+              feed: vm.page.feedSelected.id,
               unit: feedData.unit,
               value: count.key
             }
@@ -279,23 +281,23 @@
         return;
       }
 
-      $scope.page.periodSelected = feedData.unit;
-      $scope.unit = feedData.subUnit;
+      vm.page.periodSelected = feedData.unit;
+      vm.unit = feedData.subUnit;
 
-      $scope.changedPeriod(count.key);
+      vm.changedPeriod(count.key);
 
     };
 
     //------------------------------------------------------
 
-    $scope.showActivities = function(feed) {
+    vm.showActivities = function(feed) {
 
       $mdDialog.open({
         partial: 'activities',
         data: {
           feed: feed.id,
-          unit: $scope.page.periodSelected,
-          value: $scope.page.valueSelected,
+          unit: vm.page.periodSelected,
+          value: vm.page.valueSelected,
           Model_Item: Model_Item
         },
         controller: 'ActivitiesCtrl'
@@ -305,17 +307,17 @@
 
     //------------------------------------------------------
 
-    $scope.changeType = function(type) {
-      $scope.type = type;
-      $scope.changedType();
+    vm.changeType = function(type) {
+      vm.type = type;
+      vm.changedType();
     };
 
-    $scope.changedType = function() {
-      $scope.page.feedSelected = null;
-      $scope.loadTotals();
+    vm.changedType = function() {
+      vm.page.feedSelected = null;
+      vm.loadTotals();
     };
 
-    $scope.changedPeriod = function(_value) {
+    vm.changedPeriod = function(_value) {
 
       ////////////////////////////////////////////////////////////
       var value;
@@ -324,7 +326,7 @@
       var tmp = moment();
       var i;
 
-      switch ($scope.page.periodSelected) {
+      switch (vm.page.periodSelected) {
         case 'year':
           for (i = 0; i < 10; i++) {
             var id = now.year() - i;
@@ -365,10 +367,10 @@
 
       }
 
-      $scope.values = values;
-      $scope.page.valueSelected = _value || value;
+      vm.values = values;
+      vm.page.valueSelected = _value || value;
 
-      $scope.loadTotals();
+      vm.loadTotals();
     };
 
   });
@@ -436,25 +438,27 @@
 
   ///////////////////////////////////////////////////////////////////////////
 
-  app.controller('ActivitiesCtrl', function($rootScope, $scope, $mdDialog, $controller, data) {
+  app.controller('ActivitiesCtrl', function($rootScope, $mdDialog, $controller, data) {
+
+    var vm = this;
 
     angular.extend(this, $controller('DialogCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
-    $scope.loading = true;
+    vm.loading = true;
     var time = moment().utc().dayOfYear(data.value);
-    $scope.time = time;
+    vm.time = time;
 
 
     data.Model_Item.latest(data)
       .$promise
       .then(function(result) {
-        $scope.loading = false;
-        $scope.data = result;
+        vm.loading = false;
+        vm.data = result;
       });
 
-    $scope.modal = function(activity) {
+    vm.modal = function(activity) {
       $mdDialog.open({
         nested: true,
         partial: activity.modal,
@@ -465,7 +469,7 @@
       });
     };
 
-    $scope.loadActivity = function(activity) {
+    vm.loadActivity = function(activity) {
 
       $mdDialog.open({
         nested: true,
@@ -483,27 +487,29 @@
 
   ///////////////////////////////////////////////////////////////////////////
 
-  app.controller('ActivityCtrl', function($rootScope, $scope, $mdDialog, $controller, data) {
+  app.controller('ActivityCtrl', function($rootScope, $mdDialog, $controller, data) {
+
+    var vm = this;
 
     angular.extend(this, $controller('DialogCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
-    $scope.loading = true;
+    vm.loading = true;
 
     data.Model_Item.details({
       id: data.activity.id
     })
       .$promise
       .then(function(result) {
-        $scope.loading = false;
+        vm.loading = false;
 
         if (!result) {
           return;
         }
 
-        $scope.title = data.activity.title;
-        $scope.time = result.time;
+        vm.title = data.activity.title;
+        vm.time = result.time;
         //------------------------------------------
 
         if (result.data.request) {
@@ -521,7 +527,7 @@
 
         }
 
-        $scope.data = result.data;
+        vm.data = result.data;
 
 
       });

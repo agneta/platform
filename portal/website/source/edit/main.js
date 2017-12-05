@@ -32,8 +32,8 @@
 
   var app = angular.module('MainApp');
 
-  app.controller('EditMainCtrl', function($scope, $rootScope, $routeParams, $parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, MediaOpt, Role_Editor) {
-
+  app.controller('EditMainCtrl', function($rootScope, $routeParams, $parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, MediaOpt, Role_Editor) {
+    var vm = this;
     var fuse;
     var fuseOptions = {
       shouldSort: true,
@@ -50,17 +50,17 @@
 
     var itemsLoaded;
     var helpers = {};
-    var scopeEdit = $scope;
+    var scopeEdit = vm;
 
-    $scope.mainForm = {};
+    vm.mainForm = {};
 
-    $scope.edit = {};
-    $scope.templates = null;
-    $scope.pages = null;
-    $scope.page = null;
+    vm.edit = {};
+    vm.templates = null;
+    vm.pages = null;
+    vm.page = null;
 
-    $scope.edit.lang = agneta.lang;
-    $scope.edit.languages = [{
+    vm.edit.lang = agneta.lang;
+    vm.edit.languages = [{
       code: 'en',
       title: 'English'
     },
@@ -80,44 +80,44 @@
     _t_template('edit/_pages/source');
     _t_template('edit/_pages/contributor');
 
-    _e_fieldState($scope, helpers);
-    _e_content($scope, helpers);
-    _e_media($scope, MediaOpt, $mdDialog, helpers);
-    _e_helpers($scope, $mdToast, $timeout, helpers);
-    _e_history($scope, helpers);
-    _e_main($scope, $rootScope, helpers, $location, $timeout, $mdDialog, scopeEdit, Portal, GIT);
-    _e_search($scope, $timeout, fuse, itemsLoaded);
-    _e_source($scope, $mdDialog, $timeout);
-    _e_contributor($scope, $rootScope, Account, Portal, $timeout, Role_Editor);
+    _e_fieldState(vm, helpers);
+    _e_content(vm, helpers);
+    _e_media(vm, MediaOpt, $mdDialog, helpers);
+    _e_helpers(vm, $mdToast, $timeout, helpers);
+    _e_history(vm, helpers);
+    _e_main(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeEdit, Portal, GIT);
+    _e_search(vm, $timeout, fuse, itemsLoaded);
+    _e_source(vm, $mdDialog, $timeout);
+    _e_contributor(vm, $rootScope, Account, Portal, $timeout, Role_Editor);
 
-    $scope.onKeyPress = function(event) {
+    vm.onKeyPress = function(event) {
 
       // CTRL + SHIFT + S : Save Changes
       if (event.ctrlKey && event.shiftKey && event.keyCode == 19) {
-        $scope.save();
+        vm.save();
       }
       // CTRL + SHIFT + L : Change Language
       if (event.ctrlKey && event.shiftKey && event.keyCode == 12) {
-        var index = _.findIndex($scope.edit.languages, {
-          code: $scope.edit.lang
+        var index = _.findIndex(vm.edit.languages, {
+          code: vm.edit.lang
         });
         index++;
-        if (index == $scope.edit.languages.length) {
+        if (index == vm.edit.languages.length) {
           index = 0;
         }
-        var language = $scope.edit.languages[index];
-        $scope.edit.lang = language.code;
+        var language = vm.edit.languages[index];
+        vm.edit.lang = language.code;
       }
     };
 
-    $scope.edit.lng = function(data) {
+    vm.edit.lng = function(data) {
       if (!data) {
         return;
       }
       if (_.isObject(data)) {
         data = data.__value || data;
       }
-      var result = data[$scope.edit.lang] || '';
+      var result = data[vm.edit.lang] || '';
 
       if (!result.length) {
         result = data[agneta.lang] || '';
@@ -135,25 +135,25 @@
       return result;
     };
 
-    $scope.toggleView = function(data) {
+    vm.toggleView = function(data) {
       data._expanded = !data._expanded;
     };
 
-    $scope.isArray = function(val) {
+    vm.isArray = function(val) {
       return angular.isArray(val);
     };
 
-    $scope.init = function(_Model) {
+    vm.init = function(_Model) {
       helpers.Model = _Model;
-      $scope.restart()
+      vm.restart()
         .then(function() {
           if ($routeParams.id) {
-            $scope.getPage($routeParams.id);
+            vm.getPage($routeParams.id);
           }
         });
     };
 
-    $scope.restart = function() {
+    vm.restart = function() {
 
       return helpers.Model.loadTemplates({
 
@@ -162,14 +162,14 @@
         .then(function(result) {
 
           itemsLoaded = result.templates;
-          $scope.templates = null;
+          vm.templates = null;
 
           $timeout(function() {
 
-            $scope.templates = itemsLoaded;
-            $scope.template = null;
-            $scope.page = null;
-            $scope.pages = null;
+            vm.templates = itemsLoaded;
+            vm.template = null;
+            vm.page = null;
+            vm.pages = null;
             fuse = new Fuse(itemsLoaded, fuseOptions);
 
           }, 10);
@@ -178,7 +178,7 @@
 
     };
 
-    $scope.isInline = function(field) {
+    vm.isInline = function(field) {
       switch (field.type) {
         case 'text-single':
         case 'value':
@@ -188,18 +188,18 @@
       return false;
     };
 
-    $scope.getField = function(field, key) {
+    vm.getField = function(field, key) {
       return _.find(field.fields, {
         name: key.__key || key
       });
     };
 
-    $scope.selectTemplate = function(template) {
+    vm.selectTemplate = function(template) {
 
       if (template) {
-        $scope.template = template;
+        vm.template = template;
       } else {
-        template = $scope.template;
+        template = vm.template;
       }
 
       return helpers.Model.loadMany({
@@ -207,18 +207,18 @@
       })
         .$promise
         .then(function(result) {
-          $scope.pages = null;
+          vm.pages = null;
           $timeout(function() {
             itemsLoaded = result.pages;
-            $scope.pages = itemsLoaded;
-            $scope.templates = null;
+            vm.pages = itemsLoaded;
+            vm.templates = null;
             fuse = new Fuse(itemsLoaded, fuseOptions);
           }, 10);
         });
 
     };
 
-    $scope.$broadcast('code:ready');
+    vm.$broadcast('code:ready');
 
 
   });

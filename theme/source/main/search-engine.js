@@ -27,7 +27,7 @@ function _e_searchEngine(app) {
     this.init = function(options) {
 
       var Model = options.model;
-      var $scope = options.scope;
+      var vm = options.scope;
       var keywords;
       var fuse;
 
@@ -52,7 +52,7 @@ function _e_searchEngine(app) {
             ]
           });
 
-          $scope.initialized = true;
+          vm.initialized = true;
 
         });
 
@@ -60,11 +60,11 @@ function _e_searchEngine(app) {
 
       var attached = [];
 
-      $scope.attach = function(scope) {
+      vm.attach = function(scope) {
         attached.push(scope);
-        scope.selectItem = $scope.selectItem;
-        scope.querySearch = $scope.querySearch;
-        scope.searchKeywords = $scope.searchKeywords;
+        scope.selectItem = vm.selectItem;
+        scope.querySearch = vm.querySearch;
+        scope.searchKeywords = vm.searchKeywords;
       };
 
       function setValue(name, value) {
@@ -72,23 +72,23 @@ function _e_searchEngine(app) {
           var scope = attached[index];
           scope[name] = value;
         }
-        $scope[name] = value;
+        vm[name] = value;
       }
 
-      $scope.selectItem = function(item) {
+      vm.selectItem = function(item) {
         if (!item) {
           return;
         }
         $location.path(agneta.url(item.path));
       };
 
-      $scope.searchClear = function() {
+      vm.searchClear = function() {
         setValue('searchQuery', null);
         setValue('searchResults', null);
         setValue('searchText', null);
       };
 
-      $scope.querySearch = function(originalQuery) {
+      vm.querySearch = function(originalQuery) {
 
         /////////////////////////////////
 
@@ -154,12 +154,12 @@ function _e_searchEngine(app) {
       var query;
       var waiting;
 
-      $scope.searchKeywords = function(_query) {
+      vm.searchKeywords = function(_query) {
 
         query = _query;
 
         if (!_query) {
-          $scope.searchClear();
+          vm.searchClear();
           return;
         }
 
@@ -173,7 +173,7 @@ function _e_searchEngine(app) {
 
           setValue('searchQuery', query);
 
-          $scope.querySearch(query)
+          vm.querySearch(query)
             .then(function(results) {
               //console.log(results);
               $timeout(function() {

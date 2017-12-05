@@ -71,7 +71,7 @@ function _e_Route(app) {
 
   });
 
-  app.controller('ViewCtrl', function($scope, $rootScope, $route, $timeout, $location, Account, $mdDialog) {
+  app.controller('ViewCtrl', function($rootScope, $route, $timeout, $location, Account, $mdDialog) {
 
     $rootScope.$on('$routeChangeStart', function() {
 

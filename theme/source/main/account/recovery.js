@@ -16,18 +16,20 @@
  */
 function _e_recovery(app) {
 
-  app.controller('AccountRecoverCtrl', function($scope, $controller, Account) {
+  app.controller('AccountRecoverCtrl', function($controller, Account) {
+
+    var vm = this;
 
     angular.extend(this, $controller('DialogCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
-    $scope.submitPassword = function() {
+    vm.submitPassword = function() {
 
-      $scope.loading = true;
+      vm.loading = true;
 
-      Account.recover($scope.formPassFields, function() {
-        $scope.loading = false;
+      Account.recover(vm.formPassFields, function() {
+        vm.loading = false;
 
       });
 
@@ -35,13 +37,15 @@ function _e_recovery(app) {
 
   });
 
-  app.controller('RequestRecoveryCtrl', function($scope, Account, $controller, $mdDialog, email) {
+  app.controller('RequestRecoveryCtrl', function(Account, $controller, $mdDialog, email) {
+
+    var vm = this;
 
     angular.extend(this, $controller('DialogCtrl', {
-      $scope: $scope
+      $scope: vm
     }));
 
-    $scope.data = {
+    vm.data = {
       title: 'Account Deactivated',
       content: 'This Account was deactivated and can be recovered with an email verification.',
       action: {
@@ -49,9 +53,9 @@ function _e_recovery(app) {
       }
     };
 
-    $scope.action = function() {
+    vm.action = function() {
 
-      $scope.loading = true;
+      vm.loading = true;
 
       Account.requestRecovery({
         email: email

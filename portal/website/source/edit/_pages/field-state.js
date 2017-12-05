@@ -14,10 +14,10 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-function _e_fieldState($scope) {
+function _e_fieldState(vm) {
 
   var focused = null;
-  $scope.fieldFocus = function(data) {
+  vm.fieldFocus = function(data) {
     if (focused) {
       delete focused.__focused;
     }
@@ -26,7 +26,7 @@ function _e_fieldState($scope) {
   };
 
   var hovered = null;
-  $scope.fieldHover = function(data) {
+  vm.fieldHover = function(data) {
     if (hovered) {
       delete hovered.__hovered;
     }
@@ -34,7 +34,7 @@ function _e_fieldState($scope) {
     hovered = data;
   };
 
-  $scope.clearHiddenData = function() {
+  vm.clearHiddenData = function() {
 
     if (hovered) {
       delete hovered.__hovered;

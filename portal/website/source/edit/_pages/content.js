@@ -17,9 +17,9 @@
 
 /*global _:true*/
 
-function _e_content($scope, helpers) {
+function _e_content(vm, helpers) {
 
-  $scope.dragControlListeners = {
+  vm.dragControlListeners = {
     accept: function(sourceItemHandleScope, destSortableScope) {
       return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
     },
@@ -31,7 +31,7 @@ function _e_content($scope, helpers) {
     containerPositioning: 'relative'
   };
 
-  $scope.removeValue = function(key, data) {
+  vm.removeValue = function(key, data) {
     data = data.__value || data;
     if (_.isObject(data)) {
       delete data[key];
@@ -40,11 +40,11 @@ function _e_content($scope, helpers) {
       data.splice(key, 1);
     }
 
-    $scope.save(true);
+    vm.save(true);
 
   };
 
-  $scope.addValue = function(field, parent, key) {
+  vm.addValue = function(field, parent, key) {
 
     var parentValue = parent.__value || parent;
 
@@ -89,38 +89,38 @@ function _e_content($scope, helpers) {
 
     }
 
-    $scope.save(true);
+    vm.save(true);
 
   };
 
-  $scope.objectField = function(childField, parentField, parent, key) {
+  vm.objectField = function(childField, parentField, parent, key) {
 
     var parentValue = parent.__value;
     var validators = childField.validators;
     var required = validators && validators.required;
 
     if (required && !parentValue[key]) {
-      $scope.addValue(parentField, parent, key);
+      vm.addValue(parentField, parent, key);
     }
 
   };
 
-  $scope.onFieldSelect = function(parentField, parentData, childField, key) {
+  vm.onFieldSelect = function(parentField, parentData, childField, key) {
     for (var name in childField.options) {
       var option = childField.options[name];
       if (option.require) {
         if (name == key) {
-          $scope.addValue(parentField, parentData, option.require);
+          vm.addValue(parentField, parentData, option.require);
         } else {
-          $scope.removeValue(option.require, parentData);
+          vm.removeValue(option.require, parentData);
         }
       }
     }
   };
 
-  $scope.excerpt = function excerpt(data) {
+  vm.excerpt = function excerpt(data) {
 
-    var res = $scope.edit.lng(data);
+    var res = vm.edit.lng(data);
     if (res) {
       return res;
     }

@@ -16,16 +16,18 @@
  */
 (function() {
 
-  angular.module('MainApp').controller('RegisterCtrl', function($scope, Account) {
+  angular.module('MainApp').controller('RegisterCtrl', function(Account) {
 
-    $scope.registerAccount = function() {
+    var vm = this;
+    
+    vm.registerAccount = function() {
 
-      $scope.loading = true;
+      vm.loading = true;
 
-      Account.register($scope.registerFields)
+      Account.register(vm.registerFields)
         .$promise
         .finally(function() {
-          $scope.loading = false;
+          vm.loading = false;
         });
     };
 
