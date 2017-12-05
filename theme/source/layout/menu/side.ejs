@@ -1,6 +1,6 @@
 <%if(config.menu.side){%>
 <md-sidenav class="md-sidenav-left md-whiteframe-z2 site-menu" md-is-locked-open="menuLock()" md-component-id="menu" layout="column">
-    <div ng-controller="MenuSide" layout="column">
+    <menu-side layout="column">
         <%-template('sidebar/toolbar')%>
         <md-content layout="column">
         <%
@@ -11,6 +11,7 @@
         if (!has_template(templateSidebar)) {
           templateSidebar = 'sidebar';
         }
+        console.log(templateSidebar);
         %>
         <%-template(templateSidebar)%>
         </md-content>
@@ -23,6 +24,6 @@
             <%}%>
         </div>
         <%}%>
-    </div>
+    </menu-side>
 </md-sidenav>
 <%}%>

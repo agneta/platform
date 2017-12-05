@@ -26,61 +26,71 @@ function _e_menuSide(app) {
     });
   });
 
-  app.controller('MenuSide', function($rootScope, $element, $timeout, $mdSidenav, $mdMedia, $http, $compile, $log) {
 
-    menu = $mdSidenav('menu');
-    var locked = false;
-    //var contentElement = angular.element($element.find('md-content')[0]);
-    var vm = this;
+  app.directive('menuSide', function($rootScope, $timeout,$route, $mdSidenav, $mdMedia, $http, $compile, $log) {
+    return {
+      link: function(vm) {
 
-    $rootScope.$on('$routeChangeSuccess', function(event, current) {
+        var locked = false;
+        $rootScope.menu = {};
+        $rootScope.$on('$routeChangeSuccess', onRoute);
 
-      locked = current.locals.data.menuLock;
-      //contentElement.empty();
+        function onRoute(event, current) {
 
-      if ($mdMedia('gt-sm')) {
-
-        if (locked) {
           $timeout(function() {
-            $rootScope.showMenu();
-          }, 1800);
-        } else {
-          remove();
+
+            menu = $mdSidenav('menu');
+            locked = current && current.locals.data.menuLock;
+            //contentElement.empty();
+
+            if ($mdMedia('gt-sm')) {
+
+              if (locked) {
+                $rootScope.menu.show();
+              } else {
+                remove();
+              }
+
+            }
+
+          }, 10);
+
+
         }
 
+        onRoute(null, $route.current);
+
+        function remove() {
+          $rootScope.menu.hide();
+          $timeout(function() {
+            vm.sidebarHTML = null;
+          }, 1400);
+        }
+
+        vm.menuLock = function() {
+          $rootScope.menu.isLocked = locked && $mdMedia('gt-sm');
+          return $rootScope.menu.isLocked;
+        };
+
+        $rootScope.menu.toggle = function() {
+          return menu.toggle();
+        };
+
+        $rootScope.menu.show = function() {
+          return menu.open();
+        };
+
+        $rootScope.menu.hide = function() {
+          return menu.close();
+        };
+
+        vm.close = function() {
+          $rootScope.menu.hide()
+            .then(function() {
+              $log.debug('Navigation close is done');
+            });
+        };
       }
-
-    });
-
-    function remove() {
-      $rootScope.hideMenu();
-      $timeout(function() {
-        vm.sidebarHTML = null;
-      }, 1400);
-    }
-
-    $rootScope.menuLock = function() {
-      vm.isLocked = locked && $mdMedia('gt-sm');
-      return vm.isLocked;
-    };
-
-    $rootScope.toggleMenu = function() {
-      return menu.toggle();
-    };
-
-    $rootScope.showMenu = function() {
-      return menu.open();
-    };
-
-    $rootScope.hideMenu = function() {
-      return menu.close();
-    };
-
-    vm.close = function() {
-      $rootScope.hideMenu()
-        .then(function() {
-          $log.debug('Navigation close is done');
-        });
     };
   });
 

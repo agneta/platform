@@ -19,7 +19,7 @@ var toolbar = config.toolbar || {};
 </md-button>
 
 <%if(config.menu.side){%>
-<md-button ng-click="toggleMenu()" ng-show="!menuLock()" aria-label="<%-lng('general.menu')%>" class="md-primary">
+<md-button ng-click="menu.toggle()" ng-show="!menu.isLocked" aria-label="<%-lng('general.menu')%>" class="md-primary">
 <md-icon md-svg-src=<%-get_icon('material/menu')%>></md-icon>
 <span><%-lng('general.menu')%></span>
 </md-button>

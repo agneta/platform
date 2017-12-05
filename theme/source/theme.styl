@@ -53,13 +53,25 @@ h1,h2,h3,h4,h5,p{
   margin: 5px 0;
 }
 
-.layout-row.margin-horizontal{
-  >*{
-    margin: 5px 0;
-    margin-left: 16px;
+.ag-margin{
+  &.layout-row{
+    >*{
+      margin: 5px 0;
+      margin-left: 16px;
 
-    &:first-child{
-      margin-left: 0;
+      &:first-child{
+        margin-left: 0;
+      }
+    }
+  }
+  &.layout-column{
+    >*{
+      margin: 0 5px;
+      margin-top: 16px;
+
+      &:first-child{
+        margin-top: 0;
+      }
     }
   }
 }

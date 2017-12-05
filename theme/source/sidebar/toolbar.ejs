@@ -6,7 +6,7 @@ var href = locals.toolbar.href?'href="'+locals.toolbar.href+'"':null;
 %>
 <md-toolbar class="md-theme-light toolbar">
 <div class="md-toolbar-tools" layout="row">
-	<md-button class="md-icon-button close" ng-show="viewData.parentPath" ng-href="{{get_path(viewData.parentPath)}}" ng-show="!isLocked" aria-label="Close">
+	<md-button class="md-icon-button close" ng-show="viewData.parentPath" ng-href="{{get_path(viewData.parentPath)}}" ng-show="!menu.isLocked" aria-label="Close">
 		<md-icon md-svg-src="<%-get_icon('material/arrow-back')%>"></md-icon>
 	</md-button>
 		<h2 class="title">
@@ -14,7 +14,7 @@ var href = locals.toolbar.href?'href="'+locals.toolbar.href+'"':null;
 		</h2>
 	<span flex></span>
 
-	<md-button class="md-icon-button close"  ng-click="close()" ng-show="!isLocked" aria-label="Close">
+	<md-button class="md-icon-button close"  ng-click="close()" ng-show="!menu.isLocked" aria-label="Close">
 	<md-icon md-svg-src="<%-get_icon('material/close')%>"></md-icon>
 	</md-button>
 </div>
