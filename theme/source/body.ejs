@@ -1,12 +1,16 @@
 <%
 if(page.barebones && (!page.isView||page.isPartial)){
 	%>
-	<%-template(page.template)%>
-<%}else if(page.isView){%>
-	<div id="view-content" layout="column">
-			<%-template(page.template)%>
-			<%if(!page.hiddenFooter){%>
-				<%- template('layout/footer',null,true) %>
-				<%}%>
-	</div>
+  <%-template(page.template)%>
+    <%}else if(page.isView){%>
+      <div id="view-content" layout="row" flex="100">
+
+        <%-template('layout/menu/side',null,true)%>
+          <div layout="column">
+            <%-template(page.template)%>
+              <%if(!page.hiddenFooter){%>
+                <%- template('layout/footer',null,true) %>
+                  <%}%>
+          </div>
+      </div>
 <%}%>

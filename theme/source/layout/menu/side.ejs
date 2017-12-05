@@ -1,8 +1,19 @@
 <%if(config.menu.side){%>
-<md-sidenav class="md-sidenav-left md-whiteframe-z2 site-menu" md-is-locked-open="hasSidebar&&menuLock()" md-component-id="menu" layout="column">
+<md-sidenav class="md-sidenav-left md-whiteframe-z2 site-menu" md-is-locked-open="menuLock()" md-component-id="menu" layout="column">
     <div ng-controller="MenuSide" layout="column">
         <%-template('sidebar/toolbar')%>
-        <md-content layout="column" id="sidebar-content"></md-content>
+        <md-content layout="column">
+        <%
+        var templateSidebar = page.templateSource + '.sidebar';
+        if (_.isString(page.sidebar)) {
+          templateSidebar = page.sidebar;
+        }
+        if (!has_template(templateSidebar)) {
+          templateSidebar = 'sidebar';
+        }
+        %>
+        <%-template(templateSidebar)%>
+        </md-content>
         <span flex></span>
         <%if(config.language.extra){%>
         <div layout="row">

@@ -30,40 +30,13 @@ function _e_menuSide(app) {
 
     menu = $mdSidenav('menu');
     var locked = false;
-    var sidebarPath;
-    var contentElement = angular.element($element.find('md-content')[0]);
+    //var contentElement = angular.element($element.find('md-content')[0]);
     var vm = this;
 
     $rootScope.$on('$routeChangeSuccess', function(event, current) {
 
-      sidebarPath = current.locals.data.sidebar;
       locked = current.locals.data.menuLock;
-      $rootScope.hasSidebar = sidebarPath ? true : false;
-      contentElement.empty();
-
-      if (!sidebarPath) {
-        sidebarPath = agneta.langPath('/sidebar');
-      }
-
-      sidebarPath = agneta.urljoin({
-        path: [sidebarPath],
-        query: {
-          version: agneta.page.version
-        }
-      });
-
-      $http.get(sidebarPath).then(function(result) {
-
-        $timeout(function() {
-          var sidebarHTML = $compile(result.data)($rootScope);
-          for (var key in sidebarHTML) {
-            var node = sidebarHTML[key];
-            if (node instanceof HTMLElement) {
-              contentElement.append(node);
-            }
-          }
-        }, 10);
-      });
+      //contentElement.empty();
 
       if ($mdMedia('gt-sm')) {
 

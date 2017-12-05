@@ -181,28 +181,6 @@ module.exports = function(locals) {
             });
 
         }
-      })
-      .then(function() {
-
-        if (excludeConfig.sidebar) {
-          return;
-        }
-
-        var template = page.template + '.sidebar';
-        if (_.isString(page.sidebar)) {
-          template = page.sidebar;
-        }
-        if (!app.locals.has_template(template)) {
-          template = 'sidebar';
-        }
-
-        return run(_.extend({},
-          page,
-          pageBase, {
-            template: template,
-            path: nPath.join(page.path, 'sidebar')
-          }));
-
       });
   }
 

@@ -138,10 +138,6 @@ module.exports = function(locals) {
 
     //----------------------------------------
 
-    data.sidebar = this.get_path(urljoin(this.pagePath(page), 'sidebar'));
-
-    //----------------------------------------
-
     if (page.angular_libs) {
       data.inject = _.map(page.angular_libs, function(value) {
         data.scripts.push(value.js);
