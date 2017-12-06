@@ -33,7 +33,6 @@ function _e_menuSide(app) {
 
         var locked = false;
         $rootScope.menu = {};
-        $rootScope.$on('$routeChangeSuccess', onRoute);
 
         function onRoute(event, current) {
 

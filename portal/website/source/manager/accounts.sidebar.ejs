@@ -12,7 +12,7 @@
   <md-progress-linear md-mode="{{search.loading?'indeterminate':'determinate'}}"></md-progress-linear>
 
   <md-content class="accounts">
-
+    {{$ctrl.test}}
     <md-list-item ng-repeat="account in accounts.list" class="account md-long-text md-2-line" md-no-ink ng-click="change(account)">
       <%-template('ui/account-avatar')%>
         <div class="md-list-item-text">

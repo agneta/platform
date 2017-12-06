@@ -91,12 +91,10 @@
 
     });
 
-    console.log('set component', name, component);
-    setTimeout(function() {
-      app.component(name, {
-        templateUrl: component.template.path,
-        controller: parameters
-      });
+    console.log('set component', name, component.template.path, component, parameters);
+    app.component(name, {
+      templateUrl: component.template.path,
+      controller: parameters
     });
 
   };
@@ -111,7 +109,6 @@
       result = [];
     return result;
   }
-
   //---------------------------------------------------------------
 
   _t_template('main/helpers');
@@ -243,7 +240,7 @@
       return $http.get(dataPath)
         .then(function(response) {
 
-          data = response.data;
+          data = app.pageData = response.data;
           console.log('$rootScope.loadData', data);
           components[data.template.controller] = {
             template: data.template,
@@ -296,11 +293,6 @@
 
         })
         .then(function() {
-
-          if (data.template.default) {
-            app.page(data.template.controller);
-          }
-
           return data;
         });
     };

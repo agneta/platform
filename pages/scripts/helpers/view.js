@@ -73,11 +73,14 @@ module.exports = function(locals) {
 
     var name = this.viewTag(page);
     data.template = {
-      default: page.controller?false:true,
       controller: page.controller || this.viewController(name),
       name: name,
       path: this.viewTemplatePath(page)
     };
+
+    if(!page.controller){
+      data.scripts.push('page/view');
+    }
 
     //-----------------------------------------------------
     // languages

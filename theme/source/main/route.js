@@ -104,7 +104,6 @@ function _e_Route(app) {
     });
 
     $rootScope.$on('$routeChangeSuccess', function(event, current) {
-
       if (current.redirect) {
         window.location.href = $location.path();
         return;
@@ -125,6 +124,7 @@ function _e_Route(app) {
       //
 
       var data = current.locals.data;
+
       $rootScope.viewData = data;
       $rootScope.loadingMain = false;
 
