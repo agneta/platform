@@ -7,7 +7,7 @@ submit:
     en: 'Login'
     gr: 'Σύνδεση'
 
-controller: PopupLoginCtrl
+controller: 'AgPopupLoginCtrl'
 
 viewData:
   loginRedirect: '/'

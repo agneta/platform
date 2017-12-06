@@ -1,4 +1,4 @@
-controller: MediaSelect as media
+controller: 'AgMediaSelect'
 
 scripts:
   - 'media/file'

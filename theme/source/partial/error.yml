@@ -1,4 +1,4 @@
 title:
   en: Error
 skipAuthorization: true
-controller: DialogCtrl
+controller: 'AgDialogCtrl'

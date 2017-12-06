@@ -3,4 +3,4 @@ title:
 
 scripts:
   - manager/accounts/list
-controller: SearchAccounts
+controller: 'AgSearchAccounts'

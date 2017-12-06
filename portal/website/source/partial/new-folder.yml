@@ -5,7 +5,7 @@ description:
 placeholder:
   en: Name
 
-controller: NewFolder
+controller: 'AgNewFolder'
 
 authorization:
   - editor

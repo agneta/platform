@@ -9,7 +9,7 @@ authorization:
 scripts:
   - manager/accounts/list
 
-controller: AccountCtrl
+controller: 'AgAccountCtrl'
 menuLock: true
 
 fields:

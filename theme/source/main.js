@@ -39,8 +39,6 @@
 
   //---------------------------------------------------------------
 
-  var components = {};
-
   app.service('AppPage', function() {
 
     var page = {};
@@ -53,11 +51,6 @@
   });
 
   app.agDirective = function(name, link) {
-
-    var component = components[name];
-    if (!component) {
-      return;
-    }
 
     name = name[0].toLowerCase() + name.slice(1);
     var parameters;
@@ -233,11 +226,7 @@
         .then(function(response) {
 
           data = app.pageData = response.data;
-          console.log('$rootScope.loadData', data);
-          components[data.template.controller] = {
-            template: data.template,
-            data: {}
-          };
+          //console.log('$rootScope.loadData', data);
 
           //----------------------------------------------
           // Load page dependencies

@@ -1,6 +1,6 @@
 title:
   en: Confirm
   gr: 'Επιβεβαίωση'
-controller: DialogConfirm
+controller: 'AgDialogConfirm'
 
 skipAuthorization: true

@@ -54,7 +54,6 @@
   app.agDirective('AgLiveToggleCtrl', function($rootScope) {
 
     var vm = this;
-
     vm.value = toggle.value;
     $rootScope.isProduction = function() {
       return toggle.value;

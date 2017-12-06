@@ -3,7 +3,7 @@ title:
   gr: Διακομιστής
 
 icon: material/router
-controller: SystemServerCtrl
+controller: 'AgSystemServerCtrl'
 
 box:
   versions:

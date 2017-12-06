@@ -2,11 +2,11 @@ title:
   en: Source
   gr: Κώδικας
 
-controller: PageSourceCtrl
+controller: 'AgPageSourceCtrl'
 
 authorization:
   - editor
-  
+
 scripts:
   - 'lib/editor/codemirror'
   - 'lib/editor/sublime'

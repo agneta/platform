@@ -2,7 +2,7 @@ title:
   en: Form
   gr: Φόρμα
 
-controller: ActivityFormCtrl
+controller: 'AgActivityFormCtrl'
 
 scripts:
   - partial/activity-form

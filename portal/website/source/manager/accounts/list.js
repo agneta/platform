@@ -25,6 +25,9 @@ app.service('AccountList', function($rootScope, Production_Account, Account, $ti
   };
 
   function check() {
+    if(!$rootScope.isProduction){
+      return;
+    }
     var AccountModel = $rootScope.isProduction() ? Production_Account : Account;
     self.model = AccountModel;
   }
@@ -35,6 +38,11 @@ app.service('AccountList', function($rootScope, Production_Account, Account, $ti
   });
 
   this.loadAccounts = function(result) {
+
+    if(!self.model){
+      return;
+    }
+    
     if (result) {
       accounts.list = result.accounts;
       accounts.count = result.count;

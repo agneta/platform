@@ -21,7 +21,7 @@
 
   var app = angular.module('MainApp');
 
-  app.agDirective('PageSourceCtrl', function($scope,$timeout, $controller, $element,$mdDialog, data) {
+  app.agDirective('AgPageSourceCtrl', function($scope,$timeout, $controller, $element,$mdDialog, data) {
 
     var myCodeMirror;
     var vm = this;

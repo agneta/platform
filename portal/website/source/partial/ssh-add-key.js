@@ -18,7 +18,7 @@
 
   var app = angular.module('MainApp');
 
-  app.agDirective('AddSSHCtrl', function($timeout, $controller, $element, $mdDialog, data) {
+  app.agDirective('AgAddSSHCtrl', function($timeout, $controller, $element, $mdDialog, data) {
 
     var vm = this;
 

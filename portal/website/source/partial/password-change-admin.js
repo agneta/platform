@@ -18,7 +18,7 @@
 
   var app = angular.module('MainApp');
 
-  app.agDirective('PassChangeAdminCtrl', function(data, $rootScope, $controller, Account, LoopBackAuth) {
+  app.agDirective('AgPassChangeAdminCtrl', function(data, $rootScope, $controller, Account, LoopBackAuth) {
 
     var vm = this;
 

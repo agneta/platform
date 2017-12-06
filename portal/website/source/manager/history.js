@@ -275,7 +275,7 @@
               value: count.key
             }
           },
-          controller: 'ActivitiesCtrl'
+          controller: 'AgActivitiesCtrl'
         });
 
         return;
@@ -300,7 +300,7 @@
           value: vm.page.valueSelected,
           Model_Item: Model_Item
         },
-        controller: 'ActivitiesCtrl'
+        controller: 'AgActivitiesCtrl'
       });
 
     };
@@ -478,7 +478,7 @@
           activity: activity,
           Model_Item: data.Model_Item
         },
-        controller: 'ActivityCtrl'
+        controller: 'AgActivityCtrl'
       });
 
     };
