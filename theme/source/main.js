@@ -39,17 +39,6 @@
 
   //---------------------------------------------------------------
 
-  app.service('AppPage', function() {
-
-    var page = {};
-
-    this.bind = function(vm) {
-      console.log('binded!');
-      vm.page = page;
-    };
-
-  });
-
   app.agDirective = function(name, link) {
 
     name = name[0].toLowerCase() + name.slice(1);
@@ -60,18 +49,13 @@
       parameters = [];
     }
 
-    parameters.push('AppPage');
-
     parameters.push(function() {
 
       var args = Array.prototype.slice.call(arguments);
-      var AppPage = args.pop();
 
       return {
         restrict: 'A',
         link: function(vm) {
-          vm.test = 'Hello!!!';
-          AppPage.bind(vm);
 
           if (link) {
             link.apply(vm, args);
