@@ -22,14 +22,36 @@ module.exports = function(locals) {
 
   var project = locals.project;
 
+  project.extend.helper.register('viewController', function(tag) {
+    tag = tag.split('-');
+    var result = [];
+    for(var item of tag){
+      item = item[0].toUpperCase() + item.slice(1);
+      result.push(item);
+    }
+    result = result.join('');
+    return result;
+  });
+
+  project.extend.helper.register('viewTemplatePath', function(page) {
+
+    page = page || this.page;
+    return this.viewTag({
+      path: page.pathSource || page.path
+    })+'.html';
+  });
+
   project.extend.helper.register('viewTag', function(page) {
     page = page || this.page;
 
     var tag = page.controller;
-    if(tag){
+    if (tag) {
       tag = tag.replace(/([a-z](?=[A-Z]))/g, '$1 ').split(' ').join('-').toLowerCase();
-    }else{
-      tag = 'div';
+    } else {
+      tag = 'ag-page' + (page.pathSource || page.path).split('/').join('-').toLowerCase();
+      if (tag[tag.length - 1] == '-') {
+        tag += 'home';
+      }
     }
 
     return tag;
@@ -48,6 +70,14 @@ module.exports = function(locals) {
     data.scripts = [];
     data.styles = [];
     data.languages = [];
+
+    var name = this.viewTag(page);
+    data.template = {
+      default: page.controller?false:true,
+      controller: page.controller || this.viewController(name),
+      name: name,
+      path: this.viewTemplatePath(page)
+    };
 
     //-----------------------------------------------------
     // languages

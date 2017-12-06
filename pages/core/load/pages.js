@@ -24,7 +24,7 @@ module.exports = function(locals) {
       page: data
     });
 
-    var body = locals.app.locals.template('body', data_render);
+    var body = locals.app.locals.template('page/view', data_render);
     data_render.body = body;
 
     return locals.app.locals.template('layout', data_render);

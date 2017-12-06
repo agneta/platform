@@ -35,7 +35,6 @@ app.service('AccountList', function($rootScope, Production_Account, Account, $ti
   });
 
   this.loadAccounts = function(result) {
-    //console.warn('loadAccounts');
     if (result) {
       accounts.list = result.accounts;
       accounts.count = result.count;
@@ -47,6 +46,7 @@ app.service('AccountList', function($rootScope, Production_Account, Account, $ti
     })
       .$promise
       .then(function(recent) {
+        //console.warn('loadAccounts',recent);
         search.active = false;
         accounts.list = recent;
       });

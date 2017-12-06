@@ -1,0 +1,23 @@
+<%
+if(page.barebones && (!page.isView||page.isPartial)){
+	%>
+	<%-template(page.template)%>
+	<%
+}
+else if(page.isView){
+	var tag = viewTag();
+	%>
+	<<%-tag%> id="view-content" layout="row" flex="100">
+	</<%-tag%>>
+
+	<script type="text/ng-template" id="<%-viewTemplatePath()%>">
+	<%-template('layout/menu/side')%>
+	  <div layout="column" flex="100">
+	    <%-template(page.templateSource)%>
+	      <%if(!page.hiddenFooter){%>
+	        <%- template('layout/footer',null,true) %>
+	          <%}%>
+	  </div>
+	</script>
+
+	<%}%>

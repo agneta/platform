@@ -1,6 +1,6 @@
 <%
   var data = locals.data || page;
-  var tag = tag(data.formSteps.controller);
+  var tag = viewTag(data.formSteps);
 %>
 
 <<%-tag%> class="md-padding steps md-margin ui-form-steps" layout-align="space-between start" align="center">

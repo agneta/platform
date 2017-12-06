@@ -39,26 +39,66 @@
 
   //---------------------------------------------------------------
 
+  var components = {};
+
+  app.service('AppPage', function() {
+
+    var page = {};
+
+    this.bind = function(vm) {
+      console.log('binded!');
+      vm.page = page;
+    };
+
+  });
+
   app.page = function(name, link) {
+    console.log('app.page.name', name);
+
+    var component = components[name];
+    if (!component) {
+      return;
+    }
+
     name = name[0].toLowerCase() + name.slice(1);
     var parameters;
-    if(link){
+    if (link) {
       parameters = getParamNames(link);
-    }else{
+    } else {
       parameters = [];
     }
-    parameters.push(function(){
 
+    parameters.push('AppPage');
+
+    parameters.push(function() {
+      console.log('Hello!');
       var args = Array.prototype.slice.call(arguments);
-      return {
-        link: function(vm){
-          if(link){
-            link.apply(vm,args);
-          }
+      var AppPage = args.pop();
+      this.test = 'aaaa';
+      this.$onInit = function() {
+        this.accounts = {
+          list: [{
+            email: 'aa'
+          }]
+        };
+        AppPage.bind(this);
+
+        if (link) {
+          link.apply(this, args);
         }
+
       };
+
     });
-    app.directive(name, parameters);
+
+    console.log('set component', name, component);
+    setTimeout(function() {
+      app.component(name, {
+        templateUrl: component.template.path,
+        controller: parameters
+      });
+    });
+
   };
 
   var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
@@ -204,6 +244,11 @@
         .then(function(response) {
 
           data = response.data;
+          console.log('$rootScope.loadData', data);
+          components[data.template.controller] = {
+            template: data.template,
+            data: {}
+          };
 
           //----------------------------------------------
           // Load page dependencies
@@ -223,18 +268,18 @@
 
             return $q(function(resolve) {
 
-                if (priority.length) {
+              if (priority.length) {
 
-                  $ocLazyLoad.load([{
-                    name: 'MainApp',
-                    files: priority
-                  }]).then(resolve);
+                $ocLazyLoad.load([{
+                  name: 'MainApp',
+                  files: priority
+                }]).then(resolve);
 
-                } else {
-                  resolve();
-                }
+              } else {
+                resolve();
+              }
 
-              })
+            })
               .then(loadPriority);
 
           }
@@ -251,6 +296,11 @@
 
         })
         .then(function() {
+
+          if (data.template.default) {
+            app.page(data.template.controller);
+          }
+
           return data;
         });
     };
