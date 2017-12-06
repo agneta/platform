@@ -1,4 +1,4 @@
-controller: 'EditFile'
+controller: 'AgEditFile'
 
 authorization:
   - editor

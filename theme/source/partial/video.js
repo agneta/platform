@@ -18,7 +18,7 @@
 
   var app = window.angular.module('MainApp');
 
-  app.page('VideoCtrl', function(data) {
+  app.agDirective('AgVideoCtrl', function(data) {
 
     var vm = this;
 

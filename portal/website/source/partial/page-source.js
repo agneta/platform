@@ -21,13 +21,13 @@
 
   var app = angular.module('MainApp');
 
-  app.page('PageSourceCtrl', function($scope,$timeout, $controller, $element,$mdDialog, data) {
+  app.agDirective('PageSourceCtrl', function($scope,$timeout, $controller, $element,$mdDialog, data) {
 
     var myCodeMirror;
     var vm = this;
 
 
-    angular.extend(this, $controller('DialogCtrl', {
+    angular.extend(this, $controller('AgDialogCtrl', {
       $scope: $scope
     }));
 

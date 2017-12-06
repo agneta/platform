@@ -32,7 +32,7 @@
 
   var app = angular.module('MainApp');
 
-  app.page('EditMainCtrl', function($rootScope, $routeParams, $parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, MediaOpt, Role_Editor) {
+  app.agDirective('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, MediaOpt, Role_Editor) {
     var vm = this;
     var fuse;
     var fuseOptions = {

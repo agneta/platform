@@ -1,4 +1,4 @@
-controller: 'ModalFrame'
+controller: 'AgModalFrame'
 
 scripts:
   - partial/iframe

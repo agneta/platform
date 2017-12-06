@@ -18,9 +18,9 @@
 
   var app = angular.module('MainApp');
 
-  app.page('EditDataCtrl', function($controller, Edit_Data) {
+  app.agDirective('AgEditDataCtrl', function($controller, Edit_Data) {
     var vm = this;
-    angular.extend(this, $controller('EditMainCtrl', {
+    angular.extend(this, $controller('AgEditMainCtrl', {
       $scope: vm
     }));
 

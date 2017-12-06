@@ -6,7 +6,7 @@ description:
 icon: 'agneta/data'
 
 template: edit/data
-controller: 'EditDataCtrl'
+controller: 'AgEditDataCtrl'
 menuLock: true
 
 authorization:

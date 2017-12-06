@@ -16,7 +16,7 @@
  */
 function _e_login(app) {
 
-  app.page('LoginController', function($window, $location, $mdDialog, $rootScope, $routeParams, Account, LoopBackAuth) {
+  app.agDirective('LoginController', function($window, $location, $mdDialog, $rootScope, $routeParams, Account, LoopBackAuth) {
 
     var token;
     var vm = this;
@@ -30,7 +30,7 @@ function _e_login(app) {
         $mdDialog.show({
           clickOutsideToClose: true,
           templateUrl: agneta.partial('account-recover'),
-          controller: 'AccountRecoverCtrl'
+          controller: 'AgAccountRecoverCtrl'
         }).then(function() {
           LoopBackAuth.clearUser();
           LoopBackAuth.clearStorage();
@@ -113,7 +113,7 @@ function _e_login(app) {
                   html: err.message
                 }
               },
-              controller: 'ResendVrfCtrl'
+              controller: 'AgResendVrfCtrl'
             });
             break;
 
@@ -124,7 +124,7 @@ function _e_login(app) {
               locals: {
                 email: email
               },
-              controller: 'RequestRecoveryCtrl'
+              controller: 'AgRequestRecoveryCtrl'
             });
             break;
 

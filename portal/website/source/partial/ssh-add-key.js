@@ -18,11 +18,11 @@
 
   var app = angular.module('MainApp');
 
-  app.page('AddSSHCtrl', function($timeout, $controller, $element, $mdDialog, data) {
+  app.agDirective('AddSSHCtrl', function($timeout, $controller, $element, $mdDialog, data) {
 
     var vm = this;
 
-    angular.extend(this, $controller('DialogCtrl', {
+    angular.extend(this, $controller('AgDialogCtrl', {
       $scope: vm
     }));
 

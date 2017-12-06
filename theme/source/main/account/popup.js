@@ -15,11 +15,11 @@
  *   limitations under the License.
  */
 function _e_popup(app) {
-  app.page('PopupLoginCtrl', function($rootScope, $mdDialog, $controller) {
+  app.agDirective('AgPopupLoginCtrl', function($rootScope, $mdDialog, $controller) {
 
     var vm = this;
 
-    angular.extend(this, $controller('DialogCtrl', {
+    angular.extend(this, $controller('AgDialogCtrl', {
       $scope: vm
     }));
 

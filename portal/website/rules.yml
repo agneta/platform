@@ -1,7 +1,7 @@
 -
   data:
     noHeader: true
-    controller: 'UtilityCtrl'
+    controller: 'AgUtilityCtrl'
     scripts:
       - 'utility'
       - 'lib/bluebird.min'

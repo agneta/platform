@@ -19,7 +19,7 @@
   var scopeCount = 0;
 
   var app = window.angular.module('MainApp', window.angularDeps);
-  app.page('MenuItemCtrl', function($rootScope, $element, $timeout) {
+  app.agDirective('AgMenuItemCtrl', function($rootScope, $element, $timeout) {
     var vm = this;
     vm.expanded = false;
     vm.id = scopeCount++;

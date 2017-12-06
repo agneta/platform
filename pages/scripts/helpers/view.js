@@ -78,10 +78,6 @@ module.exports = function(locals) {
       path: this.viewTemplatePath(page)
     };
 
-    if(!page.controller){
-      data.scripts.push('page/view');
-    }
-
     //-----------------------------------------------------
     // languages
 

@@ -1,4 +1,4 @@
 title:
   en: Add SSH Key
 
-controller: 'AddSSHCtrl'
+controller: 'AgAddSSHCtrl'

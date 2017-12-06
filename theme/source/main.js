@@ -52,8 +52,7 @@
 
   });
 
-  app.page = function(name, link) {
-    console.log('app.page.name', name);
+  app.agDirective = function(name, link) {
 
     var component = components[name];
     if (!component) {
@@ -71,31 +70,24 @@
     parameters.push('AppPage');
 
     parameters.push(function() {
-      console.log('Hello!');
+
       var args = Array.prototype.slice.call(arguments);
       var AppPage = args.pop();
-      this.test = 'aaaa';
-      this.$onInit = function() {
-        this.accounts = {
-          list: [{
-            email: 'aa'
-          }]
-        };
-        AppPage.bind(this);
 
-        if (link) {
-          link.apply(this, args);
+      return {
+        restrict: 'A',
+        link: function(vm) {
+          vm.test = 'Hello!!!';
+          AppPage.bind(vm);
+
+          if (link) {
+            link.apply(vm, args);
+          }
         }
-
       };
-
     });
 
-    console.log('set component', name, component.template.path, component, parameters);
-    app.component(name, {
-      templateUrl: component.template.path,
-      controller: parameters
-    });
+    app.directive(name, parameters);
 
   };
 

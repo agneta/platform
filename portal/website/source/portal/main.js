@@ -51,7 +51,7 @@
     value: false
   };
 
-  app.page('LiveToggleCtrl', function($rootScope) {
+  app.agDirective('AgLiveToggleCtrl', function($rootScope) {
 
     var vm = this;
 

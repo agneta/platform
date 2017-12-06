@@ -18,7 +18,7 @@
 
   var app = window.angular.module('MainApp');
 
-  app.page('RecaptchaCtrl', function($element, $attrs, $timeout, $parse, $ocLazyLoad) {
+  app.agDirective('AgRecaptchaCtrl', function($element, $attrs, $timeout, $parse, $ocLazyLoad) {
 
     var element = $element[0];
     var vm = this;

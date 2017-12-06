@@ -19,7 +19,7 @@
 
   var app = angular.module('MainApp');
 
-  app.page('AccountCtrl', function($rootScope, AccountList, $routeParams, $mdToast, $mdDialog, Production_Account, Account, $location) {
+  app.agDirective('AgAccountCtrl', function($rootScope, AccountList, $routeParams, $mdToast, $mdDialog, Production_Account, Account, $location) {
     var vm = this;
     AccountList.useScope(vm);
     function reloadAccount() {
@@ -136,7 +136,7 @@
             controller: function($controller, data) {
               vm.data = data;
 
-              angular.extend(this, $controller('DialogCtrl', {
+              angular.extend(this, $controller('AgDialogCtrl', {
                 $scope: vm
               }));
 
@@ -185,7 +185,7 @@
       $mdDialog.show({
         controller: function($controller) {
 
-          angular.extend(this, $controller('DialogCtrl', {
+          angular.extend(this, $controller('AgDialogCtrl', {
             $scope: vm
           }));
 

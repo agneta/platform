@@ -16,11 +16,11 @@
  */
 function _e_password(app) {
 
-  app.page('PassLostCtrl', function($controller,data, Account) {
+  app.agDirective('AgPassLostCtrl', function($controller,data, Account) {
 
     var vm = this;
 
-    angular.extend(this, $controller('DialogCtrl', {
+    angular.extend(this, $controller('AgDialogCtrl', {
       $scope: vm
     }));
 
@@ -36,11 +36,11 @@ function _e_password(app) {
 
   });
 
-  app.page('PassChangeCtrl', function($rootScope, $mdDialog, $controller, LoopBackAuth, Account) {
+  app.agDirective('AgPassChangeCtrl', function($rootScope, $mdDialog, $controller, LoopBackAuth, Account) {
 
     var vm = this;
 
-    angular.extend(this, $controller('DialogCtrl', {
+    angular.extend(this, $controller('AgDialogCtrl', {
       $scope: vm
     }));
 

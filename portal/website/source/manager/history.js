@@ -30,7 +30,7 @@
     hourOfYear: 'ha'
   };
 
-  app.page('HistoryCtrl', function($ocLazyLoad, $rootScope, $mdDialog, $mdSidenav, $timeout, Production_Activity_Count, Activity_Count, Production_Activity_Item, Portal, Activity_Item) {
+  app.agDirective('AgHistoryCtrl', function($ocLazyLoad, $rootScope, $mdDialog, $mdSidenav, $timeout, Production_Activity_Count, Activity_Count, Production_Activity_Item, Portal, Activity_Item) {
 
     var vm = this;
 
@@ -438,11 +438,11 @@
 
   ///////////////////////////////////////////////////////////////////////////
 
-  app.page('ActivitiesCtrl', function($rootScope, $mdDialog, $controller, data) {
+  app.agDirective('AgActivitiesCtrl', function($rootScope, $mdDialog, $controller, data) {
 
     var vm = this;
 
-    angular.extend(this, $controller('DialogCtrl', {
+    angular.extend(this, $controller('AgDialogCtrl', {
       $scope: vm
     }));
 
@@ -487,11 +487,11 @@
 
   ///////////////////////////////////////////////////////////////////////////
 
-  app.page('ActivityCtrl', function($rootScope, $mdDialog, $controller, data) {
+  app.agDirective('AgActivityCtrl', function($rootScope, $mdDialog, $controller, data) {
 
     var vm = this;
 
-    angular.extend(this, $controller('DialogCtrl', {
+    angular.extend(this, $controller('AgDialogCtrl', {
       $scope: vm
     }));
 

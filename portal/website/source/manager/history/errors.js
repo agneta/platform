@@ -31,18 +31,18 @@
         vm.createTimeline({
           $element: $element,
           getTitle: getTitle,
-          dialogController: 'LogErrorCtrl',
+          dialogController: 'AgLogErrorCtrl',
           template: 'log-error'
         });
       }
     };
   });
 
-  app.page('LogErrorCtrl', function($controller, $mdDialog, result) {
+  app.agDirective('AgLogErrorCtrl', function($controller, $mdDialog, result) {
 
     var vm = this;
 
-    angular.extend(this, $controller('DialogCtrl', {
+    angular.extend(this, $controller('AgDialogCtrl', {
       $scope: vm
     }));
 

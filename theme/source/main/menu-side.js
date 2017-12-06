@@ -27,7 +27,7 @@ function _e_menuSide(app) {
   });
 
 
-  app.directive('menuSide', function($rootScope, $timeout,$route, $mdSidenav, $mdMedia, $http, $compile, $log) {
+  app.directive('agMenuSide', function($rootScope, $timeout,$route, $mdSidenav, $mdMedia, $http, $compile, $log) {
     return {
       link: function(vm) {
 

@@ -1,6 +1,6 @@
 <%if(config.menu.side){%>
 <md-sidenav class="md-sidenav-left md-whiteframe-z2 site-menu" md-is-locked-open="menuLock()" md-component-id="menu" layout="column">
-    <menu-side layout="column">
+    <div ag-menu-side layout="column">
         <%-template('sidebar/toolbar')%>
         <md-content layout="column">
         <%
@@ -23,6 +23,6 @@
             <%}%>
         </div>
         <%}%>
-    </menu-side>
+    </div>
 </md-sidenav>
 <%}%>

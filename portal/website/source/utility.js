@@ -19,7 +19,7 @@
   var app = angular.module('MainApp');
   var logLimit = 3000;
 
-  app.page('UtilityCtrl', function($rootScope, $mdToast, Utility, SocketIO, $parse, $timeout) {
+  app.agDirective('AgUtilityCtrl', function($rootScope, $mdToast, Utility, SocketIO, $parse, $timeout) {
 
     var vm = this;
 

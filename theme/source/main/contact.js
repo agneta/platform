@@ -18,7 +18,7 @@
 
   var app = window.angular.module('MainApp');
 
-  app.page('ContactCtrl', function($rootScope, $mdDialog) {
+  app.agDirective('AgContactCtrl', function($rootScope, $mdDialog) {
 
     var vm = this;
 
@@ -26,13 +26,13 @@
       $mdDialog.show({
         clickOutsideToClose: true,
         templateUrl: agneta.partial('contact'),
-        controller: 'ContactDialogCtrl'
+        controller: 'AgContactDialogCtrl'
       });
     };
 
   });
 
-  app.page('ContactDialogCtrl', function($rootScope, $timeout, $controller, $mdDialog, Contact) {
+  app.agDirective('AgContactDialogCtrl', function($rootScope, $timeout, $controller, $mdDialog, Contact) {
 
     var vm = this;
 
@@ -46,7 +46,7 @@
       vm.tabSelected = index;
     };
 
-    angular.extend(this, $controller('DialogCtrl', {
+    angular.extend(this, $controller('AgDialogCtrl', {
       $scope: vm
     }));
 

@@ -11,7 +11,7 @@ icon: 'material/history'
 scripts:
   - 'lib/Chart.min'
 
-controller: 'HistoryCtrl'
+controller: 'AgHistoryCtrl'
 menuLock: true
 authorization:
   - reviewer

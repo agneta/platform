@@ -100,7 +100,7 @@ function _e_main(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeE
       partial: 'page-add',
       controller: function($controller) {
 
-        angular.extend(this, $controller('DialogCtrl', {
+        angular.extend(this, $controller('AgDialogCtrl', {
           $scope: vm
         }));
 
@@ -166,7 +166,7 @@ function _e_main(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeE
       partial: 'push-changes',
       controller: function($controller) {
 
-        angular.extend(this, $controller('DialogCtrl', {
+        angular.extend(this, $controller('AgDialogCtrl', {
           $scope: vm
         }));
 

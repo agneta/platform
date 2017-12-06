@@ -18,11 +18,11 @@
 
   var app = window.angular.module('MainApp');
 
-  app.page('ModalFrame', function($controller, data) {
+  app.agDirective('ModalFrame', function($controller, data) {
 
     var vm = this;
     
-    angular.extend(this, $controller('DialogCtrl', {
+    angular.extend(this, $controller('AgDialogCtrl', {
       $scope: vm
     }));
 

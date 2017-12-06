@@ -87,14 +87,14 @@ function _e_Dialog(app) {
   });
 
 
-  app.page('DialogController', function($mdDialog, data) {
+  app.agDirective('DialogController', function($mdDialog, data) {
 
     var vm = this;
     vm.data = data;
 
   });
 
-  app.page('DialogCtrl', function($rootScope, $mdDialog) {
+  app.agDirective('AgDialogCtrl', function($rootScope, $mdDialog) {
 
     var vm = this;
 
@@ -115,7 +115,7 @@ function _e_Dialog(app) {
     });
   });
 
-  app.page('DialogConfirm', function($rootScope, data, $mdDialog) {
+  app.agDirective('DialogConfirm', function($rootScope, data, $mdDialog) {
 
     var vm = this;
 

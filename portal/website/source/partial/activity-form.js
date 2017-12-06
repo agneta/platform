@@ -18,11 +18,11 @@
 
   var app = angular.module('MainApp');
 
-  app.page('ActivityFormCtrl', function($controller, $rootScope, data, Form, Production_Form) {
+  app.agDirective('AgActivityFormCtrl', function($controller, $rootScope, data, Form, Production_Form) {
 
     var vm = this;
 
-    angular.extend(this, $controller('DialogCtrl', {
+    angular.extend(this, $controller('AgDialogCtrl', {
       $scope: vm
     }));
 

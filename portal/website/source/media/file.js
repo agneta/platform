@@ -226,7 +226,7 @@
     };
   });
 
-  app.page('MediaSelect', function($controller, data, $mdDialog) {
+  app.agDirective('MediaSelect', function($controller, data, $mdDialog) {
 
     var vm = this;
 
@@ -247,7 +247,7 @@
       }
     };
 
-    angular.extend(this, $controller('MediaCtrl', {
+    angular.extend(this, $controller('AgMediaCtrl', {
       MediaOpt: data.media,
       $scope: vm
     }));
@@ -255,11 +255,11 @@
 
   });
 
-  app.page('EditFile', function($controller, data, EditFile,MediaOpt) {
+  app.agDirective('AgEditFile', function($controller, data, EditFile,MediaOpt) {
 
     var vm = this;
 
-    angular.extend(this, $controller('DialogCtrl', {
+    angular.extend(this, $controller('AgDialogCtrl', {
       $scope: vm
     }));
 
@@ -304,7 +304,7 @@
 
   });
 
-  app.page('EditFilePrivate', function($controller, data, MediaOpt, Account) {
+  app.agDirective('EditFilePrivate', function($controller, data, MediaOpt, Account) {
 
     var onFile = data.onFile;
     var vm = this;

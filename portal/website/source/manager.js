@@ -18,7 +18,7 @@
 
   var app = angular.module('MainApp');
 
-  app.page('HomeCtrl', function($rootScope, $location, Account) {
+  app.agDirective('AgHomeCtrl', function($rootScope, $location, Account) {
 
     var vm = this;
     vm.accounts = {};
@@ -58,7 +58,7 @@
 
   });
 
-  app.page('HomeActivitiesCtrl', function($rootScope, $q, $timeout) {
+  app.agDirective('AgHomeActivitiesCtrl', function($rootScope, $q, $timeout) {
     ///////////////////////////////////////////
 
     var vm = this;

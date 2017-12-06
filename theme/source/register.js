@@ -16,21 +16,22 @@
  */
 (function() {
 
-  angular.module('MainApp').controller('RegisterCtrl', function(Account) {
+  angular.module('MainApp')
+    .agDirective('AgRegisterCtrl', function(Account) {
 
-    var vm = this;
-    
-    vm.registerAccount = function() {
+      var vm = this;
 
-      vm.loading = true;
+      vm.registerAccount = function() {
 
-      Account.register(vm.registerFields)
-        .$promise
-        .finally(function() {
-          vm.loading = false;
-        });
-    };
+        vm.loading = true;
 
-  });
+        Account.register(vm.registerFields)
+          .$promise
+          .finally(function() {
+            vm.loading = false;
+          });
+      };
+
+    });
 
 })();

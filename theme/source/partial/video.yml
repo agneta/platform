@@ -15,4 +15,4 @@ angular_libs:
     dep: 'com.2fdevs.videogular.plugins.buffering'
     js: 'lib/vg-buffering.min'
 
-controller: 'VideoCtrl'
+controller: 'AgVideoCtrl'

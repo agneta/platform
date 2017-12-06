@@ -19,7 +19,7 @@
 
   var app = angular.module('MainApp');
 
-  app.page('SearchAccounts', function(AccountList, $rootScope, $mdDialog, Production_Account, Account, $location) {
+  app.agDirective('SearchAccounts', function(AccountList, $rootScope, $mdDialog, Production_Account, Account, $location) {
 
     var vm = this;
 

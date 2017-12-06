@@ -18,12 +18,12 @@
 
   var app = angular.module('MainApp');
 
-  app.page('PassChangeAdminCtrl', function(data, $rootScope, $controller, Account, LoopBackAuth) {
+  app.agDirective('PassChangeAdminCtrl', function(data, $rootScope, $controller, Account, LoopBackAuth) {
 
     var vm = this;
 
     //console.log(data);
-    angular.extend(this, $controller('DialogCtrl', {
+    angular.extend(this, $controller('AgDialogCtrl', {
       $scope: vm
     }));
 

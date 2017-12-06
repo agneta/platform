@@ -16,11 +16,11 @@
  */
 function _e_recovery(app) {
 
-  app.page('AccountRecoverCtrl', function($controller, Account) {
+  app.agDirective('AgAccountRecoverCtrl', function($controller, Account) {
 
     var vm = this;
 
-    angular.extend(this, $controller('DialogCtrl', {
+    angular.extend(this, $controller('AgDialogCtrl', {
       $scope: vm
     }));
 
@@ -37,11 +37,11 @@ function _e_recovery(app) {
 
   });
 
-  app.page('RequestRecoveryCtrl', function(Account, $controller, $mdDialog, email) {
+  app.agDirective('AgRequestRecoveryCtrl', function(Account, $controller, $mdDialog, email) {
 
     var vm = this;
 
-    angular.extend(this, $controller('DialogCtrl', {
+    angular.extend(this, $controller('AgDialogCtrl', {
       $scope: vm
     }));
 

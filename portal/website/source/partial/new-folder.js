@@ -18,11 +18,11 @@
 
   var app = angular.module('MainApp');
 
-  app.page('NewFolder', function($controller, $rootScope, data) {
+  app.agDirective('NewFolder', function($controller, $rootScope, data) {
 
     var vm = this;
 
-    angular.extend(this, $controller('DialogCtrl', {
+    angular.extend(this, $controller('AgDialogCtrl', {
       $scope: vm
     }));
 

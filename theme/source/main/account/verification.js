@@ -15,11 +15,11 @@
  *   limitations under the License.
  */
 function _e_verification(app) {
-  app.page('ResendVrfCtrl', function(Account, $controller, $mdDialog, data) {
+  app.agDirective('AgResendVrfCtrl', function(Account, $controller, $mdDialog, data) {
 
     var vm = this;
 
-    angular.extend(this, $controller('DialogCtrl', {
+    angular.extend(this, $controller('AgDialogCtrl', {
       $scope: vm
     }));
 

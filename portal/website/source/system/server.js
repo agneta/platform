@@ -18,7 +18,7 @@
 
   var app = angular.module('MainApp');
 
-  app.page('SystemServerCtrl', function($rootScope, Process, SocketIO, $mdDialog) {
+  app.agDirective('AgSystemServerCtrl', function($rootScope, Process, SocketIO, $mdDialog) {
 
     var socket = SocketIO.connect('system');
     var vm = this;
