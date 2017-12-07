@@ -101,10 +101,8 @@ var start = {
     return component;
   },
   pages: function(options) {
-
     options.paths = paths.app(options);
-    return getComponent('pages', options.paths.framework, options);
-
+    return getComponent('pages', '../pages', options);
   },
   services: function(options) {
 

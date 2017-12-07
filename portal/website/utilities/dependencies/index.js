@@ -15,17 +15,13 @@
  *   limitations under the License.
  */
 var generate = require('./generate');
-var deploy = require('./deploy');
 
 module.exports = function(util) {
 
   return {
     run: function() {
 
-      return generate(util)
-        .then(function() {
-          return deploy(util);
-        });
+      return generate(util);
 
     }
   };

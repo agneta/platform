@@ -24,11 +24,8 @@ var bower = require('../lib/bower');
 
 module.exports = function(util, dir) {
 
-  var projectPaths = util.locals.web.project.paths;
-
   if(
-    !fs.pathExistsSync(path.join(dir.root, 'bower.json')) ||
-    !fs.pathExistsSync(dir.modules)
+    !fs.pathExistsSync(path.join(dir.root, 'bower.json'))
   ){
     util.log('No Bower Compoments found at ' + dir.name + ' dir.');
     return;

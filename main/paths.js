@@ -24,7 +24,7 @@ const _ = require('lodash');
 var core = {};
 core.project = process.cwd();
 
-var agneta = path.join(core.project, 'node_modules', 'agneta-platform');
+var agneta = path.join(__dirname,'..');
 
 core.agneta = agneta;
 core.services = path.join(agneta, 'services');
