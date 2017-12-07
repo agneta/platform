@@ -8,7 +8,9 @@ authorization:
   - editor
 
 scripts:
-  - 'lib/editor/codemirror'
+  -
+    path: 'lib/editor/codemirror'
+    priority: 0
   - 'lib/editor/sublime'
   - 'lib/editor/yaml'
   - 'lib/editor/lint'

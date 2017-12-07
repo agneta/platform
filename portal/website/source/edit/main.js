@@ -31,7 +31,6 @@
 (function() {
   agneta.directive('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, MediaOpt, Role_Editor) {
     var vm = this;
-    var fuse;
     var fuseOptions = {
       shouldSort: true,
       threshold: 0.6,
@@ -45,7 +44,6 @@
       ]
     };
 
-    var itemsLoaded;
     var helpers = {};
     var scopeEdit = vm;
 
@@ -83,7 +81,7 @@
     _e_helpers(vm, $mdToast, $timeout, helpers);
     _e_history(vm, helpers);
     _e_main(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeEdit, Portal, GIT);
-    _e_search(vm, $timeout, fuse, itemsLoaded);
+    _e_search(vm, $timeout);
     _e_source(vm, $mdDialog, $timeout);
     _e_contributor(vm, $rootScope, Account, Portal, $timeout, Role_Editor);
 
@@ -158,16 +156,16 @@
         .$promise
         .then(function(result) {
 
-          itemsLoaded = result.templates;
+          vm.itemsLoaded = result.templates;
           vm.templates = null;
 
           $timeout(function() {
 
-            vm.templates = itemsLoaded;
+            vm.templates = vm.itemsLoaded;
             vm.template = null;
             vm.page = null;
             vm.pages = null;
-            fuse = new Fuse(itemsLoaded, fuseOptions);
+            vm.fuse = new Fuse(vm.itemsLoaded, fuseOptions);
 
           }, 10);
 
@@ -206,10 +204,10 @@
         .then(function(result) {
           vm.pages = null;
           $timeout(function() {
-            itemsLoaded = result.pages;
-            vm.pages = itemsLoaded;
+            vm.itemsLoaded = result.pages;
+            vm.pages = vm.itemsLoaded;
             vm.templates = null;
-            fuse = new Fuse(itemsLoaded, fuseOptions);
+            vm.fuse = new Fuse(vm.itemsLoaded, fuseOptions);
           }, 10);
         });
 

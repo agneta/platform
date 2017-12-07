@@ -15,7 +15,7 @@
  *   limitations under the License.
  */
 
-function _e_search(vm, $timeout, fuse, itemsLoaded) {
+function _e_search(vm, $timeout) {
 
   vm.onSearch = function(value) {
 
@@ -33,13 +33,13 @@ function _e_search(vm, $timeout, fuse, itemsLoaded) {
 
       vm[scopeName] = null;
       $timeout(function() {
-        vm[scopeName] = itemsLoaded;
+        vm[scopeName] = vm.itemsLoaded;
       }, 100);
 
       return;
     }
 
-    var result = fuse.search(value).slice(0, 6);
+    var result = vm.fuse.search(value).slice(0, 6);
     vm[scopeName] = result;
   };
 
