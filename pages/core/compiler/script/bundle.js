@@ -10,23 +10,19 @@ module.exports = function(project, helpers) {
       return bundle;
     }
 
-    var arr;
-
     concat('lib/angular.min');
 
-    arr = _.uniqBy(this.config.angular_libs,'js');
-    for (var lib of arr) {
+    for (var lib of _.uniqBy(project.config.angular_libs,'js')) {
       concat(lib.js);
     }
 
-    arr = _.uniq(this.config.scripts);
-    for (var script of arr) {
+    for (var script of _.uniq(project.config.scripts)) {
       concat(script);
     }
 
     function concat(script){
+      bundle += `\n\n//----------    ${script}   -------------\n\n`;
       bundle += helpers.template(script);
-      bundle += '\n';
     }
 
     return bundle;

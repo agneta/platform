@@ -83,13 +83,19 @@ module.exports = function(locals) {
   function getObject(getPath, method) {
 
     var filePaths = [
-      path.join(project.paths.base, getPath),
-      path.join(project.paths.baseTheme, getPath)
+      project.paths.base,
+      project.paths.baseTheme
     ];
+
+    if(locals.web){
+      filePaths.push(locals.web.project.paths.portalProject);
+    }
+
     var filePath;
 
-    for (filePath of filePaths) {
+    for (var _filePath of filePaths) {
 
+      filePath = path.join(_filePath, getPath);
       var stats;
 
       try {
