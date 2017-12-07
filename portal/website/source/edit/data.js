@@ -18,11 +18,9 @@
 
   var app = angular.module('MainApp');
 
-  app.agDirective('AgEditDataCtrl', function($controller, Edit_Data) {
+  app.agDirective('AgEditDataCtrl', function(Edit_Data) {
     var vm = this;
-    angular.extend(this, $controller('AgEditMainCtrl', {
-      $scope: vm
-    }));
+    agneta.extend(vm, 'AgEditMainCtrl');
 
     vm.init(Edit_Data);
 

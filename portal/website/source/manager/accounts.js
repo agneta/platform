@@ -133,12 +133,10 @@
         .then(function(roles) {
 
           $mdDialog.show({
-            controller: function($controller, data) {
+            controller: function(data) {
               vm.data = data;
 
-              angular.extend(this, $controller('AgDialogCtrl', {
-                $scope: vm
-              }));
+              agneta.extend(vm, 'AgDialogCtrl');
 
               vm.submit = function() {
 
@@ -183,11 +181,9 @@
     vm.createAccount = function() {
 
       $mdDialog.show({
-        controller: function($controller) {
+        controller: function() {
 
-          angular.extend(this, $controller('AgDialogCtrl', {
-            $scope: vm
-          }));
+          agneta.extend(vm, 'AgDialogCtrl');
 
           vm.submit = function() {
             vm.loading = true;

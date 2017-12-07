@@ -18,13 +18,11 @@
 
   var app = angular.module('MainApp');
 
-  app.agDirective('AgAddSSHCtrl', function($timeout, $controller, $element, $mdDialog, data) {
+  app.agDirective('AgAddSSHCtrl', function($timeout, $element, $mdDialog, data) {
 
     var vm = this;
 
-    angular.extend(this, $controller('AgDialogCtrl', {
-      $scope: vm
-    }));
+    agneta.extend(vm, 'AgDialogCtrl');
 
     vm.submit = function() {
 

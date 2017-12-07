@@ -38,13 +38,11 @@
     };
   });
 
-  app.agDirective('AgLogErrorCtrl', function($controller, $mdDialog, result) {
+  app.agDirective('AgLogErrorCtrl', function($mdDialog, result) {
 
     var vm = this;
 
-    angular.extend(this, $controller('AgDialogCtrl', {
-      $scope: vm
-    }));
+    agneta.extend(vm, 'AgDialogCtrl');
 
     vm.fromNow = moment.utc(result.time).local().fromNow();
 

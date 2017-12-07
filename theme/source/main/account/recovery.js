@@ -16,13 +16,11 @@
  */
 function _e_recovery(app) {
 
-  app.agDirective('AgAccountRecoverCtrl', function($controller, Account) {
+  app.agDirective('AgAccountRecoverCtrl', function(Account) {
 
     var vm = this;
 
-    angular.extend(this, $controller('AgDialogCtrl', {
-      $scope: vm
-    }));
+    agneta.extend(vm, 'AgDialogCtrl');
 
     vm.submitPassword = function() {
 
@@ -37,13 +35,11 @@ function _e_recovery(app) {
 
   });
 
-  app.agDirective('AgRequestRecoveryCtrl', function(Account, $controller, $mdDialog, email) {
+  app.agDirective('AgRequestRecoveryCtrl', function(Account, $mdDialog, email) {
 
     var vm = this;
 
-    angular.extend(this, $controller('AgDialogCtrl', {
-      $scope: vm
-    }));
+    agneta.extend(vm, 'AgDialogCtrl');
 
     vm.data = {
       title: 'Account Deactivated',

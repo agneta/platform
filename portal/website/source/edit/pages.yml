@@ -8,7 +8,7 @@ description:
 
 template: 'edit/pages'
 noHeader: true
-controller: 'AgEditPagesCtrl as editor'
+controller: 'AgEditPagesCtrl'
 icon: 'agneta/pages'
 menuLock: true
 

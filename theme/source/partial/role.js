@@ -18,13 +18,11 @@
 
   var app = window.angular.module('MainApp');
 
-  app.agDirective('FormRole', function($controller, data, Account) {
+  app.agDirective('FormRole', function(data, Account) {
 
     var vm = this;
 
-    angular.extend(this, $controller('AgDialogCtrl', {
-      $scope: vm
-    }));
+    agneta.extend(vm, 'AgDialogCtrl');
 
     vm.loading = true;
     vm.formRoleFields = {};

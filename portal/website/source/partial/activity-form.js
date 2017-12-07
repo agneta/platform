@@ -18,13 +18,11 @@
 
   var app = angular.module('MainApp');
 
-  app.agDirective('AgActivityFormCtrl', function($controller, $rootScope, data, Form, Production_Form) {
+  app.agDirective('AgActivityFormCtrl', function($rootScope, data, Form, Production_Form) {
 
     var vm = this;
 
-    angular.extend(this, $controller('AgDialogCtrl', {
-      $scope: vm
-    }));
+    agneta.extend(vm, 'AgDialogCtrl');
 
     vm.loading = true;
     var Model = $rootScope.isProduction() ? Production_Form : Form;

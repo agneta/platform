@@ -21,15 +21,13 @@
 
   var app = angular.module('MainApp');
 
-  app.agDirective('AgPageSourceCtrl', function($scope,$timeout, $controller, $element,$mdDialog, data) {
+  app.agDirective('AgPageSourceCtrl', function($timeout, $element,$mdDialog, data) {
 
     var myCodeMirror;
     var vm = this;
 
 
-    angular.extend(this, $controller('AgDialogCtrl', {
-      $scope: $scope
-    }));
+    agneta.extend(vm, 'AgDialogCtrl');
 
     setTimeout(function() {
       var editorElm = document.querySelector('#source-editor');

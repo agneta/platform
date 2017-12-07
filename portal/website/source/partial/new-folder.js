@@ -18,13 +18,11 @@
 
   var app = angular.module('MainApp');
 
-  app.agDirective('NewFolder', function($controller, $rootScope, data) {
+  app.agDirective('NewFolder', function($rootScope, data) {
 
     var vm = this;
 
-    angular.extend(this, $controller('AgDialogCtrl', {
-      $scope: vm
-    }));
+    agneta.extend(vm, 'AgDialogCtrl');
 
     vm.apply = function(){
       data.onApply(vm.name)

@@ -32,7 +32,7 @@
 
   });
 
-  app.agDirective('AgContactDialogCtrl', function($rootScope, $timeout, $controller, $mdDialog, Contact) {
+  app.agDirective('AgContactDialogCtrl', function($rootScope, $timeout, $mdDialog, Contact) {
 
     var vm = this;
 
@@ -46,9 +46,7 @@
       vm.tabSelected = index;
     };
 
-    angular.extend(this, $controller('AgDialogCtrl', {
-      $scope: vm
-    }));
+    agneta.extend(vm, 'AgDialogCtrl');
 
     vm.select = function(name) {
       vm.selected = name;

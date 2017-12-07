@@ -18,13 +18,11 @@
 
   var app = window.angular.module('MainApp');
 
-  app.agDirective('ModalFrame', function($controller, data) {
+  app.agDirective('ModalFrame', function(data) {
 
     var vm = this;
-    
-    angular.extend(this, $controller('AgDialogCtrl', {
-      $scope: vm
-    }));
+
+    agneta.extend(vm, 'AgDialogCtrl');
 
     vm.data = data;
 

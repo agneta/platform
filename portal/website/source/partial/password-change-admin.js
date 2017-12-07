@@ -18,14 +18,12 @@
 
   var app = angular.module('MainApp');
 
-  app.agDirective('AgPassChangeAdminCtrl', function(data, $rootScope, $controller, Account, LoopBackAuth) {
+  app.agDirective('AgPassChangeAdminCtrl', function(data, $rootScope, Account, LoopBackAuth) {
 
     var vm = this;
 
     //console.log(data);
-    angular.extend(this, $controller('AgDialogCtrl', {
-      $scope: vm
-    }));
+    agneta.extend(vm, 'AgDialogCtrl');
 
     vm.submitPassword = function() {
 

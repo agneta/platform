@@ -438,13 +438,11 @@
 
   ///////////////////////////////////////////////////////////////////////////
 
-  app.agDirective('AgActivitiesCtrl', function($rootScope, $mdDialog, $controller, data) {
+  app.agDirective('AgActivitiesCtrl', function($rootScope, $mdDialog, data) {
 
     var vm = this;
 
-    angular.extend(this, $controller('AgDialogCtrl', {
-      $scope: vm
-    }));
+    agneta.extend(vm, 'AgDialogCtrl');
 
     vm.loading = true;
     var time = moment().utc().dayOfYear(data.value);
@@ -487,13 +485,11 @@
 
   ///////////////////////////////////////////////////////////////////////////
 
-  app.agDirective('AgActivityCtrl', function($rootScope, $mdDialog, $controller, data) {
+  app.agDirective('AgActivityCtrl', function($rootScope, $mdDialog, data) {
 
     var vm = this;
 
-    angular.extend(this, $controller('AgDialogCtrl', {
-      $scope: vm
-    }));
+    agneta.extend(vm, 'AgDialogCtrl');
 
     vm.loading = true;
 

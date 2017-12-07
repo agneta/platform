@@ -226,7 +226,7 @@
     };
   });
 
-  app.agDirective('MediaSelect', function($controller, data, $mdDialog) {
+  app.agDirective('MediaSelect', function(data, $mdDialog) {
 
     var vm = this;
 
@@ -247,21 +247,18 @@
       }
     };
 
-    angular.extend(this, $controller('AgMediaCtrl', {
-      MediaOpt: data.media,
-      $scope: vm
-    }));
+    agneta.extend(vm, 'AgMediaCtrl',{
+      MediaOpt: data.media
+    });
 
 
   });
 
-  app.agDirective('AgEditFile', function($controller, data, EditFile,MediaOpt) {
+  app.agDirective('AgEditFile', function(data, EditFile,MediaOpt) {
 
     var vm = this;
 
-    angular.extend(this, $controller('AgDialogCtrl', {
-      $scope: vm
-    }));
+    agneta.extend(vm, 'AgDialogCtrl');
 
     data.config = data.config || {};
 
@@ -304,7 +301,7 @@
 
   });
 
-  app.agDirective('EditFilePrivate', function($controller, data, MediaOpt, Account) {
+  app.agDirective('EditFilePrivate', function(data, MediaOpt, Account) {
 
     var onFile = data.onFile;
     var vm = this;
@@ -353,10 +350,9 @@
 
     vm.roles = roles;
 
-    angular.extend(this, $controller('EditFile', {
-      $scope: vm,
+    agneta.extend(vm, 'EditFile', {
       data: data
-    }));
+    });
 
   });
 

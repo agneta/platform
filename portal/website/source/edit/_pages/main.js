@@ -98,11 +98,9 @@ function _e_main(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeE
   vm.pageAdd = function() {
     $mdDialog.open({
       partial: 'page-add',
-      controller: function($controller) {
+      controller: function() {
 
-        angular.extend(this, $controller('AgDialogCtrl', {
-          $scope: vm
-        }));
+        agneta.extend(vm, 'AgDialogCtrl');
 
         if (!scopeEdit.template) {
           return;
@@ -164,11 +162,9 @@ function _e_main(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeE
 
     $mdDialog.open({
       partial: 'push-changes',
-      controller: function($controller) {
+      controller: function() {
 
-        angular.extend(this, $controller('AgDialogCtrl', {
-          $scope: vm
-        }));
+        agneta.extend(vm, 'AgDialogCtrl');
 
         vm.loading = true;
         GIT.status()

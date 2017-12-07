@@ -16,13 +16,11 @@
  */
 function _e_password(app) {
 
-  app.agDirective('AgPassLostCtrl', function($controller,data, Account) {
+  app.agDirective('AgPassLostCtrl', function(data, Account) {
 
     var vm = this;
 
-    angular.extend(this, $controller('AgDialogCtrl', {
-      $scope: vm
-    }));
+    agneta.extend(vm, 'AgDialogCtrl');
 
     vm.submit = function() {
       vm.loading = true;
@@ -36,13 +34,11 @@ function _e_password(app) {
 
   });
 
-  app.agDirective('AgPassChangeCtrl', function($rootScope, $mdDialog, $controller, LoopBackAuth, Account) {
+  app.agDirective('AgPassChangeCtrl', function($rootScope, $mdDialog, LoopBackAuth, Account) {
 
     var vm = this;
 
-    angular.extend(this, $controller('AgDialogCtrl', {
-      $scope: vm
-    }));
+    agneta.extend(vm, 'AgDialogCtrl');
 
     vm.submitPassword = function() {
 

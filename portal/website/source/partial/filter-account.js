@@ -18,13 +18,11 @@
 
   var app = angular.module('MainApp');
 
-  app.agDirective('FilterAccount', function($controller, $rootScope, data) {
+  app.agDirective('FilterAccount', function($rootScope, data) {
 
     var vm = this;
 
-    angular.extend(this, $controller('AgDialogCtrl', {
-      $scope: vm
-    }));
+    agneta.extend(vm, 'AgDialogCtrl');
 
     vm.apply = function(){
       data.onApply(vm.filters)

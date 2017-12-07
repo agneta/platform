@@ -15,13 +15,11 @@
  *   limitations under the License.
  */
 function _e_popup(app) {
-  app.agDirective('AgPopupLoginCtrl', function($rootScope, $mdDialog, $controller) {
+  app.agDirective('AgPopupLoginCtrl', function($rootScope, $mdDialog) {
 
     var vm = this;
 
-    angular.extend(this, $controller('AgDialogCtrl', {
-      $scope: vm
-    }));
+    agneta.extend(vm, 'AgDialogCtrl');
 
     vm.submit = function() {
 
