@@ -16,9 +16,7 @@
  */
 (function() {
 
-  var app = window.angular.module('MainApp');
-
-  app.agDirective('AgVideoCtrl', function(data) {
+  agneta.directive('AgVideoCtrl', function(data) {
 
     var vm = this;
 

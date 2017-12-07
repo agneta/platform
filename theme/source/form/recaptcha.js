@@ -16,9 +16,7 @@
  */
 (function() {
 
-  var app = window.angular.module('MainApp');
-
-  app.agDirective('AgRecaptchaCtrl', function($element, $attrs, $timeout, $parse, $ocLazyLoad) {
+  agneta.directive('AgRecaptchaCtrl', function($element, $attrs, $timeout, $parse, $ocLazyLoad) {
 
     var element = $element[0];
     var vm = this;

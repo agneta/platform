@@ -21,7 +21,6 @@
 
 (function() {
 
-  var app = angular.module('MainApp');
   var chart;
 
   var formats = {
@@ -30,7 +29,7 @@
     hourOfYear: 'ha'
   };
 
-  app.agDirective('AgHistoryCtrl', function($ocLazyLoad, $rootScope, $mdDialog, $mdSidenav, $timeout, Production_Activity_Count, Activity_Count, Production_Activity_Item, Portal, Activity_Item) {
+  agneta.directive('AgHistoryCtrl', function($ocLazyLoad, $rootScope, $mdDialog, $mdSidenav, $timeout, Production_Activity_Count, Activity_Count, Production_Activity_Item, Portal, Activity_Item) {
 
     var vm = this;
 
@@ -438,7 +437,7 @@
 
   ///////////////////////////////////////////////////////////////////////////
 
-  app.agDirective('AgActivitiesCtrl', function($rootScope, $mdDialog, data) {
+  agneta.directive('AgActivitiesCtrl', function($rootScope, $mdDialog, data) {
 
     var vm = this;
 
@@ -485,7 +484,7 @@
 
   ///////////////////////////////////////////////////////////////////////////
 
-  app.agDirective('AgActivityCtrl', function($rootScope, $mdDialog, data) {
+  agneta.directive('AgActivityCtrl', function($rootScope, $mdDialog, data) {
 
     var vm = this;
 

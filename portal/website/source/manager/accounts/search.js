@@ -17,9 +17,7 @@
 
 (function() {
 
-  var app = angular.module('MainApp');
-
-  app.agDirective('SearchAccounts', function(AccountList, $rootScope, $mdDialog, Production_Account, Account, $location) {
+  agneta.directive('SearchAccounts', function(AccountList, $rootScope, $mdDialog, Production_Account, Account, $location) {
 
     var vm = this;
 

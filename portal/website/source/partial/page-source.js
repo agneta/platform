@@ -19,9 +19,7 @@
 
 (function() {
 
-  var app = angular.module('MainApp');
-
-  app.agDirective('AgPageSourceCtrl', function($timeout, $element,$mdDialog, data) {
+  agneta.directive('AgPageSourceCtrl', function($timeout, $element,$mdDialog, data) {
 
     var myCodeMirror;
     var vm = this;

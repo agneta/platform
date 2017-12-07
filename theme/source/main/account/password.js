@@ -14,9 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-function _e_password(app) {
+function _e_password() {
 
-  app.agDirective('AgPassLostCtrl', function(data, Account) {
+  agneta.directive('AgPassLostCtrl', function(data, Account) {
 
     var vm = this;
 
@@ -34,7 +34,7 @@ function _e_password(app) {
 
   });
 
-  app.agDirective('AgPassChangeCtrl', function($rootScope, $mdDialog, LoopBackAuth, Account) {
+  agneta.directive('AgPassChangeCtrl', function($rootScope, $mdDialog, LoopBackAuth, Account) {
 
     var vm = this;
 

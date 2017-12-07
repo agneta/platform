@@ -39,7 +39,7 @@
 
   //---------------------------------------------------------------
 
-  app.agDirective = function(name, link) {
+  agneta.directive = function(name, link) {
 
     name = name[0].toLowerCase() + name.slice(1);
     var parameters;

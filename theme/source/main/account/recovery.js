@@ -14,9 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-function _e_recovery(app) {
+function _e_recovery() {
 
-  app.agDirective('AgAccountRecoverCtrl', function(Account) {
+  agneta.directive('AgAccountRecoverCtrl', function(Account) {
 
     var vm = this;
 
@@ -35,7 +35,7 @@ function _e_recovery(app) {
 
   });
 
-  app.agDirective('AgRequestRecoveryCtrl', function(Account, $mdDialog, email) {
+  agneta.directive('AgRequestRecoveryCtrl', function(Account, $mdDialog, email) {
 
     var vm = this;
 

@@ -14,9 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-function _e_login(app) {
+function _e_login() {
 
-  app.agDirective('LoginController', function($window, $location, $mdDialog, $rootScope, $routeParams, Account, LoopBackAuth) {
+  agneta.directive('LoginController', function($window, $location, $mdDialog, $rootScope, $routeParams, Account, LoopBackAuth) {
 
     var token;
     var vm = this;

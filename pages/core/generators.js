@@ -23,7 +23,6 @@ var pageProcessor = require('../pages/page');
 
 module.exports = function(locals) {
 
-  var app = locals.app;
   var project = locals.project;
 
   var rules = Rules(locals);

@@ -34,7 +34,7 @@
     };
   });
 
-  app.agDirective('AgLogUserCtrl', function($mdDialog, result) {
+  agneta.directive('AgLogUserCtrl', function($mdDialog, result) {
 
     var vm = this;
 

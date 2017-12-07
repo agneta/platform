@@ -14,8 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-function _e_verification(app) {
-  app.agDirective('AgResendVrfCtrl', function(Account, $mdDialog, data) {
+function _e_verification() {
+  agneta.directive('AgResendVrfCtrl', function(Account, $mdDialog, data) {
 
     var vm = this;
 

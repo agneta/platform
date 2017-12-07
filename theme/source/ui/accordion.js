@@ -18,8 +18,7 @@
   var activeScope;
   var scopeCount = 0;
 
-  var app = window.angular.module('MainApp', window.angularDeps);
-  app.agDirective('AgMenuItemCtrl', function($rootScope, $element, $timeout) {
+  agneta.directive('AgMenuItemCtrl', function($rootScope, $element, $timeout) {
     var vm = this;
     vm.expanded = false;
     vm.id = scopeCount++;

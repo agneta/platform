@@ -51,7 +51,7 @@
     value: false
   };
 
-  app.agDirective('AgLiveToggleCtrl', function($rootScope) {
+  agneta.directive('AgLiveToggleCtrl', function($rootScope) {
 
     var vm = this;
     vm.value = toggle.value;

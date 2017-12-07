@@ -16,9 +16,7 @@
  */
 (function() {
 
-  var app = angular.module('MainApp');
-
-  app.agDirective('AgEditPagesCtrl', function(Edit_Page) {
+  agneta.directive('AgEditPagesCtrl', function(Edit_Page) {
     var vm = this;
 
     agneta.extend(vm, 'AgEditMainCtrl');

@@ -18,7 +18,7 @@
 
   var app = angular.module('MainApp');
 
-  app.agDirective('AgHomeCtrl', function($rootScope, $location, Account) {
+  agneta.directive('AgHomeCtrl', function($rootScope, $location, Account) {
 
     var vm = this;
     vm.accounts = {};
@@ -58,7 +58,7 @@
 
   });
 
-  app.agDirective('AgHomeActivitiesCtrl', function($rootScope, $q, $timeout) {
+  agneta.directive('AgHomeActivitiesCtrl', function($rootScope, $q, $timeout) {
     ///////////////////////////////////////////
 
     var vm = this;

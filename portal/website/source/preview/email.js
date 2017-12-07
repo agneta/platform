@@ -16,9 +16,7 @@
  */
 (function() {
 
-  var app = angular.module('MainApp');
-
-  app.agDirective('AgPreviewEmailCtrl', function($sce, $rootScope, Email_Template) {
+  agneta.directive('AgPreviewEmailCtrl', function($sce, $rootScope, Email_Template) {
 
     var vm = this;
 

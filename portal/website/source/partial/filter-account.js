@@ -16,9 +16,7 @@
  */
 (function() {
 
-  var app = angular.module('MainApp');
-
-  app.agDirective('FilterAccount', function($rootScope, data) {
+  agneta.directive('FilterAccount', function($rootScope, data) {
 
     var vm = this;
 

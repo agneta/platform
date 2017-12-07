@@ -16,9 +16,7 @@
  */
 (function() {
 
-  var app = angular.module('MainApp');
-
-  app.agDirective('AgActivityFormCtrl', function($rootScope, data, Form, Production_Form) {
+  agneta.directive('AgActivityFormCtrl', function($rootScope, data, Form, Production_Form) {
 
     var vm = this;
 

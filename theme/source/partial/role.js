@@ -16,9 +16,7 @@
  */
 (function() {
 
-  var app = window.angular.module('MainApp');
-
-  app.agDirective('FormRole', function(data, Account) {
+  agneta.directive('FormRole', function(data, Account) {
 
     var vm = this;
 

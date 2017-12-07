@@ -17,9 +17,7 @@
 
 (function() {
 
-  var app = angular.module('MainApp');
-
-  app.agDirective('AgAccountCtrl', function($rootScope, AccountList, $routeParams, $mdToast, $mdDialog, Production_Account, Account, $location) {
+  agneta.directive('AgAccountCtrl', function($rootScope, AccountList, $routeParams, $mdToast, $mdDialog, Production_Account, Account, $location) {
     var vm = this;
     AccountList.useScope(vm);
     function reloadAccount() {

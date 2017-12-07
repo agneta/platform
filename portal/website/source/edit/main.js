@@ -30,9 +30,7 @@
 
 (function() {
 
-  var app = angular.module('MainApp');
-  console.log('hahahah');
-  app.agDirective('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, MediaOpt, Role_Editor) {
+  agneta.directive('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, MediaOpt, Role_Editor) {
     var vm = this;
     var fuse;
     var fuseOptions = {

@@ -16,9 +16,7 @@
  */
 (function() {
 
-  var app = window.angular.module('MainApp');
-
-  app.agDirective('AgContactCtrl', function($rootScope, $mdDialog) {
+  agneta.directive('AgContactCtrl', function($rootScope, $mdDialog) {
 
     var vm = this;
 
@@ -32,7 +30,7 @@
 
   });
 
-  app.agDirective('AgContactDialogCtrl', function($rootScope, $timeout, $mdDialog, Contact) {
+  agneta.directive('AgContactDialogCtrl', function($rootScope, $timeout, $mdDialog, Contact) {
 
     var vm = this;
 

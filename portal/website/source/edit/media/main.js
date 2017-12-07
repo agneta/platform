@@ -22,7 +22,7 @@
 
   var app = angular.module('MainApp');
 
-  app.agDirective('AgMediaCtrl', function($rootScope, Upload, MediaOpt, SocketIO, $timeout, $mdToast, $mdDialog, $location, $sce, $routeParams, Search_Engine, Portal) {
+  agneta.directive('AgMediaCtrl', function($rootScope, Upload, MediaOpt, SocketIO, $timeout, $mdToast, $mdDialog, $location, $sce, $routeParams, Search_Engine, Portal) {
 
     var apiMedia = MediaOpt.api;
     var partialFile = MediaOpt.partial;

@@ -16,9 +16,7 @@
  */
 (function() {
 
-  var app = angular.module('MainApp');
-
-  app.agDirective('AgAddSSHCtrl', function($timeout, $element, $mdDialog, data) {
+  agneta.directive('AgAddSSHCtrl', function($timeout, $element, $mdDialog, data) {
 
     var vm = this;
 

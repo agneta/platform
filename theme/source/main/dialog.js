@@ -87,14 +87,14 @@ function _e_Dialog(app) {
   });
 
 
-  app.agDirective('DialogController', function($mdDialog, data) {
+  agneta.directive('DialogController', function($mdDialog, data) {
 
     var vm = this;
     vm.data = data;
 
   });
 
-  app.agDirective('AgDialogCtrl', function($rootScope, $mdDialog) {
+  agneta.directive('AgDialogCtrl', function($rootScope, $mdDialog) {
 
     var vm = this;
 
@@ -115,7 +115,7 @@ function _e_Dialog(app) {
     });
   });
 
-  app.agDirective('DialogConfirm', function($rootScope, data, $mdDialog) {
+  agneta.directive('DialogConfirm', function($rootScope, data, $mdDialog) {
 
     var vm = this;
 

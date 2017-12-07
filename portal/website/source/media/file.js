@@ -226,7 +226,7 @@
     };
   });
 
-  app.agDirective('MediaSelect', function(data, $mdDialog) {
+  agneta.directive('MediaSelect', function(data, $mdDialog) {
 
     var vm = this;
 
@@ -254,7 +254,7 @@
 
   });
 
-  app.agDirective('AgEditFile', function(data, EditFile,MediaOpt) {
+  agneta.directive('AgEditFile', function(data, EditFile,MediaOpt) {
 
     var vm = this;
 
@@ -301,7 +301,7 @@
 
   });
 
-  app.agDirective('EditFilePrivate', function(data, MediaOpt, Account) {
+  agneta.directive('EditFilePrivate', function(data, MediaOpt, Account) {
 
     var onFile = data.onFile;
     var vm = this;

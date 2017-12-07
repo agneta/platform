@@ -16,9 +16,7 @@
  */
 (function() {
 
-  var app = window.angular.module('MainApp');
-
-  app.agDirective('ModalFrame', function(data) {
+  agneta.directive('ModalFrame', function(data) {
 
     var vm = this;
 

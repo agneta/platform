@@ -16,9 +16,7 @@
  */
 (function() {
 
-  var app = angular.module('MainApp');
-
-  app.agDirective('NewFolder', function($rootScope, data) {
+  agneta.directive('NewFolder', function($rootScope, data) {
 
     var vm = this;
 

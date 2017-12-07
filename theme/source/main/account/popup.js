@@ -14,8 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-function _e_popup(app) {
-  app.agDirective('AgPopupLoginCtrl', function($rootScope, $mdDialog) {
+function _e_popup() {
+  agneta.directive('AgPopupLoginCtrl', function($rootScope, $mdDialog) {
 
     var vm = this;
 

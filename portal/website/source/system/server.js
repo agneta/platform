@@ -16,9 +16,7 @@
  */
 (function() {
 
-  var app = angular.module('MainApp');
-
-  app.agDirective('AgSystemServerCtrl', function($rootScope, Process, SocketIO, $mdDialog) {
+  agneta.directive('AgSystemServerCtrl', function($rootScope, Process, SocketIO, $mdDialog) {
 
     var socket = SocketIO.connect('system');
     var vm = this;

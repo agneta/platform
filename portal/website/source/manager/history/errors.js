@@ -38,7 +38,7 @@
     };
   });
 
-  app.agDirective('AgLogErrorCtrl', function($mdDialog, result) {
+  agneta.directive('AgLogErrorCtrl', function($mdDialog, result) {
 
     var vm = this;
 

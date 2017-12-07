@@ -16,10 +16,9 @@
  */
 (function() {
 
-  var app = angular.module('MainApp');
   var logLimit = 3000;
 
-  app.agDirective('AgUtilityCtrl', function($rootScope, $mdToast, Utility, SocketIO, $parse, $timeout) {
+  agneta.directive('AgUtilityCtrl', function($rootScope, $mdToast, Utility, SocketIO, $parse, $timeout) {
 
     var vm = this;
 

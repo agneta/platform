@@ -16,9 +16,7 @@
  */
 (function() {
 
-  var app = angular.module('MainApp');
-
-  app.agDirective('AgPassChangeAdminCtrl', function(data, $rootScope, Account, LoopBackAuth) {
+  agneta.directive('AgPassChangeAdminCtrl', function(data, $rootScope, Account, LoopBackAuth) {
 
     var vm = this;
 
