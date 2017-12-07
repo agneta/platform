@@ -39,6 +39,9 @@
 
   //---------------------------------------------------------------
 
+  agneta.extend = function(vm,directive) {
+  };
+
   agneta.directive = function(name, link) {
 
     name = name[0].toLowerCase() + name.slice(1);
