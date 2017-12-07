@@ -38,8 +38,9 @@
   );
 
   //---------------------------------------------------------------
+  var injector = angular.injector(['ng']);
 
-  app.run(function($injector) {
+  (function() {
 
     var directives = {};
 
@@ -47,17 +48,21 @@
       return name[0].toLowerCase() + name.slice(1);
     }
 
-    function argInjectors(names) {
+    function argInjectors(names,override) {
+      override = override || {};
       var result = [];
       for (var index in names) {
         var name = names[index];
-        var injector = $injector.get(name);
-        result.push(injector);
+        var service = override[name];
+        if(!service){
+          service = injector.get(name);
+        }
+        result.push(service);
       }
       return result;
     }
 
-    agneta.extend = function(vm, directiveName) {
+    agneta.extend = function(vm, directiveName, override) {
 
       directiveName = fixName(directiveName);
       var directive = directives[directiveName];
@@ -68,7 +73,7 @@
       }
 
       directive.link.apply(vm,
-        argInjectors(directive.args)
+        argInjectors(directive.parameters,override)
       );
     };
 
@@ -83,27 +88,23 @@
         parameters = [];
       }
 
-      parameters.push(function() {
+      directives[name] = {
+        parameters: parameters,
+        link: link
+      };
 
-        var args = Array.prototype.slice.call(arguments);
-
-        directives[name] = {
-          args: args,
-          link: link
-        };
+      app.directive(name, function() {
 
         return {
           restrict: 'A',
           link: function(vm) {
-
             if (link) {
-              link.apply(vm, args);
+              link.apply(vm, argInjectors(parameters));
             }
           }
         };
       });
 
-      app.directive(name, parameters);
     };
 
     var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
@@ -117,7 +118,7 @@
       return result;
     }
 
-  });
+  })();
 
   //---------------------------------------------------------------
 
@@ -176,9 +177,10 @@
       })
       .warnPalette('red');
 
-  }).run(function($mdMedia, $http, Account, $rootScope, $ocLazyLoad, $route, $timeout, $location, $mdSidenav, $q, $log, $mdDialog) {
+  }).run(function($mdMedia, $http, Account, $rootScope, $injector, $ocLazyLoad, $route, $timeout, $location, $mdSidenav, $q, $log, $mdDialog) {
 
     $location.path(agneta.url(agneta.path), false);
+    injector = $injector;
 
     ////////////////////////////////////////////////////////////////
 
@@ -469,5 +471,6 @@
   _e_Scroll(app);
   _e_Dialog(app);
   _e_menuSide(app);
+
 
 })();
