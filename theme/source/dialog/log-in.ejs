@@ -1,0 +1,47 @@
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <md-icon class="header-icon" md-svg-src=<%-get_icon( "material/error")%>></md-icon>
+    <h2><%-lng(page.title)%></h2>
+    <span flex></span>
+    <md-button class="md-icon-button" ng-click="close()">
+      <md-icon md-svg-src=<%-get_icon( "material/close")%> aria-label="Cancel"></md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+
+<md-dialog-content style="max-width:500px;max-height:600px; ">
+
+  <p class="md-padding">
+    <%-lng(page.description)%>
+  </p>
+
+  <md-divider>
+  </md-divider>
+  <div class="md-padding">
+    <%
+    var form =
+    {
+      name: 'formLogin',
+      onSubmit: 'submit()',
+      fields:[
+        'email',
+        'password'
+      ]
+    };
+    %>
+    <%-template('form',{form:form})%>
+  </div>
+
+  <%-template('ui/loader')%>
+
+</md-dialog-content>
+
+<md-dialog-actions layout="row" md-whiteframe="2">
+  <span flex> </span>
+  <md-button ng-click="close()">
+    <%-lng('general.cancel')%>
+  </md-button>
+  <md-button ng-click="submit()" ng-disabled="formLogin.$invalid" md-autofocus class="md-raised md-primary">
+    <%-lng(page.submit.label)%>
+  </md-button>
+</md-dialog-actions>

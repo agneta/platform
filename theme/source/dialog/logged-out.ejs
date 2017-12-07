@@ -1,0 +1,21 @@
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <md-icon class="header-icon" md-svg-src=<%-get_icon("material/check")%>></md-icon>
+    <h2>Logged out</h2>
+    <span flex></span>
+    <md-button class="md-icon-button" ng-click="close()">
+      <md-icon md-svg-src=<%-get_icon("material/close")%> aria-label="Close dialog"></md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+
+<md-dialog-content class="md-dialog-content">
+  <p>You have successfuly logged out</p>
+  <p>You can continue to navigate through our page as guest</p>
+</md-dialog-content>
+
+<md-dialog-actions layout="row">
+  <md-button ng-click="close()">
+    Ok
+  </md-button>
+</md-dialog-actions>

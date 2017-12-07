@@ -1,5 +1,5 @@
 title:
-  en: Warning
-
+  en: Logged out
 skipAuthorization: true
 controller: 'AgDialogCtrl'
+class: success

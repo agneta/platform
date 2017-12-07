@@ -1,5 +1,6 @@
 title:
-  en: 'Success'
-  gr: 'Επιτυχία'
+  en: Warning
+
 skipAuthorization: true
 controller: 'AgDialogCtrl'
+class: warning

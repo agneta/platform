@@ -16,3 +16,5 @@ angular_libs:
     js: 'lib/vg-buffering.min'
 
 controller: 'AgVideoCtrl'
+
+class: video
