@@ -25,7 +25,7 @@ module.exports = function(util) {
 
       return extract(util, {
         name: 'theme',
-        base: projectPaths.agneta,
+        base: projectPaths.baseTheme,
         root: projectPaths.agneta
       });
 

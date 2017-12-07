@@ -62,11 +62,6 @@ module.exports = function(locals) {
 
     var tmp = this.sourcePath(path_check).split('/');
 
-    if (tmp[0] == 'lib') {
-      tmp.shift();
-      return this.get_lib(tmp.join('/'));
-    }
-
     var stat = this.has_file(path_check);
     if (!stat) {
       throw new Error('Asset does not exist: ' + path_check);

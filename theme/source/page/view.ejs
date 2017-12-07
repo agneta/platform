@@ -1,54 +1,44 @@
-<%
-if(page.barebones && (!page.isView||page.isPartial)){
-	%>
-  <%-template(page.template)%>
-    <%
-}
-else if(page.isView){
-	var tag = viewTag();
-	%>
-      <div <%-tag%> id="view-content" layout="row" flex>
+<%var tag = viewTag();%>
+<div <%-tag%> id="view-content" layout="row" flex>
 
-        <md-sidenav class="view-wrapper md-sidenav-left md-whiteframe-z2 site-menu" md-is-locked-open="menuLock()" md-component-id="menu" layout="column">
+	<md-sidenav class="view-wrapper md-sidenav-left md-whiteframe-z2 site-menu" md-is-locked-open="menuLock()" md-component-id="menu" layout="column">
+		<div>
+			<div ag-menu-side layout="column">
+				<%-template('sidebar/toolbar')%>
+				<md-content layout="column">
+					<%
+					var templateSidebar = page.templateSource + '.sidebar';
+					if (_.isString(page.sidebar)) {
+						templateSidebar = page.sidebar;
+					}
+					if (!has_template(templateSidebar)) {
+						templateSidebar = 'sidebar';
+					}
+					%>
+					<%-template(templateSidebar)%>
+				</md-content>
+				<span flex></span>
+				<%if(config.language.extra){%>
+					<div layout="row">
+					<span class="flex"></span>
+					<%if(config.languages_sidebar){%>
+						<%-template('layout/languages')%>
+						<%}%>
+						</div>
+						<%}%>
+					</div>
+				</div>
+			</md-sidenav>
+
+			<div class="view-wrapper" layout="column" flex>
 				<div>
-          <div ag-menu-side layout="column">
-            <%-template('sidebar/toolbar')%>
-              <md-content layout="column">
-                <%
-								var templateSidebar = page.templateSource + '.sidebar';
-								if (_.isString(page.sidebar)) {
-									templateSidebar = page.sidebar;
-								}
-								if (!has_template(templateSidebar)) {
-									templateSidebar = 'sidebar';
-								}
-								%>
-                  <%-template(templateSidebar)%>
-              </md-content>
-              <span flex></span>
-              <%if(config.language.extra){%>
-                <div layout="row">
-                  <span class="flex"></span>
-                  <%if(config.languages_sidebar){%>
-                    <%-template('layout/languages')%>
-                      <%}%>
-                </div>
-                <%}%>
-          </div>
-          </div>
-        </md-sidenav>
+					<div layout="column">
+						<%-template(page.templateSource)%>
+						<%if(!page.hiddenFooter){%>
+							<%-template('layout/footer',null,true) %>
+							<%}%>
+						</div>
+					</div>
+				</div>
 
-        <div class="view-wrapper" layout="column" flex>
-          <div>
-            <div layout="column">
-              <%-template(page.templateSource)%>
-                <%if(!page.hiddenFooter){%>
-                  <%-template('layout/footer',null,true) %>
-                    <%}%>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <%}%>
+			</div>

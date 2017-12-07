@@ -115,12 +115,11 @@ module.exports = function(locals) {
                   .then(function() {
 
                     //---------------------------------------
-                    // Partials
+                    // Dialogs
 
-                    if (data.path.indexOf('partial/') === 0) {
-                      data.barebones = true;
+                    if (data.path.indexOf('dialog/') === 0) {
                       data.viewOnly = true;
-                      data.isPartial = true;
+                      data.isDialog = true;
                     }
 
                     //---------------------------------------

@@ -45,7 +45,7 @@ module.exports = function(locals) {
         path: path.join('partial', name),
         template: 'role',
         class: name,
-        isPartial: true,
+        isDialog: true,
         barebones: true,
         controller: 'FormRole',
       }, role, {

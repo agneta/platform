@@ -68,7 +68,7 @@ module.exports = function(locals) {
         page.parentPath = null;
       }
 
-      if (page.isPartial) {
+      if (page.isDialog) {
         delete page.parentPath;
       }
 

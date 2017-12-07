@@ -22,10 +22,6 @@ module.exports = function(locals) {
 
   project.extend.helper.register('loadScripts', function() {
 
-    var lines = [];
-
-    lines.push(this.js('lib/angular.min'));
-
     //------------------------------
 
     var arr;
@@ -45,20 +41,11 @@ module.exports = function(locals) {
       if (lib.dep) {
         angularDeps += '\'' + lib.dep + '\'';
       }
-
-      lines.push(this.js(lib.js));
     }
 
-    //-------------------------------
-    arr = _.uniq(this.config.scripts);
-
-    for (var script of arr) {
-      lines.push(this.js(script));
-    }
 
     return {
-      angularDeps: angularDeps,
-      lines: lines.join('\n')
+      angularDeps: angularDeps
     };
   });
 

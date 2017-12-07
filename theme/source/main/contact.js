@@ -23,7 +23,7 @@
     vm.open = function() {
       $mdDialog.show({
         clickOutsideToClose: true,
-        templateUrl: agneta.partial('contact'),
+        templateUrl: agneta.dialog('contact'),
         controller: 'AgContactDialogCtrl'
       });
     };

@@ -161,7 +161,7 @@
                 account: vm.viewAccount
               }
             },
-            templateUrl: agneta.partial('role-add')
+            templateUrl: agneta.dialog('role-add')
           });
 
         });
@@ -189,7 +189,7 @@
           };
 
         },
-        templateUrl: agneta.partial('account-create'),
+        templateUrl: agneta.dialog('account-create'),
         clickOutsideToClose: true
       });
 

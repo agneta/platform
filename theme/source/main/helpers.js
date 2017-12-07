@@ -19,8 +19,8 @@ function _e_helpers() {
 
   var agneta = window.agneta;
 
-  agneta.partial = function(name) {
-    return agneta.urljoin(agneta.services.view, agneta.lang, 'partial', name, 'view');
+  agneta.dialog = function(name) {
+    return agneta.urljoin(agneta.services.view, agneta.lang, 'dialog', name, 'view');
   };
 
   agneta.get_icon = function(name) {

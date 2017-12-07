@@ -15,45 +15,11 @@
  *   limitations under the License.
  */
 var path = require('path');
-var fs = require('fs-extra');
 var _ = require('lodash');
 
 module.exports = function(locals) {
 
   var project = locals.project;
-
-  function template(path_partial, data) {
-
-    var path_result;
-
-    if (path.parse(path_partial).ext !== '.js') {
-      path_partial += '.js';
-    }
-
-    if (path_partial.indexOf(project.paths.source) === 0 ||
-      path_partial.indexOf(project.paths.sourceTheme) === 0) {
-      path_result = path_partial;
-    } else {
-      path_partial = path.join('source', path_partial);
-      path_result = project.theme.getFile(path_partial);
-    }
-
-    if (!path_result) {
-      var msg = 'Template not found: ' + path_partial;
-      console.error(msg);
-      throw new Error(msg);
-    }
-
-    var file_content = fs.readFileSync(path_result, 'utf8');
-
-    var result = _.template(file_content, {
-      interpolate: /_t_(.+?);/g
-    })(_.extend(this, data, {
-      locals: data
-    }));
-    return result;
-
-  }
 
   var helpers = {
     path: function(req) {
@@ -67,9 +33,11 @@ module.exports = function(locals) {
     },
     configPrj: function(prop) {
       return _.get(locals.web.project.config, prop);
-    },
-    template: template
+    }
   };
+
+  require('./template')(project,helpers);
+  require('./bundle')(project,helpers);
 
   function middleware(req, res, next) {
     var parsedPath = path.parse(req.path);
@@ -98,7 +66,7 @@ module.exports = function(locals) {
     options = options || {};
     options.babel = options.babel || {};
 
-    var content = template(path_partial, helpers);
+    var content = helpers.template(path_partial, helpers);
     return content;
   }
 

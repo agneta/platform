@@ -266,7 +266,7 @@
 
         $mdDialog.show({
           clickOutsideToClose: true,
-          templateUrl: agneta.partial('activities'),
+          templateUrl: agneta.dialog('activities'),
           locals: {
             data: {
               feed: vm.page.feedSelected.id,

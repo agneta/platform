@@ -67,7 +67,7 @@ function _e_Dialog(app) {
             onRemoving: options.onRemoving,
             clickOutsideToClose: true,
             nested: options.nested,
-            templateUrl: agneta.partial(options.partial),
+            templateUrl: agneta.dialog(options.partial),
             locals: locals
           };
 

@@ -29,7 +29,7 @@ function _e_login() {
 
         $mdDialog.show({
           clickOutsideToClose: true,
-          templateUrl: agneta.partial('account-recover'),
+          templateUrl: agneta.dialog('account-recover'),
           controller: 'AgAccountRecoverCtrl'
         }).then(function() {
           LoopBackAuth.clearUser();
@@ -106,7 +106,7 @@ function _e_login() {
           case 'LOGIN_FAILED_EMAIL_NOT_VERIFIED':
             $mdDialog.show({
               clickOutsideToClose: true,
-              templateUrl: agneta.partial('warning'),
+              templateUrl: agneta.dialog('warning'),
               locals: {
                 data: {
                   email: email,
@@ -120,7 +120,7 @@ function _e_login() {
           case 'USER_DEACTIVATED':
             $mdDialog.show({
               clickOutsideToClose: true,
-              templateUrl: agneta.partial('warning'),
+              templateUrl: agneta.dialog('warning'),
               locals: {
                 email: email
               },

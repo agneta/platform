@@ -146,7 +146,7 @@ module.exports = function(util, dir) {
 
           var sourcePath = path.join(lib.dir, file);
           var destPath = path.join(
-            projectPaths.lib,
+            dir.base,'source','lib',
             rule.dir || '',
             parsed.base);
 

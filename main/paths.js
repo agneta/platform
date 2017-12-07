@@ -81,10 +81,10 @@ function app(options) {
 
   paths.config = path.join(paths.base, 'config.yml');
   paths.data = path.join(paths.base, 'data');
-  paths.lib = path.join(paths.base, 'lib');
   paths.build = path.join(paths.base, 'build');
   paths.template = path.join(paths.base, 'templates');
   paths.source = path.join(paths.base, 'source');
+  paths.lib = path.join(paths.source, 'lib');
   paths.assets = path.join(paths.source, 'assets');
   paths.generated = path.join(paths.source, 'generated');
   paths.tmp = path.join(paths.base, 'tmp');
