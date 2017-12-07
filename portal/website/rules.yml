@@ -27,7 +27,7 @@
       - 'edit/main'
     angular_libs:
       -
-        js: lib/ng-quill.min
+        js: lib/ng-quill
         dep: ngQuill
       -
         js: lib/ng-sortable.min

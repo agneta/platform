@@ -1,9 +1,9 @@
 controller: 'AgModalFrame'
 
 scripts:
-  - partial/iframe
+  - dialog/iframe
 
 styles:
-  - partial/iframe
+  - dialog/iframe
 
 class: iframe

@@ -99,6 +99,10 @@ angular_libs:
 #-----------------------------------------------
 
 libraries:
+  ngQuill:
+    ignoreDefaults: true
+    include:
+      - 'src/ng-quill.js'
   quill.tar:
     include:
       - 'quill.snow.css'

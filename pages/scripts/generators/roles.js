@@ -38,11 +38,11 @@ module.exports = function(locals) {
       var name = 'role-' + key;
 
       var scripts = [
-        'partial/role'
+        'dialog/role'
       ].concat(role.scripts);
 
       var pageData = _.extend({
-        path: path.join('partial', name),
+        path: path.join('dialog', name),
         template: 'role',
         class: name,
         isDialog: true,

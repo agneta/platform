@@ -6,7 +6,7 @@ controller: 'AgActivityFormCtrl'
 class: "activity-form"
 
 scripts:
-  - partial/activity-form
+  - dialog/activity-form
 
 authorization:
   - reviewer

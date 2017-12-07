@@ -49,7 +49,7 @@ function _e_Dialog(app) {
       }
 
       var locals = {};
-      var path = agneta.urljoin(agneta.lang,'partial',options.partial);
+      var path = agneta.urljoin(agneta.lang,'dialog',options.partial);
 
       if (options.data) {
         locals.data = options.data;

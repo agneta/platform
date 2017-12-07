@@ -93,7 +93,7 @@
         link: link
       };
 
-      app.directive(name, function() {
+      angular.module('MainApp').directive(name, function() {
 
         return {
           restrict: 'A',

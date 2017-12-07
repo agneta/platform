@@ -19,7 +19,6 @@
   var logLimit = 3000;
 
   agneta.directive('AgUtilityCtrl', function($rootScope, $mdToast, Utility, SocketIO, $parse, $timeout) {
-
     var vm = this;
 
     vm.logLines = [];

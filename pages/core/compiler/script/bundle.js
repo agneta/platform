@@ -2,13 +2,10 @@ const _ = require('lodash');
 
 module.exports = function(project, helpers) {
 
-  var bundle = '';
 
   helpers.bundle = function() {
 
-    if(bundle.length){
-      return bundle;
-    }
+    var bundle = '';
 
     concat('lib/angular.min');
 

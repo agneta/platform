@@ -13,7 +13,7 @@
     <%for(var i in page.tabs){
       var tab = page.tabs[i];%>
       <md-tab  label="<%-lng(tab.label)%>" <%-tab.attrs%>  md-active="isTabActive(<%-i%>)" md-on-select="onTabSelected(<%-i%>)">
-      <%-template('partial/contact/'+tab.name)%>
+      <%-template('dialog/contact/'+tab.name)%>
       </md-tab>
       <%}%>
     </md-tabs>

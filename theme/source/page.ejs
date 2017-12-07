@@ -1,7 +1,7 @@
-<%if(page.barebones){%>
-<%-template(page.template,{page:page})%>
-<%}else if(page.isDialog){%>
+<%if(page.isDialog){%>
 <%-template('page/dialog',{page:page})%>
 <%}else if(page.isView){%>
 <%-template('page/view',{page:page})%>
+<%}else{%>
+<%-template(page.template,{page:page})%>
 <%}%>
