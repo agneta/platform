@@ -1,5 +1,6 @@
 controller: 'AgEditFilePrivate'
 
+class: "dialog-file"
 
 authorization:
   - editor

@@ -1,13 +1,4 @@
-<%
-var form =
-{
-name: 'formSubmit',
-onSubmit: 'submit()',
- fields:[
-     'email',
-     'password'
-]
-};
-%>
-
-<%-template('form',{form:form})%>
+<%-template('dialog/prompt',{
+  content:'dialog/account-create-content',
+  disabled: 'formSubmit.$invalid'
+})%>

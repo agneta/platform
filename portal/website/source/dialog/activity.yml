@@ -10,7 +10,9 @@ styles:
 authorization:
   - reviewer
   - editor
-  
+
+class: activity
+
 request:
   -
     name: path

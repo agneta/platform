@@ -4,6 +4,8 @@ scripts:
   - 'media/file'
   - 'edit/media/main'
 
+class: dialog-file-select
+
 authorization:
   - editor
 

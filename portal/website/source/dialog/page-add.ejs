@@ -1,3 +1,6 @@
-<div>
-<%-template('form',{form:page.form})%>
-</div>
+<%-template('dialog/prompt',
+{
+  content:'dialog/page-add-content',
+  disabled: 'formSubmit.$invalid'
+})
+%>

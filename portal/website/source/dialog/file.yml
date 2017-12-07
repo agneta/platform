@@ -2,3 +2,5 @@ controller: 'AgEditFile'
 
 authorization:
   - editor
+
+class: dialog-file

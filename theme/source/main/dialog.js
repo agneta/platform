@@ -71,8 +71,6 @@ function _e_Dialog(app) {
             locals: locals
           };
 
-
-          dialogOptions.controller = options.controller || data.controller || 'DialogController';
           $mdDialog.show(dialogOptions);
         })
         .finally(function() {

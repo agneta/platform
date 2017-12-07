@@ -3,6 +3,7 @@ title:
   gr: Κώδικας
 
 controller: 'AgPageSourceCtrl'
+class: edit-source
 
 authorization:
   - editor

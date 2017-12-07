@@ -1,0 +1,13 @@
+<%
+var form =
+{
+name: 'formSubmit',
+onSubmit: 'submit()',
+ fields:[
+     'email',
+     'password'
+]
+};
+%>
+
+<%-template('form',{form:form})%>

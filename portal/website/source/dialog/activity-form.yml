@@ -3,6 +3,7 @@ title:
   gr: Φόρμα
 
 controller: 'AgActivityFormCtrl'
+class: "activity-form"
 
 scripts:
   - partial/activity-form
