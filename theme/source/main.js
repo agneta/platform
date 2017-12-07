@@ -39,48 +39,86 @@
 
   //---------------------------------------------------------------
 
-  agneta.extend = function(vm,directive) {
-  };
+  app.run(function($injector) {
 
-  agneta.directive = function(name, link) {
+    var directives = {};
 
-    name = name[0].toLowerCase() + name.slice(1);
-    var parameters;
-    if (link) {
-      parameters = getParamNames(link);
-    } else {
-      parameters = [];
+    function fixName(name) {
+      return name[0].toLowerCase() + name.slice(1);
     }
 
-    parameters.push(function() {
+    function argInjectors(names) {
+      var result = [];
+      for (var index in names) {
+        var name = names[index];
+        var injector = $injector.get(name);
+        result.push(injector);
+      }
+      return result;
+    }
 
-      var args = Array.prototype.slice.call(arguments);
+    agneta.extend = function(vm, directiveName) {
 
-      return {
-        restrict: 'A',
-        link: function(vm) {
+      directiveName = fixName(directiveName);
+      var directive = directives[directiveName];
 
-          if (link) {
-            link.apply(vm, args);
+      if (!directive) {
+        console.error('Cannot find directive with name ' + directiveName);
+        return;
+      }
+
+      directive.link.apply(vm,
+        argInjectors(directive.args)
+      );
+    };
+
+    agneta.directive = function(name, link) {
+      name = fixName(name);
+
+      var parameters;
+
+      if (link) {
+        parameters = getParamNames(link);
+      } else {
+        parameters = [];
+      }
+
+      parameters.push(function() {
+
+        var args = Array.prototype.slice.call(arguments);
+
+        directives[name] = {
+          args: args,
+          link: link
+        };
+
+        return {
+          restrict: 'A',
+          link: function(vm) {
+
+            if (link) {
+              link.apply(vm, args);
+            }
           }
-        }
-      };
-    });
+        };
+      });
 
-    app.directive(name, parameters);
+      app.directive(name, parameters);
+    };
 
-  };
+    var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+    var ARGUMENT_NAMES = /([^\s,]+)/g;
 
-  var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
-  var ARGUMENT_NAMES = /([^\s,]+)/g;
+    function getParamNames(func) {
+      var fnStr = func.toString().replace(STRIP_COMMENTS, '');
+      var result = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
+      if (result === null)
+        result = [];
+      return result;
+    }
 
-  function getParamNames(func) {
-    var fnStr = func.toString().replace(STRIP_COMMENTS, '');
-    var result = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
-    if (result === null)
-      result = [];
-    return result;
-  }
+  });
+
   //---------------------------------------------------------------
 
   _t_template('main/helpers');
@@ -233,18 +271,18 @@
 
             return $q(function(resolve) {
 
-              if (priority.length) {
+                if (priority.length) {
 
-                $ocLazyLoad.load([{
-                  name: 'MainApp',
-                  files: priority
-                }]).then(resolve);
+                  $ocLazyLoad.load([{
+                    name: 'MainApp',
+                    files: priority
+                  }]).then(resolve);
 
-              } else {
-                resolve();
-              }
+                } else {
+                  resolve();
+                }
 
-            })
+              })
               .then(loadPriority);
 
           }
