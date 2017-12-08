@@ -33,6 +33,7 @@ function _e_Scroll(app) {
 
   });
 
+
   app.directive('docsScrollClass', function() {
     return {
       restrict: 'A',
@@ -41,7 +42,6 @@ function _e_Scroll(app) {
         scrollParent = element.parent().parent()[0];
         var isScrolling = false;
 
-        // Initial update of the state.
         updateState();
 
         scrollParent.addEventListener('scroll', updateState);

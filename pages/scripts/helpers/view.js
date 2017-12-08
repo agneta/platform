@@ -33,14 +33,6 @@ module.exports = function(locals) {
     return result;
   });
 
-  project.extend.helper.register('viewTemplatePath', function(page) {
-
-    page = page || this.page;
-    return this.viewTag({
-      path: page.pathSource || page.path
-    }) + '.html';
-  });
-
   project.extend.helper.register('viewTag', function(page) {
     page = page || this.page;
 
@@ -75,12 +67,7 @@ module.exports = function(locals) {
     data.styles = [];
     data.languages = [];
 
-    var name = this.viewTag(page);
-    data.template = {
-      controller: page.controller || this.viewController(name),
-      name: name,
-      path: this.viewTemplatePath(page)
-    };
+    page.controller = page.controller || this.viewController(this.viewTag(page));
 
     //-----------------------------------------------------
     // languages
