@@ -106,10 +106,11 @@
 
         return {
           restrict: 'A',
-          link: function(vm,elm) {
+          link: function(vm,elm,attrs) {
             if (link) {
               var override = {
-                '$element': elm
+                '$element': elm,
+                '$attrs': attrs
               };
               if(overrides[name]){
                 angular.extend(override,overrides[name]);

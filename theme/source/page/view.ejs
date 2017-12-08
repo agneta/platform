@@ -5,6 +5,7 @@
 		<div>
 			<div ag-menu-side layout="column">
 				<%-template('sidebar/toolbar')%>
+				<md-progress-linear class="primary loadingBar" md-mode="{{sidebarLoading?'indeterminate':'determinate'}}"></md-progress-linear>
 				<md-content layout="column">
 					<%
 					var templateSidebar = page.templateSource + '.sidebar';

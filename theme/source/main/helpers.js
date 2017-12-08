@@ -22,6 +22,9 @@ function _e_helpers() {
   agneta.dialog = function(name) {
     return agneta.urljoin(agneta.services.view, agneta.lang, 'dialog', name, 'view');
   };
+  agneta.partial = function(name) {
+    return agneta.urljoin(agneta.services.view, agneta.lang, 'partial', name, 'view');
+  };
 
   agneta.get_icon = function(name) {
     return agneta.get_media(agneta.urljoin('icons', name));

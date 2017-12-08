@@ -1,4 +1,4 @@
-<%if(page.isViewData){%>
+<%if(page.isViewData || page.isPartial){%>
 <%-template(page.template)%>
 <%}else if(page.isDialog){%>
 <%-template('page/dialog')%>

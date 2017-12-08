@@ -26,7 +26,7 @@
         sitekey: agneta.keys.recaptcha,
         callback: function(response) {
           $timeout(function() {
-            $parse($attrs.ngModel).assign(vm.$parent, response);
+            $parse($attrs.ngModel).assign(vm, response);
           }, 10);
         }
       });
