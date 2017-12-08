@@ -93,7 +93,6 @@ module.exports = function(app) {
       }
       env = env || process.env.NODE_ENV;
       var result =  getSecret(env, path, keep);
-
       if(path == 'db'){
         if(result.host=='mongoDB' && (process.env.MODE == 'terminal')){
           result.host='localhost';

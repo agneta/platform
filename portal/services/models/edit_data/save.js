@@ -32,7 +32,7 @@ module.exports = function(Model, app) {
         return saveYaml(filePath, data);
       })
       .then(function() {
-        var relativePath = filePath.substring(webPrj.paths.base.length);
+        var relativePath = filePath.substring(webPrj.paths.app.base.length);
         return {
           message: `Data saved at:\n${relativePath}`
         };

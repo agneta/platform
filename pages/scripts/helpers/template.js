@@ -72,7 +72,7 @@ module.exports = function(locals) {
   });
 
   project.extend.helper.register('has_template', function(req) {
-    var path_partial = path.join(project.paths.app.base, 'source', req + '.ejs');
+    var path_partial = path.join(project.paths.app.source, req + '.ejs');
 
     var res = this.is_file(path_partial);
 
@@ -80,7 +80,7 @@ module.exports = function(locals) {
       return true;
     }
 
-    path_partial = path.join(project.paths.theme.base, 'source', req + '.ejs');
+    path_partial = path.join(project.paths.theme.source, req + '.ejs');
 
     return this.is_file(path_partial);
 
