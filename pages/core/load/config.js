@@ -34,7 +34,7 @@ module.exports = function(locals) {
     var websiteConfig;
 
     return readFile(
-      path.join(project.paths.baseTheme, 'config.yml'),
+      path.join(project.paths.theme.base, 'config.yml'),
       'utf8'
     )
       .then(function(content) {

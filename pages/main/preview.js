@@ -39,14 +39,13 @@ module.exports = function(locals) {
   //////////////////////////////////////////////////////
   // SET PATHS
   //////////////////////////////////////////////////////
-
   var dirCache = path.join(project.paths.app.base, 'cache');
 
   //////////////////////////////////////////////////////
   //
   //////////////////////////////////////////////////////
 
-  app.set('views', path.join(project.paths.base, 'layout'));
+  app.set('views', path.join(project.paths.app.base, 'layout'));
   app.set('view engine', 'ejs');
   app.set('json spaces', 2);
 
@@ -56,7 +55,7 @@ module.exports = function(locals) {
 
   var sources = [{
     name: 'project',
-    path: project.paths.source
+    path: project.paths.app.source
   },
   {
     name: 'theme',
@@ -88,7 +87,7 @@ module.exports = function(locals) {
   }
 
 
-  var libPath = path.join(project.paths.project, 'website', 'lib');
+  var libPath = path.join(project.paths.core.project, 'website', 'lib');
   app.use('/lib', express.static(libPath));
 
   //--------------------------------------------------

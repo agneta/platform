@@ -46,7 +46,7 @@ module.exports = function(Model, app) {
 
   var webPrj = app.get('options').web.project;
 
-  Model.editConfigDir = path.join(webPrj.paths.project, 'edit', 'pages');
+  Model.editConfigDir = path.join(webPrj.paths.core.project, 'edit', 'pages');
   fs.ensureDirSync(Model.editConfigDir);
 
   Model.getPage = function(path) {

@@ -19,7 +19,7 @@ var pathFn = require('path');
 
 module.exports = function(ctx) {
 
-  var basePath = pathFn.relative(ctx.paths.app.base, ctx.paths.source);
+  var basePath = pathFn.relative(ctx.paths.app.base, ctx.paths.app.source);
 
   var Model = new Schema({
     id: String,

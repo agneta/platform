@@ -23,7 +23,7 @@ module.exports = function(locals) {
 
   var project = locals.project;
   var webPrj = locals.web.project;
-  var editConfigDir = path.join(webPrj.paths.project, 'edit', 'data');
+  var editConfigDir = path.join(webPrj.paths.core.project, 'edit', 'data');
 
   project.on('ready', function() {
 

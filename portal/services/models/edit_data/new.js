@@ -24,7 +24,7 @@ module.exports = function(Model, app) {
   Model.new = function(title, dataPath, template, req) {
 
     var id = path.join(template, dataPath);
-    var source = path.join(webPrj.paths.data, id + '.yml');
+    var source = path.join(webPrj.paths.app.data, id + '.yml');
 
     var yamlTitle = {};
     yamlTitle[app.getLng(req)] = title;

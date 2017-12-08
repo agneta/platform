@@ -56,7 +56,7 @@ module.exports = function(app) {
   var dataMain = {};
   var templatePaths = [
     path.join(__dirname, '../templates'),
-    path.join(project.paths.project, 'email')
+    path.join(project.paths.core.project, 'email')
   ];
 
   return Promise.map(templatePaths, function(pathTemplates) {

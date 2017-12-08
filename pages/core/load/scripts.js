@@ -32,7 +32,7 @@ module.exports = function(locals) {
     var scriptDirs = [
       project.paths.app.scripts,
       project.paths.pages.scripts,
-      project.paths.scriptsTheme
+      project.paths.theme.scripts
     ];
 
     return Promise.map(scriptDirs, function(scriptDir) {

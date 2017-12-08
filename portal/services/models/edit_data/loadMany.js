@@ -27,7 +27,7 @@ module.exports = function(Model, app) {
 
   Model.loadMany = function(template, req) {
 
-    var templateDir = path.join(webProject.paths.data, template);
+    var templateDir = path.join(webProject.paths.app.data, template);
 
     return readdir(templateDir)
       .then(function(files) {

@@ -31,8 +31,8 @@ module.exports = function(locals) {
   project.extend.generator.register('pages', function() {
 
     var pageDirs = [
-      project.paths.sourceTheme,
-      project.paths.source
+      project.paths.theme.source,
+      project.paths.app.source
     ];
 
     var result = {};

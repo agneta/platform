@@ -50,31 +50,31 @@ module.exports = function(app) {
     watch({
       dirs: [
         project.paths.app.config,
-        project.paths.configTheme,
+        project.paths.theme.config,
       ],
       onFile: require('./watcher/config')(options)
     });
     watch({
       dirs: [
-        project.paths.data,
-        project.paths.dataTheme
+        project.paths.app.data,
+        project.paths.theme.data
       ],
       onFile: require('./watcher/data')(options)
     });
-    console.log(        path.join(project.paths.core.services,'models'),
-            project.paths.services.models,
-            path.join(project.paths.portalProjectServices,'models'));
+    console.log(path.join(project.paths.core.services, 'models'),
+      project.paths.services.models,
+      path.join(project.paths.appPortal.services, 'models'));
     watch({
       dirs: [
-        path.join(project.paths.core.services,'models'),
+        path.join(project.paths.core.services, 'models'),
         project.paths.services.models,
-        path.join(project.paths.portalProjectServices,'models')
+        path.join(project.paths.appPortal.services, 'models')
       ],
       onFile: require('./watcher/models')(options)
     });
     watch({
       dirs: [
-        project.paths.scriptsTheme,
+        project.paths.theme.scripts,
         project.paths.pages.scripts,
         project.paths.scripts
       ],
@@ -83,7 +83,7 @@ module.exports = function(app) {
     watch({
       dirs: [
         project.paths.app.source,
-        project.paths.sourceTheme
+        project.paths.theme.source
       ],
       onFile: require('./watcher/source')(options)
     });

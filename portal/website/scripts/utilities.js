@@ -26,10 +26,10 @@ module.exports = function(locals) {
 
   var baseDirs = [{
     builtin: false,
-    dir: path.join(project.paths.project, 'utilities'),
+    dir: path.join(project.paths.core.project, 'utilities'),
   }, {
     builtin: true,
-    dir: path.join(project.paths.portalWebsite, 'utilities')
+    dir: path.join(project.paths.portal.website, 'utilities')
   }];
 
   baseDirs.forEach(function(options) {

@@ -28,12 +28,12 @@ module.exports = function(paths) {
   var icons = {};
   var searchTarget = 'node_modules/material-design-icons';
 
-  var searchDir = path.join(paths.project, searchTarget);
+  var searchDir = path.join(paths.core.project, searchTarget);
 
   try{
     fs.statSync(searchDir);
   }catch(e){
-    searchDir = path.join(paths.baseTheme, searchTarget);
+    searchDir = path.join(paths.theme.base, searchTarget);
   }
 
 
@@ -103,7 +103,7 @@ module.exports = function(paths) {
 
       return Promise.map(names, function(name) {
         var sourcePath = path.join(searchDir, icons[name]);
-        var destPath = path.join(paths.baseTheme, 'icons', name + '.svg');
+        var destPath = path.join(paths.theme.base, 'icons', name + '.svg');
         return promiseCopy(sourcePath, destPath)
           .then(function() {
             bar.tick();

@@ -43,8 +43,8 @@ module.exports = function(locals, options) {
   logger.log('Copying Assets to public folder');
 
   var sources = [
-    project.paths.sourceTheme,
-    project.paths.source
+    project.paths.theme.source,
+    project.paths.app.source
   ];
 
   var bar;

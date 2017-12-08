@@ -20,14 +20,14 @@ module.exports = function(Model, app) {
 
   var webPrj = app.get('options').web.project;
 
-  Model.editConfigDir = path.join(webPrj.paths.project, 'edit', 'data');
+  Model.editConfigDir = path.join(webPrj.paths.core.project, 'edit', 'data');
 
   Model.parseId = function(id) {
 
     var split = id.split('/');
     var fileName = split.pop();
     var templateId = split.join('/');
-    var source = path.join(webPrj.paths.data, templateId, fileName + '.yml');
+    var source = path.join(webPrj.paths.app.data, templateId, fileName + '.yml');
 
     return {
       templateId: templateId,

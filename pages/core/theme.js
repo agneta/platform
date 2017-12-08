@@ -27,7 +27,7 @@ module.exports = function(locals) {
     readDir: function(base) {
 
       var dirs = [
-        path.join(project.paths.baseTheme, base),
+        path.join(project.paths.theme.base, base),
         path.join(project.paths.app.base, base)
       ];
 
@@ -84,11 +84,11 @@ module.exports = function(locals) {
 
     var filePaths = [
       project.paths.app.base,
-      project.paths.baseTheme
+      project.paths.theme.base
     ];
 
     if(locals.web){
-      filePaths.push(locals.web.project.paths.portalProject);
+      filePaths.push(locals.web.project.paths.appPortal.base);
     }
 
     var filePath;

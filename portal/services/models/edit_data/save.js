@@ -25,7 +25,7 @@ module.exports = function(Model, app) {
 
   Model.save = function(id, data) {
 
-    var filePath = path.join(webPrj.paths.data, id + '.yml');
+    var filePath = path.join(webPrj.paths.app.data, id + '.yml');
 
     return fs.access(filePath)
       .then(function() {

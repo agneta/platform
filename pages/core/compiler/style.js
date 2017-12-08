@@ -31,7 +31,7 @@ module.exports = function(locals) {
       .set('include css', true)
       .use(nib())
       .import('nib')
-      .import(path.join(project.paths.baseTheme, 'variables.styl'));
+      .import(path.join(project.paths.theme.base, 'variables.styl'));
 
     var pathProjectVariables = path.join(project.paths.app.source, '_variables.styl');
 
@@ -74,7 +74,7 @@ module.exports = function(locals) {
     });
 
     compiler.define('theme', function(params) {
-      var themePath = path.join(project.paths.sourceTheme, params.val);
+      var themePath = path.join(project.paths.theme.source, params.val);
       return new stylus.nodes.String(themePath);
     });
 

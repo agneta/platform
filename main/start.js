@@ -91,12 +91,12 @@ var start = {
 
     options.includeSources = [{
       name: 'portal',
-      path: paths.core.portalProjectSource
+      path: paths.appPortal.source
     }];
 
     var component = start.pages({
       mode: 'preview',
-      dir: paths.core.portalWebsite,
+      dir: paths.portal.website,
       locals: options
     });
 
@@ -115,12 +115,12 @@ var start = {
     return component;
   },
   pages: function(options) {
-    options.paths = paths.app(options);
+    options.paths = paths.loadApp(options);
     return getComponent('pages', '../pages', options);
   },
   services: function(options) {
 
-    options.paths = paths.core;
+    options.paths = paths.loadApp(options);
     return getComponent('services', paths.core.services, options);
 
   }

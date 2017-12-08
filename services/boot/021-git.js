@@ -21,9 +21,9 @@ module.exports = function(app) {
   var webPrj = app.get('options').client.project;
 
   function getPath(value) {
-    if (value.indexOf(webPrj.paths.project) === 0) {
+    if (value.indexOf(webPrj.paths.core.project) === 0) {
       return path.relative(
-        webPrj.paths.project,
+        webPrj.paths.core.project,
         value);
     }
 

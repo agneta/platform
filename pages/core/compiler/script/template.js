@@ -12,8 +12,8 @@ module.exports = function(project, helpers) {
       path_partial += '.js';
     }
 
-    if (path_partial.indexOf(project.paths.source) === 0 ||
-      path_partial.indexOf(project.paths.sourceTheme) === 0) {
+    if (path_partial.indexOf(project.paths.app.source) === 0 ||
+      path_partial.indexOf(project.paths.theme.source) === 0) {
       path_result = path_partial;
     } else {
       path_partial = path.join('source', path_partial);
