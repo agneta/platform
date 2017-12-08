@@ -25,7 +25,7 @@ module.exports = function(locals) {
   project.extend.helper.register('viewController', function(tag) {
     tag = tag.split('-');
     var result = [];
-    for(var item of tag){
+    for (var item of tag) {
       item = item[0].toUpperCase() + item.slice(1);
       result.push(item);
     }
@@ -38,7 +38,7 @@ module.exports = function(locals) {
     page = page || this.page;
     return this.viewTag({
       path: page.pathSource || page.path
-    })+'.html';
+    }) + '.html';
   });
 
   project.extend.helper.register('viewTag', function(page) {
@@ -48,9 +48,13 @@ module.exports = function(locals) {
     if (tag) {
       tag = tag.replace(/([a-z](?=[A-Z]))/g, '$1 ').split(' ').join('-').toLowerCase();
     } else {
-      tag = 'ag-page' + (page.pathSource || page.path).split('/').join('-').toLowerCase();
-      if (tag[tag.length - 1] == '-') {
-        tag += 'home';
+      if (page.isDialog) {
+        tag = 'ag-dialog-ctrl';
+      } else {
+        tag = 'ag-page' + (page.pathSource || page.path).split('/').join('-').toLowerCase();
+        if (tag[tag.length - 1] == '-') {
+          tag += 'home';
+        }
       }
     }
 
@@ -108,7 +112,7 @@ module.exports = function(locals) {
 
     data.layoutClass = [
       'page-' + page.templateSource.split('/')
-        .join('-')
+      .join('-')
     ];
     if (page.class) {
       data.layoutClass.push(page.class);

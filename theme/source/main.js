@@ -64,6 +64,9 @@
     }
 
     agneta.addOverride = function(name,override){
+      if(!name){
+        return;
+      }
       name = fixName(name);
       overrides[name] = override;
     };
