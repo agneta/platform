@@ -43,6 +43,7 @@
   (function() {
 
     var directives = {};
+    var overrides = {};
 
     function fixName(name) {
       return name[0].toLowerCase() + name.slice(1);
@@ -61,6 +62,11 @@
       }
       return result;
     }
+
+    agneta.addOverride = function(name,override){
+      name = fixName(name);
+      overrides[name] = override;
+    };
 
     agneta.extend = function(vm, directiveName, override) {
 
@@ -97,9 +103,15 @@
 
         return {
           restrict: 'A',
-          link: function(vm) {
+          link: function(vm,elm) {
             if (link) {
-              link.apply(vm, argInjectors(parameters));
+              var override = {
+                '$element': elm
+              };
+              if(overrides[name]){
+                angular.extend(override,overrides[name]);
+              }
+              link.apply(vm, argInjectors(parameters,override));
             }
           }
         };

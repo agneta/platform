@@ -1,7 +1,9 @@
-<%if(page.isDialog){%>
-<%-template('page/dialog',{page:page})%>
+<%if(page.isViewData){%>
+<%-template(page.template)%>
+<%}else if(page.isDialog){%>
+<%-template('page/dialog')%>
 <%}else if(page.isView){%>
-<%-template('page/view',{page:page})%>
+<%-template('page/view')%>
 <%}else{%>
-<%-template(page.template,{page:page})%>
+<%-template(page.template)%>
 <%}%>

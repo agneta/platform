@@ -70,7 +70,7 @@ function _e_Dialog(app) {
             templateUrl: agneta.dialog(options.partial),
             locals: locals
           };
-
+          agneta.addOverride(data.controller,locals);
           $mdDialog.show(dialogOptions);
         })
         .finally(function() {
