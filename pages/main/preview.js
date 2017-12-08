@@ -40,7 +40,7 @@ module.exports = function(locals) {
   // SET PATHS
   //////////////////////////////////////////////////////
 
-  var dirCache = path.join(project.paths.base, 'cache');
+  var dirCache = path.join(project.paths.app.base, 'cache');
 
   //////////////////////////////////////////////////////
   //
@@ -60,7 +60,7 @@ module.exports = function(locals) {
   },
   {
     name: 'theme',
-    path: project.paths.sourceTheme
+    path: project.paths.theme.source
   }
   ];
 

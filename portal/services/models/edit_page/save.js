@@ -28,7 +28,7 @@ module.exports = function(Model, app) {
     return Model.getPage(id)
       .then(function(page) {
 
-        var source = path.join(webPrj.paths.base, page.full_source);
+        var source = path.join(webPrj.paths.app.base, page.full_source);
 
         data = _.omit(data, Model.omitData);
         return saveYaml(source, data);

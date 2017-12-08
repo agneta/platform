@@ -31,7 +31,7 @@ module.exports = function(locals) {
   });
 
   project.extend.helper.register('asset_files', function(path_target) {
-    var path_dir = path.join(project.paths.source, path_target);
+    var path_dir = path.join(project.paths.app.source, path_target);
     return fs.readdirSync(path_dir);
   });
 

@@ -42,7 +42,7 @@ module.exports = function(locals) {
         themeConfig = yaml.safeLoad(content);
 
         return readFile(
-          path.join(project.paths.base, 'config.yml'),
+          path.join(project.paths.app.base, 'config.yml'),
           'utf8'
         );
       })
@@ -87,7 +87,7 @@ module.exports = function(locals) {
 
         //---------------------
         var packageAgneta = require(
-          path.join(project.paths.agneta, 'package.json')
+          path.join(project.paths.core.platform, 'package.json')
         );
 
         project.site.version = {

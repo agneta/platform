@@ -71,8 +71,8 @@ module.exports = function(options) {
   locals.mode[options.mode] = locals.mode[options.mode] || {};
 
 
-  require(path.join(options.paths.framework, 'core/main'))(locals);
-  var mode = require(path.join(options.paths.framework, 'main', options.mode))(locals);
+  require(path.join(options.paths.pages.base, 'core/main'))(locals);
+  var mode = require(path.join(options.paths.pages.base, 'main', options.mode))(locals);
 
   //-----------------------------------------------------------------
   return {
@@ -81,7 +81,7 @@ module.exports = function(options) {
     init: function() {
 
       locals.project.env = locals.env || 'development';
-      locals.build_dir = path.join(options.paths.build, locals.project.env);
+      locals.build_dir = path.join(options.paths.app.build, locals.project.env);
 
       return locals.main.init()
         .then(function() {

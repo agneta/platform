@@ -28,7 +28,7 @@ module.exports = function(locals) {
 
       var dirs = [
         path.join(project.paths.baseTheme, base),
-        path.join(project.paths.base, base)
+        path.join(project.paths.app.base, base)
       ];
 
       var files = {};
@@ -83,7 +83,7 @@ module.exports = function(locals) {
   function getObject(getPath, method) {
 
     var filePaths = [
-      project.paths.base,
+      project.paths.app.base,
       project.paths.baseTheme
     ];
 

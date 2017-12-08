@@ -61,7 +61,7 @@ module.exports = function(util) {
       operations.push({
         method: sync,
         options: {
-          source: path.join(webProject.paths.build, 'production', 'public'),
+          source: path.join(webProject.paths.app.build, 'production', 'public'),
           target: storageConfig.buckets.assets.production
         }
       });
@@ -69,7 +69,7 @@ module.exports = function(util) {
       operations.push({
         method: sync,
         options: {
-          source: path.join(webProject.paths.build, 'production', 'private'),
+          source: path.join(webProject.paths.app.build, 'production', 'private'),
           target: storageConfig.buckets.app.production.private
         }
       });
@@ -81,7 +81,7 @@ module.exports = function(util) {
       operations.push({
         method: sync,
         options: {
-          source: path.join(webProject.paths.build, 'staging', 'public'),
+          source: path.join(webProject.paths.app.build, 'staging', 'public'),
           target: storageConfig.buckets.assets.name
         }
       });
@@ -89,7 +89,7 @@ module.exports = function(util) {
       operations.push({
         method: sync,
         options: {
-          source: path.join(webProject.paths.build, 'staging', 'private'),
+          source: path.join(webProject.paths.app.build, 'staging', 'private'),
           target: storageConfig.buckets.app.private
         }
       });

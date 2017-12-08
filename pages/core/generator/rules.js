@@ -25,7 +25,7 @@ module.exports = function(locals) {
   var project = locals.project;
 
   var dataPathTheme = path.join(project.paths.baseTheme, 'rules.yml');
-  var dataPath = path.join(project.paths.base, 'rules.yml');
+  var dataPath = path.join(project.paths.app.base, 'rules.yml');
 
   fs.ensureFileSync(dataPathTheme);
   var dataTheme = yaml.safeLoad(fs.readFileSync(dataPathTheme, 'utf8'));

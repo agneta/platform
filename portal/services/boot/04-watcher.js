@@ -16,6 +16,7 @@
  */
 var chokidar = require('chokidar');
 var Promise = require('bluebird');
+const path = require('path');
 
 module.exports = function(app) {
 
@@ -48,7 +49,7 @@ module.exports = function(app) {
 
     watch({
       dirs: [
-        project.paths.config,
+        project.paths.app.config,
         project.paths.configTheme,
       ],
       onFile: require('./watcher/config')(options)
@@ -60,17 +61,28 @@ module.exports = function(app) {
       ],
       onFile: require('./watcher/data')(options)
     });
+    console.log(        path.join(project.paths.core.services,'models'),
+            project.paths.services.models,
+            path.join(project.paths.portalProjectServices,'models'));
+    watch({
+      dirs: [
+        path.join(project.paths.core.services,'models'),
+        project.paths.services.models,
+        path.join(project.paths.portalProjectServices,'models')
+      ],
+      onFile: require('./watcher/models')(options)
+    });
     watch({
       dirs: [
         project.paths.scriptsTheme,
-        project.paths.scriptsFramework,
+        project.paths.pages.scripts,
         project.paths.scripts
       ],
       onFile: require('./watcher/scripts')(options)
     });
     watch({
       dirs: [
-        project.paths.source,
+        project.paths.app.source,
         project.paths.sourceTheme
       ],
       onFile: require('./watcher/source')(options)

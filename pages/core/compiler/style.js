@@ -33,7 +33,7 @@ module.exports = function(locals) {
       .import('nib')
       .import(path.join(project.paths.baseTheme, 'variables.styl'));
 
-    var pathProjectVariables = path.join(project.paths.source, '_variables.styl');
+    var pathProjectVariables = path.join(project.paths.app.source, '_variables.styl');
 
     if (fs.existsSync(pathProjectVariables)) {
       compiler.import(pathProjectVariables);

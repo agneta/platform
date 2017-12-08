@@ -67,7 +67,7 @@ module.exports = function(Model, app) {
   };
 
   Model.pageSource = function(page) {
-    return path.join(webPrj.paths.base, page.full_source);
+    return path.join(webPrj.paths.app.base, page.full_source);
   };
 
   require('./edit_page/loadCommit')(Model, app);

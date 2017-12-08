@@ -15,8 +15,6 @@
  *   limitations under the License.
  */
 const path = require('path');
-const _ = require('lodash');
-
 
 module.exports = function(watcher) {
 
@@ -28,18 +26,12 @@ module.exports = function(watcher) {
     switch (params.ext) {
       case '.js':
 
-        delete require.cache[require.resolve(pathFile)];
-
-        try {
-          var script = require(pathFile);
-
-          if (_.isFunction(script)) {
-            script(locals);
-          }
-        } catch (err) {
-          console.error(err);
+        var name = params.name;
+        console.log('model name update',name);
+        var model = locals.app.models(name);
+        if(model){
+          console.log('test');
         }
-
         break;
     }
 

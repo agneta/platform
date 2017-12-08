@@ -76,7 +76,7 @@ module.exports = function(locals) {
   /////////////////////////////////////////////////////////////////
 
   project.extend.helper.register('has_source', function(target) {
-    return this.is_file(path.join(project.paths.base, 'source', target));
+    return this.is_file(path.join(project.paths.app.base, 'source', target));
   });
 
   project.extend.helper.register('is_file', function(path_check) {

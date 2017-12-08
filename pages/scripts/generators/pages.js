@@ -98,7 +98,7 @@ module.exports = function(locals) {
                     if (data.extend) {
 
                       var extendPath = path.join(
-                        project.paths.source,
+                        project.paths.app.source,
                         data.extend
                       ) + '.yml';
                       return fs.readFile(extendPath)

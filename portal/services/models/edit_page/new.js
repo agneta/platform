@@ -23,7 +23,7 @@ module.exports = function(Model, app) {
 
   Model.new = function(title, filePath, template, req) {
 
-    var source = path.join(webPrj.paths.source, filePath + '.yml');
+    var source = path.join(webPrj.paths.app.source, filePath + '.yml');
 
     var yamlTitle = {};
     yamlTitle[app.getLng(req)] = title;

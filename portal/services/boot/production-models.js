@@ -40,11 +40,11 @@ module.exports = function(app) {
   });
 
   require(
-    path.join(appOptions.web.project.paths.services, 'lib', 'locals')
+    path.join(appOptions.web.project.paths.core.services, 'lib', 'locals')
   )(appPrd, appOptionsPrd);
 
   require(
-    path.join(appOptions.web.project.paths.services, 'lib', 'secrets')
+    path.join(appOptions.web.project.paths.core.services, 'lib', 'secrets')
   )(appPrd, appOptionsPrd);
 
 

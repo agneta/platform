@@ -84,17 +84,11 @@ function _e_Dialog(app) {
 
   });
 
-
-  agneta.directive('DialogController', function($mdDialog, data) {
+  agneta.directive('AgDialogCtrl', function($rootScope, $mdDialog, data) {
 
     var vm = this;
+
     vm.data = data;
-
-  });
-
-  agneta.directive('AgDialogCtrl', function($rootScope, $mdDialog) {
-
-    var vm = this;
 
     vm.close = function() {
       $mdDialog.hide();

@@ -72,7 +72,7 @@ module.exports = function(locals) {
   });
 
   project.extend.helper.register('has_template', function(req) {
-    var path_partial = path.join(project.paths.base, 'source', req + '.ejs');
+    var path_partial = path.join(project.paths.app.base, 'source', req + '.ejs');
 
     var res = this.is_file(path_partial);
 

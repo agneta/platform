@@ -25,7 +25,7 @@ module.exports = function(app) {
 
   return function(data) {
 
-    var pagePath = path.join(project.paths.build, 'local', 'private', data.remotePath,'index.html');
+    var pagePath = path.join(project.paths.app.build, 'local', 'private', data.remotePath,'index.html');
 
     if (!fs.existsSync(pagePath)) {
       return Promise.reject({

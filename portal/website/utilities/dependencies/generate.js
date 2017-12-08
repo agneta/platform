@@ -33,7 +33,7 @@ module.exports = function(util) {
     .then(function() {
       return extract(util, {
         name: 'project',
-        base: projectPaths.base,
+        base: projectpaths.app.base,
         root: process.cwd()
       });
     });

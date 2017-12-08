@@ -26,7 +26,7 @@ module.exports = function(locals) {
   var path = require('path');
 
   project.extend.helper.register('image_size', function(url) {
-    var image_path = path.join(project.paths.source, url);
+    var image_path = path.join(project.paths.app.source, url);
     return sizeOf(image_path);
   });
 

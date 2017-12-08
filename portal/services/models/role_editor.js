@@ -13,36 +13,47 @@ module.exports = function(Model, app) {
 
   var web = app.get('options').web;
 
-  Model.contentChange = function(data,req){
+  Model.contentChange = function(data, req) {
 
-    var accessToken = req.accessToken;
-    var listener = `content-change:${data.path}:${data.id}`;
+    return Promise.resolve()
+      .then(function() {
 
-    if(!accessToken){
-      return;
-    }
+        var accessToken = req.accessToken;
+        var listener = `content-change:${data.path}:${data.id}`;
 
-    data.actor = accessToken.userId;
+        if (!accessToken) {
+          return;
+        }
 
-    if(_.isString(data.value)){
-      data.value = web.app.locals.render(data.value);
-    }
+        data.actor = accessToken.userId;
 
-    Model.io.emit(listener, data);
+        if (_.isString(data.value)) {
+          data.value = web.app.locals.render(data.value);
+        }
+
+        Model.io.emit(listener, data);
+
+      })
+      .then(function() {
+        return {
+          message: 'notified socket cluster'
+        };
+      });
+
 
   };
 
   Model.remoteMethod(
     'contentChange', {
-      description: 'Get All Keywords by language',
+      description: 'Change content by given data',
       accepts: [{
-        arg: 'lang',
-        type: 'string',
+        arg: 'data',
+        type: 'object',
         required: true
       }],
       returns: {
         arg: 'result',
-        type: 'array',
+        type: 'object',
         root: true
       },
       http: {

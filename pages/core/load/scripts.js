@@ -30,8 +30,8 @@ module.exports = function(locals) {
     ////////////////////////////////////////////////////////
 
     var scriptDirs = [
-      project.paths.scripts,
-      project.paths.scriptsFramework,
+      project.paths.app.scripts,
+      project.paths.pages.scripts,
       project.paths.scriptsTheme
     ];
 

@@ -24,7 +24,7 @@ const querystring = require('querystring');
 module.exports = function(locals) {
 
   var project = locals.project;
-  var basePath = path.relative(project.paths.base, project.paths.source);
+  var basePath = path.relative(project.paths.app.base, project.paths.source);
 
   //----------------------------------------------------------------------
   //
@@ -160,7 +160,7 @@ module.exports = function(locals) {
   project.extend.helper.register('has_file', function(pathFile) {
 
     var portalPath = path.join(project.paths.portalProjectSource, pathFile);
-    var projectPath = path.join(project.paths.source, pathFile);
+    var projectPath = path.join(project.paths.app.source, pathFile);
     var themePath = path.join(project.paths.sourceTheme, pathFile);
 
     //console.log(portalPath);

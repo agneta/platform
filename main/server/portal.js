@@ -19,9 +19,8 @@ const path = require('path');
 const start = require('../start');
 const config = require('../config');
 const middleware = require('../middleware');
-const projectPaths = require('../paths')
-  .core;
-const Build = require(path.join(projectPaths.framework, 'core/build'));
+const pathsCore = require('../paths').core;
+const Build = require(path.join(pathsCore.pages, 'core/build'));
 
 module.exports = function(options) {
 
@@ -58,22 +57,22 @@ module.exports = function(options) {
     root: 'services',
     id: 'portal',
     include: [
-      projectPaths.api,
-      projectPaths.portalProjectServices
+      pathsCore.api,
+      pathsCore.portalProjectServices
     ],
-    dir: projectPaths.portal,
+    dir: pathsCore.portal,
     website: {}
   });
 
   var portalPages = setupServer('portal',{
     root: '',
-    dir: projectPaths.portalWebsite,
+    dir: pathsCore.portalWebsite,
   });
 
   var webServices = setupServer('services',{
     root: 'services/preview/services',
     id: 'web',
-    dir: projectPaths.project,
+    dir: pathsCore.project,
     website: {
       root: appRoots.preview
     },
@@ -131,7 +130,7 @@ module.exports = function(options) {
         root: websiteRoot
       },
       building: true,
-      dir: projectPaths.project
+      dir: pathsCore.project
     });
 
     buildServices.locals.env = options.env;

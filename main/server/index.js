@@ -19,20 +19,7 @@
 // Extend lodash
 var _ = require('lodash');
 _.mixin(require('lodash-deep'));
-_.omitDeep = function(collection, excludeKeys) {
 
-  function omitFn(value) {
-
-    if (value && typeof value === 'object') {
-      excludeKeys.forEach((key) => {
-        delete value[key];
-      });
-    }
-  }
-
-  return _.cloneDeepWith(collection, omitFn);
-
-};
 
 //--------------------------------------------
 

@@ -16,7 +16,6 @@
  */
 const path = require('path');
 const appName = process.env.APP_NAME || 'website';
-const _ = require('lodash');
 //console.log('Application folder:', appName);
 
 //--------------------------------------------------------------------
@@ -24,22 +23,27 @@ const _ = require('lodash');
 var core = {};
 core.project = process.cwd();
 
-var agneta = path.join(__dirname,'..');
+core.platform = path.join(__dirname, '..');
+core.services = path.join(core.platform, 'services');
+core.portal = path.join(core.platform, 'portal');
+core.models = path.join(core.services, 'models');
 
-core.agneta = agneta;
-core.services = path.join(agneta, 'services');
-core.portal = path.join(agneta, 'portal');
-core.framework = path.join(agneta, 'pages');
-core.scriptsFramework = path.join(core.framework, 'scripts');
+// Base
+var pages = {};
+pages.base = path.join(core.platform, 'pages');
+pages.scripts = path.join(pages.base, 'scripts');
 
 // Theme
-core.baseTheme = path.join(agneta, 'theme');
-core.dataTheme = path.join(core.baseTheme, 'data');
-core.templatesTheme = path.join(core.baseTheme, 'templates');
-core.scriptsTheme = path.join(core.baseTheme, 'scripts');
-core.sourceTheme = path.join(core.baseTheme, 'source');
-core.assetsTheme = path.join(core.sourceTheme, 'assets');
-core.configTheme = path.join(core.baseTheme, 'config.yml');
+var themeBase = path.join(core.platform, 'theme');
+var theme = {
+  base: themeBase,
+  data: path.join(themeBase, 'data'),
+  templates: path.join(themeBase, 'templates'),
+  scripts: path.join(themeBase, 'scripts'),
+  source: path.join(themeBase, 'source'),
+  assets: path.join(themeBase, 'source', 'assets'),
+  config: path.join(themeBase, 'config.yml')
+};
 
 // Storage
 var storage = path.join(core.project, 'storage');
@@ -48,49 +52,55 @@ core.storage = {
   root: storage
 };
 
-// Services
-core.api = path.join(core.project, 'services');
-core.models = path.join(core.api, 'models');
-
 // Portal
-core.portalWebsite = path.join(core.portal, 'website');
-core.portalSource = path.join(core.portalWebsite, 'source');
-core.portalAssets = path.join(core.portalSource, 'assets');
-
-// Portal Project
-core.portalProject = path.join(core.project, 'portal');
-core.portalProjectServices = path.join(core.portalProject, 'services');
-core.portalProjectSource = path.join(core.portalProject, 'source');
-core.portalProjectGenerated = path.join(core.portalProjectSource, 'generated');
-
+var portal = {};
+portal.website = path.join(core.portal, 'website');
+portal.source = path.join(portal.website, 'source');
+portal.assets = path.join(portal.source, 'assets');
 
 //--------------------------------------------------------------------
 
-
 module.exports = {
-  app: app,
-  core: core
+  app: loadApp,
+  core: core,
+  pages: pages,
+  theme: theme,
+  portal: portal
 };
 
-function app(options) {
+function loadApp(options) {
 
   options = options || {};
-  var paths = {};
 
-  paths.base = options.dir || path.join(core.project, appName);
+  var app = {};
 
-  paths.config = path.join(paths.base, 'config.yml');
-  paths.data = path.join(paths.base, 'data');
-  paths.build = path.join(paths.base, 'build');
-  paths.template = path.join(paths.base, 'templates');
-  paths.source = path.join(paths.base, 'source');
-  paths.lib = path.join(paths.source, 'lib');
-  paths.assets = path.join(paths.source, 'assets');
-  paths.generated = path.join(paths.source, 'generated');
-  paths.tmp = path.join(paths.base, 'tmp');
-  paths.scripts = path.join(paths.base, 'scripts');
+  app.base = options.dir || path.join(core.project, appName);
 
-  _.extend(paths, core);
+  app.config = path.join(app.base, 'config.yml');
+  app.data = path.join(app.base, 'data');
+  app.build = path.join(app.base, 'build');
+  app.source = path.join(app.base, 'source');
+  app.lib = path.join(app.source, 'lib');
+  app.assets = path.join(app.source, 'assets');
+  app.generated = path.join(app.source, 'generated');
+  app.tmp = path.join(app.base, 'tmp');
+  app.scripts = path.join(app.base, 'scripts');
+  app.services = path.join(core.project, 'services');
 
-  return paths;
+  //----------------------------
+
+  var appPortal = {};
+  appPortal.base = path.join(core.project, 'portal');
+  appPortal.services = path.join(appPortal.base, 'services');
+  appPortal.source = path.join(appPortal.base, 'source');
+  appPortal.generated = path.join(appPortal.source, 'generated');
+
+  return {
+    app: app,
+    appPortal: appPortal,
+    core: core,
+    pages: pages,
+    theme: theme,
+    portal: portal
+  };
 }

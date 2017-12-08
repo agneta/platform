@@ -20,7 +20,6 @@ const chalk = require('chalk');
 const Promise = require('bluebird');
 const EventEmitter = require('events').EventEmitter;
 
-
 Promise.config({
   // Enables all warnings except forgotten return statements.
   warnings: {
