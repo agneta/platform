@@ -15,10 +15,14 @@
  *   limitations under the License.
  */
 const path = require('path');
+const fs = require('fs-extra');
+const Promise = require('bluebird');
+const _ = require('lodash');
 
 module.exports = function(watcher) {
 
   var locals = watcher.locals;
+  var app = locals.services;
 
   return function(pathFile) {
     var params = path.parse(pathFile);
@@ -26,14 +30,69 @@ module.exports = function(watcher) {
     switch (params.ext) {
       case '.js':
 
-        var name = params.name;
-        console.log('model name update',name);
-        var model = locals.app.models(name);
-        if(model){
-          console.log('test');
-        }
-        break;
+        return getModel(pathFile)
+          .then(function(model) {
+            if (!model) {
+              return;
+            }
+
+            delete require.cache[require.resolve(pathFile)];
+
+            try {
+              var script = require(pathFile);
+
+              if (_.isFunction(script)) {
+                script(model,app);
+              }
+            } catch (err) {
+              console.error(err);
+            }
+
+          });
     }
 
   };
+
+  function getModel(pathFile) {
+
+    var pathParsed = path.parse(pathFile);
+    var model;
+
+    return Promise.map([
+      locals.project.paths.core.models,
+      locals.project.paths.app.models
+    ], function(dir) {
+      var modelPath = path.join(dir, pathParsed.name) + '.json';
+
+      return fs.exists(modelPath)
+        .then(function(exists) {
+          if (exists) {
+            var definition = require(modelPath);
+            if (!definition.name) {
+              return;
+            }
+            model = app.models[definition.name];
+          }
+        });
+
+    })
+      .then(function() {
+        if (!model) {
+          var name = pathParsed.name;
+          var nameParts = name.split('_');
+          var modelName = [];
+          for (var part of nameParts){
+            modelName.push(
+              part[0].toUpperCase()+part.slice(1)
+            );
+          }
+          modelName = modelName.join('_');
+          return app.models[modelName];
+        }
+        return model;
+      });
+
+
+  }
+
 };
