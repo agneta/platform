@@ -5,7 +5,7 @@
   <html <%-page.html_attributes%> lang="<%-site.lang%>" ng-app="MainApp">
     <%- template('layout/head') %>
 
-    <body <%-page.body_attributes%> ng-class="[viewData.layoutClass,sidebarClass(),loggedClass(),mediaClass()]" layout="column" ng-keypress="viewData.keypress && onKeyPress($event)">
+    <body <%-page.body_attributes%> ng-class="[viewData.layoutClass,sidebarClass(),loggedClass(),mediaClass()]" layout="column">
 
       <%-template('layout/compatibility',null,true)%>
       <%-template('layout/loader',null,true)%>

@@ -1,5 +1,5 @@
 <%var tag = viewTag();%>
-<div <%-tag%> id="view-content" layout="row" flex>
+<div <%-tag%> id="view-content" layout="row" ng-keypress="viewData.keypress && onKeyPress($event)" flex>
 
 	<md-sidenav class="view-wrapper md-sidenav-left md-whiteframe-z2 site-menu" ng-class="{unlocked:!menu.isLocked}" md-is-locked-open="menuLock()" md-component-id="menu" layout="column">
 		<div>

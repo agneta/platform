@@ -29,12 +29,13 @@ module.exports = function(watcher) {
 
     switch (params.ext) {
       case '.js':
-
+        //console.log(pathFile);
         return getModel(pathFile)
           .then(function(model) {
             if (!model) {
               return;
             }
+            //console.log('found model', model.definition.name);
 
             delete require.cache[require.resolve(pathFile)];
 
@@ -42,7 +43,7 @@ module.exports = function(watcher) {
               var script = require(pathFile);
 
               if (_.isFunction(script)) {
-                script(model,app);
+                script(model, app);
               }
             } catch (err) {
               console.error(err);
@@ -59,31 +60,31 @@ module.exports = function(watcher) {
     var model;
 
     return Promise.map([
-      locals.project.paths.core.models,
-      locals.project.paths.app.models
-    ], function(dir) {
-      var modelPath = path.join(dir, pathParsed.name) + '.json';
+        locals.project.paths.core.models,
+        locals.project.paths.app.models
+      ], function(dir) {
+        var modelPath = path.join(dir, pathParsed.name) + '.json';
 
-      return fs.exists(modelPath)
-        .then(function(exists) {
-          if (exists) {
-            var definition = require(modelPath);
-            if (!definition.name) {
-              return;
+        return fs.exists(modelPath)
+          .then(function(exists) {
+            if (exists) {
+              var definition = require(modelPath);
+              if (!definition.name) {
+                return;
+              }
+              model = app.models[definition.name];
             }
-            model = app.models[definition.name];
-          }
-        });
+          });
 
-    })
+      })
       .then(function() {
         if (!model) {
           var name = pathParsed.name;
           var nameParts = name.split('_');
           var modelName = [];
-          for (var part of nameParts){
+          for (var part of nameParts) {
             modelName.push(
-              part[0].toUpperCase()+part.slice(1)
+              part[0].toUpperCase() + part.slice(1)
             );
           }
           modelName = modelName.join('_');

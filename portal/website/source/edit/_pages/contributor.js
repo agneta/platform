@@ -25,8 +25,8 @@ function _e_contributor(vm, $rootScope, Account, Portal, $timeout, Role_Editor) 
     }
 
     Account.get({
-      id: id
-    })
+        id: id
+      })
       .$promise
       .then(function(result) {
         //console.log(result);
@@ -52,24 +52,26 @@ function _e_contributor(vm, $rootScope, Account, Portal, $timeout, Role_Editor) 
 
   vm.onFieldChange = function(child) {
 
-    var value = child.__value;
-
-    if (angular.isObject(value)) {
-      value = value[vm.edit.lang];
-    }
-    //console.log('emit');
-    if (lastEdit.id == child.__id && lastEdit.value == value) {
-      return;
-    }
-
-    Role_Editor.contentChange({
-      data: {
-        id: child.__id,
-        path: vm.pagePath,
-        lang: vm.edit.lang,
-        value: value
+    $timeout(function() {
+      var value = child.__value;
+      if (angular.isObject(value)) {
+        value = value[vm.edit.lang];
       }
-    });
+      //console.log('emit');
+      if (lastEdit.id == child.__id && lastEdit.value == value) {
+        return;
+      }
+
+      Role_Editor.contentChange({
+        data: {
+          id: child.__id,
+          path: vm.pagePath,
+          lang: vm.edit.lang,
+          value: value
+        }
+      });
+    }, 10);
+
 
   };
 

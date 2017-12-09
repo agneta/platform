@@ -39,7 +39,6 @@
     });
 
     socket.on('connect', function() {
-      //console.log('CONNECTED');
       $rootScope.system.notification = null;
     });
 

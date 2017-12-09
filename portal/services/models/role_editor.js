@@ -15,17 +15,18 @@ module.exports = function(Model, app) {
 
   Model.contentChange = function(data, req) {
 
+    if (!req.accessToken) {
+      return Promise.reject({
+        message:'Must be logged in'
+      });
+    }
+
     return Promise.resolve()
       .then(function() {
 
-        var accessToken = req.accessToken;
         var listener = `content-change:${data.path}:${data.id}`;
 
-        if (!accessToken) {
-          return;
-        }
-
-        data.actor = accessToken.userId;
+        data.actor = req.accessToken.userId;
 
         if (_.isString(data.value)) {
           data.value = web.app.locals.render(data.value);
@@ -50,6 +51,12 @@ module.exports = function(Model, app) {
         arg: 'data',
         type: 'object',
         required: true
+      },{
+        arg: 'req',
+        type: 'object',
+        'http': {
+          source: 'req'
+        }
       }],
       returns: {
         arg: 'result',
