@@ -96,7 +96,7 @@ var start = {
 
     var component = start.pages({
       mode: 'preview',
-      dir: paths.portal.website,
+      dir: paths.portal.base,
       locals: options
     });
 

@@ -42,7 +42,7 @@ module.exports = function(locals) {
         themeConfig = yaml.safeLoad(content);
 
         return readFile(
-          path.join(project.paths.app.base, 'config.yml'),
+          path.join(project.paths.app.website, 'config.yml'),
           'utf8'
         );
       })

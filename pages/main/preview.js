@@ -35,7 +35,7 @@ module.exports = function(locals) {
   }));
   app.use(bodyParser.json());
 
-  var dirCache = path.join(project.paths.app.base, 'cache');
+  var dirCache = path.join(project.paths.app.website, 'cache');
 
   var sources = [{
     name: 'project',

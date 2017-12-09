@@ -25,7 +25,7 @@ module.exports = function(locals) {
 
   var db = project.database = new Database({
     version: 1,
-    path: path.join(project.paths.app.base, 'db.json')
+    path: path.join(project.paths.app.website, 'db.json')
   });
 
   project.model = function(name, schema) {

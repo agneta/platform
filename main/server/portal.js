@@ -59,13 +59,13 @@ module.exports = function(options) {
       paths.app.services,
       paths.appPortal.services
     ],
-    dir: paths.core.portal,
+    dir: paths.portal.base,
     website: {}
   });
 
   var portalPages = setupServer('portal',{
     root: '',
-    dir: paths.portal.website,
+    dir: paths.portal.base,
   });
 
   var webServices = setupServer('services',{

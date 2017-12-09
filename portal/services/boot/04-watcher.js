@@ -61,14 +61,11 @@ module.exports = function(app) {
       ],
       onFile: require('./watcher/data')(options)
     });
-    console.log(path.join(project.paths.core.services, 'models'),
-      project.paths.services.models,
-      path.join(project.paths.appPortal.services, 'models'));
     watch({
       dirs: [
         path.join(project.paths.core.services, 'models'),
-        project.paths.services.models,
-        path.join(project.paths.appPortal.services, 'models')
+        path.join(project.paths.app.models),
+        path.join(project.paths.appPortal.models)
       ],
       onFile: require('./watcher/models')(options)
     });
@@ -76,7 +73,7 @@ module.exports = function(app) {
       dirs: [
         project.paths.theme.scripts,
         project.paths.pages.scripts,
-        project.paths.scripts
+        project.paths.app.scripts
       ],
       onFile: require('./watcher/scripts')(options)
     });

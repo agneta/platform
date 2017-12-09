@@ -24,7 +24,7 @@ const querystring = require('querystring');
 module.exports = function(locals) {
 
   var project = locals.project;
-  var basePath = path.relative(project.paths.app.base, project.paths.app.source);
+  var basePath = path.relative(project.paths.app.website, project.paths.app.source);
 
   //----------------------------------------------------------------------
   //

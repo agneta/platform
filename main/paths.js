@@ -22,7 +22,6 @@ const appName = process.env.APP_NAME || 'website';
 
 var core = {};
 core.project = process.cwd();
-
 core.platform = path.join(__dirname, '..');
 core.services = path.join(core.platform, 'services');
 
@@ -49,38 +48,46 @@ core.storage = {
 };
 
 // Portal
-var portal = {};
-portal.base = path.join(core.platform, 'portal');
-portal.website = path.join(portal.base, 'website');
-portal.source = path.join(portal.website, 'source');
+var portal = setStructure({
+  base: path.join(core.platform, 'portal')
+});
+
+var appPortal = setStructure({
+  base: path.join(core.project, 'portal')
+});
 
 //--------------------------------------------------------------------
 
 module.exports = loadApp();
 
+function setStructure(obj){
+
+  obj.website = path.join(obj.base, appName);
+
+  // website
+  obj.config = path.join(obj.website, 'config.yml');
+  obj.data = path.join(obj.website, 'data');
+  obj.build = path.join(obj.website, 'build');
+  obj.tmp = path.join(obj.website, 'tmp');
+  obj.scripts = path.join(obj.website, 'scripts');
+  // source
+  obj.source = path.join(obj.website, 'source');
+  obj.lib = path.join(obj.source, 'lib');
+  obj.generated = path.join(obj.source, 'generated');
+  // services
+  obj.services = path.join(obj.base, 'services');
+  obj.models = path.join(obj.services, 'models');
+
+  return obj;
+}
+
 function loadApp(options) {
 
   options = options || {};
 
-  var app = {};
-  app.base = options.dir || path.join(core.project, appName);
-  app.config = path.join(app.base, 'config.yml');
-  app.data = path.join(app.base, 'data');
-  app.build = path.join(app.base, 'build');
-  app.source = path.join(app.base, 'source');
-  app.lib = path.join(app.source, 'lib');
-  app.generated = path.join(app.source, 'generated');
-  app.tmp = path.join(app.base, 'tmp');
-  app.scripts = path.join(app.base, 'scripts');
-  app.services = path.join(core.project, 'services');
-
-  //----------------------------
-
-  var appPortal = {};
-  appPortal.base = path.join(core.project, 'portal');
-  appPortal.services = path.join(appPortal.base, 'services');
-  appPortal.source = path.join(appPortal.base, 'source');
-  appPortal.generated = path.join(appPortal.source, 'generated');
+  var app = setStructure({
+    base: options.dir || core.project
+  });
 
   return {
     app: app,
