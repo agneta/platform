@@ -1,8 +1,11 @@
-const module = require('module');
+const path = require('path');
 module.exports = function() {
 
   var app = {
-    version: {}
+    version: {},
+    config: require(
+      path.join(process.cwd(),'services/config')
+    ).git
   };
 
   require('./update')(app);

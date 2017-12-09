@@ -18,7 +18,7 @@
 const Promise = require('bluebird');
 module.exports = function(app) {
 
-  var config = app.get('git');
+  var config = app.config;
 
   app.version.update = function() {
 

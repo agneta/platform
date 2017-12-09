@@ -22,7 +22,7 @@ const path = require('path');
 module.exports = function(app) {
 
   var base_dir = process.cwd();
-  var config = app.get('git');
+  var config = app.config;
 
   app.git = simplegit(base_dir);
 
