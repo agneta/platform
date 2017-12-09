@@ -98,103 +98,20 @@ function _e_main(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeE
   vm.pageAdd = function() {
     $mdDialog.open({
       partial: 'page-add',
-      controller: function() {
-
-        agneta.extend(vm, 'AgDialogCtrl');
-
-        if (!scopeEdit.template) {
-          return;
-        }
-
-        var defaultPath = scopeEdit.page && scopeEdit.page.path;
-        if (!defaultPath) {
-          defaultPath = scopeEdit.template.path_default || '';
-          defaultPath += '/old-file-name';
-        }
-
-        defaultPath = defaultPath.split('/');
-        defaultPath.pop();
-        defaultPath = defaultPath.join('/');
-        defaultPath = agneta.urljoin(defaultPath, 'new-file-name');
-
-        if (defaultPath[0] != '/')
-          defaultPath = '/' + defaultPath;
-
-        vm.formSubmitFields = {
-          path: defaultPath
-        };
-
-        vm.template = scopeEdit.template;
-
-        vm.submit = function() {
-
-          var fields = vm.formSubmitFields;
-          vm.loading = true;
-
-          helpers.Model.new({
-            title: fields.title,
-            path: fields.path,
-            template: vm.template.id
-          })
-            .$promise
-            .then(function(result) {
-              helpers.toast(result.message || 'File created');
-
-              Portal.socket.once('page-reload', function() {
-                return scopeEdit.getPage(result.id)
-                  .then(function() {
-                    vm.close();
-                    return scopeEdit.selectTemplate();
-                  })
-                  .finally(function() {
-                    vm.loading = false;
-                  });
-              });
-
-            });
-
-        };
+      data: {
+        scopeEdit: scopeEdit,
+        helpers: helpers
       }
     });
   };
 
   vm.push = function() {
-
     $mdDialog.open({
       partial: 'push-changes',
-      controller: function() {
-
-        agneta.extend(vm, 'AgDialogCtrl');
-
-        vm.loading = true;
-        GIT.status()
-          .$promise
-          .then(function(result) {
-            //console.log(result);
-            vm.files = result.files;
-          })
-          .finally(function() {
-            vm.loading = false;
-          });
-
-        vm.submit = function() {
-          vm.loading = true;
-          GIT.push({
-            message: vm.formSubmitFields.message
-          })
-            .$promise
-            .then(function() {
-              vm.close();
-              helpers.toast('Changes are pushed to repository');
-            })
-            .finally(function() {
-              vm.loading = false;
-            });
-        };
-
+      data: {
+        helpers: helpers
       }
     });
-
   };
 
   (function() {

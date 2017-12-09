@@ -17,9 +17,10 @@
 
 (function() {
 
-  agneta.directive('AgAccountCtrl', function($rootScope, AccountList, $routeParams, $mdToast, $mdDialog, Production_Account, Account, $location) {
+  agneta.directive('AgAccountCtrl', function($rootScope, AccountList, $routeParams, $mdToast, $mdDialog, Production_Account, $timeout, Account, $location) {
     var vm = this;
     AccountList.useScope(vm);
+
     function reloadAccount() {
       if (!vm.viewAccount) {
         return;
@@ -62,7 +63,9 @@
     }
 
     if ($routeParams.account) {
-      getAccount($routeParams.account);
+      $timeout(function() {
+        getAccount($routeParams.account);
+      }, 100);
     }
 
     vm.save = function() {
@@ -130,75 +133,30 @@
         .$promise
         .then(function(roles) {
 
-          $mdDialog.show({
-            controller: function(data) {
-              vm.data = data;
-
-              agneta.extend(vm, 'AgDialogCtrl');
-
-              vm.submit = function() {
-
-                vm.loading = true;
-
-                AccountList.model.roleAdd({
-                  id: data.account.id,
-                  name: vm.role
-                })
-                  .$promise
-                  .finally(function() {
-
-                    vm.loading = false;
-                    reloadAccount();
-
-                  });
-              };
-
-            },
-            clickOutsideToClose: true,
-            locals: {
-              data: {
-                roles: roles,
-                account: vm.viewAccount
-              }
-            },
-            templateUrl: agneta.dialog('role-add')
+          $mdDialog.open({
+            partial: 'role-add',
+            data: {
+              roles: roles,
+              account: vm.viewAccount,
+              reloadAccount: reloadAccount
+            }
           });
 
         });
 
     };
 
-    //------------------------------------------------------------
-
     vm.change = function(account) {
       getAccount(account.id);
     };
 
-    //------------------------------------------------------------
-
     vm.createAccount = function() {
-
-      $mdDialog.show({
-        controller: function() {
-
-          agneta.extend(vm, 'AgDialogCtrl');
-
-          vm.submit = function() {
-            vm.loading = true;
-            AccountList.model.new(vm.formSubmitFields);
-          };
-
-        },
-        templateUrl: agneta.dialog('account-create'),
-        clickOutsideToClose: true
+      $mdDialog.open({
+        partial: 'account-create'
       });
-
     };
 
-    //------------------------------------------------------------
-
     vm.changePassword = function() {
-
       $mdDialog.open({
         partial: 'password-change-admin',
         data: {
@@ -208,7 +166,6 @@
           account: vm.viewAccount
         }
       });
-
     };
 
     //------------------------------------------------------------

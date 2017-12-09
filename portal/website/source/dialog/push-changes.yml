@@ -4,6 +4,8 @@ title:
 message:
   en: You are about to commit the following changes and push them to a central repository.
 
+controller: AgPushChanges
+
 noChanges:
   en: 'No changes were made to your project. Nothing to push.'
 

@@ -5,6 +5,8 @@ title:
 authorization:
   - editor
 
+controller: AgPageAdd
+  
 form:
   name: 'formSubmit'
   onSubmit: 'submit()'
