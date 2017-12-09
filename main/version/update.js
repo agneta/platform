@@ -20,15 +20,15 @@ module.exports = function(app) {
 
   var config = app.get('git');
 
-  app.git.update = function() {
+  app.version.update = function() {
 
     return Promise.resolve()
       .then(function() {
-        return app.git.native.checkoutLocalBranch(config.branch);
+        return app.git.checkoutLocalBranch(config.branch);
       })
       .then(function() {
         console.log(`Fetching from remote ${config.remote.name} with branch ${config.branch}`);
-        return app.git.native.fetch(config.remote.name, config.branch);
+        return app.git.fetch(config.remote.name, config.branch);
       })
       .then(function() {
         return app.git.reset(['--hard', 'FETCH_HEAD']);
