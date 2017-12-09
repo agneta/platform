@@ -128,6 +128,7 @@ function _e_main(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeE
         return;
       }
 
+      $rootScope.loadingMain = true;
       pending = true;
 
       setTimeout(function() {
@@ -145,6 +146,9 @@ function _e_main(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeE
             if (!autosave) {
               helpers.toast(result.message || 'Changes saved');
             }
+          })
+          .finally(function() {
+            $rootScope.loadingMain = false;
           });
 
       }, 1400);

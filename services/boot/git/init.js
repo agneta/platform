@@ -57,8 +57,17 @@ module.exports = function(app) {
       return app.git.native.branch();
     })
     .then(function(result) {
+      if (!result.current.length) {
+        return app.git.update()
+          .then(function() {
+            return app.git.native.branch();
+          });
+      }
+      return result;
+    })
+    .then(function(result) {
 
-      //console.log('branch', result);
+      console.log('branch', result);
       app.git.branch = result;
 
     });

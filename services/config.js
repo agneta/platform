@@ -101,7 +101,7 @@ module.exports = {
     }
   },
   git: {
-    branch: `agneta-${env}-${mode}`,
+    branch: `agneta-${mode}`,
     remote:{
     }
   },

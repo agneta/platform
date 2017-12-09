@@ -169,7 +169,7 @@ module.exports = function(options) {
               socket.emit('unauthorized', {
                 channel: req.channel
               });
-              return next(`You are not able to access this channel (${req.channel}).`);
+              return next(new Error(`You are not able to access this channel (${req.channel}).`));
             }
 
           }

@@ -18,16 +18,23 @@
 const Promise = require('bluebird');
 module.exports = function(app) {
 
-  var git = app.git.native;
+  var config = app.get('git');
 
   app.git.update = function() {
 
     return Promise.resolve()
       .then(function() {
-        return git.reset(['--hard', 'FETCH_HEAD']);
+        return app.git.native.checkoutLocalBranch(config.branch);
       })
       .then(function() {
-        return git.clean('f', ['-d']);
+        console.log(`Fetching from remote ${config.remote.name} with branch ${config.branch}`);
+        return app.git.native.fetch(config.remote.name, config.branch);
+      })
+      .then(function() {
+        return app.git.reset(['--hard', 'FETCH_HEAD']);
+      })
+      .then(function() {
+        return app.git.clean('f', ['-d']);
       });
 
   };
