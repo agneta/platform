@@ -49,13 +49,15 @@
       return name[0].toLowerCase() + name.slice(1);
     }
 
-    function argInjectors(names,override) {
+    function argInjectors(names, override) {
       override = override || {};
       var result = [];
+      //console.log('argInjectors.names', names);
       for (var index in names) {
         var name = names[index];
         var service = override[name];
-        if(!service){
+        //console.log('argInjectors.service', name, service);
+        if (!service) {
           service = injector.get(name);
         }
         result.push(service);
@@ -63,9 +65,9 @@
       return result;
     }
 
-    agneta.addOverride = function(name,override){
-      console.log('agneta.addOverride',name,override);
-      if(!name){
+    agneta.addOverride = function(name, override) {
+      //console.log('agneta.addOverride', name, override);
+      if (!name) {
         return;
       }
       name = fixName(name);
@@ -83,8 +85,11 @@
       }
 
       directive.link.apply(vm,
-        argInjectors(directive.parameters,override)
-      );
+        argInjectors(directive.parameters,
+          angular.extend({
+            data: {}
+          }, override)
+        ));
     };
 
     agneta.directive = function(name, link) {
@@ -107,16 +112,16 @@
 
         return {
           restrict: 'A',
-          link: function(vm,elm,attrs) {
+          link: function(vm, elm, attrs) {
             if (link) {
               var override = {
                 '$element': elm,
                 '$attrs': attrs
               };
-              if(overrides[name]){
-                angular.extend(override,overrides[name]);
+              if (overrides[name]) {
+                angular.extend(override, overrides[name]);
               }
-              link.apply(vm, argInjectors(parameters,override));
+              link.apply(vm, argInjectors(parameters, override));
             }
           }
         };
@@ -290,18 +295,18 @@
 
             return $q(function(resolve) {
 
-                if (priority.length) {
+              if (priority.length) {
 
-                  $ocLazyLoad.load([{
-                    name: 'MainApp',
-                    files: priority
-                  }]).then(resolve);
+                $ocLazyLoad.load([{
+                  name: 'MainApp',
+                  files: priority
+                }]).then(resolve);
 
-                } else {
-                  resolve();
-                }
+              } else {
+                resolve();
+              }
 
-              })
+            })
               .then(loadPriority);
 
           }

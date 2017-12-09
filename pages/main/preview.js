@@ -33,25 +33,9 @@ module.exports = function(locals) {
   app.use(bodyParser.urlencoded({
     extended: false
   }));
-
   app.use(bodyParser.json());
 
-  //////////////////////////////////////////////////////
-  // SET PATHS
-  //////////////////////////////////////////////////////
   var dirCache = path.join(project.paths.app.base, 'cache');
-
-  //////////////////////////////////////////////////////
-  //
-  //////////////////////////////////////////////////////
-
-  app.set('views', path.join(project.paths.app.base, 'layout'));
-  app.set('view engine', 'ejs');
-  app.set('json spaces', 2);
-
-  //////////////////////////////////////////////////////
-  // STYLUS
-  //////////////////////////////////////////////////////
 
   var sources = [{
     name: 'project',
@@ -69,7 +53,6 @@ module.exports = function(locals) {
 
   for (var source of sources) {
 
-
     var cache = path.join(dirCache, source.name);
     // Styles
     app.use(stylus.middleware({
@@ -86,15 +69,10 @@ module.exports = function(locals) {
     app.use(express.static(cache));
   }
 
-
-  var libPath = path.join(project.paths.core.project, 'website', 'lib');
-  app.use('/lib', express.static(libPath));
-
   //--------------------------------------------------
   // middleware for rendering pages
 
   require('../core/get')(locals);
-
 
   //--------------------------------------------------
   // Return not found page

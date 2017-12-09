@@ -121,7 +121,7 @@ module.exports = function(locals) {
                       data.viewOnly = true;
                       data.isDialog = true;
                     }
-                    
+
                     if (data.path.indexOf('partial/') === 0) {
                       data.viewOnly = true;
                       data.isPartial = true;

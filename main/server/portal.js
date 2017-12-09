@@ -48,8 +48,7 @@ module.exports = function(options) {
     return middleware({
       component: component,
       root: options.root,
-      mainApp: options.mainApp || app,
-      detached: options.detached
+      mainApp: options.mainApp || app
     });
   }
 
@@ -75,13 +74,11 @@ module.exports = function(options) {
     dir: paths.core.project,
     website: {
       root: appRoots.preview
-    },
-    detached: true
+    }
   });
 
   var webPages = setupServer('website',{
-    root: appRoots.preview,
-    detached: true
+    root: appRoots.preview
   });
 
   //-----------------------------------------------------

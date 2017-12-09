@@ -51,17 +51,13 @@ function _e_Dialog(app) {
       var locals = {};
       var path = agneta.urljoin(agneta.lang,'dialog',options.partial);
 
-      if (options.data) {
-        locals.data = options.data;
-      }
+      locals.data = options.data || {};
 
       $rootScope.loadingMain = true;
       $rootScope.loadData(path)
         .then(function(data) {
 
-          if (data.extra) {
-            locals.remote = data.extra;
-          }
+          locals.remote = data.extra || {};
 
           var dialogOptions = {
             onRemoving: options.onRemoving,
