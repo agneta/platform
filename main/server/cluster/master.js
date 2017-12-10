@@ -19,7 +19,7 @@ module.exports.run = function(socketCluster) {
   return new Promise(function(resolve) {
 
     socketCluster.on('ready', function() {
-      //console.log('Listening');
+      console.log('Initiating...');
     });
 
     socketCluster.on('fail', console.error);

@@ -15,18 +15,6 @@
  *   limitations under the License.
  */
 
-var env;
-switch(process.env.NODE_ENV){
-  case 'production':
-    env = 'prd';
-    break;
-  case 'staging':
-    env = 'stg';
-    break;
-  default:
-    env = 'dev';
-    break;
-}
 var mode = process.env.MODE || 'portal';
 
 module.exports = {
@@ -101,9 +89,7 @@ module.exports = {
     }
   },
   git: {
-    branch: `agneta-${mode}`,
-    remote:{
-    }
+    remote: {}
   },
   language: require('./config/language'),
   media: require('./config/media'),

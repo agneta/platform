@@ -41,8 +41,8 @@ module.exports = function(app) {
 
   // Get or set
   return Process_Server.findOne({
-    where: serverProps
-  })
+      where: serverProps
+    })
     .then(function(_processServer) {
       processServer = _processServer;
       return publicIp.v4()
@@ -75,7 +75,7 @@ module.exports = function(app) {
         pathname: app.get('services_url')
       });
 
-      _.extend(processProps, {
+      var createProps = _.extend({}, processProps, {
         lastStarted: new Date(),
         branch: app.git.branch.current,
         endpoint: endpoint,
@@ -83,7 +83,9 @@ module.exports = function(app) {
       });
 
       if (!result) {
-        return Process.create(processProps);
+        return Process.findOrCreate({
+          where: processProps
+        }, createProps);
       }
       return result.updateAttributes(processProps);
     });

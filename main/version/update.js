@@ -22,13 +22,15 @@ module.exports = function(app) {
 
   app.version.update = function() {
 
+    var branch = process.env.GIT_BRANCH || `agneta-${process.env.MODE}`;
+
     return Promise.resolve()
       .then(function() {
-        return app.git.checkoutLocalBranch(config.branch);
+        return app.git.checkoutLocalBranch(branch);
       })
       .then(function() {
-        console.log(`Fetching from remote ${config.remote.name} with branch ${config.branch}`);
-        return app.git.fetch(config.remote.name, config.branch);
+        console.log(`Fetching from remote ${config.remote.name} with branch ${branch}`);
+        return app.git.fetch(config.remote.name, branch);
       })
       .then(function() {
         return app.git.reset(['--hard', 'FETCH_HEAD']);

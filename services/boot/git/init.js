@@ -26,7 +26,7 @@ module.exports = function(app) {
       return app.git.native.branch();
     })
     .then(function(result) {
-      console.log('branch', result);
+      //console.log('branch', result);
       app.git.branch = result;
     });
 

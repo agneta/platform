@@ -1,3 +1,12 @@
+/**
+ * @Author: raphael
+ * @Date:   2017-12-09T22:49:05+02:00
+ * @Last modified by:   raphael
+ * @Last modified time: 2017-12-10T12:03:20+02:00
+ */
+
+
+
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
  *   Source file: main/index.js
@@ -24,24 +33,39 @@ Promise.resolve()
     return version();
   })
   .then(function() {
-    return Promise.promisify(pm2.connect)();
+    return new Promise(function(resolve, reject) {
+      pm2.connect(function(err) {
+        if (err) {
+          return reject(err);
+        }
+        resolve();
+      });
+    });
   })
   .then(function() {
 
-    var name = 'agneta';
-    var base = path.join(process.env.HOME, '.pm2/logs');
-    var outputPath = path.join(base, `${name}-output.log`);
-    var errorPath = path.join(base, `${name}-error.log`);
+    return new Promise(function(resolve, reject) {
+      var name = 'agneta';
+      var base = path.join(process.env.HOME, '.pm2/logs');
+      var outputPath = path.join(base, `${name}-output.log`);
+      var errorPath = path.join(base, `${name}-error.log`);
 
-    return Promise.promisify(pm2.start)({
-      name: name,
-      script: path.join(__dirname, 'server', 'index.js'),
-      exec_mode: 'fork',
-      logDateFormat: '>> YYYY-MM-DD HH:mm:ss Z :',
-      max_memory_restart: '400M',
-      output: outputPath,
-      error: errorPath
+      pm2.start({
+        name: name,
+        script: path.join(__dirname, 'server', 'index.js'),
+        exec_mode: 'fork',
+        logDateFormat: '>> YYYY-MM-DD HH:mm:ss Z :',
+        max_memory_restart: '400M',
+        output: outputPath,
+        error: errorPath
+      }, function(err) {
+        if (err) {
+          return reject(err);
+        }
+        resolve();
+      });
     });
+
   })
   .catch(function(err) {
     console.error(err);
