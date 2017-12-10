@@ -45,30 +45,22 @@ module.exports = function(app) {
 
         git.addConfig('user.name', name);
         git.addConfig('user.email', email);
+
+        return git.commit(message);
+
       })
-      .then(function() {
-        return git.stash();
-      })
-      .then(function() {
-        return git.pull(config.remote.name, app.git.branch.current);
+      .then(function(result) {
+        commit = result.commit;
+
+        return git.pull(config.remote.name, app.git.branch.current, {'-s':null, 'recursive':null, '-X':null, 'ours':null});
       })
       .then(function(result) {
         console.log('git.pull.result', result);
-        return git.stash(['pop']);
-      })
-      .then(function() {
         return git.add('./*');
       })
       .then(function() {
-        return git.commit(message);
-      })
-      .then(function(result) {
 
-        commit = result.commit;
-        var branchName = app.git.branch.current;
-        //console.log(config.remote.name, branchName);
-
-        return app.git.native.push(config.remote.name, branchName);
+        return app.git.native.push(config.remote.name, app.git.branch.current);
 
       })
       .then(function() {
