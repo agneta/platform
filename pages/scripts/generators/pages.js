@@ -192,13 +192,16 @@ module.exports = function(locals) {
       var data;
       try {
         data = yaml.safeLoad(content);
-      } catch (e) {
-        console.error('Found problem on YAML: ' + file.path);
-        throw e;
+      } catch (error) {
+        console.error('Found problem on YAML: ' + file.path + '. '+error.message);
+        data = {
+          template: 'error/format',
+          data: error
+        };
       }
 
       if (!data) {
-        return {};
+        data = {};
       }
 
       data.source = file.path;

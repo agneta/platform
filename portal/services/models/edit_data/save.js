@@ -34,7 +34,7 @@ module.exports = function(Model, app) {
       .then(function() {
         var relativePath = filePath.substring(webPrj.paths.app.website.length);
         return {
-          message: `Data saved at:\n${relativePath}`
+          message: `Saved at:\n${relativePath}`
         };
       });
 

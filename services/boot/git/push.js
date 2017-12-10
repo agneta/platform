@@ -36,10 +36,6 @@ module.exports = function(app) {
           });
         }
 
-        return git.add('./*');
-      })
-      .then(function() {
-
         return Account.findById(req.accessToken.userId);
       })
       .then(function(account) {
@@ -49,9 +45,22 @@ module.exports = function(app) {
 
         git.addConfig('user.name', name);
         git.addConfig('user.email', email);
-
+      })
+      .then(function() {
+        return git.stash();
+      })
+      .then(function() {
+        return git.pull(config.remote.name, app.git.branch.current);
+      })
+      .then(function(result) {
+        console.log('git.pull.result', result);
+        return git.stash(['pop']);
+      })
+      .then(function() {
+        return git.add('./*');
+      })
+      .then(function() {
         return git.commit(message);
-
       })
       .then(function(result) {
 
@@ -59,7 +68,7 @@ module.exports = function(app) {
         var branchName = app.git.branch.current;
         //console.log(config.remote.name, branchName);
 
-        return app.git.native.push(config.remote.name,branchName);
+        return app.git.native.push(config.remote.name, branchName);
 
       })
       .then(function() {

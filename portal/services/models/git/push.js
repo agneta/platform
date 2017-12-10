@@ -30,6 +30,10 @@ module.exports = function(Model, app) {
           }
         });
 
+        return {
+          success: 'Your changes were pushed to the repository.'
+        };
+
       });
   };
 
