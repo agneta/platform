@@ -196,6 +196,7 @@ module.exports = function(locals) {
         console.error('Found problem on YAML: ' + file.path + '. '+error.message);
         data = {
           template: 'error/format',
+          hasError: true,
           data: error
         };
       }

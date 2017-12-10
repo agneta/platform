@@ -24,6 +24,7 @@ module.exports = function(Model, app) {
 
   var source;
   var template;
+  var clientHelpers = app.get('options').web.app.locals;
 
   Model.loadOne = function(id, req) {
 
@@ -36,6 +37,13 @@ module.exports = function(Model, app) {
         //////////////////////////////////////////
         page = _page;
         source = Model.pageSource(page);
+
+        if (page.hasError) {
+          return Promise.reject({
+            statusCode: '400',
+            message: `This page has an error.\nFor more details visit the page:\n<a href="${clientHelpers.get_path(page.path)}" target="_blank">${page.path}</a>`
+          });
+        }
 
         return app.git.log({
           file: source
