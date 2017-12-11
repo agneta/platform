@@ -88,7 +88,6 @@ module.exports = function(app) {
 
     return Promise.resolve()
       .then(function() {
-
         if (data.page.authorization) {
 
           //console.log('page:private:auth',data.page.title, data.page.authorization);
@@ -97,6 +96,9 @@ module.exports = function(app) {
             req
           )
             .then(function(result) {
+              console.log('app.models.Account.hasRoles.result',result);
+              console.log('app.models.Account.hasRoles.result',result);
+
               if (!result.has) {
 
                 var authPath = path.parse(data.remotePath);
@@ -110,9 +112,16 @@ module.exports = function(app) {
                   name = 'view-auth-data';
                 }
 
+                if(!name){
+                  return Promise.reject({
+                    redirect: true
+                  });
+                }
+
                 authPath = urljoin(authPath.dir, name);
                 data.remotePath = authPath;
                 data.page = clientHelpers.get_page(data.remotePath);
+                console.log(authPath,data.page);
               }
             });
         }
@@ -277,6 +286,9 @@ module.exports = function(app) {
 
       })
       .catch(function(err) {
+        if (err.redirect) {
+          return res.redirect(`/gr/authorization?redirect=${req.originalUrl}`);
+        }
         if (err.notfound) {
           return next();
         }

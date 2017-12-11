@@ -34,7 +34,7 @@
 			<div class="view-wrapper content" layout="column" flex>
 				<div id="scroll-parent">
 					<div layout="column">
-						<%-template(page.templateSource)%>
+						<%-template(page.template || page.templateSource)%>
 						<%if(!page.hiddenFooter){%>
 							<%-template('layout/footer',null,true) %>
 							<%}%>
