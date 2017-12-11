@@ -26,15 +26,15 @@ module.exports = function(util) {
       return extract(util, {
         name: 'theme',
         base: projectPaths.theme.base,
-        root: projectPaths.agneta
+        root: projectPaths.core.platform
       });
 
     })
     .then(function() {
       return extract(util, {
         name: 'project',
-        base: projectpaths.app.website,
-        root: process.cwd()
+        base: projectPaths.app.website,
+        root: projectPaths.core.project
       });
     });
 
