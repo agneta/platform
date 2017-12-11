@@ -35,7 +35,7 @@ module.exports = function(app) {
           res.set('content-encoding', 'gzip');
         }
 
-        express.static(path.join(projectpaths.app.build, 'local'))(
+        express.static(path.join(projectPaths.app.build, 'local'))(
           req,
           res,
           next);

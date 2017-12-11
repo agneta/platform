@@ -86,9 +86,11 @@ function _e_login() {
 
         if (!err) {
 
-
           var redirect = $routeParams.redirect;
 
+          if(redirect){
+            redirect = agneta.langPath($routeParams.redirect);
+          }
 
           if (!redirect) {
             redirect = agneta.langPath($rootScope.viewData.extra.loginRedirect);

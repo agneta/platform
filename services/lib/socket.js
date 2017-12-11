@@ -166,10 +166,9 @@ module.exports = function(options) {
             }
 
             if (!authenticated) {
-              socket.emit('unauthorized', {
-                channel: req.channel
-              });
-              return next(new Error(`You are not able to access this channel (${req.channel}).`));
+
+              socket.kickOut(req.channel);
+              return;
             }
 
           }

@@ -30,6 +30,7 @@ module.exports = function(locals) {
   });
 
   locals.app.get('/:lang*', function(req, res, next) {
+    console.log('ccccccccccccccc');
 
     var target = req.params[0];
     var lang = req.params.lang;

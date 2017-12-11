@@ -16,8 +16,6 @@
  */
 const path = require('path');
 module.exports = function(app) {
-
-
   var routes = {};
 
   routes[path.join(__dirname, 'middleware/preview-web')] = {

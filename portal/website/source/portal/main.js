@@ -32,7 +32,9 @@
     Portal.socket.on('activity:new', function(activity) {
 
       var message = 'Activity: ';
-      message += activity.account.name || activity.account.email;
+      if(activity.account){
+        message += activity.account.name || activity.account.email;
+      }
       message += ' ' + activity.action_value;
 
       $mdToast.show(

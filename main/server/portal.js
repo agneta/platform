@@ -74,11 +74,13 @@ module.exports = function(options) {
     dir: paths.core.project,
     website: {
       root: appRoots.preview
-    }
+    },
+    detached: true
   });
 
   var webPages = setupServer('website',{
-    root: appRoots.preview
+    root: appRoots.preview,
+    detached: true
   });
 
   //-----------------------------------------------------
