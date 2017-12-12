@@ -5,7 +5,7 @@
   "main": "main",
   "scripts": {
     "audit": "nsp check",
-    "license": "node scripts/license",
+    "license": "node tools/license",
     "lint": "node node_modules/eslint/bin/eslint --ignore-path .gitignore ./ --ext .js"
   },
   "repository": {

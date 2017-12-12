@@ -163,7 +163,7 @@ module.exports = function(locals, options) {
         code = scriptCompiler.compile(source_file_path, {
           babel: {
             comments: false,
-            minified: minifyJS
+            minify: minifyJS
           }
         });
 

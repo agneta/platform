@@ -78,12 +78,26 @@ module.exports = function(locals) {
       });
     }
 
+    if (path.parse(pathRelative).ext == '.min.js') {
+      return Promise.reject({
+        message: 'We do not compile minified files'
+      });
+    }
+
     let pathRelativeParsed = path.parse(pathRelative);
+    let presets = [
+      [require.resolve('babel-preset-env'), {
+        'targets': {
+          'browsers': ['since 2013']
+        }
+      }]
+    ];
 
     options = options || {};
 
-    console.log(options);
-    console.log('pathSource', pathSource);
+    if(options.minify){
+      presets.push(require.resolve('babel-preset-minify'));
+    }
 
     let compilerOptions = {
       entry: pathSource,
@@ -107,13 +121,7 @@ module.exports = function(locals) {
           loader: require.resolve('babel-loader'),
           options: {
             cacheDirectory: true,
-            presets: [
-              [require.resolve('babel-preset-env'), {
-                'targets': {
-                  'browsers': ['since 2013']
-                }
-              }], require.resolve('babel-preset-minify')
-            ]
+            presets: presets
           }
         }]
       }

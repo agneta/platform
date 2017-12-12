@@ -29,7 +29,6 @@ var copyrightEnd = ' */\n';
 
 Promise.resolve()
   .then(function() {
-
     return fs.readFile(path.join(__dirname, 'template.ejs'), {
       encoding: 'utf8'
     });
