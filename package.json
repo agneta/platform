@@ -135,6 +135,7 @@
     "eslint-plugin-json": "1.2.0",
     "jsonlint": "1.6.2",
     "nsp": "2.8.1",
-    "pre-commit": "^1.2.2"
+    "pre-commit": "^1.2.2",
+    "webpack": "^3.10.0"
   }
 }

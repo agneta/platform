@@ -17,12 +17,10 @@
 const path = require('path');
 const _ = require('lodash');
 const webpack = require('webpack');
-const MemoryFS = require('memory-fs');
 
 module.exports = function(locals) {
 
   var project = locals.project;
-  const memFs = new MemoryFS();
 
   var helpers = {
     path: function(req) {
@@ -48,51 +46,76 @@ module.exports = function(locals) {
     switch (parsedPath.ext) {
       case '.js':
 
-        var path_partial = project.theme.getFile(path.join('source', req.path));
-
-        if (path_partial) {
-          var content = compile(req.path, {
-            useBabel: true
+        compile(req.path)
+          .then(function() {
+            next();
+          })
+          .catch(function(err) {
+            if (err.notfound) {
+              next();
+            }
+            res.setHeader('content-type', 'application/json');
+            res.end(JSON.stringify(err, null, 2));
           });
-          res.setHeader('content-type', 'application/javascript');
-          res.end(content);
-          return;
-        }
-        break;
-      default:
+
+        return;
     }
     next();
   }
 
-  function compile(path_partial, options) {
+  function compile(pathRelative, options) {
+
+    var pathSource = project.theme.getFile(path.join('source', pathRelative));
+
+    if (!pathSource) {
+      return Promise.reject({
+        notfound: true,
+        message: `Did not find the source file at ${pathRelative}`
+      });
+    }
+
+    let pathRelativeParsed = path.parse(pathRelative);
 
     options = options || {};
+
     console.log(options);
-    let pathFile = project.theme.getFile(path_partial);
+    console.log('pathSource', pathSource);
 
-    console.log(pathFile);
-
-    let compiler = webpack({
-      entry: pathFile,
-      loader: 'babel-loader',
-      query: {
-        presets: [
-          ['agneta-platform/node_modules/babel-preset-env', {
-            'targets': {
-              'browsers': ['since 2013']
-            }
-          }], 'agneta-platform/node_modules/babel-preset-minify'
-        ]
+    let compilerOptions = {
+      entry: pathSource,
+      output: {
+        path: path.join(project.paths.app.cache,pathRelativeParsed.dir),
+        filename: pathRelativeParsed.base
+      },
+      module: {
+        rules: [{
+          test: /\.js$/,
+          loader: require.resolve('babel-loader'),
+          options: {
+            presets: [
+              [require.resolve('babel-preset-env'), {
+                'targets': {
+                  'browsers': ['since 2013']
+                }
+              }], require.resolve('babel-preset-minify')
+            ]
+          }
+        }]
       }
-    });
+    };
 
-    compiler.outputFileSystem = memFs;
+    let compiler = webpack(compilerOptions);
 
-    return new Promise(function(resolve,reject){
+    console.log(compilerOptions);
 
-      compiler.run(function(err,stats){
-        if(err){
+    return new Promise(function(resolve, reject) {
+
+      compiler.run(function(err, stats) {
+        if (err) {
           return reject(err);
+        }
+        if (stats.compilation.errors.length) {
+          return reject(stats.compilation.errors);
         }
         console.log(stats);
         resolve(stats);

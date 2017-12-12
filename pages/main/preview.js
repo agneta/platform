@@ -35,8 +35,6 @@ module.exports = function(locals) {
   }));
   app.use(bodyParser.json());
 
-  var dirCache = path.join(project.paths.app.website, 'cache');
-
   var sources = [{
     name: 'project',
     path: project.paths.app.source
@@ -51,22 +49,20 @@ module.exports = function(locals) {
     sources = sources.concat(locals.includeSources);
   }
 
-  for (var source of sources) {
+  for (let source of sources) {
 
-    var cache = path.join(dirCache, source.name);
-    // Styles
     app.use(stylus.middleware({
       src: source.path,
-      dest: cache,
+      dest: project.paths.app.cache,
       compile: stylusCompiler
     }));
 
-    // Scripts
-    app.use(scriptCompiler.middleware);
-    //
+  }
+  app.use(scriptCompiler.middleware);
+  app.use(express.static(project.paths.app.cache));
+
+  for (let source of sources) {
     app.use(express.static(source.path));
-    //
-    app.use(express.static(cache));
   }
 
   //--------------------------------------------------

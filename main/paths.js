@@ -90,6 +90,8 @@ function loadApp(options) {
     base: options.dir || core.project
   });
 
+  app.cache = path.join(app.website, 'cache');
+
   return {
     app: app,
     appPortal: appPortal,
