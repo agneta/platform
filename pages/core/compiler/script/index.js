@@ -17,6 +17,7 @@
 const path = require('path');
 const _ = require('lodash');
 const webpack = require('webpack');
+const util = require('util');
 
 module.exports = function(locals) {
 
@@ -45,6 +46,10 @@ module.exports = function(locals) {
     switch (parsedPath.ext) {
       case '.js':
 
+        if (path.parse(parsedPath.name).ext == '.min') {
+          return next();
+        }
+
         compile(req.path)
           .then(function() {
             next();
@@ -54,7 +59,7 @@ module.exports = function(locals) {
               next();
             }
             res.setHeader('content-type', 'application/json');
-            res.end(JSON.stringify(err, null, 2));
+            res.end(util.inspect(err));
           });
 
         return;
@@ -82,11 +87,21 @@ module.exports = function(locals) {
 
     let compilerOptions = {
       entry: pathSource,
+      resolve: {
+        modules: [
+          project.paths.app.source,
+          project.paths.theme.source
+        ]
+      },
       output: {
-        path: path.join(project.paths.app.cache,pathRelativeParsed.dir),
+        path: path.join(project.paths.app.cache, pathRelativeParsed.dir),
         filename: pathRelativeParsed.base
       },
       module: {
+        noParse: function(content) {
+          console.log('noParse.content', content);
+          return /\.min\.js$/.test(content);
+        },
         rules: [{
           test: /\.js$/,
           loader: require.resolve('babel-loader'),

@@ -22,8 +22,7 @@ module.exports = function(project) {
         content += `require('${script}');\n`;
       }
 
-      var outputPath = path.join(project.paths.app.source,'bundle.js');
-      console.log(outputPath);
+      var outputPath = path.join(project.paths.app.source,'main/bundle.js');
       return fs.outputFile(outputPath,content);
 
     });
