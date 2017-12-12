@@ -95,12 +95,36 @@ module.exports = function(locals) {
 
     options = options || {};
 
-    if(options.minify){
+    if (options.minify) {
       presets.push(require.resolve('babel-preset-minify'));
+    }
+
+    function canParse(testPath){
+
+      if(testPath.indexOf('/source/lib/')>0){
+        return;
+      }
+
+      let parsed = path.parse(testPath);
+      if(parsed.ext!='.js'){
+        return;
+      }
+
+      parsed = path.parse(parsed.name);
+      if(parsed.ext=='.min'){
+        return;
+      }
+
+      //console.log('testPath == true',testPath);
+
+      return true;
+
     }
 
     let compilerOptions = {
       entry: pathSource,
+      devtool: 'source-map',
+      target: 'web',
       resolve: {
         modules: [
           project.paths.app.source,
@@ -113,11 +137,10 @@ module.exports = function(locals) {
       },
       module: {
         noParse: function(content) {
-          console.log('noParse.content', content);
-          return /\.min\.js$/.test(content);
+          return !canParse(content);
         },
         rules: [{
-          test: /\.js$/,
+          test: canParse,
           loader: require.resolve('babel-loader'),
           options: {
             cacheDirectory: true,
@@ -129,8 +152,6 @@ module.exports = function(locals) {
 
     let compiler = webpack(compilerOptions);
 
-    console.log(compilerOptions);
-
     return new Promise(function(resolve, reject) {
 
       compiler.run(function(err, stats) {
@@ -140,7 +161,7 @@ module.exports = function(locals) {
         if (stats.compilation.errors.length) {
           return reject(stats.compilation.errors);
         }
-        console.log(stats);
+
         resolve(stats);
       });
 
