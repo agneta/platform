@@ -14,16 +14,30 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var generate = require('./generate');
+var extract = require('./dep-extract');
+const Promise = require('bluebird');
 
 module.exports = function(util) {
 
-  return {
-    run: function() {
+  var projectPaths = util.locals.web.project.paths;
 
-      return generate(util);
+  return Promise.resolve()
+    .then(function() {
 
-    }
-  };
+      return extract(util, {
+        name: 'theme',
+        base: projectPaths.theme.base,
+        root: projectPaths.core.platform
+      });
+
+    })
+    .then(function() {
+      return extract(util, {
+        name: 'project',
+        base: projectPaths.app.website,
+        root: projectPaths.core.project
+      });
+    });
+
 
 };

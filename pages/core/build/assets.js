@@ -145,6 +145,10 @@ module.exports = function(locals, options) {
       });
     }
 
+    if(options.relative.indexOf('lib/')==0){
+      return copy();
+    }
+
     switch (relativeParsed.ext) {
       case '.js':
 
@@ -193,7 +197,7 @@ module.exports = function(locals, options) {
 
         if (!code) {
           console.log(options);
-          throw new Error('Code is missing for ', options.source);
+          throw new Error(`Code is missing for ${options.source}`);
         }
 
         return exportAsset({

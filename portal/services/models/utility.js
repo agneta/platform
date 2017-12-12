@@ -16,6 +16,7 @@
  */
 var Promise = require('bluebird');
 var shortid = require('shortid');
+const _ = require('lodash');
 
 module.exports = function(Model, app) {
 
@@ -56,24 +57,45 @@ module.exports = function(Model, app) {
         });
       },
       progress: function(length, options) {
+
         var id = shortid.generate();
-        var progressOptions = {
+        var count = 0;
+
+        var progressOptions = _.extend({
           id: id,
-          length: length,
-          options: options
-        };
-        utility.emit('progress:new', progressOptions);
+          length: length
+        },options);
+
+        var canEmit = true;
         return {
           tick: function(options) {
+            count++;
+
+            if(!canEmit && count<length){
+              return;
+            }
+
+            setTimeout(function () {
+              canEmit = true;
+            }, 100);
+            canEmit = false;
+
             options = options || {};
-            utility.emit('progress:tick', {
-              id: id,
-              options: options
-            });
+
+            progressOptions.value = (count/progressOptions.length).toFixed(2) * 100;
+            progressOptions.count = count;
+            progressOptions.length = progressOptions.length;
+            progressOptions.current = options;
+
+            if(count==length){
+              options.title = 'Complete';
+              progressOptions.compete = true;
+            }
+
+            utility.emit('progress:update',progressOptions);
           },
           addLength: function(length) {
             progressOptions.length += length;
-            utility.emit('progress:update', progressOptions);
           }
         };
       }

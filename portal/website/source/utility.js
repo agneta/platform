@@ -67,54 +67,11 @@
       $timeout();
     });
 
-    socketOn('progress:new', function(data) {
-      console.log(data);
-      vm.progressBars[data.id] = {
-        value: 0,
-        count: 0,
-        length: data.length,
-        title: data.options.title
-      };
-      $timeout();
-    });
-
     socketOn('progress:update', function(data) {
-      var progressBar = vm.progressBars[data.id];
-      progressBar.length = data.length;
-      onProgressUpdate(progressBar);
+      console.log(data);
+      vm.progressBars[data.id] = data;
       $timeout();
     });
-
-    socketOn('progress:tick', function(data) {
-
-      var progressBar = vm.progressBars[data.id];
-      if (!progressBar) {
-        return;
-      }
-      if (progressBar.complete) {
-        console.error('Ticking on a complete progress bar');
-        return;
-      }
-
-      progressBar.current = data.options;
-      progressBar.count++;
-      onProgressUpdate(progressBar);
-      $timeout();
-
-    });
-
-    function onProgressUpdate(progressBar) {
-      progressBar.value = progressBar.count / progressBar.length * 100;
-
-      if (progressBar.count == progressBar.length) {
-        progressBar.complete = true;
-        progressBar.current = {
-          title: 'Complete'
-        };
-      } else {
-        progressBar.complete = false;
-      }
-    }
 
     vm.run = function() {
       vm.clear();

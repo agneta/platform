@@ -31,7 +31,7 @@ module.exports = function(app) {
 
       options = options || {};
 
-      var outputDir = options.outputDir || project.paths.generated;
+      var outputDir = options.outputDir || project.paths.app.generated;
 
       script = script.replace('$LoopBack$', `$${token.name}$`);
 

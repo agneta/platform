@@ -16,42 +16,84 @@
  */
 var Promise = require('bluebird');
 
+const dependencies = require('./dependencies');
+const services = require('./services');
+
 module.exports = function(util) {
 
   return {
     run: function(options) {
-      if (!options.env) {
-        return Promise.reject({
-          message: 'The environment is required'
+
+      options.type = options.type || {};
+
+      return Promise.resolve()
+        .then(function() {
+          if (options.type.dependencies) {
+            return dependencies(util);
+          }
+        })
+        .then(function() {
+          if (options.type.services) {
+            return services(util);
+          }
+        })
+        .then(function() {
+
+          if (options.type.pages || options.type.assets) {
+
+            if (!options.env) {
+              return Promise.reject({
+                message: 'The environment is required'
+              });
+            }
+
+            var web = util.locals.web;
+
+            return web.build({
+              logger: util,
+              progress: util.progress,
+              env: options.env,
+              config: {
+                assets: options.type.assets,
+                pages: options.type.pages
+              }
+            });
+
+          }
         });
-      }
-
-      var web = util.locals.web;
-
-      return web.build({
-        logger: util,
-        progress: util.progress,
-        env: options.env,
-        config: {
-          assets: true,
-          pages: true
-        }
-      });
 
     },
     parameters: [{
       name: 'env',
       title: 'Environment',
       type: 'radio',
+      if: 'type.pages||type.assets',
       values: [{
         name: 'local',
         title: 'Local'
-      },{
+      }, {
         name: 'staging',
         title: 'Staging'
       }, {
         name: 'production',
         title: 'Production'
+      }]
+    }, {
+      name: 'type',
+      title: 'What to build?',
+      type: 'checkboxes',
+      values: [{
+        name: 'pages',
+        title: 'Pages'
+      }, {
+        name: 'assets',
+        title: 'Assets'
+      }, {
+        name: 'dependencies',
+        title: 'Dependencies'
+      }, {
+        name: 'services',
+        title: 'Services'
       }]
     }]
   };

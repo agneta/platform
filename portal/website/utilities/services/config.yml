@@ -1,7 +1,0 @@
-title:
-  en: Services
-
-description:
-  en: "When developing your back-end services, you will need to generate a library of services that map to your remote methods. This utility makes this possible thanks to Loopback's AngularJS SDK"
-
-icon: material/share

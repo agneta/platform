@@ -80,11 +80,7 @@
     -
       page: 'utilities/deploy'
     -
-      page: 'utilities/dependencies'
-    -
       page: 'utilities/media'
-    -
-      page: 'utilities/services'
 -
   title:
     en: System

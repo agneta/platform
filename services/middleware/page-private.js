@@ -96,8 +96,7 @@ module.exports = function(app) {
             req
           )
             .then(function(result) {
-              console.log('app.models.Account.hasRoles.result',result);
-              console.log('app.models.Account.hasRoles.result',result);
+              //console.log('app.models.Account.hasRoles.result',result);
 
               if (!result.has) {
 
