@@ -14,51 +14,48 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-function _e_password() {
 
-  agneta.directive('AgPassLostCtrl', function(data, Account) {
+agneta.directive('AgPassLostCtrl', function(data, Account) {
 
-    var vm = this;
+  var vm = this;
 
-    agneta.extend(vm, 'AgDialogCtrl');
+  agneta.extend(vm, 'AgDialogCtrl');
 
-    vm.submit = function() {
-      vm.loading = true;
-      Account.requestPassword({
-        email: vm.passLostFields.email,
-        callback: data.callback
-      }, function() {
+  vm.submit = function() {
+    vm.loading = true;
+    Account.requestPassword({
+      email: vm.passLostFields.email,
+      callback: data.callback
+    }, function() {
+      vm.loading = false;
+    });
+  };
+
+});
+
+agneta.directive('AgPassChangeCtrl', function($rootScope, $mdDialog, LoopBackAuth, Account) {
+
+  var vm = this;
+
+  agneta.extend(vm, 'AgDialogCtrl');
+
+  vm.submitPassword = function() {
+
+    vm.loading = true;
+
+    Account.passwordChange(vm.formPassFields)
+      .$promise
+      .then(function(res) {
+
         vm.loading = false;
+        var credentials = {
+          email: res.email,
+          password: vm.formPassFields.password_new
+        };
+        $rootScope.signIn(credentials);
+
       });
-    };
 
-  });
+  };
 
-  agneta.directive('AgPassChangeCtrl', function($rootScope, $mdDialog, LoopBackAuth, Account) {
-
-    var vm = this;
-
-    agneta.extend(vm, 'AgDialogCtrl');
-
-    vm.submitPassword = function() {
-
-      vm.loading = true;
-
-      Account.passwordChange(vm.formPassFields)
-        .$promise
-        .then(function(res) {
-
-          vm.loading = false;
-          var credentials = {
-            email: res.email,
-            password: vm.formPassFields.password_new
-          };
-          $rootScope.signIn(credentials);
-
-        });
-
-    };
-
-  });
-
-}
+});

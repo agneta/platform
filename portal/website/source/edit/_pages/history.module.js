@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/website/source/edit/_pages/field-state.js
+ *   Source file: portal/website/source/edit/_pages/history.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,34 +14,28 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-function _e_fieldState(vm) {
 
-  var focused = null;
-  vm.fieldFocus = function(data) {
-    if (focused) {
-      delete focused.__focused;
-    }
-    data.__focused = true;
-    focused = data;
+module.exports = function(vm, helpers) {
+  vm.showCommit = function(commit) {
+    helpers.Model.loadCommit({
+      id: vm.page.id,
+      commit: commit.hash
+    })
+      .$promise
+      .then(function(result) {
+        vm.work = vm.page.data;
+        helpers.structureData(vm.template, result.data);
+        helpers.setData(result.data);
+      });
   };
 
-  var hovered = null;
-  vm.fieldHover = function(data) {
-    if (hovered) {
-      delete hovered.__hovered;
-    }
-    data.__hovered = true;
-    hovered = data;
+  vm.rollback = function() {
+    vm.save();
+    vm.work = null;
   };
 
-  vm.clearHiddenData = function() {
-
-    if (hovered) {
-      delete hovered.__hovered;
-    }
-    if (focused) {
-      delete focused.__focused;
-    }
+  vm.cancelRollback = function() {
+    helpers.setData(vm.work);
+    vm.work = null;
   };
-
-}
+};

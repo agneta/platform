@@ -15,7 +15,7 @@
  *   limitations under the License.
  */
 
-function _e_directory(vm, Portal, $location, $rootScope, Media, MediaPreview, $mdDialog, Upload, apiMedia, partialFile) {
+module.exports = function(vm, Portal, $location, $rootScope, Media, MediaPreview, $mdDialog, Upload, apiMedia, partialFile) {
 
   var socket = Portal.socket.media;
   var objects = [];
@@ -241,4 +241,4 @@ function _e_directory(vm, Portal, $location, $rootScope, Media, MediaPreview, $m
 
     }
   };
-}
+};

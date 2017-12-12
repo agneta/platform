@@ -17,7 +17,7 @@
 
 /*global jsyaml:true*/
 
-function _e_source(vm, $mdDialog,$timeout) {
+module.exports = function(vm, $mdDialog,$timeout) {
 
   vm.openSource = function() {
 
@@ -52,4 +52,4 @@ function _e_source(vm, $mdDialog,$timeout) {
     });
   };
 
-}
+};

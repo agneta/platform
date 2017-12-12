@@ -15,12 +15,7 @@
  *   limitations under the License.
  */
 
-/*global _e_directory*/
-/*global _e_itemMenu*/
-
 (function() {
-
-  var app = angular.module('MainApp');
 
   agneta.directive('AgMediaCtrl', function($rootScope, Upload, MediaOpt, SocketIO, $timeout, $mdToast, $mdDialog, $location, $sce, $routeParams, Search_Engine, Portal) {
 
@@ -112,14 +107,12 @@
       vm.refresh();
     };
 
-    _t_template('edit/media/directory');
-    _e_directory(vm, Portal, $location, $rootScope, Media, MediaPreview, $mdDialog, Upload, apiMedia, partialFile);
+    require('edit/media/directory.module')(vm, Portal, $location, $rootScope, Media, MediaPreview, $mdDialog, Upload, apiMedia, partialFile);
 
     vm.openFolder(startingLocation);
 
   });
 
-  _t_template('edit/media/item-menu');
-  _e_itemMenu(app);
+  require('edit/media/item-menu.module');
 
 })();

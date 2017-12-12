@@ -14,56 +14,55 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-function _e_directives(app) {
+var app = window.angular.module('MainApp');
 
-  app.directive('hasRole', function($rootScope) {
-    return {
-      restrict: 'A',
-      scope: true,
-      link: function(scope, element, attrs) {
+app.directive('hasRole', function($rootScope) {
+  return {
+    restrict: 'A',
+    scope: true,
+    link: function(scope, element, attrs) {
 
-        var parent = element.parent();
-        parent.addClass('has-role');
+      var parent = element.parent();
+      parent.addClass('has-role');
 
-        if(attrs.$attr.roleHide){
-          parent.addClass('role-hide');
+      if (attrs.$attr.roleHide) {
+        parent.addClass('role-hide');
+      }
+
+      function check() {
+
+        var account = $rootScope.account;
+        if (!account) {
+          return;
         }
 
-        function check() {
+        var roles = JSON.parse(attrs.hasRole) || [];
+        var hasRoles = [];
 
-          var account = $rootScope.account;
-          if(!account){
-            return;
+        for (var index in roles) {
+
+          var role = roles[index];
+          var hasRole = account[role];
+          hasRole = hasRole && hasRole.id;
+
+          if (hasRole) {
+            hasRoles.push(role);
           }
-
-          var roles = JSON.parse(attrs.hasRole) || [];
-          var hasRoles = [];
-
-          for (var index in roles) {
-
-            var role = roles[index];
-            var hasRole = account[role];
-            hasRole = hasRole && hasRole.id;
-
-            if (hasRole) {
-              hasRoles.push(role);
-            }
-          }
-
-          if (hasRoles.length) {
-            parent.removeClass('has-no-role');
-          } else {
-            parent.addClass('has-no-role');
-          }
-
         }
 
-        check();
-
-        $rootScope.$on('accountCheck',check);
-
+        if (hasRoles.length) {
+          parent.removeClass('has-no-role');
+        } else {
+          parent.addClass('has-no-role');
+        }
 
       }
-    };
-  });
-}
+
+      check();
+
+      $rootScope.$on('accountCheck', check);
+
+
+    }
+  };
+});

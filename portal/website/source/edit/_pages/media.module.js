@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-function _e_media(vm, MediaOpt, $mdDialog, helpers) {
+module.exports = function(vm, MediaOpt, $mdDialog, helpers) {
 
   var media = {};
 
@@ -134,4 +134,4 @@ function _e_media(vm, MediaOpt, $mdDialog, helpers) {
 
   vm.media = media;
 
-}
+};

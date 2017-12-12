@@ -14,50 +14,46 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-function _e_recovery() {
+agneta.directive('AgAccountRecoverCtrl', function(Account) {
 
-  agneta.directive('AgAccountRecoverCtrl', function(Account) {
+  var vm = this;
 
-    var vm = this;
+  agneta.extend(vm, 'AgDialogCtrl');
 
-    agneta.extend(vm, 'AgDialogCtrl');
+  vm.submitPassword = function() {
 
-    vm.submitPassword = function() {
+    vm.loading = true;
 
-      vm.loading = true;
+    Account.recover(vm.formPassFields, function() {
+      vm.loading = false;
 
-      Account.recover(vm.formPassFields, function() {
-        vm.loading = false;
+    });
 
-      });
+  };
 
-    };
+});
 
-  });
+agneta.directive('AgRequestRecoveryCtrl', function(Account, $mdDialog, email) {
 
-  agneta.directive('AgRequestRecoveryCtrl', function(Account, $mdDialog, email) {
+  var vm = this;
 
-    var vm = this;
+  agneta.extend(vm, 'AgDialogCtrl');
 
-    agneta.extend(vm, 'AgDialogCtrl');
+  vm.data = {
+    title: 'Account Deactivated',
+    content: 'This Account was deactivated and can be recovered with an email verification.',
+    action: {
+      title: 'Recover Account'
+    }
+  };
 
-    vm.data = {
-      title: 'Account Deactivated',
-      content: 'This Account was deactivated and can be recovered with an email verification.',
-      action: {
-        title: 'Recover Account'
-      }
-    };
+  vm.action = function() {
 
-    vm.action = function() {
+    vm.loading = true;
 
-      vm.loading = true;
+    Account.requestRecovery({
+      email: email
+    });
+  };
 
-      Account.requestRecovery({
-        email: email
-      });
-    };
-
-  });
-
-}
+});

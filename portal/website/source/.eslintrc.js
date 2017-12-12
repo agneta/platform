@@ -18,12 +18,12 @@ module.exports = {
   "globals": {
     angular: true,
     agneta: true,
-    _t_template: true
+    module: true,
+    require: true
   },
   "env": {
     "browser": true,
     "node": false,
-    "es6": true,
-    "amd": true
+    "es6": true
   }
 }

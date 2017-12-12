@@ -14,36 +14,34 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-function _e_popup() {
-  agneta.directive('AgPopupLoginCtrl', function($rootScope, $mdDialog) {
+agneta.directive('AgPopupLoginCtrl', function($rootScope, $mdDialog) {
 
-    var vm = this;
+  var vm = this;
 
-    agneta.extend(vm, 'AgDialogCtrl');
+  agneta.extend(vm, 'AgDialogCtrl');
 
-    vm.submit = function() {
+  vm.submit = function() {
 
-      var email = vm.formLoginFields.email;
-      var password = vm.formLoginFields.password;
+    var email = vm.formLoginFields.email;
+    var password = vm.formLoginFields.password;
 
-      vm.loading = true;
+    vm.loading = true;
 
-      $rootScope.signIn({
-        email: email,
-        password: password
-      },
-      function(err) {
+    $rootScope.signIn({
+      email: email,
+      password: password
+    },
+    function(err) {
 
-        vm.loading = false;
+      vm.loading = false;
 
-        if (err) {
-          return;
-        }
+      if (err) {
+        return;
+      }
 
-        $mdDialog.hide();
+      $mdDialog.hide();
 
-      });
-    };
+    });
+  };
 
-  });
-}
+});

@@ -17,7 +17,7 @@
 
 /*global _:true*/
 
-function _e_helpers(vm, $mdToast, $timeout, helpers) {
+module.exports = function(vm, $mdToast, $timeout, helpers) {
 
   //---------------------------------------
   helpers.setFilePath = function(file, location) {
@@ -192,4 +192,4 @@ function _e_helpers(vm, $mdToast, $timeout, helpers) {
     }, 100);
   };
 
-}
+};

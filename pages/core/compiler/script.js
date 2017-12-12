@@ -15,30 +15,12 @@
  *   limitations under the License.
  */
 const path = require('path');
-const _ = require('lodash');
 const webpack = require('webpack');
 const util = require('util');
 
 module.exports = function(locals) {
 
   var project = locals.project;
-
-  var helpers = {
-    path: function(req) {
-      return locals.app.locals.get_path(req);
-    },
-    configServices: function(prop) {
-      return locals.services.get(prop);
-    },
-    config: function(prop) {
-      return _.get(project.config, prop);
-    },
-    configPrj: function(prop) {
-      return _.get(locals.web.project.config, prop);
-    }
-  };
-
-  require('./template')(project, helpers);
 
   function middleware(req, res, next) {
     var parsedPath = path.parse(req.path);
@@ -144,7 +126,8 @@ module.exports = function(locals) {
           loader: require.resolve('babel-loader'),
           options: {
             cacheDirectory: true,
-            presets: presets
+            presets: presets,
+            plugins: ['babel-plugin-angularjs-annotate'].map(require.resolve)
           }
         }]
       }

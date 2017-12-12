@@ -15,7 +15,7 @@
  *   limitations under the License.
  */
 
-function _e_main(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeEdit, Portal, GIT) {
+module.exports = function(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeEdit, Portal) {
 
   vm.getPage = function(obj) {
     var id = obj.id || obj;
@@ -156,4 +156,4 @@ function _e_main(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeE
     };
 
   })();
-}
+};

@@ -15,14 +15,6 @@
  *   limitations under the License.
  */
 
-/*global  _e_login*/
-/*global  _e_password*/
-/*global  _e_popup*/
-/*global  _e_recovery*/
-/*global  _e_root*/
-/*global  _e_verification*/
-/*global  _e_directives*/
-
 (function() {
 
   var app = window.angular.module('MainApp');
@@ -35,20 +27,12 @@
 
   });
 
-  _t_template('main/account/login');
-  _t_template('main/account/password');
-  _t_template('main/account/popup');
-  _t_template('main/account/recovery');
-  _t_template('main/account/root');
-  _t_template('main/account/verification');
-  _t_template('main/account/directives');
-
-  _e_login(app);
-  _e_password(app);
-  _e_popup(app);
-  _e_recovery(app);
-  _e_root(app);
-  _e_verification(app);
-  _e_directives(app);
+  require('main/account/login');
+  require('main/account/password');
+  require('main/account/popup');
+  require('main/account/recovery');
+  require('main/account/root');
+  require('main/account/verification');
+  require('main/account/directives');
 
 })();

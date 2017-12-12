@@ -18,11 +18,12 @@
    "globals": {
      angular: true,
      agneta: true,
-     _t_template: true
+     module: true,
+     require: true
    },
    "env": {
-     "es6": false,
      "browser": true,
-     "node": false
+     "node": false,
+     "es6": true
    }
  }

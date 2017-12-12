@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/website/source/edit/_pages/history.js
+ *   Source file: portal/website/source/edit/_pages/search.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,27 +15,32 @@
  *   limitations under the License.
  */
 
-function _e_history(vm, helpers) {
-  vm.showCommit = function(commit) {
-    helpers.Model.loadCommit({
-      id: vm.page.id,
-      commit: commit.hash
-    })
-      .$promise
-      .then(function(result) {
-        vm.work = vm.page.data;
-        helpers.structureData(vm.template, result.data);
-        helpers.setData(result.data);
-      });
+module.exports = function(vm, $timeout) {
+
+  vm.onSearch = function(value) {
+
+    var scopeName;
+
+    if (vm.pages) {
+      scopeName = 'pages';
+    }
+    if (vm.templates) {
+      scopeName = 'templates';
+    }
+
+    if (!value) {
+
+
+      vm[scopeName] = null;
+      $timeout(function() {
+        vm[scopeName] = vm.itemsLoaded;
+      }, 100);
+
+      return;
+    }
+
+    var result = vm.fuse.search(value).slice(0, 6);
+    vm[scopeName] = result;
   };
 
-  vm.rollback = function() {
-    vm.save();
-    vm.work = null;
-  };
-
-  vm.cancelRollback = function() {
-    helpers.setData(vm.work);
-    vm.work = null;
-  };
-}
+};

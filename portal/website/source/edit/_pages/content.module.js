@@ -17,7 +17,7 @@
 
 /*global _:true*/
 
-function _e_content(vm, helpers) {
+module.exports = function(vm, helpers) {
 
   vm.dragControlListeners = {
     accept: function(sourceItemHandleScope, destSortableScope) {
@@ -136,4 +136,4 @@ function _e_content(vm, helpers) {
     return data;
   };
 
-}
+};

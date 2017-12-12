@@ -14,27 +14,25 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-function _e_verification() {
-  agneta.directive('AgResendVrfCtrl', function(Account, $mdDialog, data) {
+agneta.directive('AgResendVrfCtrl', function(Account, $mdDialog, data) {
 
-    var vm = this;
+  var vm = this;
 
-    agneta.extend(vm, 'AgDialogCtrl');
+  agneta.extend(vm, 'AgDialogCtrl');
 
-    vm.data = {
-      title: 'Warning',
-      content: data.html,
-      action: {
-        title: 'Resend Verification'
-      }
-    };
+  vm.data = {
+    title: 'Warning',
+    content: data.html,
+    action: {
+      title: 'Resend Verification'
+    }
+  };
 
-    vm.action = function() {
-      vm.loading = true;
-      Account.resendVerification({
-        email: data.email
-      });
-    };
+  vm.action = function() {
+    vm.loading = true;
+    Account.resendVerification({
+      email: data.email
+    });
+  };
 
-  });
-}
+});

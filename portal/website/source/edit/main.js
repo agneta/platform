@@ -15,16 +15,6 @@
  *   limitations under the License.
  */
 
-/*global _e_fieldState:true*/
-/*global _e_helpers:true*/
-/*global _e_content:true*/
-/*global _e_contributor:true*/
-/*global _e_history:true*/
-/*global _e_main:true*/
-/*global _e_media:true*/
-/*global _e_search:true*/
-/*global _e_source:true*/
-
 /*global _:true*/
 /*global Fuse:true*/
 
@@ -65,25 +55,15 @@
     }
     ];
 
-    _t_template('edit/_pages/field-state');
-    _t_template('edit/_pages/content');
-    _t_template('edit/_pages/media');
-    _t_template('edit/_pages/helpers');
-    _t_template('edit/_pages/history');
-    _t_template('edit/_pages/main');
-    _t_template('edit/_pages/search');
-    _t_template('edit/_pages/source');
-    _t_template('edit/_pages/contributor');
-
-    _e_fieldState(vm, helpers);
-    _e_content(vm, helpers);
-    _e_media(vm, MediaOpt, $mdDialog, helpers);
-    _e_helpers(vm, $mdToast, $timeout, helpers);
-    _e_history(vm, helpers);
-    _e_main(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeEdit, Portal, GIT);
-    _e_search(vm, $timeout);
-    _e_source(vm, $mdDialog, $timeout);
-    _e_contributor(vm, $rootScope, Account, Portal, $timeout, Role_Editor);
+    require('edit/_pages/field-state.module')(vm, helpers);
+    require('edit/_pages/content.module')(vm, helpers);
+    require('edit/_pages/media.module')(vm, MediaOpt, $mdDialog, helpers);
+    require('edit/_pages/helpers.module')(vm, $mdToast, $timeout, helpers);
+    require('edit/_pages/history.module')(vm, helpers);
+    require('edit/_pages/main.module')(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeEdit, Portal);
+    require('edit/_pages/search.module')(vm, $timeout);
+    require('edit/_pages/source.module')(vm, $mdDialog, $timeout);
+    require('edit/_pages/contributor.module')(vm, $rootScope, Account, Portal, $timeout, Role_Editor);
 
     vm.onKeyPress = function(event) {
 

@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-function _e_contributor(vm, $rootScope, Account, Portal, $timeout, Role_Editor) {
+module.exports = function(vm, $rootScope, Account, Portal, $timeout, Role_Editor) {
 
   vm.contributors = {};
 
@@ -25,8 +25,8 @@ function _e_contributor(vm, $rootScope, Account, Portal, $timeout, Role_Editor) 
     }
 
     Account.get({
-        id: id
-      })
+      id: id
+    })
       .$promise
       .then(function(result) {
         //console.log(result);
@@ -117,4 +117,4 @@ function _e_contributor(vm, $rootScope, Account, Portal, $timeout, Role_Editor) 
 
   };
 
-}
+};

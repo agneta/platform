@@ -14,129 +14,126 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-function _e_login() {
 
-  agneta.directive('LoginController', function($window, $location, $mdDialog, $rootScope, $routeParams, Account, LoopBackAuth) {
+agneta.directive('LoginController', function($window, $location, $mdDialog, $rootScope, $routeParams, Account, LoopBackAuth) {
 
-    var token;
-    var vm = this;
+  var token;
+  var vm = this;
 
-    switch ($routeParams.action) {
-      case 'recover-account':
+  switch ($routeParams.action) {
+    case 'recover-account':
 
-        token = $routeParams.token;
-        LoopBackAuth.setUser(token);
+      token = $routeParams.token;
+      LoopBackAuth.setUser(token);
 
-        $mdDialog.show({
-          clickOutsideToClose: true,
-          templateUrl: agneta.dialog('account-recover'),
-          controller: 'AgAccountRecoverCtrl'
-        }).then(function() {
-          LoopBackAuth.clearUser();
-          LoopBackAuth.clearStorage();
-        });
+      $mdDialog.show({
+        clickOutsideToClose: true,
+        templateUrl: agneta.dialog('account-recover'),
+        controller: 'AgAccountRecoverCtrl'
+      }).then(function() {
+        LoopBackAuth.clearUser();
+        LoopBackAuth.clearStorage();
+      });
 
-        break;
-      case 'password-reset':
+      break;
+    case 'password-reset':
 
-        token = $routeParams.token;
-        LoopBackAuth.setUser(token);
+      token = $routeParams.token;
+      LoopBackAuth.setUser(token);
 
-        $mdDialog.open({
-          partial: 'password-new'
-        });
-
-        break;
-      case 'verify':
-
-        var data = {
-          uid: $routeParams.uid,
-          token: $routeParams.token
-        };
-
-        Account.verifyEmail(data);
-
-        break;
-    }
-
-    vm.lostPassword = function(options) {
-      options = options || {};
       $mdDialog.open({
-        partial: 'password-lost',
-        data: {
-          callback: options.callback
-        }
+        partial: 'password-new'
       });
 
-    };
+      break;
+    case 'verify':
 
-    vm.signIn = function() {
+      var data = {
+        uid: $routeParams.uid,
+        token: $routeParams.token
+      };
 
-      var email = vm.loginFields.email;
-      var password = vm.loginFields.password;
+      Account.verifyEmail(data);
 
-      vm.loading = true;
+      break;
+  }
 
-      $rootScope.signIn({
-        email: email,
-        password: password
-      }, function(err) {
+  vm.lostPassword = function(options) {
+    options = options || {};
+    $mdDialog.open({
+      partial: 'password-lost',
+      data: {
+        callback: options.callback
+      }
+    });
 
-        vm.loading = false;
+  };
 
-        if (!err) {
+  vm.signIn = function() {
 
-          var redirect = $routeParams.redirect;
+    var email = vm.loginFields.email;
+    var password = vm.loginFields.password;
 
-          if(redirect){
-            redirect = agneta.langPath($routeParams.redirect);
-          }
+    vm.loading = true;
 
-          if (!redirect) {
-            redirect = agneta.langPath($rootScope.viewData.extra.loginRedirect);
-          }
+    $rootScope.signIn({
+      email: email,
+      password: password
+    }, function(err) {
 
-          if (redirect) {
-            $window.location.href = redirect;
-          }
+      vm.loading = false;
 
-          return;
+      if (!err) {
+
+        var redirect = $routeParams.redirect;
+
+        if (redirect) {
+          redirect = agneta.langPath($routeParams.redirect);
         }
 
-        switch (err.code) {
-
-          case 'LOGIN_FAILED_EMAIL_NOT_VERIFIED':
-            $mdDialog.show({
-              clickOutsideToClose: true,
-              templateUrl: agneta.dialog('warning'),
-              locals: {
-                data: {
-                  email: email,
-                  html: err.message
-                }
-              },
-              controller: 'AgResendVrfCtrl'
-            });
-            break;
-
-          case 'USER_DEACTIVATED':
-            $mdDialog.show({
-              clickOutsideToClose: true,
-              templateUrl: agneta.dialog('warning'),
-              locals: {
-                email: email
-              },
-              controller: 'AgRequestRecoveryCtrl'
-            });
-            break;
-
-          default:
-            return true;
+        if (!redirect) {
+          redirect = agneta.langPath($rootScope.viewData.extra.loginRedirect);
         }
 
-      });
-    };
+        if (redirect) {
+          $window.location.href = redirect;
+        }
 
-  });
+        return;
+      }
 
-}
+      switch (err.code) {
+
+        case 'LOGIN_FAILED_EMAIL_NOT_VERIFIED':
+          $mdDialog.show({
+            clickOutsideToClose: true,
+            templateUrl: agneta.dialog('warning'),
+            locals: {
+              data: {
+                email: email,
+                html: err.message
+              }
+            },
+            controller: 'AgResendVrfCtrl'
+          });
+          break;
+
+        case 'USER_DEACTIVATED':
+          $mdDialog.show({
+            clickOutsideToClose: true,
+            templateUrl: agneta.dialog('warning'),
+            locals: {
+              email: email
+            },
+            controller: 'AgRequestRecoveryCtrl'
+          });
+          break;
+
+        default:
+          return true;
+      }
+
+    });
+  };
+
+});
