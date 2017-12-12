@@ -28,7 +28,6 @@ module.exports = function(locals, options) {
   var logger = options.logger;
   var app = locals.app;
   var project = locals.project;
-  var exportFile = locals.exportFile.init;
 
   var minimize = new Minimize({
     empty: true,
@@ -194,7 +193,7 @@ module.exports = function(locals, options) {
               new Buffer(html, 'utf-8')
             )
               .then(function(html) {
-                return exportFile({
+                return locals.exportFile({
                   container: container,
                   path: outputPath,
                   data: html

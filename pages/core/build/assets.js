@@ -16,9 +16,7 @@
  */
 const path = require('path');
 const CleanCSS = require('clean-css');
-const UglifyJS = require('uglify-js');
 const micromatch = require('micromatch');
-const ngAnnotate = require('ng-annotate');
 
 const Promise = require('bluebird');
 const fs = require('fs-extra');
@@ -31,12 +29,6 @@ module.exports = function(locals, options) {
 
   var logger = options.logger;
   var project = locals.project;
-
-  var minifyJS;
-
-  if (project.config.minify) {
-    minifyJS = project.config.minify.js;
-  }
 
   //----------------------------------------------------------
 
@@ -127,7 +119,7 @@ module.exports = function(locals, options) {
 
   function exportAsset(options) {
     options.container = 'public';
-    return locals.exportFile.init(options);
+    return locals.exportFile(options);
   }
 
   function filter(options) {
@@ -145,55 +137,35 @@ module.exports = function(locals, options) {
       });
     }
 
-    if(options.relative.indexOf('lib/')==0){
+    if (options.relative.indexOf('lib/') == 0) {
       return copy();
     }
+
+    let code, min_parsed, minifyJS, match;
 
     switch (relativeParsed.ext) {
       case '.js':
 
-        var min_parsed = path.parse(relativeParsed.name);
+        min_parsed = path.parse(relativeParsed.name);
 
         if (min_parsed.ext == '.min') {
           return copy();
         }
 
-        var code = scriptCompiler.compile(source_file_path, {
-          useBabel: true,
-          babel: {
-            comments: false
-          }
-        });
-
+        minifyJS = project.config.minify.js;
         if (minifyJS) {
-          var exclude = false;
-          if (minifyJS.exclude) {
-            var match = micromatch([options.relative], minifyJS.exclude);
-            if (match && match.length) {
-              exclude = true;
-            }
-          }
-          if (!exclude) {
-
-            code = ngAnnotate(code, {
-              add: true,
-              remove: true
-            });
-            if (code.errors) {
-              console.error(code.errors);
-              throw new Error(code.errors);
-            }
-            code = code.src;
-            code = UglifyJS.minify(code);
-
-            if (code.error) {
-              console.error(code.error);
-              throw new Error('JS Error at file ['+source_file_path+'] '+code.error.message);
-            }
-
-            code = code.code;
+          match = micromatch([options.relative], minifyJS.exclude);
+          if (match && match.length) {
+            minifyJS = false;
           }
         }
+
+        code = scriptCompiler.compile(source_file_path, {
+          babel: {
+            comments: false,
+            minified: minifyJS
+          }
+        });
 
         if (!code) {
           console.log(options);
@@ -235,9 +207,9 @@ module.exports = function(locals, options) {
 
     function exportCSS(css) {
 
-      var minified = new CleanCSS()
+      let minified = new CleanCSS()
         .minify(css);
-      var file_path = path.join(outputPath, relativeParsed.name + '.css');
+      let file_path = path.join(outputPath, relativeParsed.name + '.css');
 
       if (minified.errors.length) {
         logger.error(minified.errors);

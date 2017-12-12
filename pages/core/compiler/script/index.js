@@ -14,12 +14,15 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var path = require('path');
-var _ = require('lodash');
+const path = require('path');
+const _ = require('lodash');
+const webpack = require('webpack');
+const MemoryFS = require('memory-fs');
 
 module.exports = function(locals) {
 
   var project = locals.project;
+  const memFs = new MemoryFS();
 
   var helpers = {
     path: function(req) {
@@ -36,8 +39,8 @@ module.exports = function(locals) {
     }
   };
 
-  require('./template')(project,helpers);
-  require('./bundle')(project,helpers);
+  require('./template')(project, helpers);
+  require('./bundle')(project, helpers);
 
   function middleware(req, res, next) {
     var parsedPath = path.parse(req.path);
@@ -64,10 +67,38 @@ module.exports = function(locals) {
   function compile(path_partial, options) {
 
     options = options || {};
-    options.babel = options.babel || {};
+    console.log(options);
+    let pathFile = project.theme.getFile(path_partial);
 
-    var content = helpers.template(path_partial, helpers);
-    return content;
+    console.log(pathFile);
+
+    let compiler = webpack({
+      entry: pathFile,
+      loader: 'babel-loader',
+      query: {
+        presets: [
+          ['agneta-platform/node_modules/babel-preset-env', {
+            'targets': {
+              'browsers': ['since 2013']
+            }
+          }], 'agneta-platform/node_modules/babel-preset-minify'
+        ]
+      }
+    });
+
+    compiler.outputFileSystem = memFs;
+
+    return new Promise(function(resolve,reject){
+
+      compiler.run(function(err,stats){
+        if(err){
+          return reject(err);
+        }
+        console.log(stats);
+        resolve(stats);
+      });
+
+    });
   }
 
   return {

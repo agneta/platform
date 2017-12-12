@@ -6,7 +6,7 @@ module.exports = function(project, helpers) {
 
   helpers.template = function(path_partial, data) {
 
-    var path_result;
+    let path_result;
 
     if (path.parse(path_partial).ext !== '.js') {
       path_partial += '.js';
@@ -21,18 +21,18 @@ module.exports = function(project, helpers) {
     }
 
     if (!path_result) {
-      var msg = 'Template not found: ' + path_partial;
+      let msg = 'Template not found: ' + path_partial;
       console.error(msg);
       throw new Error(msg);
     }
 
-    var file_content = fs.readFileSync(path_result, 'utf8');
-
-    var result = _.template(file_content, {
+    let file_content = fs.readFileSync(path_result, 'utf8');
+    let result = _.template(file_content, {
       interpolate: /_t_(.+?);/g
     })(_.extend(this, data, {
       locals: data
     }));
+
     return result;
 
   };

@@ -20,7 +20,6 @@ const ProgressBar = require('progress');
 
 const buildAssets = require('./assets');
 const buildPages = require('./pages');
-const deleteOld = require('./delete_old');
 const exportFile = require('./export');
 
 module.exports = function(locals) {
@@ -52,11 +51,6 @@ module.exports = function(locals) {
         if (config.pages) {
           return buildPages(locals, options);
         }
-
-      })
-      .then(function() {
-
-        return deleteOld(locals, options);
 
       })
       .then(function() {
