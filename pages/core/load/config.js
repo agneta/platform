@@ -181,6 +181,9 @@ module.exports = function(locals) {
       return preInit()
         .then(function() {
           return init();
+        })
+        .then(function() {
+          return require('./bundle')(project);
         });
     }
   };

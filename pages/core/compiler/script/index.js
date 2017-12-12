@@ -38,7 +38,6 @@ module.exports = function(locals) {
   };
 
   require('./template')(project, helpers);
-  require('./bundle')(project, helpers);
 
   function middleware(req, res, next) {
     var parsedPath = path.parse(req.path);
@@ -92,6 +91,7 @@ module.exports = function(locals) {
           test: /\.js$/,
           loader: require.resolve('babel-loader'),
           options: {
+            cacheDirectory: true,
             presets: [
               [require.resolve('babel-preset-env'), {
                 'targets': {
