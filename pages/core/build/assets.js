@@ -141,7 +141,7 @@ module.exports = function(locals, options) {
       return copy();
     }
 
-    let code, min_parsed, minifyJS, match;
+    let min_parsed, minifyJS, match;
 
     switch (relativeParsed.ext) {
       case '.js':
@@ -152,6 +152,10 @@ module.exports = function(locals, options) {
           return copy();
         }
 
+        if (path.parse(min_parsed.name).ext == '.module') {
+          return;
+        }
+
         minifyJS = project.config.minify.js;
         if (minifyJS) {
           match = micromatch([options.relative], minifyJS.exclude);
@@ -160,22 +164,15 @@ module.exports = function(locals, options) {
           }
         }
 
-        code = scriptCompiler.compile(source_file_path, {
-          babel: {
-            comments: false,
-            minify: minifyJS
-          }
-        });
-
-        if (!code) {
-          console.log(options);
-          throw new Error(`Code is missing for ${options.source}`);
-        }
-
-        return exportAsset({
-          path: outputFilePath,
-          data: code
-        });
+        return scriptCompiler.compile(options.relative, {
+          minify: minifyJS,
+          output: path.join(locals.build_dir, 'public')
+        })
+          .catch(function(err) {
+            if (err.skip) {
+              return copy();
+            }
+          });
 
       case '.css':
 

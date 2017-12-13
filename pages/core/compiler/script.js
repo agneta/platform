@@ -49,9 +49,14 @@ module.exports = function(locals) {
     next();
   }
 
-  function compile(pathRelative) {
+  function compile(pathRelative,options) {
 
-    var pathSource = project.theme.getFile(path.join('source', pathRelative));
+    options = options || {};
+
+    let pathSource = project.theme.getFile(path.join('source', pathRelative));
+    let pathOutput = options.output || project.paths.app.cache;
+    let pathRelativeParsed = path.parse(pathRelative);
+    let pathNameParsed = path.parse(pathRelativeParsed.name);
 
     if (!pathSource) {
       return Promise.reject({
@@ -59,7 +64,7 @@ module.exports = function(locals) {
         message: `Did not find the source file at ${pathRelative}`
       });
     }
-
+    console.log(pathRelative);
     if (pathRelative.indexOf('/lib/') == 0) {
       return Promise.reject({
         skip: true,
@@ -67,14 +72,19 @@ module.exports = function(locals) {
       });
     }
 
-    if (path.parse(pathRelative).ext == '.min.js') {
+    if (pathNameParsed.ext == '.min') {
       return Promise.reject({
         skip: true,
         message: 'We do not compile minified files'
       });
     }
 
-    let pathRelativeParsed = path.parse(pathRelative);
+    if (pathNameParsed.ext == '.module') {
+      return Promise.reject({
+        message: 'Modules are not supposed to be loaded'
+      });
+    }
+
     let presets = [
       [require.resolve('babel-preset-env'), {
         'targets': {
@@ -114,7 +124,6 @@ module.exports = function(locals) {
     if (locals.web) {
       modulesResolve.push(project.paths.appPortal.source);
     }
-    console.log('modulesResolve', modulesResolve);
 
     let compilerOptions = {
       entry: pathSource,
@@ -124,7 +133,7 @@ module.exports = function(locals) {
         modules: modulesResolve
       },
       output: {
-        path: path.join(project.paths.app.cache, pathRelativeParsed.dir),
+        path: path.join(pathOutput, pathRelativeParsed.dir),
         filename: pathRelativeParsed.base
       },
       module: {
