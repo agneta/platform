@@ -16,7 +16,7 @@
  */
 (function() {
 
-  agneta.directive('ModalFrame', function(data) {
+  agneta.directive('AgModalFrame', function(data) {
 
     var vm = this;
 
