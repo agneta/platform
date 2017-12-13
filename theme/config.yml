@@ -57,8 +57,12 @@ languages_footer: true
 
 scripts:
   - 'main'
-  - 'lib/fuse.min'
-  - 'lib/string.min'
+  -
+    name: Fuse
+    path: 'lib/fuse.min'
+  - 
+    name: S
+    path: 'lib/string.min'
 
 #-----------------------------------------------
 

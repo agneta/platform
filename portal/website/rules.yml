@@ -15,7 +15,6 @@
         priority: 0
       - 'lib/js-yaml.min'
       - 'lib/lodash.min'
-      - 'lib/fuse.min'
       -
         path: 'lib/moment/moment.min'
         priority: 0
