@@ -93,7 +93,6 @@ module.exports = function(app) {
           }
 
           var request = Request(requestOptions, cb);
-
           request.on('response', function(response) {
             response.pipe(concatStream({
               encoding: 'buffer'

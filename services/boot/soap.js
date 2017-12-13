@@ -174,7 +174,6 @@ module.exports = function(app) {
           //console.log(servicePath);
           _.set(app.soapServices, servicePath, service);
 
-
         });
     }
 

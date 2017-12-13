@@ -15,11 +15,14 @@
  *   limitations under the License.
  */
 const Promise = require('bluebird');
-
+var configSecrets;
 module.exports = function(app) {
 
   var config = app.get('wsdl');
 
+  if (!configSecrets) {
+    configSecrets = app.secrets.get('wsdl');
+  }
   var methods = {
 
     certificate: function(options, auth) {
@@ -59,12 +62,14 @@ module.exports = function(app) {
         });
 
     },
-    basic: function(options, auth) {
-
+    basic: function(options, auth, secrets) {
+      if (!secrets.username || !secrets.password) {
+        throw new Error('Basic Authentication must have username and password');
+      }
       return Promise.resolve()
         .then(function() {
           options.headers = options.headers || {};
-          options.headers.Authorization = 'Basic ' + new Buffer((auth.username + ':' + auth.password) || '').toString('base64');
+          options.headers.Authorization = 'Basic ' + new Buffer((secrets.username + ':' + secrets.password) || '').toString('base64');
         });
 
     }
@@ -83,6 +88,7 @@ module.exports = function(app) {
     }
 
     var auth = config.auth[authName];
+    var secrets = configSecrets.auth[authName];
     var method = methods[auth.method];
 
     return Promise.resolve()
@@ -93,7 +99,7 @@ module.exports = function(app) {
           return;
         }
 
-        return method(options.requestOptions, auth);
+        return method(options.requestOptions, auth, secrets);
 
       });
 
