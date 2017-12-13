@@ -80,7 +80,13 @@ module.exports = function(locals) {
         }
 
         function concat(script) {
-          content += `require('${script}');\n`;
+          var scriptPath = script.path || script;
+
+          if(script.name){
+            content += `window.${script.name}=`;
+          }
+
+          content += `require('${scriptPath}');\n`;
         }
 
         var outputPath = path.join(project.paths.app.source, 'main/bundle.js');

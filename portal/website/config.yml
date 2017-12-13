@@ -59,7 +59,9 @@ minify:
 #-----------------------------------------------
 
 scripts:
-  - 'lib/socketcluster.min'
+  -
+    name: socketCluster
+    path: 'lib/socketcluster.min'
   - 'main/socket'
   - 'main/portal'
   - 'portal/main'

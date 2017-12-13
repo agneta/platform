@@ -59,7 +59,6 @@ scripts:
   - 'main'
   - 'lib/fuse.min'
   - 'lib/string.min'
-  - 'lib/es6-promise.auto.min'
 
 #-----------------------------------------------
 

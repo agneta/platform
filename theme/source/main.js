@@ -85,8 +85,15 @@ var injector = angular.injector(['ng']);
     var parameters;
 
     if (link) {
-      parameters = getParamNames(link);
-    } else {
+      if(Array.isArray(link)){
+        var _link = link.pop();
+        parameters = link;
+        link = _link;
+      }else{
+        parameters = getParamNames(link);
+      }
+    }
+    else {
       parameters = [];
     }
 
@@ -279,18 +286,18 @@ app.config(function($mdThemingProvider, $sceDelegateProvider) {
 
           return $q(function(resolve) {
 
-              if (priority.length) {
+            if (priority.length) {
 
-                $ocLazyLoad.load([{
-                  name: 'MainApp',
-                  files: priority
-                }]).then(resolve);
+              $ocLazyLoad.load([{
+                name: 'MainApp',
+                files: priority
+              }]).then(resolve);
 
-              } else {
-                resolve();
-              }
+            } else {
+              resolve();
+            }
 
-            })
+          })
             .then(loadPriority);
 
         }

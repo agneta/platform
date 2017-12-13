@@ -37,8 +37,8 @@ module.exports = function(locals) {
             next();
           })
           .catch(function(err) {
-            if (err.notfound) {
-              next();
+            if (err.notfound || err.skip) {
+              return next();
             }
             res.setHeader('content-type', 'application/json');
             res.end(util.inspect(err));
@@ -49,7 +49,7 @@ module.exports = function(locals) {
     next();
   }
 
-  function compile(pathRelative, options) {
+  function compile(pathRelative) {
 
     var pathSource = project.theme.getFile(path.join('source', pathRelative));
 
@@ -60,8 +60,16 @@ module.exports = function(locals) {
       });
     }
 
+    if (pathRelative.indexOf('/lib/') == 0) {
+      return Promise.reject({
+        skip: true,
+        message: 'We do not compile library files'
+      });
+    }
+
     if (path.parse(pathRelative).ext == '.min.js') {
       return Promise.reject({
+        skip: true,
         message: 'We do not compile minified files'
       });
     }
@@ -72,14 +80,9 @@ module.exports = function(locals) {
         'targets': {
           'browsers': ['since 2013']
         }
-      }]
+      }],
+      require.resolve('babel-preset-minify')
     ];
-
-    options = options || {};
-
-    if (options.minify) {
-      presets.push(require.resolve('babel-preset-minify'));
-    }
 
     function canParse(testPath) {
 
@@ -108,10 +111,10 @@ module.exports = function(locals) {
       project.paths.theme.source
     ];
 
-    if(locals.web){
+    if (locals.web) {
       modulesResolve.push(project.paths.appPortal.source);
     }
-    console.log('modulesResolve',modulesResolve);
+    console.log('modulesResolve', modulesResolve);
 
     let compilerOptions = {
       entry: pathSource,
