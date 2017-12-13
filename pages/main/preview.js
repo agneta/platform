@@ -15,7 +15,6 @@
  *   limitations under the License.
  */
 var express = require('express');
-var path = require('path');
 var bodyParser = require('body-parser');
 var stylus = require('stylus');
 var StylusCompiler = require('../core/compiler/style');

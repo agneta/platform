@@ -24,9 +24,7 @@ var bower = require('../lib/bower');
 
 module.exports = function(util, dir) {
 
-  if(
-    !fs.pathExistsSync(path.join(dir.root, 'bower.json'))
-  ){
+  if (!fs.pathExistsSync(path.join(dir.root, 'bower.json'))) {
     util.log('No Bower Compoments found at ' + dir.name + ' dir.');
     return;
   }
@@ -72,6 +70,7 @@ module.exports = function(util, dir) {
         var searchDir = path.join(dir.modules, library);
 
         rule.include = _.isArray(rule.include) ? rule.include : [rule.include];
+        rule.include = rule.include.concat('*.map');
 
         try {
           fs.lstatSync(searchDir);
@@ -110,6 +109,8 @@ module.exports = function(util, dir) {
         })
           .then(function() {
 
+            moduleFiles = _.uniq(moduleFiles);
+
             if (!moduleFiles.length) {
               util.log('No files found for library: ' + library);
               return;
@@ -143,11 +144,29 @@ module.exports = function(util, dir) {
 
           var sourcePath = path.join(lib.dir, file);
           var destPath = path.join(
-            dir.base,'source','lib',
+            dir.base, 'source', 'lib',
             rule.dir || '',
             parsed.base);
 
           return fs.copy(sourcePath, destPath)
+            .then(function() {
+              var parsedPath = path.parse(sourcePath);
+              var parsed = path.parse(parsedPath.name);
+              var pathCheck = path.join(parsedPath.dir, parsed.name) + parsedPath.ext;
+              if (parsed.ext == '.min') {
+                return fs.pathExists(pathCheck)
+                  .then(function(exists) {
+                    if (exists) {
+                      var parsed = path.parse(pathCheck);
+                      var pathCheckOut = path.join(
+                        dir.base, 'source', 'lib',
+                        rule.dir || '',
+                        parsed.base);
+                      fs.copy(pathCheck, pathCheckOut);
+                    }
+                  });
+              }
+            })
             .then(function() {
               bar.tick({
                 title: path.join(rule.dir || '', parsed.base)

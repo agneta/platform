@@ -81,19 +81,19 @@ module.exports = function(locals) {
       presets.push(require.resolve('babel-preset-minify'));
     }
 
-    function canParse(testPath){
+    function canParse(testPath) {
 
-      if(testPath.indexOf('/source/lib/')>0){
+      if (testPath.indexOf('/source/lib/') > 0) {
         return;
       }
 
       let parsed = path.parse(testPath);
-      if(parsed.ext!='.js'){
+      if (parsed.ext != '.js') {
         return;
       }
 
       parsed = path.parse(parsed.name);
-      if(parsed.ext=='.min'){
+      if (parsed.ext == '.min') {
         return;
       }
 
@@ -103,15 +103,22 @@ module.exports = function(locals) {
 
     }
 
+    var modulesResolve = [
+      project.paths.app.source,
+      project.paths.theme.source
+    ];
+
+    if(locals.web){
+      modulesResolve.push(project.paths.appPortal.source);
+    }
+    console.log('modulesResolve',modulesResolve);
+
     let compilerOptions = {
       entry: pathSource,
       devtool: 'source-map',
       target: 'web',
       resolve: {
-        modules: [
-          project.paths.app.source,
-          project.paths.theme.source
-        ]
+        modules: modulesResolve
       },
       output: {
         path: path.join(project.paths.app.cache, pathRelativeParsed.dir),
@@ -122,6 +129,12 @@ module.exports = function(locals) {
           return !canParse(content);
         },
         rules: [{
+          test: function(content) {
+            return !canParse(content);
+          },
+          use: require.resolve('source-map-loader'),
+          enforce: 'pre'
+        }, {
           test: canParse,
           loader: require.resolve('babel-loader'),
           options: {

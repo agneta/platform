@@ -170,8 +170,6 @@ module.exports = function(locals) {
 
         }
 
-        return require('./bundle')(project);
-
       });
 
   }

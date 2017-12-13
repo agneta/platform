@@ -138,6 +138,7 @@
     "jsonlint": "1.6.2",
     "nsp": "2.8.1",
     "pre-commit": "^1.2.2",
+    "source-map-loader": "^0.2.3",
     "webpack": "^3.10.0"
   }
 }

@@ -21,7 +21,6 @@ module.exports = function(options) {
 
   options.mode = options.mode || 'default';
   var locals = options.locals || {};
-
   //--------------------------------------------
   // Loading Config
 

@@ -37,12 +37,6 @@ page:
 media:
   storageRoot: 'page'
   base: 'private/media'
-  api:
-    public: 'services/api/Media/'
-    private: 'services/api/Media_Private/'
-  partial:
-    public: 'file'
-    private: 'file-private'
 
 #-----------------------------------------------
 

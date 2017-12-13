@@ -54,7 +54,8 @@ var portal = setStructure({
 });
 
 var appPortal = setStructure({
-  base: path.join(core.project, 'portal')
+  base: path.join(core.project),
+  appName: 'portal'
 });
 
 //--------------------------------------------------------------------
@@ -63,7 +64,7 @@ module.exports = loadApp();
 
 function setStructure(obj){
 
-  obj.website = path.join(obj.base, appName);
+  obj.website = path.join(obj.base, obj.appName || appName);
 
   // website
   obj.config = path.join(obj.website, 'config.yml');

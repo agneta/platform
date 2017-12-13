@@ -15,28 +15,26 @@
  *   limitations under the License.
  */
 
-/*global _e_preview*/
 /*global Fuse*/
 
 (function() {
 
   var app = angular.module('MainApp');
 
-  _t_template('media/preview');
-  _e_preview(app);
+  require('media/preview.module');
 
   app.service('MediaOpt', function(Media, MediaPreview, Media_Private) {
 
     this.public = {
-      api: '_t_config("media.api.public");',
-      partial: '_t_config("media.partial.public");',
+      api: 'services/api/Media/',
+      partial: 'file',
       model: Media,
       preview: MediaPreview.public
     };
 
     this.private = {
-      api: '_t_config("media.api.private");',
-      partial: '_t_config("media.partial.private");',
+      api: 'services/api/Media_Private/',
+      partial: 'file-private',
       model: Media_Private,
       preview: MediaPreview.private
     };
