@@ -20,7 +20,8 @@ const express = require('express');
 module.exports = function(app) {
 
   var projectPaths = app.get('options').web.project.paths;
-
+  let staticMiddleware = express.static(path.join(projectPaths.app.build, 'local'));
+  //console.log(path.join(projectPaths.app.build, 'local'));
   return function(req, res, next) {
 
     app.auth.middleware({
@@ -35,13 +36,12 @@ module.exports = function(app) {
           res.set('content-encoding', 'gzip');
         }
 
-        express.static(path.join(projectPaths.app.build, 'local'))(
+        staticMiddleware(
           req,
           res,
           next);
       }
     });
-
 
   };
 

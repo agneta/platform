@@ -68,7 +68,7 @@
     });
 
     socketOn('progress:update', function(data) {
-      console.log(data);
+      //console.log(data);
       vm.progressBars[data.id] = data;
       $timeout();
     });
