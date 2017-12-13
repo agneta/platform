@@ -3,7 +3,7 @@
   var tag = viewTag(data.formSteps);
 %>
 
-<<%-tag%> class="md-padding steps md-margin ui-form-steps" layout-align="space-between start" align="center">
+<div <%-tag%> class="md-padding steps md-margin ui-form-steps" layout-align="space-between start" align="center">
 
   <div class="header" layout="row" layout-align="center">
     <div class="numbers" layout="row">
@@ -29,4 +29,4 @@
 <%-template('ui/form-steps/step',stepLocals)%>
 <%}%>
 </div>
-</<%-tag%>>
+</div>

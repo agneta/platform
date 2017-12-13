@@ -21,6 +21,8 @@ const uuidV1 = require('uuid/v1');
 const _ = require('lodash');
 const klaw = require('klaw');
 const S = require('string');
+const cheerio = require('cheerio');
+
 
 const SoapResponse = require('./soap/response');
 
@@ -108,10 +110,19 @@ module.exports = function(app) {
               errShow = error;
             }
 
-            return _.extend(new Error(),{
+            var result = _.extend(new Error(),{
               statusCode: 500,
               message: errShow.message||'Soap Server Error',
             },errShow);
+
+            if(result.faultstring == 'Invalid XML'){
+              var $ = cheerio.load(error.response.body,{decodeEntities: true});
+              var contents = $('body').text();
+              contents = S(contents).collapseWhitespace().s;
+              result.contents = contents;
+            }
+
+            return result;
           }
 
           var service = {
@@ -168,10 +179,5 @@ module.exports = function(app) {
     }
 
   }
-
-
-
-
-
 
 };
