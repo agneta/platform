@@ -60,23 +60,23 @@ module.exports = function(watcher) {
     var model;
 
     return Promise.map([
-        locals.project.paths.core.models,
-        locals.project.paths.app.models
-      ], function(dir) {
-        var modelPath = path.join(dir, pathParsed.name) + '.json';
+      locals.project.paths.core.models,
+      locals.project.paths.app.models
+    ], function(dir) {
+      var modelPath = path.join(dir, pathParsed.name) + '.json';
 
-        return fs.exists(modelPath)
-          .then(function(exists) {
-            if (exists) {
-              var definition = require(modelPath);
-              if (!definition.name) {
-                return;
-              }
-              model = app.models[definition.name];
+      return fs.exists(modelPath)
+        .then(function(exists) {
+          if (exists) {
+            var definition = require(modelPath);
+            if (!definition.name) {
+              return;
             }
-          });
+            model = app.models[definition.name];
+          }
+        });
 
-      })
+    })
       .then(function() {
         if (!model) {
           var name = pathParsed.name;

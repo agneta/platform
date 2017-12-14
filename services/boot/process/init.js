@@ -41,8 +41,8 @@ module.exports = function(app) {
 
   // Get or set
   return Process_Server.findOne({
-      where: serverProps
-    })
+    where: serverProps
+  })
     .then(function(_processServer) {
       processServer = _processServer;
       return publicIp.v4()

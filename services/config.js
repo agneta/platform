@@ -15,8 +15,6 @@
  *   limitations under the License.
  */
 
-var mode = process.env.MODE || 'portal';
-
 module.exports = {
   token: {
     name: 'access_app'
