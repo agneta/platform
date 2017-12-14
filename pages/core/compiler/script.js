@@ -64,7 +64,7 @@ module.exports = function(locals) {
         message: `Did not find the source file at ${pathRelative}`
       });
     }
-    console.log(pathRelative);
+
     if (pathRelative.indexOf('/lib/') == 0) {
       return Promise.reject({
         skip: true,

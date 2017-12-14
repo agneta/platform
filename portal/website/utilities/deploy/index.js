@@ -15,16 +15,14 @@
  *   limitations under the License.
  */
 
-const Sync = require('./sync');
-const Pages_DB = require('./pages_db');
-const Search = require('./search');
 const Promise = require('bluebird');
 
 module.exports = function(util) {
 
-  var sync = Sync(util);
-  var pages_db = Pages_DB(util);
-  var search = Search(util);
+  var media = require('./media')(util);
+  var pages = require('./pages')(util);
+  var services = require('./services')(util);
+  var search = require('./search')(util);
 
   return {
     run: function(options) {
@@ -34,13 +32,16 @@ module.exports = function(util) {
 
       return Promise.resolve()
         .then(function() {
-          return pages_db(options);
+          return pages(options);
         })
         .then(function() {
-          return sync(options);
+          return media(options);
         })
         .then(function() {
           return search(options);
+        })
+        .then(function() {
+          return services(options);
         });
 
     },

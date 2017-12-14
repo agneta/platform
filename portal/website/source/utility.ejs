@@ -1,16 +1,16 @@
 <div class="frame top ag-margin" layout="column">
   <%-template('ui/page-title')%>
 
-    <div class="toolbar ag-margin" layout="row" layout-align="start end">
-      <%-template('utility/parameters')%>
-        <span flex="auto"></span>
-        <p ng-show="status.running">Running...</p>
-        <md-button ng-show="!status.running" class="md-raised" ng-click="run()">Start</md-button>
-    </div>
+  <div class="toolbar ag-margin" layout="row" layout-align="start end">
+    <%-template('utility/parameters')%>
+    <span flex="auto"></span>
+    <p ng-show="status.running">Running...</p>
+    <md-button ng-show="!status.running" class="md-raised" ng-click="run()">Start</md-button>
+  </div>
 
-    <div class="log md-padding" md-whiteframe="2" flex="100" layout="column">
-      <%-template('utility/log')%>
-        <%-template('utility/progress')%>
-    </div>
+  <div class="log md-padding" md-whiteframe="2" flex="100" layout="column">
+    <%-template('utility/log')%>
+    <%-template('utility/progress')%>
+  </div>
 
 </div>

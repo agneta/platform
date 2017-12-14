@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/website/utilities/deploy/search.js
+ *   Source file: portal/website/utilities/deploy/sync.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,28 +14,27 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const Keywords = require('../lib/keywords');
+const SyncBuckets = require('../lib/sync/buckets');
 
 module.exports = function(util) {
 
-  Keywords(util, {
-    model: {
-      keyword: 'Search_Keyword',
-      source: 'Search_Page'
-    },
-    filename: function(options) {
-      return 'keywords_' + options.language;
-    },
-    title: 'path'
-  });
+  var services = util.locals.services;
+  var syncBuckets = SyncBuckets(util);
+  var storageConfig = services.get('storage');
 
   return function(options) {
-    if (!options.source.search) {
+
+    if (!options.source.media) {
       return;
     }
-    if (options.target.staging) {
-      return require('../lib/keywords/generate')(util);
+
+    if (options.target.production) {
+
+      return syncBuckets({
+        source: storageConfig.buckets.media.name,
+        target: storageConfig.buckets.media.production
+      });
+
     }
   };
-
 };

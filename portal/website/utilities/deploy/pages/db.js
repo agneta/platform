@@ -33,9 +33,19 @@ module.exports = function(util) {
     'date'
   ];
 
-  return function(options) {
+  return {
 
-    if (options.stage.pages) {
+    production: function() {
+
+      return require('../lib/sync/database')(util, {
+        source: services.models.Page,
+        target: services.models.Production_Page,
+        key: 'path'
+      });
+
+    },
+
+    staging: function() {
 
       var pages = webProject.site.pages.find({
         isView: undefined,
@@ -69,14 +79,6 @@ module.exports = function(util) {
       });
 
     }
-
-    if (options.promote.pages) {
-      return require('../lib/sync/database')(util, {
-        source: services.models.Page,
-        target: services.models.Production_Page,
-        key: 'path'
-      });
-    }
-
   };
+
 };

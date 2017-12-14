@@ -1,5 +1,5 @@
 module.exports = [{
-  name: 'destination',
+  name: 'target',
   title: {
     en: 'Destination',
     gr: 'Προορισμός'
@@ -13,15 +13,18 @@ module.exports = [{
     title: 'Production',
   }]
 }, {
-  name: 'promote',
-  title: 'What to deploy?',
+  name: 'source',
+  title: {
+    en: 'What to deploy?',
+    gr: 'Τι να μεταφέρετε;'
+  },
   type: 'checkboxes',
   values: [{
     name: 'pages',
-    title: 'Pages'
-  }, {
-    name: 'build',
-    title: 'Build'
+    title: {
+      en: 'Pages',
+      gr: 'Σελίδες'
+    }
   }, {
     name: 'services',
     title: {
@@ -30,7 +33,10 @@ module.exports = [{
     }
   }, {
     name: 'search',
-    title: 'Search Keywords'
+    title: {
+      en: 'Search Data',
+      gr: 'Στοιχεία αναζήτησης'
+    }
   }, {
     name: 'media',
     title: {
@@ -38,14 +44,7 @@ module.exports = [{
       gr: 'Πολυμέσα'
     },
     if: {
-      prop: 'destination',
-      equals: 'production'
-    }
-  }, {
-    name: 'lib',
-    title: 'Libraries',
-    if: {
-      prop: 'destination',
+      prop: 'target',
       equals: 'production'
     }
   }]
