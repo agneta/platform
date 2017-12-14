@@ -3,29 +3,24 @@ color-error = #e80000
 
   .page-utility{
 
-    .summary{
-      .icon{
-        width: 80px;
-        height: 80px;
-        color: color-primary;
-        padding-right: 0;
-      }
-
-      md-card-title-text{
-        color: color-primary;
-      }
-    }
-
     .toolbar{
       .parameters{
-        background: color-grey;
-        border-radius: 7px;
-        padding: 0 10px;
+        padding: 16px;
         .parameter{
+
+          border-bottom: solid 1px #d0d0d0;
+          padding-bottom: 20px;
+
+          &:last-child{
+            border-bottom: none;
+            padding-bottom: initial;
+          }
+
           .title{
             font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 10px;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #7b7b7b;
           }
         }
       }

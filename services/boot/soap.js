@@ -23,7 +23,6 @@ const klaw = require('klaw');
 const S = require('string');
 const cheerio = require('cheerio');
 
-
 const SoapResponse = require('./soap/response');
 
 module.exports = function(app) {

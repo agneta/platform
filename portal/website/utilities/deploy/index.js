@@ -44,62 +44,7 @@ module.exports = function(util) {
         });
 
     },
-    parameters: [{
-      name: 'destination',
-      title: 'Destination',
-      type: 'radio',
-      values: [{
-        name: 'staging',
-        title: 'Staging'
-      }, {
-        name: 'production',
-        title: 'Production',
-      }]
-    }, {
-      name: 'promote',
-      title: 'Promote',
-      if: {
-        prop: 'destination',
-        equals: 'production'
-      },
-      type: 'checkboxes',
-      values: [{
-        name: 'pages',
-        title: 'Pages'
-      }, {
-        name: 'build',
-        title: 'Build'
-      }, {
-        name: 'search',
-        title: 'Search Keywords'
-      }, {
-        name: 'media',
-        title: 'Media'
-      }, {
-        name: 'lib',
-        title: 'Libraries'
-      }]
-    },
-    {
-      name: 'stage',
-      title: 'Stage',
-      if: {
-        prop: 'destination',
-        equals: 'staging'
-      },
-      type: 'checkboxes',
-      values: [{
-        name: 'pages',
-        title: 'Pages'
-      }, {
-        name: 'build',
-        title: 'Build'
-      }, {
-        name: 'search',
-        title: 'Search Keywords'
-      }]
-    }
-    ]
+    parameters: require('./parameters')
   };
 
 };

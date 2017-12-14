@@ -14,14 +14,14 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function(Model) {
+module.exports = function(Model,app) {
 
-  Model.state = function(name) {
+  Model.state = function(name,req) {
     return Model.getUtility(name)
       .then(function(utility) {
         return {
           status: utility.instance.status,
-          parameters: utility.instance.parameters
+          parameters: app.lngScan(utility.instance.parameters,req)
         };
       });
   };
@@ -33,6 +33,12 @@ module.exports = function(Model) {
         arg: 'name',
         type: 'string',
         required: true
+      },{
+        arg: 'req',
+        type: 'object',
+        'http': {
+          source: 'req'
+        }
       }],
       returns: {
         arg: 'result',

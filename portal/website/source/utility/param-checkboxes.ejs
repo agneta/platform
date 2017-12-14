@@ -1,5 +1,5 @@
 <div ng-if="parameter.type=='checkboxes'" layout="row">
-    <md-checkbox class="md-primary" ng-model="runOptions[parameter.name][value.name]" ng-repeat="value in parameter.values">
+    <md-checkbox class="md-primary" ng-if="checkCondition(value)" ng-model="runOptions[parameter.name][value.name]" ng-repeat="value in parameter.values">
         {{ value.title }}
     </md-checkbox>
 </div>

@@ -137,7 +137,7 @@ module.exports = function(Model, app) {
 
   };
 
-  require('./utility/status')(Model, app);
+  require('./utility/state')(Model, app);
   require('./utility/start')(Model, app);
 
 
