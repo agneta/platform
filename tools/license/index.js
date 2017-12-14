@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: scripts/license/index.js
+ *   Source file: tools/license/index.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,18 +14,19 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const klaw = require('klaw');
+const glob = require('glob');
 const Promise = require('bluebird');
 const path = require('path');
 const fs = require('fs-extra');
 const progress = require('progress');
 const _ = require('lodash');
 
-var sourcePaths = [];
 var template;
 
 var copyrightStart = '/*   Copyright 2017 Agneta';
 var copyrightEnd = ' */\n';
+
+var pathSources = path.join(__dirname, '../..');
 
 Promise.resolve()
   .then(function() {
@@ -44,59 +45,34 @@ Promise.resolve()
     template = _.template(content);
 
   })
-  .then(function() {
-
-    var pathSources = path.join(__dirname, '../..');
-    var walker = klaw(pathSources);
-    var exclude = [
-      'node_modules',
-      'bower_components',
-      'theme/bower_components',
-      'portal/bower_components'
+  .then(function(ignore) {
+    ignore = [
+      'bower_components/**',
+      'node_modules/**',
+      'theme/source/lib/**',
+      '.git/**'
     ];
 
-    walker.on('data', function(item) {
-
-      if (item.stats.isDirectory()) {
-        return;
-      }
-
-      var path_parsed = path.parse(item.path);
-      var path_rel = path.relative(pathSources, item.path);
-
-      for (var excludeItem of exclude) {
-        if (path_rel.indexOf(excludeItem) === 0) {
-          return;
-        }
-      }
-
-      switch (path_parsed.ext) {
-        case '.js':
-          console.log(path_rel);
-          sourcePaths.push({
-            absolute: item.path,
-            relative: path_rel
-          });
-          break;
-      }
-
+    return Promise.promisify(glob)('*.js', {
+      cwd: pathSources,
+      ignore: ignore,
+      nodir: false,
+      nosort: true,
+      matchBase: true,
+      stat: false
     });
-
-    return new Promise(function(resolve, reject) {
-      walker.on('end', resolve);
-      walker.on('error', reject);
-    });
-
   })
-  .then(function() {
+  .then(function(result) {
 
     var bar = new progress('[:bar] :percent', {
-      total: sourcePaths.length
+      total: result.length
     });
 
-    return Promise.map(sourcePaths, function(sourcePath) {
+    return Promise.map(result, function(pathRelative) {
 
-      return fs.readFile(sourcePath.absolute, {
+      let pathAbsolute = path.join(pathSources,pathRelative);
+
+      return fs.readFile(pathAbsolute, {
         encoding: 'utf8'
       })
         .then(function(content) {
@@ -111,12 +87,12 @@ Promise.resolve()
           }
 
           var header = template({
-            path: sourcePath.relative
+            path: pathRelative
           });
 
           content = header + content;
 
-          fs.writeFile(sourcePath.absolute, content);
+          fs.writeFile(pathAbsolute, content);
           bar.tick();
         });
     }, {
