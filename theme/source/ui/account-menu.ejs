@@ -4,7 +4,7 @@
 
     <md-menu md-offset="0 70">
 
-        <md-button class="md-fab md-primary picture" ng-click="$mdMenu.open()" ng-style="{'background-image': 'url(' + account.picture + ')'}" aria-label="Account">
+        <md-button class="md-icon-button picture" ng-click="$mdMenu.open()" ng-style="{'background-image': 'url(' + account.picture + ')'}" aria-label="Account">
           <md-icon ng-if="account.avatar" md-svg-src="{{get_avatar(account.avatar)}}">
           </md-icon>
         </md-button>

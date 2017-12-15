@@ -32,7 +32,7 @@
     Portal.socket.on('activity:new', function(activity) {
 
       var message = 'Activity: ';
-      if(activity.account){
+      if (activity.account) {
         message += activity.account.name || activity.account.email;
       }
       message += ' ' + activity.action_value;
@@ -62,7 +62,7 @@
     };
 
     vm.onChange = function(value) {
-      if(value==toggle.value){
+      if (value == toggle.value) {
         return;
       }
       toggle.value = value;
@@ -73,14 +73,14 @@
 
   });
 
-  app.component('fileUploader',{
+  app.component('fileUploader', {
     templateUrl: 'file-uploader.html',
     bindings: {},
-    controller: function(Portal,$timeout) {
+    controller: function(Portal, $timeout) {
 
       var vm = this;
 
-      var socket =  Portal.socket.media;
+      var socket = Portal.socket.media;
       vm.files = {};
       vm.filesCount;
 
@@ -88,7 +88,7 @@
         console.error(error);
       });
 
-      socket.on('file:operation:progress', function(result){
+      socket.on('file:operation:progress', function(result) {
         vm.files[result.location] = result;
         onUpdate();
       });
@@ -98,11 +98,11 @@
         onUpdate();
       });
 
-      function onUpdate(){
+      function onUpdate() {
 
         var progress = 0;
         var count = 0;
-        for(var location in vm.files){
+        for (var location in vm.files) {
           var file = vm.files[location];
           progress += file.percentage;
           count++;
@@ -122,9 +122,23 @@
     bindings: {
       update: '&'
     },
-    controller: function(Portal,$timeout) {
+    controller: function(Portal, $timeout) {
 
       var ctrl = this;
+
+      ctrl.update = {
+        usage: {
+          heapTotal: {
+            percentage: 0
+          },
+          heapUsed: {
+            percentage: 0
+          },
+          rss: {
+            percentage: 0
+          }
+        }
+      };
 
       this.$onInit = function() {
 
