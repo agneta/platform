@@ -49,7 +49,7 @@ module.exports = function(util){
                 var duration = 0;
                 var failed = [];
                 var succeeded = [];
-                console.log(state.phases);
+                //console.log(state.phases);
                 if(state.phases && state.phases.length){
                   for (var phase of state.phases) {
                     switch(phase.phaseStatus){

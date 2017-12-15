@@ -43,9 +43,8 @@ module.exports = function(util) {
         .promise();
     })
     .then(function(result) {
-      taskDefinition = _.omit(result.taskDefinition,['taskDefinitionArn','revision','status','requiresAttributes']);
+      taskDefinition = _.omit(result.taskDefinition, ['taskDefinitionArn', 'revision', 'status', 'requiresAttributes']);
       //console.log(taskDefinition);
-
       return ecr.listImages({
         repositoryName: config.codebuild.repository,
         maxResults: 1
@@ -60,8 +59,14 @@ module.exports = function(util) {
       }
 
       var container = taskDefinition.containerDefinitions[0];
-      var imageName = container.image.split(':')[0];
+      var imageName = container.image.split('@');
+      if (imageName.length != 2) {
+        imageName = container.image.split(':');
+      }
+      imageName = imageName[0];
       imageName += `@${image.imageDigest}`;
+
+      util.log(`Creating a new task definition for image ${imageName}`);
 
       container.image = imageName;
 
@@ -87,7 +92,7 @@ module.exports = function(util) {
       logService(result.service);
     });
 
-  function logService(service){
+  function logService(service) {
     util.log(`Service with arn: ${service.serviceArn} has status: ${service.status}`);
     util.log(`Service tasks: ${service.desiredCount} desired, ${service.runningCount} running, ${service.pendingCount} pending`);
     util.log(`Task definition using: ${service.taskDefinition}`);
