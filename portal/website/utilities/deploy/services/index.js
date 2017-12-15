@@ -38,7 +38,7 @@ module.exports = function(util) {
             if(!options.services.update){
               return;
             }
-            require('./update')(util);
+            return require('./update')(util);
           });
     }
 

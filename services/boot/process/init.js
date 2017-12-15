@@ -46,6 +46,9 @@ module.exports = function(app) {
     .then(function(_processServer) {
       processServer = _processServer;
       return publicIp.v4()
+        .catch(function(){
+          serverProps.ipv4 = null;
+        })
         .then(function(ip) {
           serverProps.ipv4 = ip;
         });
