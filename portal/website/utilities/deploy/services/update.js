@@ -47,13 +47,21 @@ module.exports = function(util) {
       //console.log(taskDefinition);
       return ecr.listImages({
         repositoryName: config.codebuild.repository,
-        maxResults: 1
+        filter:{
+          tagStatus: 'TAGGED'
+        }
       })
         .promise();
     })
     .then(function(result) {
 
-      var image = result.imageIds[0];
+      var image;
+      for(var imageId of result.imageIds){
+        if(imageId.imageTag=='latest'){
+          image = imageId;
+        }
+      }
+
       if (!image) {
         throw new Error(`Could not find an image available in repository: ${config.codebuild.repository}`);
       }
