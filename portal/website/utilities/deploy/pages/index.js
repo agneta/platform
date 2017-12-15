@@ -17,7 +17,7 @@
 module.exports = function(util) {
 
   var build = require('./build')(util);
-  var db = require('./db')(util);
+  //var db = require('./db')(util);
 
   return function(options) {
 
@@ -32,14 +32,14 @@ module.exports = function(util) {
 
         return build.production()
           .then(function(){
-            return db.production();
+            //return db.production();
           });
-          
+
       case 'staging':
 
         return build.staging()
           .then(function(){
-            return db.staging();
+            //return db.staging();
           });
     }
 

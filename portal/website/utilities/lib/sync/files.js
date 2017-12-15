@@ -28,8 +28,7 @@ const klaw = require('klaw');
 
 module.exports = function(util) {
 
-  var services = util.locals.services;
-  var storage = services.storage;
+  var storage = util.app.storage;
 
   function sync(options) {
 
