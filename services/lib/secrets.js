@@ -65,7 +65,7 @@ _.deepMapValues(keys, function(value, path) {
 
 module.exports = function(app) {
 
-  function getSecret(env, path, keep) {
+  function getSecret(env, path) {
 
     var value = null;
     var obj = null;
@@ -74,13 +74,12 @@ module.exports = function(app) {
       obj = keys[env];
       value = _.get(obj, path);
     }
+    
     if (!value) {
       obj = keys.default;
       value = _.get(obj, path);
     }
-    if (!keep) {
-      _.unset(obj, path);
-    }
+
     return value;
 
   }

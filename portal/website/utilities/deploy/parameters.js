@@ -17,8 +17,8 @@
 module.exports = [{
   name: 'target',
   title: {
-    en: 'Destination',
-    gr: 'Προορισμός'
+    en: 'Destination:',
+    gr: 'Προορισμός:'
   },
   type: 'radio',
   values: [{
@@ -62,6 +62,27 @@ module.exports = [{
     if: {
       prop: 'target',
       equals: 'production'
+    }
+  }]
+}, {
+  name: 'services',
+  title: {
+    en: 'Specify the actions you would like to perform:',
+    gr: 'Καθορίστε τις ενέργειες που θέλετε να εκτελέσετε:'
+  },
+  if: 'source.services',
+  type: 'checkboxes',
+  values: [{
+    name: 'build',
+    title: {
+      en: 'Build',
+      gr: 'Κατασκευή'
+    }
+  }, {
+    name: 'update',
+    title: {
+      en: 'Update',
+      gr: 'Ενημέρωση'
     }
   }]
 }];

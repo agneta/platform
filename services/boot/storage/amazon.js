@@ -20,7 +20,7 @@ var config;
 module.exports = function(app) {
 
   if (!config) {
-    config = app.secrets.get('aws.s3');
+    config = app.secrets.get('aws');
   }
 
   if (!config) {

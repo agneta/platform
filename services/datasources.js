@@ -20,7 +20,7 @@ var db = null;
 module.exports = function(app) {
 
   if(!db){
-    db = app.secrets.get('db',true);
+    db = app.secrets.get('db');
   }
 
   var result = {

@@ -33,8 +33,11 @@ module.exports = function(util) {
     if (!options.source.search) {
       return;
     }
-    if (options.target.staging) {
-      return require('../lib/keywords/generate')(util);
+
+    util.log('Deploying search data...');
+    switch (options.target) {
+      case 'staging':
+        return require('../lib/keywords/generate')(util);
     }
   };
 

@@ -27,8 +27,8 @@ module.exports = function(util) {
   return {
     run: function(options) {
 
-      options.promote = options.promote || {};
-      options.stage = options.stage || {};
+      options.source = options.source || {};
+      options.target = options.target || {};
 
       return Promise.resolve()
         .then(function() {
@@ -42,6 +42,9 @@ module.exports = function(util) {
         })
         .then(function() {
           return services(options);
+        })
+        .then(function() {
+          util.success('Deploy is complete');
         });
 
     },

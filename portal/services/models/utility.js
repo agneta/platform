@@ -14,9 +14,10 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var Promise = require('bluebird');
-var shortid = require('shortid');
+const Promise = require('bluebird');
+const shortid = require('shortid');
 const _ = require('lodash');
+const util = require('util');
 
 module.exports = function(Model, app) {
 
@@ -44,9 +45,16 @@ module.exports = function(Model, app) {
 
     var instance = utility.runner({
       locals: locals,
+      app: app,
       log: function() {
         utility.addLine({
           type: 'log',
+          arguments: arguments
+        });
+      },
+      error: function(){
+        utility.addLine({
+          type: 'error',
           arguments: arguments
         });
       },
@@ -59,40 +67,49 @@ module.exports = function(Model, app) {
       progress: function(length, options) {
 
         var id = shortid.generate();
-        var count = 0;
 
         var progressOptions = _.extend({
           id: id,
-          length: length
+          length: length,
+          count: 0
         },options);
 
         var canEmit = true;
+
+        function emit(options){
+          if(!canEmit && progressOptions.count<length){
+            return;
+          }
+
+          setTimeout(function () {
+            canEmit = true;
+          }, 100);
+          canEmit = false;
+
+          options = options || {};
+
+          progressOptions.value = (progressOptions.count/progressOptions.length).toFixed(2) * 100;
+          progressOptions.current = options;
+
+          if(progressOptions.count==length){
+            options.title = 'Complete';
+            progressOptions.compete = true;
+          }
+
+          utility.emit('progress:update',progressOptions);
+        }
+
         return {
+          emit: function(progress,options){
+            progressOptions.length = progress.length;
+            progressOptions.count = progress.count;
+            emit(options);
+          },
           tick: function(options) {
-            count++;
 
-            if(!canEmit && count<length){
-              return;
-            }
+            progressOptions.count++;
+            emit(options);
 
-            setTimeout(function () {
-              canEmit = true;
-            }, 100);
-            canEmit = false;
-
-            options = options || {};
-
-            progressOptions.value = (count/progressOptions.length).toFixed(2) * 100;
-            progressOptions.count = count;
-            progressOptions.length = progressOptions.length;
-            progressOptions.current = options;
-
-            if(count==length){
-              options.title = 'Complete';
-              progressOptions.compete = true;
-            }
-
-            utility.emit('progress:update',progressOptions);
           },
           addLength: function(length) {
             progressOptions.length += length;
@@ -111,8 +128,12 @@ module.exports = function(Model, app) {
 
     utility.addLine = function(options) {
 
+
       if (options.arguments) {
         var args = Array.prototype.slice.call(options.arguments);
+        for(var index in args){
+          args[index] = util.inspect(args[index],{depth:4});
+        }
         options.message = args.join(' ');
       }
 
@@ -121,6 +142,9 @@ module.exports = function(Model, app) {
         type: options.type
       });
     };
+
+    utility.emit('status', instance.status);
+
   }
 
   Model.getUtility = function(name) {

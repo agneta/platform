@@ -23,9 +23,9 @@ menu:
   side: true
 
 colors:
-  primary: '#2196F3'
-  accent: '#b4c3cf'
-  primary-darker: '#0371C9'
+  primary: '#116477'
+  accent: '#899ea3'
+  primary-darker: '#0b4c5b'
 
 #-----------------------------------------------
 
@@ -60,7 +60,7 @@ scripts:
   -
     name: Fuse
     path: 'lib/fuse.min'
-  - 
+  -
     name: S
     path: 'lib/string.min'
 

@@ -28,13 +28,13 @@ module.exports = function(util) {
       return;
     }
 
-    if (options.target.production) {
-
-      return syncBuckets({
-        source: storageConfig.buckets.media.name,
-        target: storageConfig.buckets.media.production
-      });
-
+    util.log('Deploying media...');
+    switch (options.target) {
+      case 'production':
+        return syncBuckets({
+          source: storageConfig.buckets.media.name,
+          target: storageConfig.buckets.media.production
+        });
     }
   };
 };

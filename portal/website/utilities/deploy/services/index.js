@@ -14,9 +14,33 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+
 module.exports = function(util) {
 
-  return function(){
+  return function(options) {
+
+    if (!options.source.services) {
+      return;
+    }
+
+    util.log('Deploying services...');
+    switch (options.target) {
+      case 'staging':
+        return Promise.resolve()
+          .then(function() {
+            if(!options.services.build){
+              return;
+            }
+            return require('./build')(util);
+          })
+          .then(function() {
+            if(!options.services.update){
+              return;
+            }
+            require('./update')(util);
+          });
+    }
 
   };
 

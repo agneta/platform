@@ -20,7 +20,7 @@ const Promise = require('bluebird');
 
 module.exports = function(app, _options) {
 
-  var secret = app.secrets.get('cookie',true);
+  var secret = app.secrets.get('cookie');
 
   var dbPromise = new Promise(function(resolve, reject) {
     app.dataSources.db.on('connected', function() {

@@ -24,7 +24,7 @@ const _ = require('lodash');
 module.exports = function(app) {
 
   var webPrj = app.get('options').client.project;
-  var root = path.join(webPrj.paths.storage.buckets);
+  var root = path.join(webPrj.paths.core.storage.buckets);
 
   return {
     listObjects: function(options) {

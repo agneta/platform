@@ -25,21 +25,22 @@ module.exports = function(util) {
       return;
     }
 
-    if (options.target.production) {
+    util.log('Deploying pages...');
 
-      return build.production()
-        .then(function(){
-          return db.production();
-        });
+    switch (options.target) {
+      case 'production':
 
-    }
+        return build.production()
+          .then(function(){
+            return db.production();
+          });
+          
+      case 'staging':
 
-    if (options.target.staging) {
-
-      return build.staging()
-        .then(function(){
-          return db.staging();
-        });
+        return build.staging()
+          .then(function(){
+            return db.staging();
+          });
     }
 
   };

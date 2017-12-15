@@ -55,7 +55,7 @@ module.exports = function(app) {
         }
       },
       'cookie-parser': {
-        'params': app.secrets.get('cookie',true)
+        'params': app.secrets.get('cookie')
       },
       'helmet#xssFilter': {},
       'helmet#frameguard': {
