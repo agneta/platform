@@ -36,7 +36,6 @@
     "oclazyload": "1.0.x",
     "Swiper": "swiper#3.3.1",
     "photoswipe": "4.1.x",
-    "angular-swiper": "0.4.x",
     "angular-moment": "https://github.com/urish/angular-moment/archive/1.0.0-beta.6.zip",
     "Chart.js": "https://github.com/chartjs/Chart.js/releases/download/v2.5.0/Chart.js.zip",
     "angular-material-data-table": "0.10.x",

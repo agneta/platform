@@ -150,8 +150,6 @@ libraries:
   oclazyload:
   ngstorage:
   Chart.js:
-  angular-swiper:
-    include: 'angular-swiper.js'
   moment:
     dir: 'moment'
     include: '*.js'

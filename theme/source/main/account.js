@@ -18,10 +18,9 @@
 (function() {
 
   var app = window.angular.module('MainApp');
-  var tokenName = '_t_configServices("token").name;';
 
   app.config(function(LoopBackResourceProvider) {
-    LoopBackResourceProvider.setAuthHeader(tokenName);
+    LoopBackResourceProvider.setAuthHeader(agneta.services.token);
     var url = agneta.urljoin(agneta.services.url, 'api');
     LoopBackResourceProvider.setUrlBase(url);
 

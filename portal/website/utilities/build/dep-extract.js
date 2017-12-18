@@ -72,13 +72,12 @@ module.exports = function(util, dir) {
         rule.include = _.isArray(rule.include) ? rule.include : [rule.include];
         rule.include = rule.include.concat('*.map');
 
-        try {
-          fs.lstatSync(searchDir);
-        } catch (err) {
+        if (!fs.pathExistsSync(searchDir)) {
+          throw new Error('Module does not exist: ' + library);
+        }
 
-          if (err) {
-            throw new Error('Module does not exist: ' + library);
-          }
+        if (!fs.statSync(searchDir).isDirectory()) {
+          return;
         }
 
         var ignore;
