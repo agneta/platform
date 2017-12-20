@@ -95,19 +95,13 @@ module.exports = function(app) {
     var template = config.templates[options.templateName];
 
     if (template) {
-      template.render(options.data)
-        .then(function(renderResult) {
+      var renderResult = template.render(options.data);
 
-          options.html = renderResult.html;
-          options.text = renderResult.text;
+      options.html = renderResult.html;
+      options.text = renderResult.text;
 
-          send();
-        })
-        .catch(cb);
-
-    } else {
-      send();
-    }
+    } 
+    send();
 
     ///////////////////////////////////////////////////////////////
 
