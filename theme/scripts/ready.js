@@ -31,27 +31,18 @@ module.exports = function(locals) {
       scripts.push('main/contact');
     }
 
-    if (project.site.services) {
+    project.config.angular_libs.push({
+      dep: 'lbServices',
+      js: 'generated/services'
+    });
 
-      scripts.push('main/interceptors');
-      scripts.push('main/account');
-
-      project.config.angular_libs.push({
-        dep: 'lbServices',
-        js: 'generated/services'
-      });
-
-      if (project.site.lang == 'gr') {
-        scripts.push('main/greeklish');
-      }
-
-    } else {
-
-      if (project.config.search) {
-        console.warn('Search disabled because the API is not set');
-      }
-
+    switch(project.site.lang){
+      case 'gr':
+        project.site.locale = 'el-gr';
+        break;
     }
+
+
     if (!project.site.building) {
 
       scripts.push('lib/socketcluster.min');
@@ -64,22 +55,34 @@ module.exports = function(locals) {
   });
 
   function bundle() {
-
+    let scripts = [];
     return Promise.resolve()
       .then(function() {
         let content = '';
 
-        concat('lib/angular.min');
+        scripts.push('lib/angular.min');
 
-        for (var lib of _.uniqBy(project.config.angular_libs, 'js')) {
-          concat(lib.js);
+        for (var lib of project.config.angular_libs) {
+          scripts.push(lib.js);
         }
 
-        for (var script of _.uniq(project.config.scripts)) {
-          concat(script);
+        for (var script of project.config.scripts) {
+          scripts.push(script);
         }
 
-        function concat(script) {
+        scripts = scripts.map(function(script){
+          if(_.isString(script)){
+            return {
+              path: script
+            };
+          }
+          return script;
+        });
+
+        scripts = _.uniqBy(scripts,'path');
+
+        scripts = scripts.map(function(script){
+
           var scriptPath = script.path || script;
 
           if(script.name){
@@ -87,7 +90,7 @@ module.exports = function(locals) {
           }
 
           content += `require('${scriptPath}');\n`;
-        }
+        });
 
         var outputPath = path.join(project.paths.app.source, 'main/bundle.js');
         return fs.outputFile(outputPath, content);

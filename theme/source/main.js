@@ -203,6 +203,14 @@ app.config(function($mdThemingProvider, $sceDelegateProvider) {
   $location.path(agneta.url(agneta.path), false);
   injector = $injector;
 
+  if(agneta.locale){
+    $ocLazyLoad.load({
+      files: [
+        agneta.get_asset('lib/angular-i18n/angular-locale_'+agneta.locale+'.js')
+      ]
+    });
+  }
+
   ////////////////////////////////////////////////////////////////
 
 
@@ -485,3 +493,5 @@ require('main/form.module');
 require('main/scroll.module');
 require('main/dialog.module');
 require('main/menu-side.module');
+require('main/interceptors.module');
+require('main/account.module');

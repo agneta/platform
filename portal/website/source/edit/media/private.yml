@@ -3,14 +3,6 @@ title:
 
 template: edit/media/main
 
-scripts:
-  - 'media/file'
-
-angular_libs:
-  -
-    js: 'lib/ng-file-upload.min'
-    dep: 'ngFileUpload'
-
 viewData:
   private: true
 

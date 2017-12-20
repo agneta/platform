@@ -65,5 +65,3 @@ scripts:
   - 'main/socket'
   - 'main/portal'
   - 'portal/main'
-  - 'lib/angular-i18n/angular-locale_el-gr'
-  - 'lib/bluebird.min'

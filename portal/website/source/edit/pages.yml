@@ -12,6 +12,9 @@ controller: 'AgEditPagesCtrl'
 icon: 'agneta/pages'
 menuLock: true
 
+scripts:
+  - 'lib/fuse.min'
+
 editor:
   main: true
 
