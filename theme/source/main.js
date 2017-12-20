@@ -85,15 +85,14 @@ var injector = angular.injector(['ng']);
     var parameters;
 
     if (link) {
-      if(Array.isArray(link)){
+      if (Array.isArray(link)) {
         var _link = link.pop();
         parameters = link;
         link = _link;
-      }else{
+      } else {
         parameters = getParamNames(link);
       }
-    }
-    else {
+    } else {
       parameters = [];
     }
 
@@ -137,6 +136,15 @@ var injector = angular.injector(['ng']);
 })();
 
 //---------------------------------------------------------------
+
+app.factory('$exceptionHandler', function() {
+  return function(exception) {
+    console.error(exception.stack);
+  };
+});
+
+//---------------------------------------------------------------
+
 
 app.config(function($mdThemingProvider, $sceDelegateProvider) {
 
@@ -286,18 +294,18 @@ app.config(function($mdThemingProvider, $sceDelegateProvider) {
 
           return $q(function(resolve) {
 
-            if (priority.length) {
+              if (priority.length) {
 
-              $ocLazyLoad.load([{
-                name: 'MainApp',
-                files: priority
-              }]).then(resolve);
+                $ocLazyLoad.load([{
+                  name: 'MainApp',
+                  files: priority
+                }]).then(resolve);
 
-            } else {
-              resolve();
-            }
+              } else {
+                resolve();
+              }
 
-          })
+            })
             .then(loadPriority);
 
         }

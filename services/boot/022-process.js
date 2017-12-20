@@ -39,7 +39,7 @@ module.exports = function(app) {
   };
 
 
-  return Promise.resolve()
+  Promise.resolve()
 
     .then(function() {
       return require('./process/init')(app);
@@ -47,7 +47,8 @@ module.exports = function(app) {
 
     .then(function() {
       return require('./process/logs')(app);
-    });
+    })
+    .catch(console.error);
 
 
 

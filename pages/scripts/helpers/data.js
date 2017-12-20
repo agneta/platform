@@ -104,7 +104,15 @@ module.exports = function(locals) {
       if (cacheNames) {
 
         var values = _.map(cacheNames, function(cacheName) {
-          return cache.files.get(objPath + '.' + cacheName);
+          let fileObjPath = objPath + '.' + cacheName;
+          var value = cache.files.get(fileObjPath);
+          if (!value) {
+            let pathAbs = project.theme.getFile(
+              path.join('data', pathReq, cacheName) + '.yml'
+            );
+            value = loadFile(pathAbs,fileObjPath);
+          }
+          return value;
         });
 
         return _.zipObject(cacheNames, values);
