@@ -294,18 +294,18 @@ app.config(function($mdThemingProvider, $sceDelegateProvider) {
 
           return $q(function(resolve) {
 
-              if (priority.length) {
+            if (priority.length) {
 
-                $ocLazyLoad.load([{
-                  name: 'MainApp',
-                  files: priority
-                }]).then(resolve);
+              $ocLazyLoad.load([{
+                name: 'MainApp',
+                files: priority
+              }]).then(resolve);
 
-              } else {
-                resolve();
-              }
+            } else {
+              resolve();
+            }
 
-            })
+          })
             .then(loadPriority);
 
         }
