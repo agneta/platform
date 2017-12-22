@@ -48,19 +48,17 @@
 
         var contentId = elem.attr('portal-edit');
         var listener = 'content-change:' + $rootScope.viewData.path + ':' + contentId;
-        console.log(listener);
+        //console.log(listener);
 
         Portal.socket.editor.on(listener, function(data) {
 
-          console.log(data);
+          //console.log(data);
           var value = data.value;
           if (angular.isObject(value)) {
             value = agneta.lng(value);
           }
           elem.html(value || '');
         });
-
-
 
       }
     };

@@ -18,7 +18,7 @@
 
   var logLimit = 3000;
 
-  agneta.directive('AgUtilityCtrl', function($rootScope, $mdToast, Utility, SocketIO, $parse, $timeout) {
+  agneta.directive('AgUtilityCtrl', function($rootScope, $mdToast, Utility, SocketIO, $parse, $timeout, $q, $mdDialog) {
     var vm = this;
 
     vm.logLines = [];
@@ -27,6 +27,7 @@
 
     var socket = SocketIO.connect('utilities');
     var utilityName = $rootScope.viewData.extra.name;
+    var confirm = null;
 
     vm.checkCondition = function(parameter) {
       if (parameter.if) {
@@ -52,11 +53,13 @@
 
     socketOn('notify', $rootScope.notify);
     socketOn('init', function(options) {
+      confirm =  options.confirm;
       vm.parameters = options.parameters;
       $timeout();
     });
 
     socketOn('status', function(data) {
+
       vm.status = data;
       $timeout();
     });
@@ -74,12 +77,33 @@
     });
 
     vm.run = function() {
-      vm.clear();
-      vm.log('Starting...');
-      Utility.start({
-        name: utilityName,
-        options: vm.runOptions
-      });
+
+      $q.resolve()
+        .then(function() {
+
+          if(!confirm){
+            return;
+          }
+
+          var confirmOptions = $mdDialog.confirm()
+            .title('Are you sure to proceed?' || confirm.title)
+            .ariaLabel('delete object')
+            .ok('Yes')
+            .cancel('Cancel');
+
+          return $mdDialog.show(confirmOptions);
+
+        })
+        .then(function() {
+          vm.clear();
+          vm.log('Starting...');
+          Utility.start({
+            name: utilityName,
+            options: vm.runOptions
+          });
+        });
+
+
     };
 
     vm.clear = function() {
