@@ -86,12 +86,17 @@ module.exports = function(locals) {
     options = options || {};
     page = page || this.page;
 
+    var size = options.size || 'large';
+
+
     if (page.cover) {
 
-      var cover = page.cover.__value;
-      var size = options.size || cover.size || 'large';
+      var cover = page.cover.__value || page.cover;
 
-      return this.get_media(cover.location, size);
+      cover = cover.location || cover;
+      size = cover.size || size;
+
+      return this.get_media(cover, size);
     }
 
     var name = 'cover';
@@ -100,7 +105,7 @@ module.exports = function(locals) {
       name = page.$cover;
     }
 
-    return this.page_media(name);
+    return this.page_media(urljoin(name,size),page);
 
 
   });

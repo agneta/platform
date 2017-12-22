@@ -1,23 +1,19 @@
-<file-uploader></file-uploader>
+<div class="file-uploader" ng-class="{uploading:filesCount}" file-uploader>
+  <md-menu md-offset="0 65">
 
-<script type="text/ng-template" id="file-uploader.html">
-  <div class="file-uploader" ng-class="{uploading:filesCount}">
-    <md-menu md-offset="0 65">
-
-      <div class="main-button" layout="column" ng-click="$mdMenu.open()" layout-align="space-around">
-        <div class="icon" layout="column" layout-align="space-around">
-          <md-icon md-svg-src="<%-get_icon('material/file-upload')%>"></md-icon>
-        </div>
-        <md-progress-circular md-mode="determinate" value="{{progress}}"></md-progress-circular>
+    <div class="main-button" layout="column" ng-click="$mdMenu.open()" layout-align="space-around">
+      <div class="icon" layout="column" layout-align="space-around">
+        <md-icon md-svg-src="<%-get_icon('material/file-upload')%>"></md-icon>
       </div>
+      <md-progress-circular md-mode="determinate" value="{{progress}}"></md-progress-circular>
+    </div>
 
-      <md-menu-content width="4">
-        <div layout="column" layout-margin>
-          <p>
-            Test
-          </p>
-        </div>
-      </md-menu-content>
-    </md-menu>
-  </div>
-</script>
+    <md-menu-content width="4">
+      <div layout="column" layout-margin>
+        <p>
+          Test
+        </p>
+      </div>
+    </md-menu-content>
+  </md-menu>
+</div>

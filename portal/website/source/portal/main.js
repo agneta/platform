@@ -23,9 +23,9 @@
     $rootScope.notify = function(options) {
       $mdToast.show(
         $mdToast.simple()
-          .textContent(options.message)
-          .position('bottom left')
-          .hideDelay(3000)
+        .textContent(options.message)
+        .position('bottom left')
+        .hideDelay(3000)
       );
     };
 
@@ -39,9 +39,9 @@
 
       $mdToast.show(
         $mdToast.simple()
-          .textContent(message)
-          .position('bottom right')
-          .hideDelay(3000)
+        .textContent(message)
+        .position('bottom right')
+        .hideDelay(3000)
       );
 
     });
@@ -73,48 +73,45 @@
 
   });
 
-  app.component('fileUploader', {
-    templateUrl: 'file-uploader.html',
-    bindings: {},
-    controller: function(Portal, $timeout) {
+  agneta.directive('fileUploader', function(Portal, $timeout) {
 
-      var vm = this;
+    var vm = this;
 
-      var socket = Portal.socket.media;
-      vm.files = {};
-      vm.filesCount;
+    var socket = Portal.socket.media;
+    vm.files = {};
+    vm.filesCount;
 
-      socket.on('file:operation:error', function(error) {
-        console.error(error);
-      });
+    socket.on('file:operation:error', function(error) {
+      console.error(error);
+    });
 
-      socket.on('file:operation:progress', function(result) {
-        vm.files[result.location] = result;
-        onUpdate();
-      });
+    socket.on('file:operation:progress', function(result) {
+      console.log(result);
+      vm.files[result.location] = result;
+      onUpdate();
+    });
 
-      socket.on('file:operation:complete', function(result) {
-        delete vm.files[result.location];
-        onUpdate();
-      });
+    socket.on('file:operation:complete', function(result) {
+      delete vm.files[result.location];
+      onUpdate();
+    });
 
-      function onUpdate() {
+    function onUpdate() {
 
-        var progress = 0;
-        var count = 0;
-        for (var location in vm.files) {
-          var file = vm.files[location];
-          progress += file.percentage;
-          count++;
-        }
-        vm.filesCount = count;
-        vm.progress = progress / count;
-
-        $timeout();
-
+      var progress = 0;
+      var count = 0;
+      for (var location in vm.files) {
+        var file = vm.files[location];
+        progress += file.percentage;
+        count++;
       }
+      vm.filesCount = count;
+      vm.progress = progress / count;
+
+      $timeout();
 
     }
+
   });
 
   app.component('memoryUsage', {

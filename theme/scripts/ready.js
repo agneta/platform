@@ -45,7 +45,10 @@ module.exports = function(locals) {
 
     if (!project.site.building) {
 
-      scripts.push('lib/socketcluster.min');
+      scripts.push({
+        name: 'socketCluster',
+        path: 'lib/socketcluster.min'
+      });
       scripts.push('main/socket');
       scripts.push('main/portal');
 

@@ -1,8 +1,8 @@
 <%var tag = viewTag();%>
-<div <%-tag%> id="view-content" layout="row" ng-keypress="viewData.keypress && onKeyPress($event)" flex>
+<div <%-tag%> id="view-content" layout="row" ng-keypress="viewData.keypress && onKeyPress($event)" flex layout-align="start stretch">
 
 	<md-sidenav class="view-wrapper md-sidenav-left md-whiteframe-z2 site-menu" ng-class="{unlocked:!menu.isLocked}" md-is-locked-open="menuLock()" md-component-id="menu" layout="column">
-		<div>
+		<div class="view-container">
 			<div ag-menu-side layout="column">
 				<%-template('sidebar/toolbar')%>
 				<md-progress-linear class="primary loadingBar" md-mode="{{sidebarLoading?'indeterminate':'determinate'}}"></md-progress-linear>
@@ -32,7 +32,7 @@
 			</md-sidenav>
 
 			<div class="view-wrapper content" layout="column" flex>
-				<div id="scroll-parent">
+				<div class="view-container" id="scroll-parent">
 					<div layout="column">
 						<%-template(page.template || page.templateSource)%>
 						<%if(!page.hiddenFooter){%>

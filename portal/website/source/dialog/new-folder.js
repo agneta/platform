@@ -16,7 +16,7 @@
  */
 (function() {
 
-  agneta.directive('NewFolder', function($rootScope, data) {
+  agneta.directive('AgNewFolder', function($rootScope, data) {
 
     var vm = this;
 

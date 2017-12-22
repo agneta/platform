@@ -15,94 +15,148 @@
  *   limitations under the License.
  */
 
-var app = angular.module('MainApp');
+agneta.directive('mediaItem', function($mdMenu,$element, EditFile, $rootScope, $templateRequest, $compile, $mdDialog) {
 
-app.directive('mediaItem', function($mdMenu, $rootScope, $templateRequest, $compile, $mdDialog) {
+  var scope = this;
 
-  return {
-    scope: {
-      mediaModel: '=mediaModel',
-      selected: '=selected',
-      object: '=object'
-    },
-    link: function(scope, element) {
+  function prompt(options) {
 
-      function prompt(options) {
+    var action = options.action;
+    var confirm = $mdDialog.prompt()
+      .title(action + ' object')
+      .textContent(options.message)
+      .placeholder('Location')
+      .ok(action)
+      .cancel('Cancel');
 
-        var action = options.action;
-        var confirm = $mdDialog.prompt()
-          .title(action + ' object')
-          .textContent('Enter the location you whish to ' + action + ' the object')
-          .placeholder('Location')
-          .ok(action)
-          .cancel('Cancel');
+    return $mdDialog.show(confirm);
 
-        return $mdDialog.show(confirm)
-          .then(function(dirTarget) {
-            return scope.mediaModel[options.method]({
-              source: scope.object.location,
-              target: dirTarget + '/' + scope.object.name
-            })
-              .$promise;
-          });
-      }
+  }
 
-      scope.moveObject = function() {
-
-        prompt({
-          action: 'move',
-          method: 'moveObject'
-        });
-
-      };
-
-      scope.copyObject = function() {
-        prompt({
-          action: 'copy',
-          method: 'copyObject'
-        });
-      };
-
-      $templateRequest('media-item-menu.html').then(function(html) {
-        var template = angular.element(
-          $compile(html)(scope)
-        );
-
-        var RightClickMenuCtrl = {
-          open: function(event) {
-            scope.object.selected = true;
-            $mdMenu.show({
-              scope: $rootScope.$new(),
-              mdMenuCtrl: RightClickMenuCtrl,
-              element: template,
-              target: event.target
-            });
-          },
-          close: function() {
-            scope.object.selected = false;
-            $mdMenu.hide();
-          },
-          positionMode: function() {
-            return {
-              left: 'target',
-              top: 'target'
-            };
-          },
-          offsets: function() {
-            return {
-              left: event.offsetX,
-              top: event.offsetY
-            };
-          }
-        };
-
-        element.bind('contextmenu', function(event) {
-          scope.$apply(function() {
-            event.preventDefault();
-            RightClickMenuCtrl.open(event);
-          });
-        });
+  function handlePromise(options){
+    options.before
+      .then(function(result){
+        scope.$parent.loading = true;
+        return options.after(result);
+      })
+      .finally(function() {
+        scope.$parent.loading = false;
+        scope.object.onChange();
       });
-    }
+  }
+
+  scope.renameObject = function() {
+
+    handlePromise({
+      before: prompt({
+        action: 'rename',
+        message: 'Enter the name of the object'
+      }),
+      after: function(name) {
+        return scope.mediaModel.updateFile({
+          location: scope.object.location,
+          name: name
+        })
+          .$promise;
+      }
+    });
+
   };
+
+  scope.moveObject = function() {
+
+    handlePromise({
+      before: prompt({
+        action: 'move',
+        message: 'Enter the location you whish to move the object'
+      }),
+      after: function(dirTarget) {
+        return scope.mediaModel.moveObject({
+          source: scope.object.location,
+          target: dirTarget + '/' + scope.object.name
+        })
+          .$promise;
+      }
+    });
+
+  };
+
+  scope.copyObject = function() {
+
+    handlePromise({
+      before: prompt({
+        action: 'copy',
+        message: 'Enter the location you whish to copy the object'
+      }),
+      after: function(dirTarget) {
+        return scope.mediaModel.copyObject({
+          source: scope.object.location,
+          target: dirTarget + '/' + scope.object.name
+        })
+          .$promise;
+      }
+    });
+
+  };
+
+  scope.deleteObject = function() {
+
+    var confirm = $mdDialog.confirm()
+      .title('Are you sure about deleting this object?')
+      .ariaLabel('delete object')
+      .ok('Yes')
+      .cancel('Cancel');
+
+    handlePromise({
+      before: $mdDialog.show(confirm),
+      after: function() {
+        return scope.mediaModel.deleteObject({
+          location: scope.object.location
+        })
+          .$promise;
+      }
+    });
+
+  };
+
+  $templateRequest('media-item-menu.html').then(function(html) {
+    var template = angular.element(
+      $compile(html)(scope)
+    );
+
+    var RightClickMenuCtrl = {
+      open: function(event) {
+        scope.object.selected = true;
+        $mdMenu.show({
+          scope: $rootScope.$new(),
+          mdMenuCtrl: RightClickMenuCtrl,
+          element: template,
+          target: event.target
+        });
+      },
+      close: function() {
+        scope.object.selected = false;
+        $mdMenu.hide();
+      },
+      positionMode: function() {
+        return {
+          left: 'target',
+          top: 'target'
+        };
+      },
+      offsets: function() {
+        return {
+          left: event.offsetX,
+          top: event.offsetY
+        };
+      }
+    };
+
+    $element.bind('contextmenu', function(event) {
+      scope.$apply(function() {
+        event.preventDefault();
+        RightClickMenuCtrl.open(event);
+      });
+    });
+  });
 });

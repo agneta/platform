@@ -21,25 +21,19 @@ module.exports = function(Model) {
 
     var location = Model.__getMediaPath(dir, name);
 
-    return Model.findOne({
+    return Model.findOrCreate({
       where: {
         location: location
       },
       fields: {
         id: true
       }
+    }, {
+      location: location,
+      type: 'folder'
     })
-      .then(function(res) {
-        //console.log('newFolder:Model.findOne:res',res);
-        if (res) {
-          return {
-            message: 'Object already exists with that name'
-          };
-        }
-        return Model.create({
-          location: location,
-          type: 'folder'
-        });
+      .then(function(result){
+        return result[0];
       });
 
   };

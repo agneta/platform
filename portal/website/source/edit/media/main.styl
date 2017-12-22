@@ -2,6 +2,18 @@ color-bar = #fbfbfb;
 
 .page-edit-media-main{
 
+  .media-item-menu{
+    .md-button{
+      text-align: left;
+      &.delete{
+        color: color-red;
+        md-icon{
+          color: color-red;
+        }
+      }
+    }
+  }
+
   .dir{
 
     .toolbar{
@@ -13,7 +25,6 @@ color-bar = #fbfbfb;
       .location{
         .entry{
           span{
-            text-transform: capitalize;
             cursor: pointer;
           }
           &:last-child{

@@ -26,7 +26,7 @@ module.exports = function(Model, app) {
   Model.__updateFile = function(options) {
     var id = options.id;
     var location = options.location;
-    var dir = options.dir;
+    var dir = options.dir || path.parse(location).dir;
     var name = options.name;
     var contentType = options.contentType;
     var roles = options.roles;
@@ -83,20 +83,10 @@ module.exports = function(Model, app) {
         }
 
         name = name || file.name;
-
-        if (dir || name) {
-          target = urljoin(dir, name);
-        }
-
-        target = options.target || target;
+        target = options.target || urljoin(dir, name);
 
         //console.log('media:updateFile:dir',dir);
         //console.log('media:updateFile:target',target);
-
-
-        if (!target) {
-          return;
-        }
 
         operations = [{
           source: file.location,

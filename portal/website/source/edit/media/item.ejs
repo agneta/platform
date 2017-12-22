@@ -1,4 +1,4 @@
-<media-item ng-show="object" ng-click="" class="media-tile" selected="selectedObjects" ng-class="{selected:object.selected}" layout="row" layout-margin layout-align="start center" media-model="mediaModel" object="object">
+<div media-item ng-show="object" class="media-tile" ng-class="{selected:object.selected}" layout="row" layout-margin layout-align="start center">
 
   <md-checkbox aria-label="select" ng-click="toolbarClick($event)" class="selector" ng-model="object.selected"></md-checkbox>
 
@@ -26,4 +26,4 @@
     <md-icon ng-click="openObject(object)" md-svg-src="<%-get_icon('material/mode-edit')%>"></md-icon>
   </div>
 
-</media-item>
+</div>

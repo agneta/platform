@@ -4,7 +4,7 @@
 
 <md-input-container>
     <label><%-lng(page.placeholder)%></label>
-    <input ng-model="name">
+    <input ng-keyup="$event.keyCode == 13 && apply()" ng-model="name">
 </md-input-container>
 </div>
 

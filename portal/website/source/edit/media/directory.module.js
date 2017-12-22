@@ -45,6 +45,13 @@ module.exports = function(vm, Portal, $location, $rootScope, Media, MediaPreview
   socket.on('file:upload:complete', readdir);
   socket.on('files:upload:complete', readdir);
 
+  vm.onHover = function(object){
+    objects.map(function(obj){
+      obj.hovered = false;
+    });
+    object.hovered = true;
+  };
+
   //---------------------------------------------------
 
   vm.objectsOnDemand = {
@@ -95,7 +102,11 @@ module.exports = function(vm, Portal, $location, $rootScope, Media, MediaPreview
         }
 
         //console.warn('fetchMoreItems_', index, this.numLoaded_, this.toLoad_);
-
+        var loader = 'loading';
+        if(objects.length){
+          loader = 'isLoadingMore';
+        }
+        vm[loader] = true;
         Media.list(params)
           .$promise
           .then(function(result) {
@@ -104,6 +115,9 @@ module.exports = function(vm, Portal, $location, $rootScope, Media, MediaPreview
 
             for (var _index in result.objects) {
               var object = result.objects[_index];
+              object.onChange = function() {
+                vm.refresh();
+              };
               MediaPreview.set(object);
             }
 
@@ -116,20 +130,15 @@ module.exports = function(vm, Portal, $location, $rootScope, Media, MediaPreview
             }
 
             self.numLoaded_ = objects.length;
+          })
+          .finally(function(){
+            vm[loader] = false;
           });
 
       }
     }
   };
 
-  //---------------------------------------------------
-  vm.isLoadingMore = function(object) {
-    return !object &&
-      (
-        vm.objectsOnDemand.numLoaded_ === 0 ||
-        vm.objectsOnDemand.numLoaded_ < vm.count
-      );
-  };
   //---------------------------------------------------
   // Selected
 
@@ -200,6 +209,7 @@ module.exports = function(vm, Portal, $location, $rootScope, Media, MediaPreview
   };
 
   vm.openObject = vm.openObject || function(object) {
+
     $mdDialog.open({
       partial: partialFile,
       data: {
