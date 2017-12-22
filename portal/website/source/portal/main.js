@@ -23,9 +23,9 @@
     $rootScope.notify = function(options) {
       $mdToast.show(
         $mdToast.simple()
-        .textContent(options.message)
-        .position('bottom left')
-        .hideDelay(3000)
+          .textContent(options.message)
+          .position('bottom left')
+          .hideDelay(3000)
       );
     };
 
@@ -39,9 +39,9 @@
 
       $mdToast.show(
         $mdToast.simple()
-        .textContent(message)
-        .position('bottom right')
-        .hideDelay(3000)
+          .textContent(message)
+          .position('bottom right')
+          .hideDelay(3000)
       );
 
     });
