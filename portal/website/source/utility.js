@@ -18,7 +18,7 @@
 
   var logLimit = 3000;
 
-  agneta.directive('AgUtilityCtrl', function($rootScope, $mdToast, Utility, SocketIO, $parse, $timeout, $q, $mdDialog) {
+  agneta.directive('AgUtilityCtrl', function($rootScope, $mdToast, Utility, SocketIO, $parse, $timeout, $q, $mdDialog, $interpolate) {
     var vm = this;
 
     vm.logLines = [];
@@ -49,17 +49,12 @@
       .$promise
       .then(function(options) {
         vm.parameters = options.parameters;
+        confirm =  options.confirm;
       });
 
     socketOn('notify', $rootScope.notify);
-    socketOn('init', function(options) {
-      confirm =  options.confirm;
-      vm.parameters = options.parameters;
-      $timeout();
-    });
 
     socketOn('status', function(data) {
-
       vm.status = data;
       $timeout();
     });
@@ -85,8 +80,12 @@
             return;
           }
 
+          var message = $interpolate(confirm.message)({
+            parameters: vm.runOptions
+          });
           var confirmOptions = $mdDialog.confirm()
-            .title('Are you sure to proceed?' || confirm.title)
+            .title(confirm.title || 'Are you sure to proceed?')
+            .textContent(message)
             .ariaLabel('delete object')
             .ok('Yes')
             .cancel('Cancel');

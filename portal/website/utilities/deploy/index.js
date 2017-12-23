@@ -48,7 +48,11 @@ module.exports = function(util) {
         });
 
     },
-    parameters: require('./parameters')
+    parameters: require('./parameters'),
+    confirm:{
+      title: 'Are you want to proceed with the following parameters?',
+      message: '{{parameters}}'
+    }
   };
 
 };

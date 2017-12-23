@@ -21,6 +21,7 @@ module.exports = function(Model,app) {
       .then(function(utility) {
         return {
           status: utility.instance.status,
+          confirm: utility.instance.confirm,
           parameters: app.lngScan(utility.instance.parameters,req)
         };
       });
