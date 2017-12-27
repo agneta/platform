@@ -41,7 +41,7 @@ module.exports = function(Model, app) {
           throw new Error('No role found: ' + name);
         }
 
-        var RoleModel = app.models[role.model];
+        var RoleModel = Model.getModel(role.model);
 
         var fields = {
           accountId: account.id
@@ -59,14 +59,20 @@ module.exports = function(Model, app) {
 
       })
       .then(function(result) {
+        var role = result[0];
+        var message;
+
         if (result[1]) {
-          return result[1];
+          message = 'Role was added';
+        }else{
+          message = 'Role already exists';
         }
 
         return {
-          alreadyExists: true,
-          message: 'Role already exists'
+          success: message,
+          role: role
         };
+
       });
 
   };

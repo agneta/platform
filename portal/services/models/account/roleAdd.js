@@ -19,12 +19,7 @@ module.exports = function(Model) {
 
   Model.roleAdd = function(id, name) {
 
-    return Model._roleAdd(id, name)
-      .then(function() {
-        return {
-          success: 'The role was added'
-        };
-      });
+    return Model._roleAdd(id, name);
 
   };
 

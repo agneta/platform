@@ -45,7 +45,7 @@
         limit: 5
       }).$promise
         .then(function(recent) {
-          vm.accounts.recent = recent;
+          vm.accounts.recent = recent.list;
         });
 
     }

@@ -25,7 +25,7 @@ module.exports = function(app) {
   function set(Account, roles) {
 
     var Role = app.models.Role;
-
+    //console.log(roles);
     for (var name in roles) {
       var role = roles[name];
       var model = app.models[role.model];

@@ -18,7 +18,6 @@ const _ = require('lodash');
 const paths = require('./paths');
 const config = require('./config');
 const Promise = require('bluebird');
-var ProgressBar = require('progress');
 
 _.mixin(require('lodash-deep'));
 _.omitDeep = function(collection, excludeKeys) {
@@ -40,11 +39,6 @@ _.omitDeep = function(collection, excludeKeys) {
 var start = {
   init: function(subApps) {
 
-    var bar = new ProgressBar('[:bar] :title', {
-      total: subApps.length * 2 + 1,
-      width: 30
-    });
-
     return Promise.each(subApps, function(component) {
       if (component.preInit) {
         return component.preInit();
@@ -52,9 +46,8 @@ var start = {
     })
       .then(function() {
         return Promise.each(subApps, function(component) {
-          bar.tick({
-            title: 'Initiating: ' + component.locals.app.get('name')
-          });
+          console.log('Initiating: ' + component.locals.app.get('name'));
+
           if (component.init) {
             return component.init();
           }
@@ -62,18 +55,11 @@ var start = {
       })
       .then(function() {
         return Promise.each(subApps, function(component) {
-          bar.tick({
-            title: 'Starting: ' + component.locals.app.get('name')
-          });
+          console.log('Starting: ' + component.locals.app.get('name'));
           if (component.start) {
             return component.start();
           }
           return null;
-        });
-      })
-      .then(function() {
-        bar.tick({
-          title: ''
         });
       });
   },

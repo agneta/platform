@@ -53,10 +53,16 @@
     value: false
   };
 
-  agneta.directive('AgLiveToggleCtrl', function($rootScope) {
+  agneta.directive('AgLiveToggleCtrl', function($rootScope, $location, $routeParams) {
 
     var vm = this;
+
+    if($routeParams.production){
+      toggle.value = true;
+    }
+    
     vm.value = toggle.value;
+
     $rootScope.isProduction = function() {
       return toggle.value;
     };
@@ -67,6 +73,12 @@
       }
       toggle.value = value;
       $rootScope.$broadcast('productionMode', value);
+      if(value){
+        $location.search('production',true);
+      }else{
+        $location.search('production',false);
+      }
+
     };
 
     vm.onChange(toggle.value);

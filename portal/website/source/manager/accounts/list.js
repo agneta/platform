@@ -42,7 +42,7 @@ app.service('AccountList', function($rootScope, Production_Account, Account, $ti
     if(!self.model){
       return;
     }
-    
+
     if (result) {
       accounts.list = result.accounts;
       accounts.count = result.count;
@@ -54,9 +54,10 @@ app.service('AccountList', function($rootScope, Production_Account, Account, $ti
     })
       .$promise
       .then(function(recent) {
-        //console.warn('loadAccounts',recent);
+        console.warn('loadAccounts',recent);
         search.active = false;
-        accounts.list = recent;
+        accounts.count = recent.count;
+        accounts.list = recent.list;
       });
 
   };

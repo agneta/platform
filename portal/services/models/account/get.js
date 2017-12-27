@@ -31,8 +31,12 @@ module.exports = function(Model, app) {
 
           account = account.__data;
 
+          //console.log(account);
+
           var roles = _.pick(account, Model.roleKeys);
           account = _.omit(account, Model.roleKeys.concat(['password']));
+
+          //console.log(roles);
 
           for (var roleKey in roles) {
             var role = roles[roleKey];
@@ -48,6 +52,8 @@ module.exports = function(Model, app) {
         });
 
     } else {
+
+      console.log('Not an administrator');
 
       return Model.findById(id, {
         fields: {

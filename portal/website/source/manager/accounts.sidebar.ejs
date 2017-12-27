@@ -24,13 +24,8 @@
 
   </md-content>
 
-  <div class="nav" align="end" flex="noshrink" layout="row">
-    <md-button class="md-icon-button">
-      <md-icon md-svg-src="<%-get_icon('material/keyboard-arrow-left')%>"></md-icon>
-    </md-button>
-    <md-button class="md-icon-button">
-      <md-icon md-svg-src="<%-get_icon('material/keyboard-arrow-right')%>"></md-icon>
-    </md-button>
+  <div class="nav" align="end" flex="noshrink" layout="row" layout-align="start center">
+    <span>Total: {{accounts.count||'...'}}</span>
     <span flex="auto">  </span>
     <md-button ng-href="<%-get_path('manager/accounts/search')%>">
       Expand

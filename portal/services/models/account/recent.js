@@ -20,12 +20,24 @@ module.exports = function(Model) {
   Model.recent = function(limit) {
 
     limit = limit || 5;
+    let count;
 
-    return Model.find({
-      order: 'createdAt DESC',
+    return Model.count()
+      .then(function(_count){
 
-      limit: limit
-    });
+        count = _count;
+
+        return Model.find({
+          order: 'createdAt DESC',
+          limit: limit
+        });
+      })
+      .then(function(list){
+        return {
+          list: list,
+          count: count
+        };
+      });
 
   };
 
@@ -40,7 +52,7 @@ module.exports = function(Model) {
       }],
       returns: {
         arg: 'result',
-        type: 'array',
+        type: 'object',
         root: true
       },
       http: {

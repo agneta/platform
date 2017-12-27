@@ -28,7 +28,7 @@ module.exports = function(app) {
   var prdConfig = {};
   var appPrd = _.extend({}, app, {
     get: function(name) {
-      return prdConfig[name];
+      return prdConfig[name] || app.get(name);
     },
     set: function(name, value) {
       prdConfig[name] = value;
