@@ -21,7 +21,11 @@ var disableAllMethods = require('./models/disableAllMethods');
 
 module.exports = function(app) {
 
+  var paths = app.get('options').paths;
+  //console.log('paths',paths);
+
   var dirs = [
+    paths.appPortal.models,
     path.join(__dirname, '../models'),
     path.join(app.get('services_dir'), 'models')
   ];

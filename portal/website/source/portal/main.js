@@ -20,6 +20,8 @@
 
   app.run(function($rootScope, $mdToast, Portal) {
 
+    $rootScope.portal = {};
+
     $rootScope.notify = function(options) {
       $mdToast.show(
         $mdToast.simple()
@@ -53,18 +55,25 @@
     value: false
   };
 
-  agneta.directive('AgLiveToggleCtrl', function($rootScope, $location, $routeParams) {
+  agneta.directive('AgLiveToggleCtrl', function($rootScope, $location, $routeParams, $injector) {
 
     var vm = this;
 
     if($routeParams.production){
       toggle.value = true;
     }
-    
+
     vm.value = toggle.value;
 
     $rootScope.isProduction = function() {
       return toggle.value;
+    };
+
+    $rootScope.portal.getModel = function(name){
+      if(toggle.value){
+        return 'production-'+name;
+      }
+      return name;
     };
 
     vm.onChange = function(value) {

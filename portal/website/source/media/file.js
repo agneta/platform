@@ -26,14 +26,14 @@
   app.service('MediaOpt', function(Media, MediaPreview, Media_Private) {
 
     this.public = {
-      api: 'services/api/Media/',
+      api: 'services/api/media/',
       partial: 'file',
       model: Media,
       preview: MediaPreview.public
     };
 
     this.private = {
-      api: 'services/api/Media_Private/',
+      api: 'services/api/media-private/',
       partial: 'file-private',
       model: Media_Private,
       preview: MediaPreview.private

@@ -54,8 +54,7 @@ var portal = setStructure({
 });
 
 var appPortal = setStructure({
-  base: path.join(core.project),
-  appName: 'portal'
+  base: path.join(core.project,'portal')
 });
 
 //--------------------------------------------------------------------

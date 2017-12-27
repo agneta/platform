@@ -16,6 +16,7 @@
  */
 const path = require('path');
 const _ = require('lodash');
+const S = require('string');
 
 module.exports = function(app) {
 
@@ -140,7 +141,7 @@ module.exports = function(app) {
     });
 
     _.extend(definition.http, {
-      path: newName
+      path: S(newName).slugify().s
     });
 
     // create a model

@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var projectPaths = require('../paths').core;
+var projectPaths = require('../paths');
 var start = require('../start');
 var path = require('path');
 var _ = require('lodash');
@@ -35,12 +35,12 @@ module.exports = function() {
   };
 
   var servicesPortal = start.services(_.extend({
-    dir: projectPaths.portal,
-    include: path.join(projectPaths.project, 'services')
+    dir: projectPaths.portal.base,
+    include: path.join(projectPaths.core.project, 'services')
   }, commonOptions));
 
   var servicesWebsite = start.services(_.extend({
-    dir: projectPaths.project
+    dir: projectPaths.core.project
   }, commonOptions));
 
   servicesPortal.locals.web = webPages.locals;

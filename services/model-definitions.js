@@ -14,10 +14,11 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var path = require('path');
-var fs = require('fs-extra');
-var Promise = require('bluebird');
-var _ = require('lodash');
+const path = require('path');
+const fs = require('fs-extra');
+const Promise = require('bluebird');
+const _ = require('lodash');
+const S = require('string');
 
 module.exports = function(app, generated) {
 
@@ -74,6 +75,15 @@ module.exports = function(app, generated) {
     concurrency: 1
   })
     .then(function() {
-      generated.modelDefinitions = _.values(definitions);
+      var values = _.values(definitions);
+      values.forEach(function(value) {
+        var definition = value.definition;
+        definition.http = definition.http || {};
+        _.extend(definition.http,{
+          path: S(definition.name).slugify().s
+        });
+        //console.log(definition.name,definition.http.path);
+      });
+      generated.modelDefinitions = values;
     });
 };
