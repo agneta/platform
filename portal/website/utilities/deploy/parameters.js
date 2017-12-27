@@ -27,6 +27,10 @@ module.exports = [{
   }, {
     name: 'production',
     title: 'Production',
+  },{
+    name: 'portal',
+    title: 'Portal',
+    if: 'source.services'
   }]
 }, {
   name: 'source',

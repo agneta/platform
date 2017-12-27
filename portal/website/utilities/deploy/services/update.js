@@ -1,13 +1,15 @@
 const AWS = require('aws-sdk');
 const _ = require('lodash');
 
-module.exports = function(util) {
+module.exports = function(util, options) {
+
+  var target = options.target;
 
   var ecs = new AWS.ECS();
   var ecr = new AWS.ECR();
 
   var config = util.app.get('aws');
-  var configECS = config.ecs.staging.services;
+  var configECS = config.ecs[target];
 
   var taskDefinition;
 

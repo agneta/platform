@@ -25,13 +25,11 @@ module.exports = function(util) {
     }
 
     util.log('Deploying services...');
-    switch (options.target) {
-      case 'staging':
-        return Promise.resolve()
-          .then(function() {
-            return require('./update')(util);
-          });
-    }
+
+    return Promise.resolve()
+      .then(function() {
+        return require('./update')(util,options);
+      });
 
   };
 
