@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/website/utilities/deploy/services.js
+ *   Source file: portal/website/utilities/build/services.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,25 +14,32 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-
+var Promise = require('bluebird');
 
 module.exports = function(util) {
 
-  return function(options) {
+  var webProject = util.locals.web.project;
+  var servicesWebsite = util.locals.web.services;
+  var servicesPortal = util.locals.services;
 
-    if (!options.source.services) {
-      return;
-    }
+  return Promise.map([{
+    server: servicesPortal,
+    dir: webProject.paths.appPortal.generated
+  },
+  {
+    server: servicesWebsite,
+    dir: webProject.paths.app.generated
+  }
+  ], function(service) {
 
-    util.log('Deploying services...');
-    switch (options.target) {
-      case 'staging':
-        return Promise.resolve()
-          .then(function() {
-            return require('./update')(util);
-          });
-    }
 
-  };
+    return service.server.generate.methods({
+      outputDir: service.dir
+    });
+  })
+    .then(function() {
+      util.success('Exported Services');
+    });
+
 
 };

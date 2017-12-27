@@ -25,64 +25,24 @@ module.exports = function(util) {
 
       return Promise.resolve()
         .then(function() {
-
-          if (!options.type.services) {
-            return;
+          if (options.type.dependencies) {
+            return require('./dependencies')(util);
           }
-
-          require('./services')(util);
-
         })
         .then(function() {
-
-          if (options.type.pages || options.type.assets) {
-
-            if (!options.env) {
-              return Promise.reject({
-                message: 'The environment is required'
-              });
-            }
-
-            var web = util.locals.web;
-
-            return web.build({
-              logger: util,
-              progress: util.progress,
-              env: options.env,
-              config: {
-                assets: options.type.assets,
-                pages: options.type.pages
-              }
-            });
-
+          if (options.type.services) {
+            return require('./services')(util);
           }
         });
 
     },
-    parameters: [{
-      name: 'env',
-      title: 'Environment',
-      type: 'radio',
-      values: [{
-        name: 'local',
-        title: 'Local'
-      }, {
-        name: 'staging',
-        title: 'Staging'
-      }, {
-        name: 'production',
-        title: 'Production'
-      }]
-    }, {
+    parameters: [ {
       name: 'type',
-      title: 'What to build?',
+      title: 'What to generate?',
       type: 'checkboxes',
       values: [{
-        name: 'pages',
-        title: 'Pages'
-      }, {
-        name: 'assets',
-        title: 'Assets'
+        name: 'dependencies',
+        title: 'Dependencies'
       }, {
         name: 'services',
         title: 'Services'
