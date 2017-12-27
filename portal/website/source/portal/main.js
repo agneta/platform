@@ -55,7 +55,7 @@
     value: false
   };
 
-  agneta.directive('AgLiveToggleCtrl', function($rootScope, $location, $routeParams, $injector) {
+  agneta.directive('AgLiveToggleCtrl', function($rootScope, $location, $routeParams) {
 
     var vm = this;
 
