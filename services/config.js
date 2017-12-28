@@ -65,8 +65,7 @@ module.exports = {
     urlencoded: {
       extended: true,
       limit: '100kb'
-    },
-    cors: false
+    }
   },
   activity: {
     auth: {

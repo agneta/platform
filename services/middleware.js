@@ -51,7 +51,8 @@ module.exports = function(app) {
       'cors': {
         params: {
           origin: true,
-          credentials: true
+          credentials: true,
+          allowedHeaders: ['Content-Type', 'Authorization']
         }
       },
       'cookie-parser': {

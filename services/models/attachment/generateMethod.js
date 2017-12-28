@@ -41,7 +41,14 @@ module.exports = function(Model) {
     var pathRemote = options.path || '/upload-file';
 
     model.beforeRemote(name, function(context, instance, next) {
-      uploadSingle(context.req, context.res, next);
+      console.log('context',context);
+      var body = context.req.body;
+      console.log('body',body);
+      uploadSingle(context.req, context.res, function(req){
+        console.log('body2',body);
+        req.body = body;
+        next();
+      });
     });
 
     model.remoteMethod(
