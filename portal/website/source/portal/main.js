@@ -55,11 +55,11 @@
     value: false
   };
 
-  agneta.directive('AgLiveToggleCtrl', function($rootScope, $location, $routeParams) {
+  agneta.directive('AgLiveToggleCtrl', function($rootScope, $location, $routeParams, $injector) {
 
     var vm = this;
 
-    if($routeParams.production){
+    if ($routeParams.production) {
       toggle.value = true;
     }
 
@@ -69,9 +69,16 @@
       return toggle.value;
     };
 
-    $rootScope.portal.getModel = function(name){
-      if(toggle.value){
-        return 'production-'+name;
+    $rootScope.portal.getModel = function(name) {
+      if (toggle.value) {
+        return $injector.get('Production_' + name);
+      }
+      return $injector.get(name);
+    };
+
+    $rootScope.portal.getMethod = function(name) {
+      if (toggle.value) {
+        return 'production-' + name;
       }
       return name;
     };
@@ -82,10 +89,10 @@
       }
       toggle.value = value;
       $rootScope.$broadcast('productionMode', value);
-      if(value){
-        $location.search('production',true);
-      }else{
-        $location.search('production',false);
+      if (value) {
+        $location.search('production', true);
+      } else {
+        $location.search('production', null);
       }
 
     };

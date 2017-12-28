@@ -15,7 +15,7 @@
  *   limitations under the License.
  */
 
-module.exports = function(Model, app) {
+module.exports = function(Model) {
 
   Model.roleRemove = function(id, name) {
 
@@ -34,7 +34,10 @@ module.exports = function(Model, app) {
       .then(function(result) {
 
         if (!result) {
-          throw new Error('Role was not found');
+          return Promise.reject({
+            statusCode: 400,
+            message: 'Role was not found'
+          });
         }
 
         return result.destroy();
@@ -80,7 +83,7 @@ module.exports = function(Model, app) {
       throw new Error('No role found: ' + name);
     }
 
-    return app.models[role.model];
+    return Model.getModel(role.model);
 
   }
 

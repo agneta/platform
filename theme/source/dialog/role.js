@@ -16,9 +16,10 @@
  */
 (function() {
 
-  agneta.directive('FormRole', function(data, Account) {
+  agneta.directive('FormRole', function(data, $rootScope) {
 
     var vm = this;
+    var Account = $rootScope.portal.getModel('Account');
 
     agneta.extend(vm, 'AgDialogCtrl');
 

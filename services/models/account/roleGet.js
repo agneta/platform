@@ -16,11 +16,11 @@
  */
 const Promise = require('bluebird');
 
-module.exports = function(Model, app) {
+module.exports = function(Model) {
 
   Model.roleGet = function(roleName, req) {
 
-    if(!req.accessToken){
+    if (!req.accessToken) {
       return Promise.reject({
         statusCode: 401,
         message: 'You need to be logged in to continue'
@@ -43,14 +43,23 @@ module.exports = function(Model, app) {
           throw new Error('No role found: ' + roleName);
         }
 
-        var RoleModel = app.models[role.model];
+        var RoleModel = Model.getModel(role.model);
 
         return RoleModel.findOne({
           where: {
             accountId: id
           },
           include: roleService.include
-        });
+        })
+          .then(function(role) {
+            if (!role) {
+              return Promise.reject({
+                statusCode: 400,
+                message: `Could not find role for account with id: ${id}.`
+              });
+            }
+            return role;
+          });
 
       });
 

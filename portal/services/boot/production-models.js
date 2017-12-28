@@ -61,19 +61,26 @@ module.exports = function(app) {
   //--------------------------------------------------
 
   function addInstruction(name) {
+
+    let filename = name.toLowerCase();
+    let model = app.modelDefinitions[filename + '.json'];
+
+    if(!model){
+      return;
+    }
+
     instructions.push({
-      name: name
+      name: name,
+      definition: model.definition
     });
   }
 
   //--------------------------------------------------
 
-  addInstruction('Form');
-  addInstruction('Page');
-  addInstruction('Account');
-  addInstruction('Activity_Count');
-  addInstruction('Activity_Feed');
-  addInstruction('Activity_Item');
+  for(var model of _.keys(app.models)){
+    console.log('addInstruction',model);
+    addInstruction(model);
+  }
 
   //--------------------------------------------------
   // Roles
@@ -84,7 +91,6 @@ module.exports = function(app) {
 
   for (var key in rolesOriginal) {
     var role = _.extend({}, rolesOriginal[key]);
-    addInstruction(role.model);
     role.model = productionName(role.model);
     roles[key] = role;
   }
@@ -117,10 +123,9 @@ module.exports = function(app) {
 
   function productionModel(data) {
 
-    var name = data.name;
-    var filename = name.toLowerCase();
-    var newName = productionName(name);
-    var definition = app.modelDefinitions[filename + '.json'].definition;
+    let name = data.name;
+    let newName = productionName(name);
+    let definition = data.definition;
 
     definition = _.extend({}, definition, {
       name: newName
