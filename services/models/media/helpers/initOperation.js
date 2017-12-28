@@ -29,7 +29,7 @@ module.exports = function(Model, app) {
       .then(function() {
 
         return app.storage.upload({
-          Bucket: Model.__bucket.name,
+          Bucket: Model.__bucket,
           Key: options.location,
           ContentType: options.mimetype,
           Body: options.file,

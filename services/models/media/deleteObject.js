@@ -64,7 +64,7 @@ module.exports = function(Model, app) {
       .then(function() {
 
         return app.storage.deleteObjects({
-          Bucket: Model.__bucket.name,
+          Bucket: Model.__bucket,
           Delete: {
             Objects: files
           }

@@ -19,15 +19,7 @@ const urljoin = require('url-join');
 module.exports = function(app) {
 
   var config = app.get('storage');
-  var bucket = config.buckets.app;
-
-  switch (app.get('env')) {
-    case 'production':
-      bucket = bucket.production.private;
-      break;
-    default:
-      bucket = bucket.private;
-  }
+  var bucket = config.buckets.pages.host;
 
   return function(data) {
 

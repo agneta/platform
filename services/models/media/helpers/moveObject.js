@@ -31,7 +31,7 @@ module.exports = function(Model, app) {
         object = _object;
 
         return app.storage.deleteObject({
-          Bucket: Model.__bucket.name,
+          Bucket: Model.__bucket,
           Key: operation.source
         });
 
