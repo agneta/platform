@@ -78,7 +78,7 @@ module.exports = function(app) {
   //--------------------------------------------------
 
   for(var model of _.keys(app.models)){
-    console.log('addInstruction',model);
+    //console.log('addInstruction',model);
     addInstruction(model);
   }
 
