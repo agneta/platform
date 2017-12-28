@@ -128,6 +128,10 @@ module.exports = function(app) {
           'log': true,
           'includeStack': false
         }
+      },
+      './middleware/not-found':{
+        enabled: process.env.MODE=='live'?true:false,
+        params: [app]
       }
     }
   };

@@ -16,7 +16,6 @@
  */
 const _ = require('lodash');
 const url = require('url');
-const urljoin = require('urljoin');
 const request = require('request-promise');
 
 module.exports = function(options) {
@@ -48,46 +47,28 @@ module.exports = function(options) {
         return Promise.resolve()
           .then(function() {
 
-            return request.head(reqPath);
-
-          })
-          .then(function() {
-
             if (pathParts.length == 0 ||
               languages[pathParts[0]]
             ) {
-
-              request
-                .get(reqPath)
-                .pipe(res);
-
+              return request.head(reqPath);
             }
 
           })
-          .catch(function(err){
-            //console.log(err);
+          .then(function(result) {
+            if(result){
+              return request
+                .get(reqPath)
+                .pipe(res);
+            }
+
+            next();
+          })
+          .catch(function(err) {
             if(err.statusCode==404){
               return next();
             }
             next(err);
           });
-      });
-
-      options.app.use(function(req, res) {
-
-        var lang = _.get(project.config, 'language.default.key') || 'en';
-        var pathname = urljoin(lang, 'error/not-found');
-
-        var reqPath = url.format({
-          hostname: storageConfig.buckets.assets.host,
-          protocol: 'https',
-          pathname: pathname
-        });
-
-        request
-          .get(reqPath)
-          .pipe(res);
-
       });
 
     });
