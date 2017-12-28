@@ -42,6 +42,11 @@ module.exports = function(app) {
             //console.log('soap:request:isMatch',options.serviceFilePath,key,isMatch);
             if (isMatch) {
               var rule = overrideRules[key];
+
+              if(rule.timeout){
+                requestOptions.timeout = rule.timeout;
+              }
+
               if (rule.endpoint) {
 
                 var req = requestOptions.methodOptions.req;
@@ -89,9 +94,9 @@ module.exports = function(app) {
                 })(checkValue);
               }
             }
-
           }
 
+          //console.log('requestOptions',requestOptions);
           var request = Request(requestOptions, cb);
           request.on('response', function(response) {
             response.pipe(concatStream({
