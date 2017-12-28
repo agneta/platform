@@ -36,6 +36,9 @@ module.exports = function(app) {
     dirs.push(path.join(dir, 'models'));
   }
 
+  dirs = _.uniq(dirs);
+  //console.log('dirs',dirs);
+
   //--------------------------------------------------------
 
   function getModel(name) {
