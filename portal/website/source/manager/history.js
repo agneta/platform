@@ -96,10 +96,10 @@
       if (vm.page.feedSelected) {
 
         return Model_Count.totals({
-            feed: vm.page.feedSelected.id,
-            period: vm.page.periodSelected,
-            value: vm.page.valueSelected
-          })
+          feed: vm.page.feedSelected.id,
+          period: vm.page.periodSelected,
+          value: vm.page.valueSelected
+        })
           .$promise
           .then(function(result) {
             vm.progressMode = 'determinate';
@@ -217,10 +217,10 @@
         Portal.socket.on(listener, function() {
 
           Model_Count.totals({
-              feed: res.id,
-              period: vm.page.periodSelected,
-              value: vm.page.valueSelected
-            })
+            feed: res.id,
+            period: vm.page.periodSelected,
+            value: vm.page.valueSelected
+          })
             .$promise
             .then(function(result) {
 
