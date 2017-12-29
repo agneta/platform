@@ -6,3 +6,5 @@ authorization:
   - editor
 
 class: activities
+
+controller: AgActivitiesCtrl

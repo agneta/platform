@@ -12,6 +12,7 @@ authorization:
   - editor
 
 class: activity
+controller: AgActivityCtrl
 
 request:
   -

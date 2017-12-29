@@ -17,7 +17,6 @@
 
 /*global moment*/
 /*global Chart*/
-/*global UAParser*/
 
 (function() {
 
@@ -97,10 +96,10 @@
       if (vm.page.feedSelected) {
 
         return Model_Count.totals({
-          feed: vm.page.feedSelected.id,
-          period: vm.page.periodSelected,
-          value: vm.page.valueSelected
-        })
+            feed: vm.page.feedSelected.id,
+            period: vm.page.periodSelected,
+            value: vm.page.valueSelected
+          })
           .$promise
           .then(function(result) {
             vm.progressMode = 'determinate';
@@ -218,10 +217,10 @@
         Portal.socket.on(listener, function() {
 
           Model_Count.totals({
-            feed: res.id,
-            period: vm.page.periodSelected,
-            value: vm.page.valueSelected
-          })
+              feed: res.id,
+              period: vm.page.periodSelected,
+              value: vm.page.valueSelected
+            })
             .$promise
             .then(function(result) {
 
@@ -264,17 +263,13 @@
 
       if (!feedData.subUnit) {
 
-        $mdDialog.show({
-          clickOutsideToClose: true,
-          templateUrl: agneta.dialog('activities'),
-          locals: {
-            data: {
-              feed: vm.page.feedSelected.id,
-              unit: feedData.unit,
-              value: count.key
-            }
-          },
-          controller: 'AgActivitiesCtrl'
+        $mdDialog.open({
+          partial: 'activities',
+          data: {
+            feed: vm.page.feedSelected.id,
+            unit: feedData.unit,
+            value: count.key
+          }
         });
 
         return;
@@ -298,8 +293,7 @@
           unit: vm.page.periodSelected,
           value: vm.page.valueSelected,
           Model_Item: Model_Item
-        },
-        controller: 'AgActivitiesCtrl'
+        }
       });
 
     };
@@ -435,97 +429,4 @@
 
   }
 
-  ///////////////////////////////////////////////////////////////////////////
-
-  agneta.directive('AgActivitiesCtrl', function($rootScope, $mdDialog, data) {
-
-    var vm = this;
-
-    agneta.extend(vm, 'AgDialogCtrl');
-
-    vm.loading = true;
-    var time = moment().utc().dayOfYear(data.value);
-    vm.time = time;
-
-
-    data.Model_Item.latest(data)
-      .$promise
-      .then(function(result) {
-        vm.loading = false;
-        vm.data = result;
-      });
-
-    vm.modal = function(activity) {
-      $mdDialog.open({
-        nested: true,
-        partial: activity.modal,
-        data: {
-          activity: activity,
-          Model_Item: data.Model_Item
-        }
-      });
-    };
-
-    vm.loadActivity = function(activity) {
-
-      $mdDialog.open({
-        nested: true,
-        partial: 'activity',
-        data: {
-          activity: activity,
-          Model_Item: data.Model_Item
-        },
-        controller: 'AgActivityCtrl'
-      });
-
-    };
-
-  });
-
-  ///////////////////////////////////////////////////////////////////////////
-
-  agneta.directive('AgActivityCtrl', function($rootScope, $mdDialog, data) {
-
-    var vm = this;
-
-    agneta.extend(vm, 'AgDialogCtrl');
-
-    vm.loading = true;
-
-    data.Model_Item.details({
-      id: data.activity.id
-    })
-      .$promise
-      .then(function(result) {
-        vm.loading = false;
-
-        if (!result) {
-          return;
-        }
-
-        vm.title = data.activity.title;
-        vm.time = result.time;
-        //------------------------------------------
-
-        if (result.data.request) {
-
-          var agent = result.data.request.agent;
-          var parser = new UAParser();
-          parser.setUA(agent);
-          agent = parser.getResult();
-
-          angular.extend(result.data.request, {
-            browser: agent.browser.name + ' ' + agent.browser.major,
-            device: agent.device.name,
-            os: agent.os.name
-          });
-
-        }
-
-        vm.data = result.data;
-
-
-      });
-
-  });
 })();
