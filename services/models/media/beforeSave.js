@@ -32,7 +32,7 @@ module.exports = function(Model, app) {
         if (!instance.size && !data.size) {
 
           var headParams = {
-            Bucket: Model.__bucket.name,
+            Bucket: Model.__bucket,
             Key: instance.location
           };
           return app.storage.headObject(headParams)

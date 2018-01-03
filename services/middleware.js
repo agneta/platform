@@ -51,8 +51,7 @@ module.exports = function(app) {
       'cors': {
         params: {
           origin: true,
-          credentials: true,
-          allowedHeaders: ['Content-Type', 'Authorization']
+          credentials: true
         }
       },
       'cookie-parser': {
@@ -128,6 +127,10 @@ module.exports = function(app) {
           'log': true,
           'includeStack': false
         }
+      },
+      './middleware/not-found':{
+        enabled: process.env.MODE=='live'?true:false,
+        params: [app]
       }
     }
   };

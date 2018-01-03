@@ -18,16 +18,12 @@ module.exports = function(Model, app) {
 
   var config = app.get('storage');
   var prjHelpers = app.get('options').client.app.locals;
-  var bucket = config.buckets.media;
 
   Model._url = prjHelpers.prv_media;
 
   require('./media/main')(Model, app, {
-    name: 'public',
-    bucket: {
-      name: bucket.private,
-      host: bucket.host
-    }
+    name: 'private',
+    bucket: config.buckets.media.private
   });
 
 };

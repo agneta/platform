@@ -320,7 +320,7 @@ module.exports = function(util) {
         bucket = mediaBucket.private;
         Media = services.models.Media_Private;
       } else {
-        bucket = mediaBucket.name;
+        bucket = mediaBucket.staging;
         Media = services.models.Media;
       }
 

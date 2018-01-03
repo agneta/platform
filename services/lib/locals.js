@@ -44,11 +44,11 @@ module.exports = function(app, options) {
     case 'local':
 
       var services_url = urljoin('/', options.root);
-      if(services_url.indexOf('//')==0){
+      if (services_url.indexOf('//') == 0) {
         services_url = services_url.substring(1);
       }
 
-      app.set('services_url',services_url);
+      app.set('services_url', services_url);
       break;
   }
 
@@ -108,28 +108,16 @@ module.exports = function(app, options) {
 
     var buckets = {
       media: {
-        name: `media-staging.${domain}`,
-        host: `media-staging.${domain}`,
+        staging: `media-staging.${domain}`,
         private: `media-private.${domain}`,
         production: `media.${domain}`
       },
-      lib: {
-        name: `lib-staging.${domain}`,
-        host: `lib-staging.${domain}`,
-        production: `lib.${domain}`,
-      },
-      app: {
-        name: `staging.${domain}`,
-        host: `staging.${domain}`,
-        private: `staging-private.${domain}`,
-        production: {
-          name: `${domain}`,
-          private: `private.${domain}`,
-        }
+      pages: {
+        staging: `staging-private.${domain}`,
+        production: `private.${domain}`
       },
       assets: {
-        name: `assets-staging.${domain}`,
-        host: `assets-staging.${domain}`,
+        staging: `assets-staging.${domain}`,
         production: `assets.${domain}`
       }
     };
@@ -137,7 +125,13 @@ module.exports = function(app, options) {
     switch (env) {
       case 'production':
         buckets.media.host = buckets.media.production;
-        buckets.lib.host = buckets.lib.production;
+        buckets.pages.host = buckets.pages.production;
+        buckets.assets.host = buckets.assets.production;
+        break;
+      default:
+        buckets.media.host = buckets.media.staging;
+        buckets.pages.host = buckets.pages.staging;
+        buckets.assets.host = buckets.assets.staging;
         break;
     }
   }

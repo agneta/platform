@@ -32,7 +32,7 @@ module.exports = function(util) {
     switch (options.target) {
       case 'production':
         return syncBuckets({
-          source: storageConfig.buckets.media.name,
+          source: storageConfig.buckets.media.staging,
           target: storageConfig.buckets.media.production
         });
     }

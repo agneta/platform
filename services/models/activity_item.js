@@ -103,7 +103,7 @@ module.exports = function(Model, app) {
         var data = options.data || {};
 
         data = app.helpers.limitObject(data,{
-          depth:2
+          depth:4
         });
 
         if (options.req && options.req.dataParsed) {

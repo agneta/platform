@@ -52,6 +52,17 @@ module.exports = function(app) {
             });
           }
 
+          var fingerprint = role[auth.prop.fingerprint];
+          var certFingerprint = req.socket.getPeerCertificate().fingerprint.split(':').join(' ');
+          //console.log(certFingerprint,fingerprint);
+
+          if(fingerprint != certFingerprint){
+            return Promise.reject({
+              message: 'The certificate you are using does not match with the one assigned.',
+              statusCode: 401
+            });
+          }
+
           options.agentOptions = {
             pfx: pfx.data,
             passphrase: app.secrets.decrypt(role[auth.prop.pass])

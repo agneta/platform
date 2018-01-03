@@ -34,7 +34,7 @@ module.exports = function(util) {
         .then(function() {
           return sync({
             source: path.join(webProject.paths.app.build, 'production', 'private'),
-            target: storageConfig.buckets.app.production.private
+            target: storageConfig.buckets.pages.production
           });
         });
 
@@ -43,12 +43,12 @@ module.exports = function(util) {
 
       return sync({
         source: path.join(webProject.paths.app.build, 'staging', 'public'),
-        target: storageConfig.buckets.assets.name
+        target: storageConfig.buckets.assets.staging
       })
         .then(function() {
           return sync({
             source: path.join(webProject.paths.app.build, 'staging', 'private'),
-            target: storageConfig.buckets.app.private
+            target: storageConfig.buckets.pages.staging
           });
 
         });

@@ -33,8 +33,8 @@ module.exports = function(Model, app) {
     }
 
     var storageOptions = {
-      Bucket: Model.__bucket.name,
-      CopySource: urljoin(Model.__bucket.name, operation.source),
+      Bucket: Model.__bucket,
+      CopySource: urljoin(Model.__bucket, operation.source),
       Key: operation.target,
       ContentType: operation.contentType
     };
