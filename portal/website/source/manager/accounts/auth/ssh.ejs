@@ -17,7 +17,7 @@
     <div ng-if="!ssh.keys.length" class="no-keys" layout="column" layout-align="center center">
       <md-icon md-svg-src="<%-get_icon('material/vpn-key')%>"></md-icon>
       <p class="title">No SSH keys</p>
-      <p class="message">With the SSH protocol, you can connect and authenticate to Agneta services without supplying your password at each visit.</p>
+      <p class="message">With the SSH protocol, you can authenticate to your API without supplying your password at each visit.</p>
     </div>
 
     <md-list ng-if="ssh.keys.length">

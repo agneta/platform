@@ -86,66 +86,6 @@
         });
     };
 
-    //---------------------------------------------------------
-
-    vm.editRole = function(roleName) {
-
-      $mdDialog.open({
-        partial: 'role-' + roleName,
-        data: {
-          accountId: vm.viewAccount.id,
-          roleName: roleName
-        }
-      });
-
-    };
-
-    //---------------------------------------------------------
-
-    vm.removeRole = function(role) {
-
-      var confirm = $mdDialog.confirm()
-        .title('Role Removal')
-        .textContent('Are you sure you want to remove this role?')
-        .ok('Yes')
-        .cancel('Cancel');
-
-      $mdDialog.show(confirm).then(function() {
-        AccountList.model.roleRemove({
-          id: vm.viewAccount.id,
-          name: role,
-        })
-          .$promise
-          .then(function() {
-
-            reloadAccount();
-
-          });
-      }, function() {});
-
-    };
-
-    //---------------------------------------------------------
-
-    vm.addRole = function() {
-
-      AccountList.model.roles()
-        .$promise
-        .then(function(roles) {
-
-          $mdDialog.open({
-            partial: 'role-add',
-            data: {
-              roles: roles,
-              account: vm.viewAccount,
-              reloadAccount: reloadAccount
-            }
-          });
-
-        });
-
-    };
-
     vm.change = function(account) {
       getAccount(account.id);
     };
@@ -220,88 +160,17 @@
 
     };
 
-    //------------------------------------------------------------
-    // SSH Keys
+    var shared = {
+      vm: vm,
+      AccountList: AccountList,
+      $mdDialog: $mdDialog,
+      reloadAccount: reloadAccount
+    };
 
-    (function() {
-
-
-      var ssh = {};
-      vm.ssh = ssh;
-
-      ssh.load = function() {
-
-        ssh.loading = true;
-
-        AccountList.model.sshList({
-          accountId: vm.viewAccount.id
-        })
-          .$promise
-          .then(function(result) {
-            console.log(result);
-            vm.ssh.keys = result.keys;
-          })
-          .finally(function() {
-            ssh.loading = false;
-          });
-
-      };
-
-      ssh.open = function() {};
-
-      ssh.add = function() {
-
-        $mdDialog.open({
-          partial: 'ssh-add-key',
-          data: {
-            onSubmit: function(form) {
-
-              ssh.loading = true;
-
-              AccountList.model.sshAdd({
-                accountId: vm.viewAccount.id,
-                title: form.title,
-                content: form.content
-              })
-                .$promise
-                .finally(function() {
-                  ssh.load();
-                  ssh.loading = false;
-                });
-
-            }
-          }
-        });
-
-
-      };
-
-      ssh.remove = function(key) {
-
-        var confirm = $mdDialog.confirm()
-          .title('Remove Key')
-          .textContent('Are you sure you want to remove this ssh key?')
-          .ok('Yes')
-          .cancel('Cancel');
-
-        $mdDialog.show(confirm).then(function() {
-
-          ssh.loading = true;
-
-          AccountList.model.sshRemove({
-            accountId: vm.viewAccount.id,
-            keyId: key.id
-          })
-            .$promise
-            .finally(function() {
-              ssh.load();
-              ssh.loading = false;
-            });
-
-        });
-      };
-
-    })();
+    require('manager/accounts/roles.module')(shared);
+    require('manager/accounts/auth/ssh.module')(shared);
+    require('manager/accounts/auth/ip.module')(shared);
+    require('manager/accounts/auth/cert.module')(shared);
 
 
   });
