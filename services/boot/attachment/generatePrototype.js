@@ -17,9 +17,9 @@
 const Promise = require('bluebird');
 
 
-module.exports = function(Model) {
+module.exports = function(data) {
 
-  Model.__generatePrototype = function(options) {
+  data.generatePrototype = function(options) {
 
     options = options || {};
 
@@ -37,7 +37,7 @@ module.exports = function(Model) {
       return Promise.resolve()
         .then(function() {
           //console.log('about to prepare file', data);
-          return Model.__saveFile({
+          return data.saveFile({
             model: model,
             instance: self,
             prop: options.prop,

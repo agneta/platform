@@ -30,24 +30,9 @@ module.exports = function(options) {
   cert.add = function() {
 
     $mdDialog.open({
-      partial: 'cert-add-key',
+      partial: 'account-add-cert',
       data: {
-        onSubmit: function(form) {
-
-          cert.loading = true;
-
-          AccountList.model.sshAdd({
-            accountId: vm.viewAccount.id,
-            title: form.title,
-            content: form.content
-          })
-            .$promise
-            .finally(function() {
-              cert.load();
-              cert.loading = false;
-            });
-
-        }
+        accountId: vm.viewAccount.id
       }
     });
 

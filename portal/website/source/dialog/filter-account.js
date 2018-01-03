@@ -16,7 +16,7 @@
  */
 (function() {
 
-  agneta.directive('FilterAccount', function($rootScope, data) {
+  agneta.directive('AgFilterAccount', function($rootScope, data) {
 
     var vm = this;
 

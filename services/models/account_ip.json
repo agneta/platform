@@ -1,0 +1,24 @@
+{
+  "name": "Account_IP",
+  "base": "Model",
+  "idInjection": true,
+  "properties": {
+    "id": {
+      "type": "string",
+      "id": true,
+      "defaultFn": "uuid"
+    },
+    "title":{
+      "type": "string",
+      "required": true
+    },
+    "address":{
+      "type": "string",
+      "required": true
+    },
+    "createdAt":{
+      "type": "date",
+      "required": true
+    }
+  }
+}

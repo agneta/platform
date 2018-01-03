@@ -17,7 +17,7 @@
 
 (function() {
 
-  agneta.directive('SearchAccounts', function(AccountList, $rootScope, $mdDialog, Production_Account, Account, $location) {
+  agneta.directive('AgSearchAccounts', function(AccountList, $rootScope, $mdDialog, Production_Account, Account, $location) {
 
     var vm = this;
 

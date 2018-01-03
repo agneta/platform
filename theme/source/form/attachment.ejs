@@ -1,6 +1,5 @@
 <%
 var accept;
-var uploadMethod = field.uploadMethod || 'upload';
 
 if(field.accept){
   accept = `ngf-accept="'${field.accept}'"`;
@@ -12,19 +11,28 @@ if(field.accept){
   <%-template('form/title')%>
   <%-template('form/description')%>
 
-  <form-attachment class="row" ng-model="<%-field.model%>" layout="row" layout-align="start center">
+  <form-attachment class="row" ng-model="<%-field.model%>" layout="column">
     <div ng-if="<%-field.model%>" class="attachment" layout="row" layout-align="start center" flex="auto">
       <span class="filename">{{<%-field.model%>.name}}</span>
       <span>{{<%-field.model%>.size | filesize}}</span>
       <span flex="auto"></span>
-      <span am-time-ago="<%-field.model%>.updatedAt | amUtc | amLocal"></span>
+      <span ng-if="<%-field.model%>.updatedAt" am-time-ago="<%-field.model%>.updatedAt | amUtc | amLocal"></span>
     </div>
-    <span ng-if="!<%-field.model%>">Nothing attached yet</span>
 
+    <div layout="row" layout-align="start center">
+    <span ng-if="!<%-field.model%>">Nothing attached yet</span>
+    <span flex></span>
+    <%if(field.uploadMethod){%>
     <md-button class="md-primary" type="file" <%-accept%> ngf-select="<%-uploadMethod%>($file)">
       <md-icon md-svg-src="<%-get_icon('material/file-upload')%>"></md-icon>
       Upload
     </md-button>
+    <%}else{%>
+      <md-button class="md-primary" type="file" <%-accept%> ngf-select="<%-field.model%>=$file">
+        Select
+      </md-button>
+    <%}%>
+    </div>
 
   </form-attachment>
 

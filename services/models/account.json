@@ -37,6 +37,24 @@
         "validate": true,
         "forceId": false
       }
+    },
+    "cert": {
+      "type": "embedsMany",
+      "model": "Account_Cert",
+      "property": "_cert",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "ip_whitelist":{
+      "type": "embedsMany",
+      "model": "Account_IP",
+      "property": "_ip_whitelist",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
     }
   },
   "mixins": {

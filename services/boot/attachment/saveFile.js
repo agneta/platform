@@ -17,10 +17,10 @@
 const Promise = require('bluebird');
 const fs = require('fs-extra');
 
-module.exports = function(Model) {
+module.exports = function(data) {
 
 
-  Model.__saveFile = function(options) {
+  data.saveFile = function(options) {
 
     var props;
     var relation = options.instance[options.prop];

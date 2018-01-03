@@ -16,15 +16,15 @@
  */
 const multer = require('multer');
 
-var uploadSingle = multer({
-  dest: 'temp/uploads/attachments'
-})
-  .single('object');
 
+module.exports = function(data) {
 
-module.exports = function(Model) {
+  data.generateMethod = function(options) {
 
-  Model.__generateMethod = function(options) {
+    var uploadSingle = multer({
+      dest: 'temp/uploads/attachments'
+    })
+      .single(options.single || 'object');
 
     options = options || {};
 
