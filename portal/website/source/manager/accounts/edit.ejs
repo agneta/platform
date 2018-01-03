@@ -1,7 +1,4 @@
-<md-whiteframe class="md-whiteframe-1dp summary section layout-padding" layout="column">
-  <div class="header" layout-align="left center" layout="row">
-      <h3 class="title">Fields</h3>
-  </div>
+<div class=" summary section layout-padding" layout="column">
     <%for(var field of page.fields){%>
         <%
             switch(field.type){
@@ -28,6 +25,14 @@
     <%}%>
 
   <div layout="row">
+    <md-button ng-if="!viewAccount.deactivated" ng-click="deactivateAccount()" class="md-primary md-raised md-warn">
+        <md-icon md-svg-src="<%-get_icon('material/vpn-key')%>"></md-icon>
+        <span>Deactivate</span>
+    </md-button>
+    <md-button ng-click="changePassword()" class="md-primary md-raised">
+        <md-icon md-svg-src="<%-get_icon('material/vpn-key')%>"></md-icon>
+        <span>Change Password</span>
+    </md-button>
     <span flex="auto"></span>
     <md-button class="md-raised md-secondary md-primary" ng-click="save()">
     <md-icon md-svg-src="<%-get_icon('material/save')%>"></md-icon>
@@ -35,4 +40,4 @@
     </md-button>
   </div>
 
-</md-whiteframe>
+</div>

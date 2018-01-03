@@ -6,29 +6,29 @@
   <md-button class="md-raised" ng-click="activateAccount()">Activate</md-button>
 </div>
 
-<div layout="row" class="md-padding">
-  <span>ID: {{viewAccount.id}}</span>
-</div>
-
 <div ng-show="viewAccount">
-  <div layout="column" layout-gt-md="row" class="boxes">
-    <div flex="50" layout="column">
-      <%-template('manager/accounts/overview')%>
-      <%-template('manager/accounts/activities')%>
+  <div layout="column">
+    <%-template('manager/accounts/overview')%>
+
+    <div ng-init="activeSection='<%-page.defaultSection%>'" class="layout-wrap menu" layout="row" layout-align="start center">
+      <%for(var section of page.sections){%>
+        <md-button class="item" ng-class="{active:activeSection=='<%-section.name%>'}" ng-click="activeSection='<%-section.name%>'">
+        <%-lng(section.title)%>
+        </md-button>
+        <%}%>
+      </div>
+
+      <div>
+        <%for(var section of page.sections){%>
+          <div ng-show="activeSection=='<%-section.name%>'">
+          <%-template('manager/accounts/'+section.name)%>
+          </div>
+          <%}%>
+        </div>
+      </div>
+
     </div>
-    <div flex="50" layout="column">
-      <%-template('manager/accounts/fieldset')%>
-      <%-template('manager/accounts/roles')%>
-      <%-template('manager/accounts/ssh')%>
-    </div>
-  </div>
 
-  <div ng-if="!viewAccount.deactivated" class=" action-warn">
-    <md-button class="md-raised" ng-click="deactivateAccount()">Deactivate</md-button>
-  </div>
-
-</div>
-
-<%-template('manager/accounts/empty')%>
-<%-template('manager/accounts/toast')%>
-<%-template('manager/accounts/check')%>
+    <%-template('manager/accounts/empty')%>
+    <%-template('manager/accounts/toast')%>
+    <%-template('manager/accounts/check')%>

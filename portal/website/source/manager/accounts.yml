@@ -12,6 +12,26 @@ scripts:
 controller: 'AgAccountCtrl'
 menuLock: true
 
+defaultSection: activities
+
+sections:
+  -
+    title:
+      en: Activities
+    name: activities
+  -
+    title:
+      en: Edit
+    name: edit
+  -
+    title:
+      en: Roles
+    name: roles
+  -
+    title:
+      en: Authentication
+    name: auth
+
 fields:
   -
     title:
