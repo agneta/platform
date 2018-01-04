@@ -37,6 +37,9 @@ var port = 443;
 
 module.exports = Promise.resolve()
   .then(function() {
+    require('./version')();
+  })
+  .then(function() {
 
     var secrets = require(
       path.join(paths.core.services,'lib/secrets')
