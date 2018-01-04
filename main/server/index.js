@@ -67,11 +67,17 @@ module.exports = Promise.resolve()
     process.env.PORT_HTTP = process.env.PORT_HTTP || 80;
     process.env.MODE = process.env.MODE || 'portal';
 
-    process.env.ENDPOINT = process.env.ENDPOINT ||
-      url.format({
+    if(!process.env.ENDPOINT){
+      let options = {
         protocol: protocol,
         hostname: process.env.HOST_NAME
-      });
+      };
+      if(process.env.HOST_NAME=='localhost'){
+        options.port = process.env.PORT;
+      }
+      process.env.ENDPOINT = url.format(options);
+    }
+
 
     process.env.NODE_ENV = process.env.NODE_ENV || 'development';
     process.env.PROTOCOL = protocol;

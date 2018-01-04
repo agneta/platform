@@ -25,7 +25,7 @@ module.exports = function(app) {
         return app.git.native.status();
       })
       .then(function(statuses) {
-        console.log(statuses);
+        //console.log(statuses);
         function statusToText(status) {
           var words = [];
 

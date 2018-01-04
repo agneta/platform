@@ -73,7 +73,7 @@ module.exports = function(app) {
     })
     .then(function(result) {
 
-      console.log('branch', result);
+      //console.log('branch', result);
       app.git.branch = result;
 
     });
