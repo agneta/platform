@@ -139,6 +139,13 @@ module.exports = function(Model, app) {
               operation.contentType = contentType;
               operation.object = file;
 
+              operation.source = app.helpers.normalizePath(operation.source);
+              operation.target = app.helpers.normalizePath(operation.target);
+
+              if (operation.source == operation.target) {
+                return;
+              }
+
               if (options.copy) {
                 return Model.__copyObject(operation);
               }

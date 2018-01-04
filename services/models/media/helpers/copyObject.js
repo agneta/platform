@@ -29,7 +29,10 @@ module.exports = function(Model, app) {
     operation.target = app.helpers.normalizePath(operation.target);
 
     if (operation.source == operation.target) {
-      return Promise.resolve();
+      return Promise.reject({
+        statusCode: 400,
+        message: 'Cannot copy to self'
+      });
     }
 
     var storageOptions = {
