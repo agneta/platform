@@ -91,7 +91,7 @@ module.exports = function(locals) {
     }
 
     // Fix name and prop to for proper error name validation
-    field.name = field.prop.split('.');
+    field.name = _.compact(field.prop.split('.'));
     var formName = field.name.shift();
     field.name = field.name.join('_');
     field.prop = `${formName}.${field.name}`;
