@@ -2,5 +2,8 @@ controller: 'AgEditFilePrivate'
 
 class: "dialog-file"
 
+scripts:
+  - lib/fuse.min
+  - dialog/file
 authorization:
   - editor

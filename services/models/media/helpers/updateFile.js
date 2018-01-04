@@ -160,6 +160,13 @@ module.exports = function(Model, app) {
             })
             .then(function(object) {
 
+              if(!object){
+                return Promise.reject({
+                  statusCode: 400,
+                  message: `Could not find object with target ${operation.target}`
+                });
+              }
+
               var attrs = {};
 
               if (options.roles) {
