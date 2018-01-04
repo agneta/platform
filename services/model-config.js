@@ -66,6 +66,8 @@ module.exports = function() {
       dataSource: 'db',
       public: false
     },
+    //-----------------------------------------
+    // Account
     AccountRole: {
       dataSource: 'db',
       public: false
@@ -81,6 +83,16 @@ module.exports = function() {
       dataSource: 'transient',
       public: false
     },
+    Account_Cert: {
+      dataSource: 'transient',
+      public: false
+    },
+    Account_IP: {
+      dataSource: 'transient',
+      public: false
+    },
+    //-----------------------------------------
+    // Activity
     Activity_Item: {
       dataSource: 'db',
       public: true
@@ -93,6 +105,7 @@ module.exports = function() {
       dataSource: 'db',
       public: true
     },
+    //-----------------------------------------
     Form: {
       dataSource: 'db',
       public: true

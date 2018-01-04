@@ -35,7 +35,12 @@ module.exports = function(Model, app) {
           });
         }
 
-        return Model.getModel('Account').cert.create({
+        return Model.getModel('Account').__get(params.accountId);
+
+      })
+      .then(function(account) {
+
+        account.cert.create({
           title: params.title,
           pfxPass: app.secrets.encrypt(params.passphrase),
           fingerprint: params.fingerprint

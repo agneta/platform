@@ -22,6 +22,7 @@
       "type": "Date"
     }
   },
+  "hidden": ["password"],
   "validations": [],
   "relations": {
     "forms": {
@@ -41,7 +42,7 @@
     "cert": {
       "type": "embedsMany",
       "model": "Account_Cert",
-      "property": "_cert",
+      "property": "cert",
       "options": {
         "validate": true,
         "forceId": false
@@ -50,7 +51,7 @@
     "ip_whitelist":{
       "type": "embedsMany",
       "model": "Account_IP",
-      "property": "_ip_whitelist",
+      "property": "ip_whitelist",
       "options": {
         "validate": true,
         "forceId": false
