@@ -44,32 +44,9 @@ ng-view{
 #view-content{
   min-height: 100%;
 
-  >.view-wrapper{
-    position: relative;
-
-    >.view-container{
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      overflow: auto;
-    }
-
-    &.content{
-      >div{
-        >div:first-child{
-          min-height: 100%;
-        }
-      }
-    }
-
-    &.site-menu{
-      >div{
-        >div{
-          height: 100%;
-        }
-      }
+  >md-content{
+    >div{
+      min-height: 100%;
     }
   }
 }
