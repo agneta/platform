@@ -31,7 +31,7 @@ module.exports = function(app) {
 
   var serverName = process.env.SERVER_NAME;
   if (!serverName) {
-    throw new Error('Coould not find the name of the server.');
+    throw new Error('Could not find the name of the server.');
   }
 
   var processServer;

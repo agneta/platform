@@ -9,3 +9,4 @@ menuHide: true
 authorization:
   - reviewer
   - editor
+  - administrator

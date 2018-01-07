@@ -18,45 +18,7 @@ var scripts = loadScripts();
 
 <script>
 
-window.agneta = {
-  page:{
-    version: "<%-getVersion()%>"
-  },
-  lang: "<%-site.lang%>",
-  locale: "<%-site.locale%>",
-  path: "<%-path_relative()%>",
-  root: "<%-config.root%>",
-  title: "<%-lng(config.title)%>",
-  server:{
-    lib: "<%-site.servers.lib%>",
-    media: "<%-site.servers.media%>",
-    assets: "<%-site.servers.assets%>"
-  },
-  keys:{
-    googleAPI: "<%-services_config('google').api%>",
-    recaptcha: "<%-services_config('google').recaptcha%>"
-  },
-  <%if(config.search){%>
-  urls:{
-    keywords: "<%-get_asset('generated/keywords_' + site.lang + '.json')%>"
-  },
-  <%}%>
-  <%if(site.services){%>
-    services: {
-      url: "<%-site.services.url%>",
-      host: "<%-site.services.host%>",
-      view: "<%-site.services.view%>",
-      token: "<%-services_config('token').name%>"
-    },
-    <%}%>
-    url_web: "<%-site.url_web%>",
-    host: "<%-site.host_web%>",
-    theme: {
-      primary: "<%-config.colors.primary%>",
-      accent: "<%-config.colors.accent%>"
-    }
-  };
-
+  window.agneta = <%-agnetaConfig()%>
   agneta.errors = JSON.parse('<%-jsErrors%>');
   window.angularDeps = [<%-scripts.angularDeps%>];
 

@@ -45,7 +45,7 @@ agneta.get_media = function() {
 
 agneta.prv_media = function() {
   var args = Array.prototype.slice.call(arguments);
-  args.unshift('_t_config("media.base");');
+  args.unshift('private/media');
   args.unshift(agneta.services.url);
   return urljoin(args);
 };

@@ -21,14 +21,27 @@ module.exports = function(Model, app) {
     var object;
     //console.log('__moveObject',operation);
 
+    operation.source = app.helpers.normalizePath(operation.source);
+    operation.target = app.helpers.normalizePath(operation.target);
+
     if (operation.source == operation.target) {
-      return Promise.resolve();
+      return Promise.reject({
+        statusCode: 400,
+        message: 'Cannot move to self'
+      });
     }
 
     return Model.__copyObject(operation)
       .then(function(_object) {
 
         object = _object;
+
+        if(!object){
+          return Promise.reject({
+            statusCode: 400,
+            message: `Did not successfully copy the object. From: ${operation.source} to: ${operation.target}`
+          });
+        }
 
         return app.storage.deleteObject({
           Bucket: Model.__bucket,

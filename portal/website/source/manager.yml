@@ -9,6 +9,7 @@ description:
 authorization:
   - reviewer
   - editor
+  - administrator
 
 noHeader: true
 

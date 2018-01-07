@@ -2,48 +2,43 @@
 <div <%-tag%> id="view-content" layout="row" ng-keypress="viewData.keypress && onKeyPress($event)" flex layout-align="start stretch">
 
 	<md-sidenav class="view-wrapper md-sidenav-left md-whiteframe-z2 site-menu" ng-class="{unlocked:!menu.isLocked}" md-is-locked-open="menuLock()" md-component-id="menu" layout="column">
-		<div class="view-container">
-			<div ag-menu-side layout="column">
-				<%-template('sidebar/toolbar')%>
-				<md-progress-linear class="primary loadingBar" md-mode="{{sidebarLoading?'indeterminate':'determinate'}}"></md-progress-linear>
-				<md-content layout="column">
-					<%
-					var templateSidebar = page.templateSource + '.sidebar';
-					if (_.isString(page.sidebar)) {
-						templateSidebar = page.sidebar;
-					}
-					if (!has_template(templateSidebar)) {
-						templateSidebar = 'sidebar';
-					}
-					%>
-					<%-template(templateSidebar)%>
-				</md-content>
-				<span flex></span>
-				<%if(config.language.extra){%>
-					<div layout="row">
-					<span class="flex"></span>
-					<%if(config.languages_sidebar){%>
-						<%-template('layout/languages')%>
-						<%}%>
-						</div>
-						<%}%>
+		<div ag-menu-side layout="column" flex>
+			<%-template('sidebar/toolbar')%>
+			<md-progress-linear class="primary loadingBar" md-mode="{{sidebarLoading?'indeterminate':'determinate'}}"></md-progress-linear>
+			<md-content flex>
+				<%
+				var templateSidebar = page.templateSource + '.sidebar';
+				if (_.isString(page.sidebar)) {
+					templateSidebar = page.sidebar;
+				}
+				if (!has_template(templateSidebar)) {
+					templateSidebar = 'sidebar';
+				}
+				%>
+				<%-template(templateSidebar)%>
+			</md-content>
+			<%if(config.language.extra){%>
+				<div layout="row">
+				<span class="flex"></span>
+				<%if(config.languages_sidebar){%>
+					<%-template('layout/languages')%>
+					<%}%>
 					</div>
+					<%}%>
 				</div>
 			</md-sidenav>
 
-			<div class="view-wrapper content" layout="column" flex>
-				<div class="view-container" id="scroll-parent">
-					<div layout="column">
-						<%-template(page.template || page.templateSource)%>
-						<%if(!page.hiddenFooter){%>
-							<%-template('layout/footer',null,true) %>
-							<%}%>
-						</div>
-						<div id="tools" layout="column">
-								<%-template('ui/scroll-top')%>
-								<%-template('ui/contact')%>
-						</div>
+			<md-content flex>
+				<div class="view-container" layout="column">
+					<%-template(page.template || page.templateSource)%>
+					<%if(!page.hiddenFooter){%>
+						<%-template('layout/footer',null,true) %>
+						<%}%>
 					</div>
-				</div>
+					<div id="tools" layout="column">
+						<%-template('ui/scroll-top')%>
+						<%-template('ui/contact')%>
+					</div>
+				</md-content>
 
 			</div>

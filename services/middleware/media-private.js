@@ -15,6 +15,7 @@
  *   limitations under the License.
  */
 const mime = require('mime-types');
+const path = require('path');
 
 module.exports = function(app) {
 
@@ -37,7 +38,7 @@ module.exports = function(app) {
       .then(function(item) {
 
         var ext = mime.extension(item.contentType);
-        var filename = item.name + '.' + ext;
+        var filename = path.parse(item.location).name + '.' + ext;
 
         res.set('Content-Type', item.contentType);
         res.set('Last-Modified', item.updatedAt);

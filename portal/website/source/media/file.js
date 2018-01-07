@@ -15,8 +15,6 @@
  *   limitations under the License.
  */
 
-/*global Fuse*/
-
 (function() {
 
   var app = angular.module('MainApp');
@@ -249,108 +247,6 @@
       MediaOpt: data.media
     });
 
-
-  });
-
-  agneta.directive('AgEditFile', function(data, EditFile,MediaOpt) {
-
-    var vm = this;
-
-    agneta.extend(vm, 'AgDialogCtrl');
-
-    data.config = data.config || {};
-
-    //-------------------------------------------------------------
-
-    data.media = data.media || MediaOpt.public;
-    var MediaPreview = data.media.preview;
-
-    //-------------------------------------------------------------
-
-    if (data.location && !data.dir) {
-      var dir = data.location.split('/');
-      dir.pop();
-      data.dir = dir.join('/');
-    }
-
-    vm.getIcon = function() {
-
-      var icon = MediaPreview.objectIcon(vm.file);
-      if (!icon) {
-        icon = agneta.get_media('icons/agneta/media');
-      }
-      return icon;
-    };
-
-    EditFile.init({
-      data: data,
-      scope: vm,
-      onFile: function(file) {
-        //console.log('EditFile.init',file);
-        if (file.location) {
-          vm.preview_src = MediaPreview.image(file, 'medium');
-        }
-
-        if (data.onFile) {
-          data.onFile(file);
-        }
-      }
-    });
-
-  });
-
-  agneta.directive('EditFilePrivate', function(data, MediaOpt, Account) {
-
-    var onFile = data.onFile;
-    var vm = this;
-    var items;
-    var fuse;
-
-    data.onFile = function(file) {
-      file.roles = file.roles || [];
-      if (onFile) {
-        onFile(file);
-      }
-    };
-
-    data.media = MediaOpt.private;
-
-    vm.loading = true;
-    Account.roles()
-      .$promise
-      .then(function(result) {
-        vm.loading = false;
-
-        items = result;
-        fuse = new Fuse(items, {
-          shouldSort: true,
-          keys: ['name']
-        });
-
-      });
-
-    var roles = {
-      items: items,
-      query: function(query) {
-        if (!items) {
-          return;
-        }
-        var results = query ? fuse.search(query) : items;
-
-        var roles = [];
-        for (var key in results) {
-          roles.push(results[key].name);
-        }
-
-        return roles;
-      }
-    };
-
-    vm.roles = roles;
-
-    agneta.extend(vm, 'EditFile', {
-      data: data
-    });
 
   });
 

@@ -139,6 +139,13 @@ module.exports = function(Model, app) {
               operation.contentType = contentType;
               operation.object = file;
 
+              operation.source = app.helpers.normalizePath(operation.source);
+              operation.target = app.helpers.normalizePath(operation.target);
+
+              if (operation.source == operation.target) {
+                return;
+              }
+
               if (options.copy) {
                 return Model.__copyObject(operation);
               }
@@ -159,6 +166,13 @@ module.exports = function(Model, app) {
 
             })
             .then(function(object) {
+
+              if(!object){
+                return Promise.reject({
+                  statusCode: 400,
+                  message: `Could not find object with target ${operation.target}`
+                });
+              }
 
               var attrs = {};
 

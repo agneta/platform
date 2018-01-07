@@ -4,6 +4,7 @@ title:
 authorization:
   - reviewer
   - editor
+  - administrator
 
 class: activities
 
