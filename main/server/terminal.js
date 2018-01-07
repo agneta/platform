@@ -18,13 +18,10 @@ var projectPaths = require('../paths');
 var start = require('../start');
 var path = require('path');
 var _ = require('lodash');
-const configstore = require('configstore');
 
 module.exports = function() {
 
-  var config = new configstore('agneta');
 
-  process.env.SERVER_NAME = config.get('server.name');
   process.env.MODE = 'terminal';
 
   var webPages = start.default();

@@ -33,15 +33,16 @@ agneta.directive('AgPassLostCtrl', function(data, Account) {
 
 });
 
-agneta.directive('AgPassChangeCtrl', function($rootScope, $mdDialog, LoopBackAuth, Account) {
+agneta.directive('AgPassChangeCtrl', function($rootScope, $mdDialog, LoopBackAuth, Account, data) {
 
   var vm = this;
 
   agneta.extend(vm, 'AgDialogCtrl');
 
   vm.submitPassword = function() {
-
+    console.log(data);
     vm.loading = true;
+    vm.formPassFields[agneta.token] =  data.token;
 
     Account.passwordChange(vm.formPassFields)
       .$promise

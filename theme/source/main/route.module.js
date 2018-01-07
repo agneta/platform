@@ -78,7 +78,6 @@ app.run(function($rootScope, $route, $timeout, $location, Account, $mdDialog) {
     $rootScope.loadingMain = true;
     var searchData = $location.search();
     delete searchData.version;
-    delete searchData.token;
     $location.search(searchData);
 
   });

@@ -40,9 +40,12 @@ agneta.directive('LoginController', function($window, $location, $mdDialog, $roo
 
       token = $routeParams.token;
       LoopBackAuth.setUser(token);
-
+      console.log($routeParams.token);
       $mdDialog.open({
-        partial: 'password-new'
+        partial: 'password-new',
+        data:{
+          token: $routeParams.token
+        }
       });
 
       break;

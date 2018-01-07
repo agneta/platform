@@ -28,6 +28,8 @@ const url = require('url');
 const Promise = require('bluebird');
 const path = require('path');
 const paths = require('../paths');
+const configstore = require('configstore');
+
 //---------------------------------------------------
 // Look for server certificates
 
@@ -45,9 +47,16 @@ module.exports = Promise.resolve()
       path.join(paths.core.services,'lib/secrets')
     )({});
 
+    var serverKey = secrets.get('keys.server.key');
+    var serverCert = secrets.get('keys.server.cert');
+
+    if(!serverKey || !serverCert){
+      return;
+    }
+
     var protocolOptions = {
-      key: secrets.get('keys.server.key'),
-      cert: secrets.get('keys.server.cert'),
+      key: serverKey,
+      cert: serverCert,
       ca: secrets.get('keys.server.ca'),
       requestCert: true,
       rejectUnauthorized: false
@@ -64,6 +73,10 @@ module.exports = Promise.resolve()
 
     //---------------------------------------------------
     // Set environment variables
+
+    var config = new configstore('agneta');
+
+    process.env.SERVER_NAME = process.env.SERVER_NAME || config.get('server.name');
 
     process.env.HOST_NAME = process.env.HOST_NAME || 'localhost';
     process.env.PORT = process.env.PORT || port;
