@@ -28,9 +28,8 @@
 				</div>
 			</md-sidenav>
 
-
 			<md-content flex>
-				<div layout="column">
+				<div class="view-container" layout="column">
 					<%-template(page.template || page.templateSource)%>
 					<%if(!page.hiddenFooter){%>
 						<%-template('layout/footer',null,true) %>
