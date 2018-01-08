@@ -1,7 +1,8 @@
 scripts:
-  - 'manager/history/activity'
   - 'lib/ua-parser.min'
-  - 'lib/editor/codemirror'
+  -
+    priority: 0
+    path: 'lib/editor/codemirror'
   - 'lib/editor/javascript'
 styles:
   - 'lib/editor/codemirror'
