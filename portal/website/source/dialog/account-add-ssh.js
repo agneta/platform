@@ -16,7 +16,7 @@
  */
 (function() {
 
-  agneta.directive('AgAddSSHCtrl', function($timeout, $element, $mdDialog, data) {
+  agneta.directive('AgAddSsh', function($timeout, $element, $mdDialog, data) {
 
     var vm = this;
 

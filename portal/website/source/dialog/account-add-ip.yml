@@ -1,0 +1,4 @@
+title:
+  en: Add IP Address
+
+controller: 'AgAddIp'

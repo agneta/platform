@@ -11,13 +11,13 @@ module.exports = function(options) {
 
     ip.loading = true;
 
-    AccountList.model.sshList({
+    AccountList.model.ipList({
       accountId: vm.viewAccount.id
     })
       .$promise
       .then(function(result) {
         console.log(result);
-        vm.ip.keys = result.keys;
+        vm.ip.list = result.list;
       })
       .finally(function() {
         ip.loading = false;
@@ -30,16 +30,16 @@ module.exports = function(options) {
   ip.add = function() {
 
     $mdDialog.open({
-      partial: 'ip-add-key',
+      partial: 'account-add-ip',
       data: {
         onSubmit: function(form) {
 
           ip.loading = true;
 
-          AccountList.model.sshAdd({
+          AccountList.model.ipAdd({
             accountId: vm.viewAccount.id,
             title: form.title,
-            content: form.content
+            address: form.address
           })
             .$promise
             .finally(function() {

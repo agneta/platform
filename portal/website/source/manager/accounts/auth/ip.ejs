@@ -1,7 +1,7 @@
-<div class="roles section ssh" layout="column">
+<md-content class="section ip auth" layout="column">
 
   <div class="header md-padding" layout-align="left center" layout="row">
-    <h3 class="title">IP addresses</h3>
+    <h3 class="title">IP Whitelist</h3>
     <span flex></span>
     <md-button ng-click="ip.add()" class="md-fab md-mini md-white" aria-label="Add">
       <md-icon md-svg-icon="<%-get_icon('material/add')%>"></md-icon>
@@ -14,22 +14,27 @@
 
     <%-template('ui/loader',{prop:'ip.loading'})%>
 
-    <div ng-if="!ip.keys.length" class="no-keys" layout="column" layout-align="center center">
+    <div ng-if="!ip.list.length" class="no-keys" layout="column" layout-align="center center">
       <md-icon md-svg-src="<%-get_icon('material/public')%>"></md-icon>
       <p class="title">No IP Addresses whitelisted</p>
       <p class="message">You can allow access to this user on specific IP addresses.</p>
     </div>
 
-    <md-list ng-if="ip.keys.length">
-      <div ng-repeat="key in ip.keys">
-        <md-list-item ng-click="ip.open(key)" class="role">
+    <md-list ng-if="ip.list.length">
+      <div ng-repeat="item in ip.list">
+        <md-list-item ng-click="ip.open(item)" class="role">
           <p>
-            {{key.title}}
+            {{item.title}}
           </p>
           <p>
-            {{key.createdAt}}
+            {{item.address}}
           </p>
-          <md-icon ng-click="ip.remove(key)" aria-label="delete" class="md-secondary delete" md-svg-src="<%-get_icon('material/delete')%>"></md-icon>
+          <span flex>
+          </span>
+          <p>
+            {{item.createdAt}}
+          </p>
+          <md-icon ng-click="ip.remove(item)" aria-label="delete" class="md-secondary delete" md-svg-src="<%-get_icon('material/delete')%>"></md-icon>
         </md-list-item>
         <md-divider></md-divider>
       </div>
@@ -37,4 +42,4 @@
 
   </div>
 
-</div>
+</md-content>

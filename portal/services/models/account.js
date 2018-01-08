@@ -49,4 +49,9 @@ module.exports = function(Model, app) {
   require('./account/auth/ssh-remove')(Model, app);
   require('./account/auth/ssh-list')(Model, app);
 
+  // IP
+  require('./account/auth/ip-add')(Model, app);
+  require('./account/auth/ip-remove')(Model, app);
+  require('./account/auth/ip-list')(Model, app);
+
 };

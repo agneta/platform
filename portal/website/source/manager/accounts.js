@@ -56,6 +56,7 @@
 
           vm.ssh.load();
           vm.tokens.load();
+          vm.ip.load();
 
         })
         .finally(function() {

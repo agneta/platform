@@ -4,7 +4,7 @@ module.exports = function(options) {
   var vm = options.vm;
   var AccountList = options.AccountList;
   var $mdDialog = options.$mdDialog;
-  
+
   vm.ssh = ssh;
 
   ssh.load = function() {
@@ -30,7 +30,7 @@ module.exports = function(options) {
   ssh.add = function() {
 
     $mdDialog.open({
-      partial: 'ssh-add-key',
+      partial: 'account-add-ssh',
       data: {
         onSubmit: function(form) {
 

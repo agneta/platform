@@ -1,4 +1,6 @@
-module.exports = function(Model) {
+const Promise = require('bluebird');
+
+module.exports = function(Model, app) {
 
   Model.ipAdd = function(accountId, title, address) {
 
@@ -10,19 +12,27 @@ module.exports = function(Model) {
       })
       .then(function(account) {
 
-        account.ip_whitelist.create({
+        return account.ip_whitelist.create({
           title: title,
-          address: address
+          address: address,
+          createdAt: new Date()
         });
 
       })
-      .then(function(){
+      .then(function(result){
         return {
+          result: result,
           success: 'You have added an IP'
         };
       });
 
   };
+
+  var fields = app.form.fields({
+    form: 'ip-add'
+  });
+
+  Model.beforeRemote('ipAdd',  app.form.check(fields));
 
   Model.remoteMethod(
     'ipAdd', {
