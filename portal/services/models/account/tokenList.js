@@ -3,14 +3,12 @@ module.exports = function(Model) {
 
   Model.tokenList = function(accountId) {
 
-    return Model.getModel('AccountToken')
+    return Model.getModel('AccessToken')
       .find({
-        fields: {
-          userId: false
-        },
         where: {
           userId: accountId
-        }
+        },
+        order: 'created DESC'
       })
       .then(function(tokens) {
 

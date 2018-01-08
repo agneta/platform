@@ -37,6 +37,7 @@ module.exports = function(Model, app) {
     };
 
     var account;
+    var token;
 
     return Model.findOne({
       include: Model.includeRoles,
@@ -76,8 +77,30 @@ module.exports = function(Model, app) {
           });
 
       })
-      .then(function(token) {
-
+      .then(function(_token) {
+        token = _token;
+        return app.models.AccessToken.find({
+          skip: 10,
+          limit: 1,
+          order: 'created DESC',
+          where:{
+            userId: token.userId
+          }
+        });
+      })
+      .then(function(result){
+        console.log('result',result);
+        result = result[0];
+        if(!result){
+          return;
+        }
+        return app.models.AccessToken.deleteAll({
+          userId: token.userId,
+          created: {lt:new Date(result.created)}
+        });
+      })
+      .then(function(deleted){
+        console.log('deleted',deleted);
         account.token = token;
         return account;
 

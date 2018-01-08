@@ -35,7 +35,7 @@ module.exports = function(Model, app) {
   require('./account/auth/cert-add')(Model, app);
 
   //tokens
-  require('./account/roleGetAdmin')(Model, app);
+  require('./account/tokenList')(Model, app);
 
   // Roles
   require('./account/roleGetAdmin')(Model, app);
