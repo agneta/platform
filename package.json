@@ -1,6 +1,6 @@
 {
   "name": "agneta-platform",
-  "version": "0.15.13",
+  "version": "0.15.14",
   "description": "Agneta Platform - Integrate and customize business applications",
   "main": "main",
   "scripts": {
