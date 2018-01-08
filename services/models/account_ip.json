@@ -15,10 +15,9 @@
     "address":{
       "type": "string",
       "required": true
-    },
-    "createdAt":{
-      "type": "date",
-      "required": true
     }
+  },
+  "mixins": {
+    "TimeStamp": true
   }
 }
