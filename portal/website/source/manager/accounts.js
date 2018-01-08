@@ -55,6 +55,7 @@
             });
 
           vm.ssh.load();
+          vm.tokens.load();
 
         })
         .finally(function() {
@@ -168,6 +169,8 @@
     };
 
     require('manager/accounts/roles.module')(shared);
+    require('manager/accounts/tokens.module')(shared);
+
     require('manager/accounts/auth/ssh.module')(shared);
     require('manager/accounts/auth/ip.module')(shared);
     require('manager/accounts/auth/cert.module')(shared);

@@ -31,6 +31,10 @@ sections:
     title:
       en: Authentication
     name: auth
+  -
+    title:
+      en: Tokens
+    name: tokens
 
 fields:
   -
