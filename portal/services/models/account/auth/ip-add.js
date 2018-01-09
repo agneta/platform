@@ -22,7 +22,7 @@ module.exports = function(Model, app) {
       .then(function(result){
         return {
           result: result,
-          success: 'You have added an IP'
+          message: 'You have added an IP'
         };
       });
 

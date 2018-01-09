@@ -31,7 +31,7 @@ module.exports = function(Model,app) {
       })
       .then(function(key) {
         return {
-          success: 'SSH Key added to account',
+          message: 'SSH Key added to account',
           key: key
         };
       });

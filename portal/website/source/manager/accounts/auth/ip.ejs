@@ -20,25 +20,19 @@
       <p class="message">You can allow access to this user on specific IP addresses.</p>
     </div>
 
-    <md-list ng-if="ip.list.length">
-      <div ng-repeat="item in ip.list">
-        <md-list-item ng-click="ip.open(item)" class="role">
-          <p>
+    <div class="list" ng-if="ip.list.length">
+      <div ng-repeat="item in ip.list" ng-click="ip.open(item)" class="role ag-margin md-button" layout="row">
+          <span>
             {{item.title}}
-          </p>
-          <p>
-            {{item.address}}
-          </p>
-          <span flex>
           </span>
-          <p>
-            {{item.createdAt}}
-          </p>
+          <span>
+            {{item.address}}
+          </span>
+          <span flex></span>
+          <span><b>Created:</b> {{item.createdAt | amUtc | amLocal | amDateFormat:'DD MMMM YYYY HH:mm:ss'}}</span>
           <md-icon ng-click="ip.remove(item)" aria-label="delete" class="md-secondary delete" md-svg-src="<%-get_icon('material/delete')%>"></md-icon>
-        </md-list-item>
-        <md-divider></md-divider>
       </div>
-    </md-list>
+    </div>
 
   </div>
 

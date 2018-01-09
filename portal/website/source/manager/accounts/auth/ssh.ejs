@@ -20,20 +20,16 @@
       <p class="message">With the SSH protocol, you can authenticate to your API without supplying your password at each visit.</p>
     </div>
 
-    <md-list ng-if="ssh.keys.length">
-      <div ng-repeat="key in ssh.keys">
-        <md-list-item ng-click="ssh.open(key)" class="role">
-          <p>
-            {{key.title}}
-          </p>
-          <p>
-            {{key.createdAt}}
-          </p>
-          <md-icon ng-click="ssh.remove(key)" aria-label="delete" class="md-secondary delete" md-svg-src="<%-get_icon('material/delete')%>"></md-icon>
-        </md-list-item>
-        <md-divider></md-divider>
+    <div class="list" ng-if="ssh.keys.length">
+      <div ng-repeat="item in ssh.keys" ng-click="ssh.open(item)" class="role md-button ag-margin" layout="row">
+          <span>
+            {{item.title}}
+          </span>
+          <span flex></span>
+          <span><b>Created:</b> {{item.createdAt | amUtc | amLocal | amDateFormat:'DD MMMM YYYY HH:mm:ss'}}</span>
+          <md-icon ng-click="ssh.remove(item)" aria-label="delete" class="md-secondary delete" md-svg-src="<%-get_icon('material/delete')%>"></md-icon>
       </div>
-    </md-list>
+    </div>
 
   </div>
 
