@@ -54,7 +54,7 @@ module.exports = function(options) {
 
   };
 
-  ip.remove = function(key) {
+  ip.remove = function(item) {
 
     var confirm = $mdDialog.confirm()
       .title('Remove ip address')
@@ -66,9 +66,9 @@ module.exports = function(options) {
 
       ip.loading = true;
 
-      AccountList.model.sshRemove({
+      AccountList.model.ipRemove({
         accountId: vm.viewAccount.id,
-        keyId: key.id
+        ipId: item.id
       })
         .$promise
         .finally(function() {

@@ -8,9 +8,8 @@
   </div>
 </md-toolbar>
 
-<md-dialog-content style="max-width:500px;max-height:600px; ">
-
-  <%-template('form',{form:'ssh-add-key'})%>
+<md-dialog-content class="account-add-content">
+  <%-template('form',{form:page.form})%>
     <%-template('ui/loader')%>
 
 </md-dialog-content>
@@ -20,7 +19,7 @@
   <md-button ng-click="close()">
     <%-lng('general.cancel')%>
   </md-button>
-  <md-button ng-click="submit()" ng-disabled="formSSH.$invalid" md-autofocus class="md-raised md-primary">
-    <%-lng('general.add')%>
+  <md-button ng-click="submit()" ng-disabled="formRole.$invalid" md-autofocus class="md-raised md-primary">
+    <%-lng('general.submit')%>
   </md-button>
 </md-dialog-actions>

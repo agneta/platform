@@ -32,8 +32,6 @@ module.exports = function(Model, app) {
   require('./account/total')(Model, app);
   require('./account/update')(Model, app);
 
-  require('./account/auth/cert-add')(Model, app);
-
   //tokens
   require('./account/tokenList')(Model, app);
 
@@ -53,5 +51,11 @@ module.exports = function(Model, app) {
   require('./account/auth/ip-add')(Model, app);
   require('./account/auth/ip-remove')(Model, app);
   require('./account/auth/ip-list')(Model, app);
+
+  // Certificates
+  require('./account/auth/cert-add')(Model, app);
+  require('./account/auth/cert-remove')(Model, app);
+  require('./account/auth/cert-list')(Model, app);
+
 
 };

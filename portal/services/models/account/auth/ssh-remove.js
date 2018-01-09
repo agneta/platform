@@ -34,7 +34,7 @@ module.exports = function(Model) {
       })
       .then(function(){
         return {
-          success: 'SSH Key removed from account'
+          message: 'SSH Key removed from account'
         };
       });
 

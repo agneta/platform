@@ -40,10 +40,11 @@ module.exports = function(Model, app) {
       })
       .then(function(account) {
 
-        account.cert.create({
+        return account.cert.create({
           title: params.title,
           pfxPass: app.secrets.encrypt(params.passphrase),
-          fingerprint: params.fingerprint
+          fingerprint: params.fingerprint,
+          createdAt: new Date()
         });
 
       })
@@ -52,7 +53,7 @@ module.exports = function(Model, app) {
       })
       .then(function(){
         return {
-          success: 'You have updated the PFX file'
+          message: 'You have updated the PFX file'
         };
       });
 

@@ -14,26 +14,23 @@
 
     <%-template('ui/loader',{prop:'cert.loading'})%>
 
-    <div ng-if="!cert.keys.length" class="no-keys" layout="column" layout-align="center center">
+    <div ng-if="!cert.list.length" class="no-keys" layout="column" layout-align="center center">
       <md-icon md-svg-src="<%-get_icon('material/card-membership')%>"></md-icon>
       <p class="title">No certificates found</p>
       <p class="message">A client certificate enhances the authentication of a user and provides an instant way to login to your account without supplying a username and password.</p>
     </div>
 
-    <md-list ng-if="cert.keys.length">
-      <div ng-repeat="key in cert.keys">
-        <md-list-item ng-click="cert.open(key)" class="role">
-          <p>
-            {{key.title}}
-          </p>
-          <p>
-            {{key.createdAt}}
-          </p>
-          <md-icon ng-click="cert.remove(key)" aria-label="delete" class="md-secondary delete" md-svg-src="<%-get_icon('material/delete')%>"></md-icon>
-        </md-list-item>
-        <md-divider></md-divider>
+    <div class="list" ng-if="cert.list.length">
+      <div ng-repeat="item in cert.list" ng-click="cert.open(item)" class="role ag-margin md-button" layout="row">
+          <div layout="column">
+          <p>{{item.title}}</p>
+          <p>Fingerprint: {{item.fingerprint}}</p>
+        </div>
+          <span flex></span>
+          <span><b>Created:</b> {{item.createdAt | amUtc | amLocal | amDateFormat:'DD MMMM YYYY HH:mm:ss'}}</span>
+          <md-icon ng-click="cert.remove(item)" aria-label="delete" class="md-secondary delete" md-svg-src="<%-get_icon('material/delete')%>"></md-icon>
       </div>
-    </md-list>
+    </div>
 
   </div>
 

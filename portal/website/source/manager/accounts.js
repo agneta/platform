@@ -57,6 +57,7 @@
           vm.ssh.load();
           vm.tokens.load();
           vm.ip.load();
+          vm.cert.load();
 
         })
         .finally(function() {

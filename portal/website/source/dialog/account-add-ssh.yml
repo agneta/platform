@@ -2,3 +2,5 @@ title:
   en: Add SSH Key
 
 controller: 'AgAddSsh'
+form: ssh-add-key
+template: dialog/account-add

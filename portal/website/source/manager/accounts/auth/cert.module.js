@@ -11,13 +11,13 @@ module.exports = function(options) {
 
     cert.loading = true;
 
-    AccountList.model.sshList({
+    AccountList.model.certList({
       accountId: vm.viewAccount.id
     })
       .$promise
       .then(function(result) {
         console.log(result);
-        vm.cert.keys = result.keys;
+        vm.cert.list = result.list;
       })
       .finally(function() {
         cert.loading = false;
@@ -51,7 +51,7 @@ module.exports = function(options) {
 
       cert.loading = true;
 
-      AccountList.model.sshRemove({
+      AccountList.model.certRemove({
         accountId: vm.viewAccount.id,
         keyId: key.id
       })

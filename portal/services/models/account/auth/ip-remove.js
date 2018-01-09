@@ -20,7 +20,7 @@ module.exports = function(Model) {
       })
       .then(function(){
         return {
-          success: 'IP removed from account'
+          message: 'IP removed from account'
         };
       });
 

@@ -23,7 +23,7 @@ module.exports = function(Model) {
 
   Model.remoteMethod(
     'ipList', {
-      description: 'Add an IP to whitelist when loging in',
+      description: 'List the ip whitelist of a specified account',
       accepts: [{
         arg: 'accountId',
         type: 'string',
