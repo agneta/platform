@@ -19,8 +19,7 @@ const Promise = require('bluebird');
 
 module.exports = function(app) {
 
-  var config = app.get('certificate');
-
+  var apiRoot = app.get('restApiRoot');
   return function(req, res, next) {
 
     var account = null;
@@ -33,7 +32,7 @@ module.exports = function(app) {
         // Auto sign-in user with certificate
 
         var cert = req.socket.getPeerCertificate();
-        var certEmail = _.get(cert, config.map);
+        var certEmail = _.get(cert, 'subject.emailAddress');
 
         if (!cert || !cert.subject){
           return;
@@ -47,8 +46,8 @@ module.exports = function(app) {
           });
         }
 
+
         return app.models.Account.findOne({
-          include: app.roles.include,
           where: {
             email: certEmail
           },
@@ -64,6 +63,28 @@ module.exports = function(app) {
               var error = new Error(`Your certificate email ${certEmail} does not correspond to a registered user. Choose another one, register your account, or remove it.`);
               error.statusCode = 400;
               return Promise.reject(error);
+            }
+
+            var fingerprint = cert.fingerprint.split(':').join(' ');
+
+            return app.models.Account_Cert.findOne({
+              where:{
+                accountId: account.id,
+                fingerprint: fingerprint
+              },
+              fields:{
+                id: true
+              }
+            });
+
+          })
+          .then(function(cert) {
+
+            if(!cert){
+              return Promise.reject({
+                message: 'The certificate you are using was not found for your account.',
+                statusCode: 400
+              });
             }
 
             //-------------------------------------------------------------------
@@ -94,13 +115,17 @@ module.exports = function(app) {
                   res: res
                 });
 
-                app.token.save({
-                  account: account,
-                  token: token,
-                  req: req
-                });
+                req.headers[app.get('token').name] = token.id;
 
               });
+          })
+          .catch(function(err){
+            console.log(err,req.path,apiRoot);
+            if(err.statusCode==400 && req.path.indexOf(apiRoot)!==0){
+              req.headers[app.get('token').name] = '';
+              return;
+            }
+            return Promise.reject(err);
           });
 
       })

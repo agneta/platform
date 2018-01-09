@@ -83,3 +83,38 @@
   templates:
     - docs
     - doc
+-
+  data:
+    controller: AgAccountAddCert
+    class: account-cert
+    form: cert-add
+    angular_libs:
+      -
+        js: 'lib/ng-file-upload.min'
+        dep: 'ngFileUpload'
+    scripts:
+      - 'lib/filesize.min'
+      - 'dialog/account-cert'
+    styles:
+      - 'dialog/account-cert'
+  paths:
+    - /dialog/account-edit-cert
+    - /dialog/account-add-cert
+-
+  data:
+    form: ip-add
+    controller: 'AgAccountIp'
+    scripts:
+      - dialog/account-ip
+  paths:
+    - /dialog/account-edit-ip
+    - /dialog/account-add-ip
+-
+  data:
+    controller: 'AgAccountSsh'
+    form: ssh-add-key
+    scripts:
+      - dialog/account-ssh
+  paths:
+    - /dialog/account-edit-ssh
+    - /dialog/account-add-ssh

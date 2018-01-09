@@ -11,7 +11,7 @@ module.exports = function(options) {
 
     cert.loading = true;
 
-    AccountList.model.certList({
+    return AccountList.model.certList({
       accountId: vm.viewAccount.id
     })
       .$promise
@@ -25,21 +25,49 @@ module.exports = function(options) {
 
   };
 
-  cert.open = function() {};
+  cert.open = function(fields) {
+
+    $mdDialog.open({
+      partial: 'account-edit-cert',
+      data: {
+        fields: fields,
+        remove: remove,
+        accountId: vm.viewAccount.id,
+        onUpdate: function(promise) {
+          cert.loading = true;
+          promise
+            .finally(function() {
+              cert.load();
+              cert.loading = false;
+            });
+        }
+      }
+    });
+
+  };
 
   cert.add = function() {
 
     $mdDialog.open({
       partial: 'account-add-cert',
       data: {
-        accountId: vm.viewAccount.id
+        accountId: vm.viewAccount.id,
+        onSubmit: function(promise) {
+          cert.loading = true;
+          promise
+            .finally(function() {
+              cert.load();
+              cert.loading = false;
+            });
+
+        }
       }
     });
 
 
   };
 
-  cert.remove = function(key) {
+  function remove(id) {
 
     var confirm = $mdDialog.confirm()
       .title('Remove certificate')
@@ -53,14 +81,13 @@ module.exports = function(options) {
 
       AccountList.model.certRemove({
         accountId: vm.viewAccount.id,
-        keyId: key.id
+        certId: id
       })
         .$promise
         .finally(function() {
           cert.load();
-          cert.loading = false;
         });
 
     });
-  };
+  }
 };

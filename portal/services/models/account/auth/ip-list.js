@@ -10,7 +10,7 @@ module.exports = function(Model) {
       })
       .then(function(account) {
 
-        return account.ip_whitelist();
+        return account.ip_whitelist.find();
 
       })
       .then(function(result){

@@ -73,6 +73,9 @@ delete:
 next:
   en: 'Next'
   gr: 'Συνέχεια'
+update:
+  en: 'Update'
+  gr: 'Ενημέρωση'
 add:
   en: 'Add'
   gr: 'Προσθήκη'

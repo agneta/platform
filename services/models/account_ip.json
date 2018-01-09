@@ -1,12 +1,11 @@
 {
   "name": "Account_IP",
-  "base": "Model",
+  "base": "PersistedModel",
   "idInjection": true,
   "properties": {
-    "id": {
-      "type": "string",
-      "id": true,
-      "defaultFn": "uuid"
+    "accountId": {
+        "type": "String",
+        "required": false
     },
     "title":{
       "type": "string",
@@ -19,6 +18,13 @@
     "createdAt":{
       "type": "date",
       "required": true
+    }
+  },
+  "relations":{
+    "account": {
+        "type": "belongsTo",
+        "model": "Account",
+        "foreign_key": "accountId"
     }
   }
 }

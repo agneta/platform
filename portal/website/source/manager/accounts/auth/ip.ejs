@@ -3,7 +3,7 @@
   <div class="header md-padding" layout-align="left center" layout="row">
     <h3 class="title">IP Whitelist</h3>
     <span flex></span>
-    <md-button ng-click="ip.add()" class="md-fab md-mini md-white" aria-label="Add">
+    <md-button ng-click="ip.add()" class="md-icon-button" aria-label="Add">
       <md-icon md-svg-icon="<%-get_icon('material/add')%>"></md-icon>
     </md-button>
   </div>
@@ -30,7 +30,6 @@
           </span>
           <span flex></span>
           <span><b>Created:</b> {{item.createdAt | amUtc | amLocal | amDateFormat:'DD MMMM YYYY HH:mm:ss'}}</span>
-          <md-icon ng-click="ip.remove(item)" aria-label="delete" class="md-secondary delete" md-svg-src="<%-get_icon('material/delete')%>"></md-icon>
       </div>
     </div>
 

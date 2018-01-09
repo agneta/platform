@@ -3,7 +3,7 @@
   <div class="header md-padding" layout-align="left center" layout="row">
     <h3 class="title">Certificates</h3>
     <span flex></span>
-    <md-button ng-click="cert.add()" class="md-fab md-mini md-white" aria-label="Add">
+    <md-button ng-click="cert.add()" class="md-icon-button" aria-label="Add">
       <md-icon md-svg-icon="<%-get_icon('material/add')%>"></md-icon>
     </md-button>
   </div>
@@ -21,14 +21,13 @@
     </div>
 
     <div class="list" ng-if="cert.list.length">
-      <div ng-repeat="item in cert.list" ng-click="cert.open(item)" class="role ag-margin md-button" layout="row">
-          <div layout="column">
-          <p>{{item.title}}</p>
-          <p>Fingerprint: {{item.fingerprint}}</p>
-        </div>
+      <div ng-repeat="item in cert.list" ng-click="cert.open(item)" class="role md-button" layout-align="start stretch" layout="column">
+        <div  class="ag-margin" layout="row">
+          <p class="title">{{item.title}}</p>
           <span flex></span>
           <span><b>Created:</b> {{item.createdAt | amUtc | amLocal | amDateFormat:'DD MMMM YYYY HH:mm:ss'}}</span>
-          <md-icon ng-click="cert.remove(item)" aria-label="delete" class="md-secondary delete" md-svg-src="<%-get_icon('material/delete')%>"></md-icon>
+        </div>
+        <p>Fingerprint: {{item.fingerprint}}</p>
       </div>
     </div>
 

@@ -80,15 +80,15 @@ module.exports = function() {
       }
     },
     Account_SSH: {
-      dataSource: 'transient',
+      dataSource: 'db',
       public: false
     },
     Account_Cert: {
-      dataSource: 'transient',
+      dataSource: 'db',
       public: false
     },
     Account_IP: {
-      dataSource: 'transient',
+      dataSource: 'db',
       public: false
     },
     //-----------------------------------------

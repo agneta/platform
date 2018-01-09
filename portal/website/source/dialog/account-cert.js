@@ -8,6 +8,9 @@
     agneta.extend(vm,'AgDialogCtrl', {
       data: data
     });
+
+    vm.formCertFields = data.fields;
+
     vm.uploadPFX = function(_object) {
 
       object = _object;
@@ -25,15 +28,14 @@
 
       angular.extend(uploadData,vm.formCertFields);
 
-      Upload.upload({
+      var promise = Upload.upload({
         url: agneta.url_api(modelName+'/cert-add'),
         method: 'POST',
         arrayKey: '',
         data: uploadData
-      })
-        .then(function() {
-          vm.load();
-        });
+      });
+
+      data.onSubmit(promise);
 
     };
 

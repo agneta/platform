@@ -1,7 +1,8 @@
 <%
   var prop = locals.prop || 'loading';
   var align= locals.align || 'center center';
+  var diameter= locals.diameter || 50;
 %>
 <div class="api-loader" ng-show="<%-prop%>" layout="column" layout-align="<%-align%>">
-<md-progress-circular md-mode="indeterminate" md-diameter="50"></md-progress-circular>
+<md-progress-circular md-mode="indeterminate" md-diameter="<%-diameter%>"></md-progress-circular>
 </div>

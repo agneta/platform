@@ -1,6 +1,3 @@
 title:
   en: Add IP Address
-
-controller: 'AgAddIp'
-form: ip-add
 template: dialog/account-add

@@ -50,21 +50,16 @@ app.run(function($rootScope, LoopBackAuth, $mdDialog, $route, Account, $location
     }, cb);
   };
 
-  $rootScope.me = function(fn) {
+  $rootScope.me = function() {
 
     //TODO: Somehow reload loopback auth from storage
     //LoopBackAuth.load();
 
-    (function(cb) {
-
-      Account.me({}, function(data) {
-        cb(data);
+    return Account.me({})
+      .$promise
+      .then(function(account){
+        onAccount(account);
       });
-
-    })(function(account) {
-      onAccount(account);
-      fn && fn();
-    });
 
   };
 
@@ -96,8 +91,9 @@ app.run(function($rootScope, LoopBackAuth, $mdDialog, $route, Account, $location
   // Check if User is logged in
   ////////////////////////////////////////////////////////////////
 
-  $rootScope.me(function() {
-    var result = document.getElementsByClassName('user-check');
-    angular.element(result).removeClass('user-check');
-  });
+  $rootScope.me()
+    .finally(function() {
+      var result = document.getElementsByClassName('user-check');
+      angular.element(result).removeClass('user-check');
+    });
 });

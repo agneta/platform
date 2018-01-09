@@ -22,6 +22,8 @@
 
     agneta.extend(vm, 'AgDialogCtrl');
 
+    vm.data = data;
+
     vm.submit = function() {
 
       data.onSubmit(vm.formIPFields);

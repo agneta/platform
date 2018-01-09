@@ -24,7 +24,7 @@ module.exports = function(Model) {
           return [];
         }
 
-        return account.ssh();
+        return account.ssh.find();
       })
       .then(function(keys) {
         return {

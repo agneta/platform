@@ -14,8 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var _ = require('lodash');
-
+const _ = require('lodash');
+const Promise = require('bluebird');
 module.exports = function(app) {
 
   function rewriteUserLiteral(req, currentUserLiteral) {
@@ -76,36 +76,52 @@ module.exports = function(app) {
       }
 
       var account;
+      var ip = req.ip || req.connection.remoteAddress;
 
-      app.models.Account.findById(token.userId, {
-        include: app.roles.include,
-        fields: {
-          id: true,
-          _ip_whitelist: true
-        }
-      })
+      return Promise.resolve()
+        .then(function() {
+
+          return app.models.Account_IP.count({
+            accountId: token.userId,
+          })
+            .then(function(count) {
+              if(!count){
+                return;
+              }
+
+              return app.models.Account_IP.findOne({
+                where:{
+                  accountId: token.userId,
+                  address: ip
+                },
+                fields: {
+                  id: true
+                }
+              })
+                .then(function(accountIp) {
+
+                  if (!accountIp) {
+                    return Promise.reject(`Account cannot be accessed with your IP: ${ip}`);
+                  }
+                });
+
+            });
+        })
+        .then(function() {
+
+          return app.models.Account.findById(token.userId, {
+            include: app.roles.include,
+            fields: {
+              id: true
+            }
+          });
+        })
         .then(function(_account) {
           account = _account;
           if (!account) {
             return Promise.reject('Account not found from access token');
           }
-
-          var ip = req.ip || req.connection.remoteAddress;
           //console.log(account._ip_whitelist,ip);
-
-          if(process.env.NODE_ENV == 'development' && ip=='::1'){
-            return;
-          }
-
-          if(account._ip_whitelist && account._ip_whitelist.length){
-            var match = _.find(account._ip_whitelist,{address:ip});
-            if(!match){
-              return Promise.reject('Account cannot be accessed with your IP');
-            }
-          }
-
-        })
-        .then(function() {
 
           save({
             account: account,
@@ -119,7 +135,7 @@ module.exports = function(app) {
 
   }
 
-  function save(options){
+  function save(options) {
 
     var account = options.account;
     var token = options.token;
@@ -132,6 +148,7 @@ module.exports = function(app) {
 
     token = token.__data;
     token.roles = roles;
+    token.account = account;
 
     //console.log('middleware:token:save',name,token);
 

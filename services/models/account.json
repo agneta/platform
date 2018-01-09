@@ -31,31 +31,19 @@
       "foreign_key": "accountId"
     },
     "ssh": {
-      "type": "embedsMany",
+      "type": "hasMany",
       "model": "Account_SSH",
-      "property": "ssh",
-      "options": {
-        "validate": true,
-        "forceId": false
-      }
+      "foreign_key": "accountId"
     },
     "cert": {
-      "type": "embedsMany",
+      "type": "hasMany",
       "model": "Account_Cert",
-      "property": "cert",
-      "options": {
-        "validate": true,
-        "forceId": false
-      }
+      "foreign_key": "accountId"
     },
     "ip_whitelist":{
-      "type": "embedsMany",
+      "type": "hasMany",
       "model": "Account_IP",
-      "property": "ip_whitelist",
-      "options": {
-        "validate": true,
-        "forceId": false
-      }
+      "foreign_key": "accountId"
     }
   },
   "mixins": {

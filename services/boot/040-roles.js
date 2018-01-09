@@ -43,17 +43,10 @@ module.exports = function(app) {
 
       Role.registerResolver(name, function(roleName, context, cb) {
 
-        var role = roles[roleName];
-
         Promise.resolve()
           .then(function() {
 
             var result = context.accessToken && context.accessToken.roles && context.accessToken.roles[roleName];
-
-            if (result && role.auth) {
-              return role.auth(role, context);
-            }
-
             return result?true:false;
 
           })

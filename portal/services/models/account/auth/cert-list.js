@@ -10,7 +10,7 @@ module.exports = function(Model) {
       })
       .then(function(account) {
 
-        return account.cert();
+        return account.cert.find();
 
       })
       .then(function(result){

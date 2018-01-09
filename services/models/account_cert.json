@@ -1,11 +1,11 @@
 {
   "name": "Account_Cert",
-  "base": "Model",
+  "base": "PersistedModel",
+  "idInjection": true,
   "properties": {
-    "id": {
-      "type": "string",
-      "id": true,
-      "defaultFn": "uuid"
+    "accountId": {
+        "type": "String",
+        "required": false
     },
     "title": {
       "type": "string",
@@ -29,6 +29,11 @@
     }
   },
   "relations": {
+    "account": {
+        "type": "belongsTo",
+        "model": "Account",
+        "foreign_key": "accountId"
+    },
     "pfxFile": {
       "type": "belongsTo",
       "model": "Attachment",

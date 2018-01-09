@@ -16,11 +16,13 @@
  */
 (function() {
 
-  agneta.directive('AgAddSsh', function($timeout, $element, $mdDialog, data) {
+  agneta.directive('AgAccountSsh', function($timeout, $element, $mdDialog, data) {
 
     var vm = this;
 
     agneta.extend(vm, 'AgDialogCtrl');
+
+    vm.data = data;
 
     vm.submit = function() {
 

@@ -15,6 +15,7 @@
  *   limitations under the License.
  */
 const Promise = require('bluebird');
+
 var configSecrets;
 module.exports = function(app) {
 
@@ -28,44 +29,32 @@ module.exports = function(app) {
     certificate: function(options, auth) {
 
       var req = options.methodOptions.req;
-      var role;
 
-      return app.models.Account.roleGet(auth.role, req)
-        .then(function(_role) {
-          role = _role;
+      return req.accessToken.account.cert.findOne({
+        where:{
+          title: 'sap'
+        },
+        include: 'pfxFile'
+      })
+        .then(function(cert) {
 
-          if (!role) {
+          if (!cert) {
             return Promise.reject({
-              message: 'Account does not have the right role',
+              message: `Account does not have the crtificatr with title: ${auth.prop.title}`,
               statusCode: 401
             });
           }
 
-          role = role.__data;
-          //console.log(role);
-          var pfx = role[auth.prop.pfx];
-
-          if (!pfx) {
+          if (!cert.pfxFile) {
             return Promise.reject({
-              message: 'Must have a certificate assigned to your role',
-              statusCode: 401
-            });
-          }
-
-          var fingerprint = role[auth.prop.fingerprint];
-          var certFingerprint = req.socket.getPeerCertificate().fingerprint.split(':').join(' ');
-          //console.log(certFingerprint,fingerprint);
-
-          if(fingerprint != certFingerprint){
-            return Promise.reject({
-              message: 'The certificate you are using does not match with the one assigned.',
+              message: 'Must have a pfx assigned to the client certificate',
               statusCode: 401
             });
           }
 
           options.agentOptions = {
-            pfx: pfx.data,
-            passphrase: app.secrets.decrypt(role[auth.prop.pass])
+            pfx: cert.pfxFile.data,
+            passphrase: app.secrets.decrypt(cert.pfxPass)
           };
 
           //console.log('soap:security:options.agentOptions', options.agentOptions);

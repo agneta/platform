@@ -1,0 +1,29 @@
+name: formCert
+onSubmit: 'submit()'
+fields:
+  -
+    title:
+      en: 'Title'
+    name: 'title'
+    type: 'text'
+    group: 'input'
+  -
+    title:
+      en: 'PFX'
+    class: 'pfx'
+    name: 'pfxFile'
+    group: 'attachment'
+    accept: '.pfx'
+  -
+    title:
+      en: 'Passphrase'
+    name: 'passphrase'
+    type: 'password'
+    group: 'input'
+  -
+    title:
+      en: 'SHA-1 Fingerprint'
+    name: 'fingerprint'
+    type: 'text'
+    group: 'input'
+    attr: 'autocomplete="off"'
