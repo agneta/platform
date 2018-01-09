@@ -1,9 +1,8 @@
-const fs = require('fs-extra');
 const Promise = require('bluebird');
 
 module.exports = function(Model, app) {
 
-  Model.certAdd = function(req) {
+  Model.certCheck = function(req){
 
     var params = req.body;
 
@@ -17,59 +16,35 @@ module.exports = function(Model, app) {
           });
         }
 
-      })
+      });
 
+  };
+
+  Model.certAdd = function(req) {
+
+    var params = req.body;
+
+    return Model.certCheck(req)
       .then(function() {
 
-        return Model.getModel('Account').__get(params.accountId);
+        return Model.__get(params.accountId);
 
       })
       .then(function(account) {
 
         return account.cert.create({
           title: params.title,
-          pfxPass: app.secrets.encrypt(params.passphrase),
           fingerprint: params.fingerprint,
           createdAt: new Date()
         });
 
       })
       .then(function(cert) {
-
-        if(!req.file){
-          return;
-        }
-
-        return fs.readFile(req.file.path)
-          .then(function(content){
-
-            if(!params.passphrase){
-              return Promise.reject({
-                statusCode: 400,
-                message: 'Passphrase is required for the PFX'
-              });
-            }
-
-            var isPfxValid = app.pfx.validate({
-              pfx: content,
-              passphrase: params.passphrase
-            });
-
-            if(!isPfxValid){
-              return Promise.reject({
-                statusCode: 400,
-                message: 'Passphrase is not correct'
-              });
-            }
-
-            return cert.uploadPfx(req);
-
-
-          });
+        return Model.certPfx(cert, req);
       })
-      .then(function(){
+      .then(function() {
         return {
-          message: 'You have updated the PFX file'
+          message: 'You have create the certificate'
         };
       });
 

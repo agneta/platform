@@ -17,7 +17,7 @@
     },
     "pfxPass": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "fingerprint": {
       "type": "string",

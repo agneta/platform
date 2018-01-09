@@ -17,8 +17,23 @@
 
     };
 
+    vm.update = function(){
+
+      data.onSubmit(
+        makeCall('cert-update')
+      );
+
+    };
+
     vm.submit = function(){
 
+      data.onSubmit(
+        makeCall('cert-add')
+      );
+
+    };
+
+    function makeCall(method) {
       var modelName = $rootScope.portal.getMethod('account');
 
       var uploadData = {
@@ -28,16 +43,18 @@
 
       angular.extend(uploadData,vm.formCertFields);
 
-      var promise = Upload.upload({
-        url: agneta.url_api(modelName+'/cert-add'),
+      console.log(uploadData);
+
+      return Upload.upload({
+        url: agneta.url_api(modelName+'/'+method),
         method: 'POST',
         arrayKey: '',
         data: uploadData
-      });
-
-      data.onSubmit(promise);
-
-    };
+      })
+        .then(function() {
+          vm.close();
+        });
+    }
 
   });
 

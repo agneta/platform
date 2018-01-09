@@ -18,7 +18,7 @@ const tls = require('tls');
 
 module.exports = function(app) {
 
-  function validate(options) {
+  function isValid(options) {
 
     try {
       tls.createSecureContext(options);
@@ -27,6 +27,20 @@ module.exports = function(app) {
     }
 
     return true;
+
+  }
+
+  function validate(options) {
+
+    var isPfxValid = isValid(options);
+
+    if (!isPfxValid) {
+      return Promise.reject({
+        statusCode: 400,
+        message: 'Passphrase is not correct'
+      });
+    }
+
   }
 
   app.pfx = {

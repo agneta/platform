@@ -32,7 +32,7 @@ module.exports = function(app) {
 
       return req.accessToken.account.cert.findOne({
         where:{
-          title: 'sap'
+          title: auth.prop.title
         },
         include: 'pfxFile'
       })
@@ -40,22 +40,25 @@ module.exports = function(app) {
 
           if (!cert) {
             return Promise.reject({
-              message: `Account does not have the crtificatr with title: ${auth.prop.title}`,
+              message: `Account does not have the certificate with title: ${auth.prop.title}`,
               statusCode: 401
             });
           }
-
-          if (!cert.pfxFile) {
+          cert = cert.__data;
+          
+          if (!cert.pfxFile || !cert.pfxFile.data || !cert.pfxPass) {
             return Promise.reject({
               message: 'Must have a pfx assigned to the client certificate',
               statusCode: 401
             });
           }
 
-          options.agentOptions = {
+          var agentOptions = {
             pfx: cert.pfxFile.data,
             passphrase: app.secrets.decrypt(cert.pfxPass)
           };
+
+          options.agentOptions = agentOptions;
 
           //console.log('soap:security:options.agentOptions', options.agentOptions);
 

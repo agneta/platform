@@ -1,3 +1,9 @@
+<%
+var form = page.form;
+if(_.isString(form)){
+	form = get_data('form/presets/'+form);
+}
+%>
 <md-toolbar>
   <div class="md-toolbar-tools">
     <h2><%-lng(page.title)%></h2>
@@ -9,7 +15,7 @@
 </md-toolbar>
 
 <md-dialog-content class="account-add-content">
-  <%-template('form',{form:page.form})%>
+  <%-template('form',{form:form})%>
     <%-template('ui/loader')%>
 
 </md-dialog-content>
@@ -19,7 +25,7 @@
   <md-button ng-click="close()">
     <%-lng('general.cancel')%>
   </md-button>
-  <md-button ng-click="submit()" ng-disabled="formRole.$invalid" md-autofocus class="md-raised md-primary">
+  <md-button ng-click="submit()" ng-disabled="<%-form.name%>.$invalid" md-autofocus class="md-raised md-primary">
     <%-lng('general.submit')%>
   </md-button>
 </md-dialog-actions>

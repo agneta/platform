@@ -1,5 +1,4 @@
 name: formCert
-onSubmit: 'submit()'
 fields:
   -
     title:
@@ -7,6 +6,17 @@ fields:
     name: 'title'
     type: 'text'
     group: 'input'
+    validators:
+      required: true
+  -
+    title:
+      en: 'SHA-1 Fingerprint'
+    name: 'fingerprint'
+    type: 'text'
+    group: 'input'
+    attr: 'autocomplete="off"'
+    validators:
+      required: true
   -
     title:
       en: 'PFX'
@@ -20,10 +30,3 @@ fields:
     name: 'passphrase'
     type: 'password'
     group: 'input'
-  -
-    title:
-      en: 'SHA-1 Fingerprint'
-    name: 'fingerprint'
-    type: 'text'
-    group: 'input'
-    attr: 'autocomplete="off"'

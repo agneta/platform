@@ -56,6 +56,7 @@ module.exports = function(Model, app) {
   require('./account/auth/cert-add')(Model, app);
   require('./account/auth/cert-remove')(Model, app);
   require('./account/auth/cert-list')(Model, app);
+  require('./account/auth/cert-update')(Model, app);
 
 
 };

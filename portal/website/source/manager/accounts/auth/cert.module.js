@@ -33,14 +33,7 @@ module.exports = function(options) {
         fields: fields,
         remove: remove,
         accountId: vm.viewAccount.id,
-        onUpdate: function(promise) {
-          cert.loading = true;
-          promise
-            .finally(function() {
-              cert.load();
-              cert.loading = false;
-            });
-        }
+        onSubmit: onSubmit
       }
     });
 
@@ -52,20 +45,20 @@ module.exports = function(options) {
       partial: 'account-add-cert',
       data: {
         accountId: vm.viewAccount.id,
-        onSubmit: function(promise) {
-          cert.loading = true;
-          promise
-            .finally(function() {
-              cert.load();
-              cert.loading = false;
-            });
-
-        }
+        onSubmit: onSubmit
       }
     });
 
-
   };
+
+  function onSubmit(promise) {
+    cert.loading = true;
+    promise
+      .finally(function() {
+        cert.load();
+        cert.loading = false;
+      });
+  }
 
   function remove(id) {
 
