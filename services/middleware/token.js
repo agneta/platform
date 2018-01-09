@@ -75,16 +75,37 @@ module.exports = function(app) {
         return next();
       }
 
+      var account;
+
       app.models.Account.findById(token.userId, {
         include: app.roles.include,
         fields: {
-          id: true
+          id: true,
+          _ip_whitelist: true
         }
       })
-        .then(function(account) {
+        .then(function(_account) {
+          account = _account;
           if (!account) {
-            return next('Account not found from access token');
+            return Promise.reject('Account not found from access token');
           }
+
+          var ip = req.ip || req.connection.remoteAddress;
+          //console.log(account._ip_whitelist,ip);
+
+          if(process.env.NODE_ENV == 'development' && ip=='::1'){
+            return;
+          }
+
+          if(account._ip_whitelist && account._ip_whitelist.length){
+            var match = _.find(account._ip_whitelist,{address:ip});
+            if(!match){
+              return Promise.reject('Account cannot be accessed with your IP');
+            }
+          }
+
+        })
+        .then(function() {
 
           save({
             account: account,
