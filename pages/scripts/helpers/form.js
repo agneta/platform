@@ -95,6 +95,7 @@ module.exports = function(locals) {
     var formName = field.name.shift();
     field.name = field.name.join('_');
     field.prop = `${formName}.${field.name}`;
+    field.parent = fieldParent.lastWithName;
 
   });
 
@@ -125,7 +126,7 @@ module.exports = function(locals) {
           break;
         case 'compareTo':
           name = 'compare-to';
-          value = field.parent + '.' + value;
+          value = field.parent.model + '.' + value;
           break;
       }
 
