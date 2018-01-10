@@ -25,7 +25,18 @@ module.exports = function(options) {
 
   };
 
-  ip.open = function() {};
+  ip.open = function(fields) {
+
+    $mdDialog.open({
+      partial: 'account-edit-ip',
+      data: {
+        fields: fields,
+        remove: remove,
+        accountId: vm.viewAccount.id
+      }
+    });
+
+  };
 
   ip.add = function() {
 
@@ -54,7 +65,7 @@ module.exports = function(options) {
 
   };
 
-  ip.remove = function(item) {
+  function remove(id) {
 
     var confirm = $mdDialog.confirm()
       .title('Remove ip address')
@@ -68,7 +79,7 @@ module.exports = function(options) {
 
       AccountList.model.ipRemove({
         accountId: vm.viewAccount.id,
-        ipId: item.id
+        ipId: id
       })
         .$promise
         .finally(function() {
@@ -77,5 +88,5 @@ module.exports = function(options) {
         });
 
     });
-  };
+  }
 };

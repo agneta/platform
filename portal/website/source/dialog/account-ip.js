@@ -16,13 +16,15 @@
  */
 (function() {
 
-  agneta.directive('AgAddIp', function($timeout, $element, $mdDialog, data) {
+  agneta.directive('AgAccountIp', function($timeout, $element, $mdDialog, data) {
 
     var vm = this;
 
-    agneta.extend(vm, 'AgDialogCtrl');
+    agneta.extend(vm, 'AgDialogCtrl', {
+      data: data
+    });
 
-    vm.data = data;
+    vm.formIPFields = data.fields;
 
     vm.submit = function() {
 

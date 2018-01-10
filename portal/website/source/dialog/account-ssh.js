@@ -20,7 +20,9 @@
 
     var vm = this;
 
-    agneta.extend(vm, 'AgDialogCtrl');
+    agneta.extend(vm, 'AgDialogCtrl', {
+      data: data
+    });
 
     vm.data = data;
 
