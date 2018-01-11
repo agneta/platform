@@ -16,7 +16,6 @@ module.exports = function(options) {
     })
       .$promise
       .then(function(result) {
-        console.log(result);
         vm.ssh.keys = result.keys;
       })
       .finally(function() {

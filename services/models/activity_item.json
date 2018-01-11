@@ -56,12 +56,12 @@
         "account": {
             "type": "belongsTo",
             "model": "Account",
-            "foreign_key": "accountId"
+            "foreignKey": "accountId"
         },
         "action": {
             "type": "belongsTo",
             "model": "Activity_Feed",
-            "foreign_key": "actionId"
+            "foreignKey": "actionId"
         }
     },
     "acls": [{

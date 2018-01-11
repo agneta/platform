@@ -66,7 +66,7 @@
     "processServer": {
         "type": "belongsTo",
         "model": "Process_Server",
-        "foreign_key": "processServerId"
+        "foreignKey": "processServerId"
     }
   },
   "acls": [{

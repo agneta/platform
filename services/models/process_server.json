@@ -43,7 +43,7 @@
     "processes": {
       "type": "hasMany",
       "model": "Process",
-      "foreign_key": "processServerId"
+      "foreignKey": "processServerId"
     }
   },
   "methods": {}

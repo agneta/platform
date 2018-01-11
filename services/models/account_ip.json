@@ -24,7 +24,7 @@
     "account": {
         "type": "belongsTo",
         "model": "Account",
-        "foreign_key": "accountId"
+        "foreignKey": "accountId"
     }
   }
 }

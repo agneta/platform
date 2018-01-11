@@ -41,7 +41,7 @@
         "positions": {
             "type": "hasMany",
             "model": "Search_Position",
-            "foreign_key": "pageId"
+            "foreignKey": "pageId"
         }
     },
     "validations": [],

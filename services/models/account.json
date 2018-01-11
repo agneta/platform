@@ -28,22 +28,22 @@
     "forms": {
       "type": "hasMany",
       "model": "Form",
-      "foreign_key": "accountId"
+      "foreignKey": "accountId"
     },
     "ssh": {
       "type": "hasMany",
       "model": "Account_SSH",
-      "foreign_key": "accountId"
+      "foreignKey": "accountId"
     },
     "cert": {
       "type": "hasMany",
       "model": "Account_Cert",
-      "foreign_key": "accountId"
+      "foreignKey": "accountId"
     },
-    "ip_whitelist":{
+    "ip_whitelist": {
       "type": "hasMany",
       "model": "Account_IP",
-      "foreign_key": "accountId"
+      "foreignKey": "accountId"
     },
     "accessTokens": {
       "type": "hasMany",
@@ -62,128 +62,128 @@
     "principalType": "ROLE",
     "principalId": "$everyone",
     "permission": "DENY"
-    }, {
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "passwordChange"
-      }, {
-        "accessType": "EXECUTE",
-        "principalType": "ROLE",
-        "principalId": "$everyone",
-        "permission": "ALLOW",
-        "property": "me"
-        }, {
-          "accessType": "EXECUTE",
-          "principalType": "ROLE",
-          "principalId": "$everyone",
-          "permission": "ALLOW",
-          "property": "signIn"
-          }, {
-            "accessType": "EXECUTE",
-            "principalType": "ROLE",
-            "principalId": "$authenticated",
-            "permission": "ALLOW",
-            "property": "activities"
-            }, {
-              "accessType": "EXECUTE",
-              "principalType": "ROLE",
-              "principalId": "$authenticated",
-              "permission": "ALLOW",
-              "property": "signOut"
-              }, {
-                "accessType": "EXECUTE",
-                "principalType": "ROLE",
-                "principalId": "$authenticated",
-                "permission": "ALLOW",
-                "property": "signOutAll"
-                }, {
-                  "accessType": "EXECUTE",
-                  "principalType": "ROLE",
-                  "principalId": "$authenticated",
-                  "permission": "ALLOW",
-                  "property": "deactivate"
-                  }, {
-                    "accessType": "EXECUTE",
-                    "principalType": "ROLE",
-                    "principalId": "$authenticated",
-                    "permission": "ALLOW",
-                    "property": "recover"
-                    }, {
-                      "accessType": "EXECUTE",
-                      "principalType": "ROLE",
-                      "principalId": "$everyone",
-                      "permission": "ALLOW",
-                      "property": "register"
-                      }, {
-                        "accessType": "EXECUTE",
-                        "principalType": "ROLE",
-                        "principalId": "$everyone",
-                        "permission": "ALLOW",
-                        "property": "resendVerification"
-                        }, {
-                          "accessType": "EXECUTE",
-                          "principalType": "ROLE",
-                          "principalId": "$everyone",
-                          "permission": "ALLOW",
-                          "property": "verifyEmail"
-                          }, {
-                            "accessType": "EXECUTE",
-                            "principalType": "ROLE",
-                            "principalId": "$everyone",
-                            "permission": "ALLOW",
-                            "property": "requestPassword"
-                            }, {
-                              "accessType": "EXECUTE",
-                              "principalType": "ROLE",
-                              "principalId": "$everyone",
-                              "permission": "ALLOW",
-                              "property": "requestRecovery"
-                              }, {
-                                "accessType": "EXECUTE",
-                                "principalType": "ROLE",
-                                "principalId": "$everyone",
-                                "permission": "ALLOW",
-                                "property": "signedIn"
-                                }, {
-                                  "accessType": "EXECUTE",
-                                  "principalType": "ROLE",
-                                  "principalId": "$everyone",
-                                  "permission": "ALLOW",
-                                  "property": "hasRoles"
-                                  }],
-                                  "methods": {},
-                                  "indexes": {
-                                    "fulltext": {
-                                      "keys": {
-                                        "email": "text",
-                                        "username": "text",
-                                        "name": "text"
-                                      },
-                                      "options": {
-                                        "weights": {
-                                          "name": 1,
-                                          "username": 5,
-                                          "email": 10
-                                        }
-                                      }
-                                    },
-                                    "uniqueEmail": {
-                                      "keys": {
-                                        "email": 1
-                                      },
-                                      "options": {
-                                        "unique": true
-                                      }
-                                    },
-                                    "uniqueUsername": {
-                                      "keys": {
-                                        "username": 1
-                                      },
-                                      "options": {
-                                        "unique": true,
-                                        "sparse": true
-                                      }
-                                    }
-                                  }
-                                }
+  }, {
+    "principalType": "ROLE",
+    "principalId": "$authenticated",
+    "permission": "ALLOW",
+    "property": "passwordChange"
+  }, {
+    "accessType": "EXECUTE",
+    "principalType": "ROLE",
+    "principalId": "$everyone",
+    "permission": "ALLOW",
+    "property": "me"
+  }, {
+    "accessType": "EXECUTE",
+    "principalType": "ROLE",
+    "principalId": "$everyone",
+    "permission": "ALLOW",
+    "property": "signIn"
+  }, {
+    "accessType": "EXECUTE",
+    "principalType": "ROLE",
+    "principalId": "$authenticated",
+    "permission": "ALLOW",
+    "property": "activities"
+  }, {
+    "accessType": "EXECUTE",
+    "principalType": "ROLE",
+    "principalId": "$authenticated",
+    "permission": "ALLOW",
+    "property": "signOut"
+  }, {
+    "accessType": "EXECUTE",
+    "principalType": "ROLE",
+    "principalId": "$authenticated",
+    "permission": "ALLOW",
+    "property": "signOutAll"
+  }, {
+    "accessType": "EXECUTE",
+    "principalType": "ROLE",
+    "principalId": "$authenticated",
+    "permission": "ALLOW",
+    "property": "deactivate"
+  }, {
+    "accessType": "EXECUTE",
+    "principalType": "ROLE",
+    "principalId": "$authenticated",
+    "permission": "ALLOW",
+    "property": "recover"
+  }, {
+    "accessType": "EXECUTE",
+    "principalType": "ROLE",
+    "principalId": "$everyone",
+    "permission": "ALLOW",
+    "property": "register"
+  }, {
+    "accessType": "EXECUTE",
+    "principalType": "ROLE",
+    "principalId": "$everyone",
+    "permission": "ALLOW",
+    "property": "resendVerification"
+  }, {
+    "accessType": "EXECUTE",
+    "principalType": "ROLE",
+    "principalId": "$everyone",
+    "permission": "ALLOW",
+    "property": "verifyEmail"
+  }, {
+    "accessType": "EXECUTE",
+    "principalType": "ROLE",
+    "principalId": "$everyone",
+    "permission": "ALLOW",
+    "property": "requestPassword"
+  }, {
+    "accessType": "EXECUTE",
+    "principalType": "ROLE",
+    "principalId": "$everyone",
+    "permission": "ALLOW",
+    "property": "requestRecovery"
+  }, {
+    "accessType": "EXECUTE",
+    "principalType": "ROLE",
+    "principalId": "$everyone",
+    "permission": "ALLOW",
+    "property": "signedIn"
+  }, {
+    "accessType": "EXECUTE",
+    "principalType": "ROLE",
+    "principalId": "$everyone",
+    "permission": "ALLOW",
+    "property": "hasRoles"
+  }],
+  "methods": {},
+  "indexes": {
+    "fulltext": {
+      "keys": {
+        "email": "text",
+        "username": "text",
+        "name": "text"
+      },
+      "options": {
+        "weights": {
+          "name": 1,
+          "username": 5,
+          "email": 10
+        }
+      }
+    },
+    "uniqueEmail": {
+      "keys": {
+        "email": 1
+      },
+      "options": {
+        "unique": true
+      }
+    },
+    "uniqueUsername": {
+      "keys": {
+        "username": 1
+      },
+      "options": {
+        "unique": true,
+        "sparse": true
+      }
+    }
+  }
+}

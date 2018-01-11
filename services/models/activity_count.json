@@ -43,7 +43,7 @@
         "feed": {
             "type": "belongsTo",
             "model": "Activity_Feed",
-            "foreign_key": "feedId"
+            "foreignKey": "feedId"
         }
     },
     "acls": [{

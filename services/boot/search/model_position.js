@@ -46,17 +46,17 @@ module.exports = function() {
       'page': {
         'type': 'belongsTo',
         'model': 'Search_Page',
-        'foreign_key': 'pageId'
+        'foreignKey': 'pageId'
       },
       'keyword': {
         'type': 'belongsTo',
         'model': 'Search_Keyword',
-        'foreign_key': 'keywordId'
+        'foreignKey': 'keywordId'
       },
       'field': {
         'type': 'belongsTo',
         'model': 'Search_Field',
-        'foreign_key': 'fieldId'
+        'foreignKey': 'fieldId'
       }
     },
     'indexes': {

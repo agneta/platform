@@ -23,7 +23,7 @@
         "counts": {
             "type": "hasMany",
             "model": "Activity_Count",
-            "foreign_key": "feedId"
+            "foreignKey": "feedId"
         }
     },
     "methods": {},

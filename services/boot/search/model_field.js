@@ -34,7 +34,7 @@ module.exports = function() {
       'positions': {
         'type': 'hasMany',
         'model': 'Search_Position',
-        'foreign_key': 'fieldId'
+        'foreignKey': 'fieldId'
       }
     },
     'validations': [],
