@@ -75,7 +75,7 @@ module.exports = function(options) {
 
             var middleware = app.configurator.load('middleware', true);
             //console.log(middleware);
-
+            //console.log(bootGenerated.modelDefinitions);
             var bootOptions = {
               appRootDir: __dirname,
               models: bootGenerated.models,

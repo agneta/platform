@@ -19,7 +19,7 @@ module.exports = function(Model, app) {
 
   Model.__signOutAll = function(userId) {
 
-    return app.models.AccessToken.destroyAll({
+    return app.models.AccountToken.destroyAll({
       userId: userId
     });
 

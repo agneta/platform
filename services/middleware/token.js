@@ -66,7 +66,7 @@ module.exports = function(app) {
       });
     }
 
-    app.models.AccessToken.findForRequest(req, options, function(err, token) {
+    app.models.AccountToken.findForRequest(req, options, function(err, token) {
       if (err) {
         return next(err);
       }

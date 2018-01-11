@@ -3,7 +3,7 @@ module.exports = function(Model) {
 
   Model.tokenList = function(accountId) {
 
-    return Model.getModel('AccessToken')
+    return Model.getModel('AccountToken')
       .find({
         where: {
           userId: accountId

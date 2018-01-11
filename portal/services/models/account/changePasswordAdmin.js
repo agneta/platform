@@ -21,14 +21,14 @@ module.exports = function(Model, app) {
   Model.changePasswordAdmin = function(password, accountId, req) {
 
     var account;
-    var AccessToken = app.models.AccessToken;
+    var AccountToken = app.models.AccountToken;
 
     return Model.__get(accountId)
       .then(function(_account) {
 
         account = _account;
 
-        return AccessToken.destroyAll({
+        return AccountToken.destroyAll({
           userId: account.id
         });
       })

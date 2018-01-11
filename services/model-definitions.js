@@ -22,7 +22,9 @@ const S = require('string');
 
 module.exports = function(app, generated) {
 
-  var definitions = app.modelDefinitions = generated._definitions;
+  app.modelSchemas = {};
+
+  var definitions = generated._definitions;
   var servicesInclude = app.get('services_include');
 
   var dirs = [
@@ -77,11 +79,15 @@ module.exports = function(app, generated) {
     .then(function() {
       var values = _.values(definitions);
       values.forEach(function(value) {
+
         var definition = value.definition;
+
         definition.http = definition.http || {};
         _.extend(definition.http,{
           path: S(definition.name).slugify().s
         });
+
+        app.modelSchemas[definition.name] = definition;
         //console.log(definition.name,definition.http.path);
       });
       generated.modelDefinitions = values;

@@ -34,10 +34,6 @@ module.exports = function() {
         './mixins'
       ]
     },
-    User: {
-      dataSource: 'db',
-      public: false
-    },
     Role_Administrator: {
       dataSource: 'db',
       public: true
@@ -49,10 +45,6 @@ module.exports = function() {
     Role_Editor: {
       dataSource: 'db',
       public: true
-    },
-    AccessToken: {
-      dataSource: 'db',
-      public: false
     },
     ACL: {
       dataSource: 'db',
@@ -69,6 +61,10 @@ module.exports = function() {
     //-----------------------------------------
     // Account
     AccountRole: {
+      dataSource: 'db',
+      public: false
+    },
+    AccountToken: {
       dataSource: 'db',
       public: false
     },

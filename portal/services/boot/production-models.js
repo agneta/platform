@@ -60,27 +60,21 @@ module.exports = function(app) {
 
   //--------------------------------------------------
 
-  function addInstruction(name) {
 
-    let filename = name.toLowerCase();
-    let model = app.modelDefinitions[filename + '.json'];
+  app.models().forEach(function (model) {
 
-    if(!model){
+    var definition = app.modelSchemas[model.modelName];
+    if(!definition){
+      //console.warn(`Definition not found for model ${model.modelName}`);
       return;
     }
-
+    //console.log(definition);
     instructions.push({
-      name: name,
-      definition: model.definition
+      name: model.modelName,
+      definition: definition
     });
-  }
 
-  //--------------------------------------------------
-
-  for(var model of _.keys(app.models)){
-    //console.log('addInstruction',model);
-    addInstruction(model);
-  }
+  });
 
   //--------------------------------------------------
   // Roles
@@ -105,7 +99,6 @@ module.exports = function(app) {
   });
 
   app.helpers.runRemotes(instructions);
-
   instructions.forEach(function(data) {
     app.model(data.model, {
       dataSource: 'db_prd'

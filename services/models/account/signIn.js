@@ -79,7 +79,7 @@ module.exports = function(Model, app) {
       })
       .then(function(_token) {
         token = _token;
-        return app.models.AccessToken.find({
+        return app.models.AccountToken.find({
           skip: 10,
           limit: 1,
           order: 'created DESC',
@@ -94,7 +94,7 @@ module.exports = function(Model, app) {
         if(!result){
           return;
         }
-        return app.models.AccessToken.deleteAll({
+        return app.models.AccountToken.deleteAll({
           userId: token.userId,
           created: {lt:new Date(result.created)}
         });
