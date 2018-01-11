@@ -58,11 +58,6 @@ module.exports = function(app) {
         'params': app.secrets.get('cookie')
       },
       'helmet#xssFilter': {},
-      'helmet#frameguard': {
-        params: [
-          'deny'
-        ]
-      },
       'helmet#hsts': {
         params: {
           maxAge: 0,
@@ -74,6 +69,9 @@ module.exports = function(app) {
       'helmet#noSniff': {},
       'helmet#noCache': {
         'enabled': false
+      },
+      './middleware/frameguard': {
+        params: [app]
       },
       './middleware/limiter': limiterOptions,
     },

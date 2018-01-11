@@ -23,13 +23,15 @@ module.exports = function(options) {
   var languages;
   var storageConfig;
   var project;
+  var services;
 
   require('./services')(options)
     .then(function(result) {
 
+      services = result.services.locals.app;
       project = result.webPages.locals.project;
       languages = _.get(project, 'site.languages');
-      storageConfig = result.services.locals.app.get('storage');
+      storageConfig = services.get('storage');
 
       options.app.use(function(req, res, next) {
 
@@ -54,8 +56,10 @@ module.exports = function(options) {
             }
 
           })
-          .then(function(result) {
-            if(result){
+          .then(function(headers) {
+            if(headers){
+              headers['X-Frame-Options'] = services.frameguard(req);
+              res.writeHead(200,headers);
               return request
                 .get(reqPath)
                 .pipe(res);
