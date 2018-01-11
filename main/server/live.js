@@ -58,7 +58,12 @@ module.exports = function(options) {
           })
           .then(function(headers) {
             if(headers){
-              headers['X-Frame-Options'] = services.frameguard(req);
+
+              services.frameguard({
+                req: req,
+                headers: headers
+              });
+              
               res.writeHead(200,headers);
               return request
                 .get(reqPath)

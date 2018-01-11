@@ -13,26 +13,52 @@ module.exports = function(app){
 
   //console.log(allowHost);
 
-  app.frameguard = function(req) {
+  app.frameguard = function(options) {
 
-    var value = 'SAMEORIGIN';
+    var req = options.req;
+    var res = options.res;
+    var headers = options.headers;
+
+    var value;
 
     if(config){
 
       var origin = req.get('origin');
       if(allowOrigin[origin]){
-        value = `ALLOW-FROM ${origin}`;
+        value = origin;
       }
 
-      var host = req.get('host');
-      if(allowHost[host]){
-        value = `ALLOW-FROM ${allowHost[host]}`;
+      if(!value){
+        var referer = req.get('referer');
+        var host = referer?url.parse(referer).host:req.get('host');
+        if(allowHost[host]){
+          value = allowHost[host];
+        }
       }
 
       //console.log('frameguard.origin',origin,host);
     }
 
-    return value;
+    var _headers = [
+      {
+        name: 'X-Frame-Options',
+        value: value?`ALLOW-FROM ${value}`:'SAMEORIGIN'
+      },
+      {
+        name: 'Content-Security-Policy',
+        value: `frame-ancestors ${value||'self'}`
+      }
+    ];
+
+    for(var _header of _headers){
+      if(headers){
+        headers[_header.name] = _header.value;
+      }
+      if(res){
+        res.setHeader(_header.name,_header.value);
+      }
+
+    }
 
   };
 
