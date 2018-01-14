@@ -3,13 +3,20 @@ const url = require('url');
 module.exports = function(app){
 
   var config = app.get('frameguard');
-  var allowOrigin = _.zipObject(config.allow, _.map(config.allow, function() {
-    return true;
-  }));
+  var allowOrigin;
+  var allowHost;
 
-  var allowHost = _.zipObject(_.map(config.allow, function(origin) {
-    return url.parse(origin).host;
-  }),config.allow);
+  if(config){
+    allowOrigin = _.zipObject(config.allow, _.map(config.allow, function() {
+      return true;
+    }));
+    allowHost = _.zipObject(_.map(config.allow, function(origin) {
+      return url.parse(origin).host;
+    }),config.allow);
+  }else{
+    allowOrigin = {};
+    allowHost = {};
+  }
 
   //console.log(allowHost);
 
