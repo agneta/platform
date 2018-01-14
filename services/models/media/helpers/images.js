@@ -45,13 +45,11 @@ module.exports = function(Model, app) {
       parsed.base += '/' + key;
       var location = path.format(parsed);
 
-      operations.push({
+      operations.push(_.extend({},options,{
         file: transformer.stream(),
         location: location,
-        mimetype: options.mimetype,
-        type: options.type,
         isSize: true
-      });
+      }));
 
     });
 

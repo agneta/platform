@@ -21,6 +21,13 @@ const path = require('path');
 
 module.exports = function(Model) {
 
+  function emit(name, data) {
+    if (!Model.io) {
+      return;
+    }
+    Model.io.emit(name, data);
+  }
+
   Model.__sendFile = function(file) {
 
     file.stream.setMaxListeners(20);
@@ -28,6 +35,7 @@ module.exports = function(Model) {
     var fileStream = new stream.PassThrough();
     fileStream = file.stream.pipe(fileStream);
 
+    var totalProgress = {};
     var operations = [];
     var options = {
       file: file.stream,
@@ -35,6 +43,30 @@ module.exports = function(Model) {
       type: file.type,
       mimetype: file.mimetype,
       size: file.size,
+      onProgress: function(progress){
+
+        totalProgress[progress.location] = progress;
+        var totalPercentage = 0;
+        for(var key in totalProgress){
+          totalPercentage += totalProgress[key].percentage;
+        }
+        console.log('totalPercentage',totalPercentage);
+
+        totalPercentage /= operations.length;
+        console.log('totalPercentage /= operations.length',operations.length,totalPercentage);
+
+
+        emit('file:operation:progress', {
+          location: file.location,
+          percentage: totalPercentage
+        });
+
+        if(totalPercentage==100){
+          emit('file:operation:complete', {
+            location: file.location
+          });
+        }
+      }
     };
 
     operations.push(_.extend({}, options, {

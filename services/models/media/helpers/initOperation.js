@@ -48,7 +48,7 @@ module.exports = function(Model, app) {
               location: options.location
             });
 
-            emit('file:operation:progress', latestEmit);
+            options.onProgress(latestEmit);
 
           }
         });
@@ -58,7 +58,7 @@ module.exports = function(Model, app) {
 
         latestEmit.percentage = 50;
         latestEmit.steps.uploaded = true;
-        emit('file:operation:progress', latestEmit);
+        options.onProgress(latestEmit);
 
         return Model.findOne({
           where: {
@@ -70,7 +70,7 @@ module.exports = function(Model, app) {
 
         latestEmit.percentage = 70;
         latestEmit.steps.searchedDatabase = true;
-        emit('file:operation:progress', latestEmit);
+        options.onProgress(latestEmit);
 
         var fileProps = {
           location: options.location,
@@ -94,7 +94,7 @@ module.exports = function(Model, app) {
 
         latestEmit.percentage = 100;
         latestEmit.steps.updatedDatabase = true;
-        emit('file:operation:complete', latestEmit);
+        options.onProgress(latestEmit);
 
         options.objectId = dbObject.id;
         return dbObject;
@@ -102,10 +102,4 @@ module.exports = function(Model, app) {
 
   };
 
-  function emit(name, data) {
-    if (!Model.io) {
-      return;
-    }
-    Model.io.emit(name, data);
-  }
 };
