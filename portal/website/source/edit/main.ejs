@@ -36,22 +36,22 @@
   <div layout="row" class="heading" layout="start center" layout-margin>
     <%if(locals.toolbar){%>
       <%-template(locals.toolbar)%>
-    <%}%>
-    <span flex></span>
+        <%}%>
+          <span flex></span>
 
-    <md-button ng-click="save()" class="md-primary">
-      <md-icon md-svg-src="<%-get_icon('material/save')%>"></md-icon>
-      <span>Save</span>
-    </md-button>
+          <md-button ng-click="save()" class="md-primary">
+            <md-icon md-svg-src="<%-get_icon('material/save')%>"></md-icon>
+            <span>Save</span>
+          </md-button>
 
-    <md-button ng-click="pageDelete()" class="md-warn">
-      <md-icon md-svg-icon="<%-get_icon('material/delete')%>"></md-icon>
-      <span>Delete</span>
-    </md-button>
+          <md-button ng-click="pageDelete()" class="md-warn">
+            <md-icon md-svg-icon="<%-get_icon('material/delete')%>"></md-icon>
+            <span>Delete</span>
+          </md-button>
 
-    <md-button class="md-primary" aria-label="Switch Source" ng-click="openSource()">
-      Source
-    </md-button>
+          <md-button class="md-primary" aria-label="Switch Source" ng-click="openSource()">
+            Source
+          </md-button>
 
   </div>
 
@@ -64,15 +64,9 @@
       </div>
     </div>
     <%-template('edit/main/data')%>
-    <%-template('edit/main/content')%>
+      <%-template('edit/main/content')%>
   </div>
 
 </div>
 
-<div layout="column" class="md-padding template-select" layout-align="center" ng-show="!page && !template">
-  <md-icon md-svg-src="<%-get_icon('material/folder')%>"></md-icon>
-  <h2>Choose a template to view a list of pages<h2></div>
-
-    <div layout="column" class="md-padding template-select" layout-align="center" ng-show="!page && template">
-      <md-icon md-svg-src="<%-get_icon('material/insert-drive-file')%>"></md-icon>
-      <h2>Choose a page to start editing<h2></div>
+<%-template('edit/main/messages')%>

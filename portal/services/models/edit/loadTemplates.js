@@ -26,18 +26,26 @@ module.exports = function(Model, app) {
 
     var items = [];
 
-    return new Promise(function(resolve, reject) {
-      klaw(Model.editConfigDir)
-        .on('data', function(item) {
-          if (!item.stats.isFile()) {
-            return;
-          }
-          items.push(item);
-        })
-        .on('error', reject)
-        .on('end', resolve);
+    return Promise.resolve()
+      .then(function() {
+        return fs.ensureDir(Model.editConfigDir);
+      })
+      .then(function() {
 
-    })
+        return new Promise(function(resolve, reject) {
+
+          klaw(Model.editConfigDir)
+            .on('data', function(item) {
+              if (!item.stats.isFile()) {
+                return;
+              }
+              items.push(item);
+            })
+            .on('error', reject)
+            .on('end', resolve);
+
+        });
+      })
       .then(function() {
 
         return Promise.map(items, function(item) {

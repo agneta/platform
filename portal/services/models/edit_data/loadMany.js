@@ -29,7 +29,13 @@ module.exports = function(Model, app) {
 
     var templateDir = path.join(webProject.paths.app.data, template);
 
-    return readdir(templateDir)
+    return Promise.resolve()
+      .then(function() {
+        return fs.ensureDir(templateDir);
+      })
+      .then(function() {
+        return readdir(templateDir);
+      })
       .then(function(files) {
 
         return Promise.map(files, function(fileName) {

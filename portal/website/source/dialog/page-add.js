@@ -14,6 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+/*global S*/
+
 (function() {
 
   agneta.directive('AgPageAdd', function(data, Portal) {
@@ -41,6 +44,14 @@
 
     if (defaultPath[0] != '/')
       defaultPath = '/' + defaultPath;
+
+    vm.$watch('formSubmitFields.title',function(newValue){
+      var name = 'untitled';
+      if(newValue && newValue.length){
+        name = S(newValue).slugify().s;
+      }
+      vm.formSubmitFields.path = `/${name}`;
+    });
 
     vm.formSubmitFields = {
       path: defaultPath

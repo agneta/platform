@@ -5,8 +5,11 @@ title:
 authorization:
   - editor
 
+scripts:
+  - 'lib/string.min'
+
 controller: AgPageAdd
-  
+
 form:
   name: 'formSubmit'
   onSubmit: 'submit()'

@@ -13,5 +13,8 @@ authorization:
   - administrator
   - editor
 
+scripts:
+  - 'lib/fuse.min'
+
 editor:
   main: false
