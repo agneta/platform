@@ -31,13 +31,9 @@ app.service('Search_Engine', function($http, $location, $timeout) {
     var keywords;
     var fuse;
 
-    $http.get(options.keywords)
+    Model.searchKeywords()
+      .$promise
       .then(function(response) {
-
-        if (!response) {
-          console.error('Did not get search keywords');
-          return;
-        }
 
         keywords = response.data;
         if (!keywords.length) {

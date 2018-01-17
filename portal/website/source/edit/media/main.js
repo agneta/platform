@@ -45,7 +45,6 @@
     Search_Engine.init({
       scope: vm,
       model: Media,
-      keywords: agneta.get_asset('generated/keywords_media.json'),
       onResult: function(result) {
         for (var index in result.items) {
           var object = result.items[index];
