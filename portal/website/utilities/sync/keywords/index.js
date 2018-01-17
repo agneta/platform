@@ -18,8 +18,11 @@ const S = require('string');
 const GreekUtils = require('greek-utils');
 
 module.exports = function(util, options) {
-
-  options.models = util.app.get('search')[options.name].models;
+  console.log(util.locals.services.get('search'));
+  options.models = util.locals.services.get('search')[options.name].models;
+  if(!options.models){
+    throw new Error(`Could not find search models with name: ${options.name}`);
+  }
 
   var deploy = require('./deploy')(util, options);
   var json = require('./json')(util, options);

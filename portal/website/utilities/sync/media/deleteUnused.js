@@ -19,7 +19,7 @@ const Promise = require('bluebird');
 module.exports = function(options){
 
   var foundObjects = options.foundObjects;
-  var Media = options.Media;
+  var Media = options.model;
   var util = options.util;
   var barDeleteUnused;
 

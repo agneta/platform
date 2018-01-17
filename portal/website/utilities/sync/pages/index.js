@@ -23,6 +23,11 @@ module.exports = function(util, parameters) {
 
   return Promise.resolve()
     .then(function() {
+
+      if(!parameters.process.search){
+        return;
+      }
+
       return require('./search')(util);
     });
 

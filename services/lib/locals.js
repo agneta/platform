@@ -91,6 +91,36 @@ module.exports = function(app, options) {
   app.set('allowOrigins', allowOrigins);
 
   //-------------------------------------------
+  // Search names
+
+  var configSearch = app.get('search');
+
+  for (let name in configSearch) {
+    let options = configSearch[name];
+
+    //-----------------------------------------------------------
+
+    _.defaults(options,{
+      models:{}
+    });
+
+    let source = options.model || options.models.source;
+
+    if(!source){
+      throw new Error(`Source is missing from search config with name: ${name}`);
+    }
+
+    _.defaults(options.models,{
+      position: `${source}_Search_Position`,
+      field: `${source}_Search_Field`,
+      keyword: `${source}_Search_Keyword`
+    });
+
+    options.models.source = source;
+
+  }
+
+  //-------------------------------------------
   // Storage
 
   var configName = 'storage';

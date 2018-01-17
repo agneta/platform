@@ -46,6 +46,33 @@ module.exports = function(util) {
         title: 'Data'
       }
       ]
+    },{
+      name: 'process',
+      title: 'Data to process',
+      type: 'checkboxes',
+      values: [{
+        name: 'source',
+        title: 'Source'
+      },
+      {
+        name: 'search',
+        title: 'Search'
+      }
+      ]
+    },{
+      name: 'media',
+      title: 'Media to Sync',
+      type: 'checkboxes',
+      if: 'options.media',
+      values: [{
+        name: 'public',
+        title: 'Public'
+      },
+      {
+        name: 'private',
+        title: 'Private'
+      }
+      ]
     }]
   };
 };

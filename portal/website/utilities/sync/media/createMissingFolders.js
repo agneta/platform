@@ -22,7 +22,7 @@ module.exports = function(options) {
 
   let foundFolders = options.foundFolders;
   let util = options.util;
-  let Media = options.Media;
+  let Media = options.model;
 
   var foundFoldersArr = _.keys(foundFolders);
 

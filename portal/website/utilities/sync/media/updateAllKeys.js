@@ -22,7 +22,7 @@ module.exports = function(options) {
   let services= options.services;
   let foundObjects= options.foundObjects;
   let foundFolders= options.foundFolders;
-  let Media= options.Media;
+  let Media= options.model;
   let util= options.util;
   let bucket= options.bucket;
 

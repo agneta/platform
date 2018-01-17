@@ -14,8 +14,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const _ = require('lodash');
-
 module.exports = function(app, config) {
 
   var configSearch = app.get('search');
@@ -23,26 +21,6 @@ module.exports = function(app, config) {
 
   for (let name in configSearch) {
     let options = configSearch[name];
-
-    //-----------------------------------------------------------
-
-    _.defaults(options,{
-      models:{}
-    });
-
-    let source = options.model || options.models.source;
-
-    if(!source){
-      throw new Error(`Source is missing from search config with name: ${name}`);
-    }
-
-    _.defaults(options.models,{
-      position: `${source}_Search_Position`,
-      field: `${source}_Search_Field`,
-      keyword: `${source}_Search_Keyword`
-    });
-
-    options.models.source = source;
 
     //-----------------------------------------------------------
 
