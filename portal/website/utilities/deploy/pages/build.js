@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const Sync = require('../../lib/sync/files');
+const Sync = require('../transfer/files');
 const path = require('path');
 
 module.exports = function(util) {

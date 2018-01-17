@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const SyncBuckets = require('../lib/sync/buckets');
+const SyncBuckets = require('../transfer/buckets');
 
 module.exports = function(util) {
 
@@ -24,7 +24,7 @@ module.exports = function(util) {
 
   return function(options) {
 
-    if (!options.source.media) {
+    if (!options.promote.media) {
       return;
     }
 

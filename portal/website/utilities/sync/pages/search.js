@@ -14,15 +14,12 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const Keywords = require('../lib/keywords');
+const Keywords = require('../keywords');
 
 module.exports = function(util) {
 
   Keywords(util, {
-    model: {
-      keyword: 'Page_Search_Keyword',
-      source: 'Page'
-    },
+    name: 'page',
     filename: function(options) {
       return 'keywords_' + options.language;
     },
@@ -37,7 +34,7 @@ module.exports = function(util) {
     util.log('Deploying search data...');
     switch (options.target) {
       case 'staging':
-        return require('../lib/keywords/generate')(util);
+        return require('../keywords/generate')(util);
     }
   };
 

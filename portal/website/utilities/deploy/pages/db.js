@@ -37,7 +37,7 @@ module.exports = function(util) {
 
     production: function() {
 
-      return require('../lib/sync/database')(util, {
+      return require('../transfer/database')(util, {
         source: services.models.Page,
         target: services.models.Production_Page,
         key: 'path'

@@ -46,6 +46,9 @@ module.exports = {
   search: {
     page: {
       model: 'Page'
+    },
+    media: {
+      model: 'Media'
     }
   },
   remoting: {

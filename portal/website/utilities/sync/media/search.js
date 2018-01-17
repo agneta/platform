@@ -15,7 +15,7 @@
  *   limitations under the License.
  */
 const Promise = require('bluebird');
-const Keywords = require('../lib/keywords');
+const Keywords = require('../keywords');
 
 module.exports = function(util, options) {
 
@@ -30,10 +30,7 @@ module.exports = function(util, options) {
   var count;
 
   var keywords = Keywords(util, {
-    model: {
-      keyword: 'Media_Keyword',
-      source: 'Media'
-    },
+    name: 'media',
     filename: function() {
       return 'keywords_media';
     },

@@ -21,71 +21,63 @@ const deleteEmptyFolders = require('./deleteEmptyFolders');
 const updateAllKeys = require('./updateAllKeys');
 const createMissingFolders = require('./createMissingFolders');
 
-module.exports = function(util) {
+module.exports = function(util, parameters) {
 
   var services = util.locals.services;
   var configStorage = services.get('storage');
+  var Media;
+  var bucket;
+  var foundObjects = {};
+  var foundFolders = {};
 
-  return function(parameters) {
+  //-----------------------------------------------------
 
-    var Media;
-    var bucket;
-    var foundObjects = {};
-    var foundFolders = {};
+  var mediaBucket = configStorage.buckets.media;
 
-    parameters.options = parameters.options || {};
+  if (parameters.options.private) {
+    bucket = mediaBucket.private;
+    Media = services.models.Media_Private;
+  } else {
+    bucket = mediaBucket.staging;
+    Media = services.models.Media;
+  }
 
-    //-----------------------------------------------------
+  //-----------------------------------------------------
 
-    var mediaBucket = configStorage.buckets.media;
-
-    if (parameters.options.private) {
-      bucket = mediaBucket.private;
-      Media = services.models.Media_Private;
-    } else {
-      bucket = mediaBucket.staging;
-      Media = services.models.Media;
-    }
-
-    //-----------------------------------------------------
-
-    var shared = {
-      services: services,
-      foundObjects: foundObjects,
-      foundFolders: foundFolders,
-      Media: Media,
-      util: util,
-      bucket: bucket
-    };
-
-    return Promise.resolve()
-      .then(function() {
-        return updateAllKeys(shared);
-      })
-      .then(function() {
-        return createMissingFolders(shared);
-      })
-      .then(function() {
-        return deleteUnused(shared);
-      })
-      .then(function() {
-        return deleteEmptyFolders(shared);
-      })
-      .then(function() {
-
-        if (!parameters.options.generateKeywords) {
-          return;
-        }
-
-        return require('./search')(util, {
-          model: Media
-        });
-
-      })
-      .then(function() {
-        util.log('Sync is complete');
-      });
+  var shared = {
+    services: services,
+    foundObjects: foundObjects,
+    foundFolders: foundFolders,
+    Media: Media,
+    util: util,
+    bucket: bucket
   };
 
+  return Promise.resolve()
+    .then(function() {
+      return updateAllKeys(shared);
+    })
+    .then(function() {
+      return createMissingFolders(shared);
+    })
+    .then(function() {
+      return deleteUnused(shared);
+    })
+    .then(function() {
+      return deleteEmptyFolders(shared);
+    })
+    .then(function() {
 
+      if (!parameters.options.generateKeywords) {
+        return;
+      }
+
+      return require('./search')(util, {
+        model: Media
+      });
+
+    })
+    .then(function() {
+      util.log('Sync is complete');
+    });
 };

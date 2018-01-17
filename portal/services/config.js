@@ -21,16 +21,5 @@ module.exports = {
   auth: true,
   limiter: {
     global: false
-  },
-  search: {
-    media: {
-      models: {
-        position: 'Media_Position',
-        source: 'Media',
-        field: 'Media_Field',
-        keyword: 'Media_Keyword'
-      }
-    }
   }
-
 };

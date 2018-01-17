@@ -51,21 +51,24 @@ module.exports = [{
       en: 'Services',
       gr: 'Υπηρεσίες'
     }
-  }, {
-    name: 'search',
-    title: {
-      en: 'Search Data',
-      gr: 'Στοιχεία αναζήτησης'
-    }
-  }, {
+  }]
+},{
+  name: 'promote',
+  title: {
+    en: 'Promote',
+    gr: 'Προώθηση'
+  },
+  if: {
+    prop: 'target',
+    equals: 'production'
+  },
+  type: 'checkboxes',
+  values: [{
     name: 'media',
     title: {
       en: 'Media',
       gr: 'Πολυμέσα'
-    },
-    if: {
-      prop: 'target',
-      equals: 'production'
     }
   }]
-}];
+}
+];

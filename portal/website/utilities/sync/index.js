@@ -1,19 +1,29 @@
+module.exports = function(util) {
+  return {
+    run: function(parameters) {
 
-module.exports = {
-  run: function() {
+      parameters.options = parameters.options || {};
 
-  },
-  parameters: [{
-    name: 'options',
-    title: 'Options',
-    type: 'checkboxes',
-    values: [{
-      name: 'media',
-      title: 'Media'
+      require('./media')(util, parameters);
+      require('./pages')(util, parameters);
+      require('./data')(util, parameters);
     },
-    {
-      name: 'search',
-      title: 'Search Fields'
+    parameters: [{
+      name: 'options',
+      title: 'Options',
+      type: 'checkboxes',
+      values: [{
+        name: 'media',
+        title: 'Media'
+      },
+      {
+        name: 'pages',
+        title: 'Pages'
+      }, {
+        name: 'data',
+        title: 'Data'
+      }
+      ]
     }]
-  }]
+  };
 };

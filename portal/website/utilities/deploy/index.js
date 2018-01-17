@@ -22,7 +22,6 @@ module.exports = function(util) {
   var media = require('./media')(util);
   var pages = require('./pages')(util);
   var services = require('./services')(util);
-  var search = require('./search')(util);
 
   return {
     run: function(options) {
@@ -36,9 +35,6 @@ module.exports = function(util) {
         })
         .then(function() {
           return media(options);
-        })
-        .then(function() {
-          return search(options);
         })
         .then(function() {
           return services(options);

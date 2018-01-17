@@ -20,7 +20,7 @@ var _ = require('lodash');
 var fs = require('fs-extra');
 var Promise = require('bluebird');
 var yaml = require('js-yaml');
-var bower = require('../lib/bower');
+var bower = require('./bower');
 
 module.exports = function(util, dir) {
 
