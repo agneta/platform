@@ -14,9 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function() {
+module.exports = function(options) {
   return {
-    'name': 'Search_Field',
+    'name': options.models.field,
     'base': 'PersistedModel',
     'idInjection': true,
     'options': {},
@@ -33,7 +33,7 @@ module.exports = function() {
     'relations': {
       'positions': {
         'type': 'hasMany',
-        'model': 'Search_Position',
+        'model': options.models.position,
         'foreignKey': 'fieldId'
       }
     },

@@ -18,7 +18,7 @@ var loopback = require('loopback');
 var path = require('path');
 var boot = require('loopback-boot');
 var modelDefinitions = require('./model-definitions');
-var bootGenerator = require('./boot-generator');
+var modelGenerator = require('./model-generator');
 
 module.exports = function(options) {
 
@@ -63,23 +63,25 @@ module.exports = function(options) {
         return;
       }
 
-      var bootGenerated = bootGenerator(app, {
+      var modelConfig = {
         models: app.configurator.load('model-config'),
         modelDefinitions: [],
         _definitions: {}
-      });
+      };
 
-      return modelDefinitions(app, bootGenerated)
+      modelGenerator(app, modelConfig);
+
+      return modelDefinitions(app, modelConfig)
         .then(function() {
           return new Promise(function(resolve, reject) {
 
             var middleware = app.configurator.load('middleware', true);
             //console.log(middleware);
-            //console.log(bootGenerated.modelDefinitions);
+            //console.log(modelConfig.modelDefinitions);
             var bootOptions = {
               appRootDir: __dirname,
-              models: bootGenerated.models,
-              modelDefinitions: bootGenerated.modelDefinitions,
+              models: modelConfig.models,
+              modelDefinitions: modelConfig.modelDefinitions,
               middleware: middleware,
               dataSources: app.configurator.load('datasources'),
               bootDirs: [

@@ -20,8 +20,8 @@ module.exports = function(util) {
 
   Keywords(util, {
     model: {
-      keyword: 'Search_Keyword',
-      source: 'Search_Page'
+      keyword: 'Page_Search_Keyword',
+      source: 'Page'
     },
     filename: function(options) {
       return 'keywords_' + options.language;

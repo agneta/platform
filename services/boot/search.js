@@ -14,13 +14,23 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
 module.exports = function(app) {
 
-  var init = require('./search/init')(app);
   var config = app.get('search');
 
   for (var name in config) {
-    var options = config[name];
-    init(options);
+
+    let options = config[name];
+
+    var models = {
+      source: app.models[options.models.source],
+      field: app.models[options.models.field],
+      keyword: app.models[options.models.keyword],
+      position: app.models[options.models.position]
+    };
+
+    require('./search/keyword')(models.keyword,app,models);
+    require('./search/source')(models.source,app,models);
   }
 };

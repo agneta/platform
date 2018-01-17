@@ -45,12 +45,7 @@ module.exports = {
   },
   search: {
     page: {
-      models: {
-        position: 'Search_Position',
-        source: 'Search_Page',
-        field: 'Search_Field',
-        keyword: 'Search_Keyword'
-      }
+      model: 'Page'
     }
   },
   remoting: {

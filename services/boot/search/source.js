@@ -26,6 +26,34 @@ module.exports = function(Model, app, models) {
     find: require('./find')(app, models)
   };
 
+  //-----------------------------------------------------------
+
+  Model.searchKeywords = function(language) {
+      return [];
+  };
+
+  Model.remoteMethod(
+    'searchKeywords', {
+      description: 'Get search keywords for fuzzy search on the client side',
+      accepts: [{
+        arg: 'language',
+        type: 'string',
+        required: true
+      }],
+      returns: {
+        arg: 'result',
+        type: 'object',
+        root: true
+      },
+      http: {
+        verb: 'get',
+        path: '/search-keywords'
+      }
+    }
+  );
+
+  //-----------------------------------------------------------
+
   Model.remoteMethod(
     'search', {
       description: 'Search for a page using fuzzy search capabilities',

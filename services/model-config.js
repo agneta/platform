@@ -106,10 +106,6 @@ module.exports = function() {
       dataSource: 'db',
       public: true
     },
-    Search_Page: {
-      dataSource: 'db',
-      public: true
-    },
     Process: {
       dataSource: 'db',
       public: true

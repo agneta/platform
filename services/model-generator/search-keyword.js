@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: services/boot/search/model_position.js
+ *   Source file: services/boot/search/model_keyword.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,64 +14,41 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function() {
+module.exports = function(options) {
   return {
-    'name': 'Search_Position',
+    'name': options.models.keyword,
     'base': 'PersistedModel',
     'idInjection': true,
     'options': {},
     'properties': {
       'value': {
-        'type': 'Number',
-        'required': true
-      },
-      'original': {
         'type': 'String',
         'required': true
       },
-      'fieldId': {
-        'type': 'String',
-        'required': true
-      },
-      'keywordId': {
-        'type': 'String',
-        'required': true
-      },
-      'pageId': {
+      'lang': {
         'type': 'String',
         'required': true
       }
     },
     'relations': {
-      'page': {
-        'type': 'belongsTo',
-        'model': 'Search_Page',
-        'foreignKey': 'pageId'
-      },
-      'keyword': {
-        'type': 'belongsTo',
-        'model': 'Search_Keyword',
+      'positions': {
+        'type': 'hasMany',
+        'model': options.models.position,
         'foreignKey': 'keywordId'
-      },
-      'field': {
-        'type': 'belongsTo',
-        'model': 'Search_Field',
-        'foreignKey': 'fieldId'
-      }
-    },
-    'indexes': {
-      'page_keyword_index': {
-        'pageId': 1,
-        'keywordId': 1
       }
     },
     'validations': [],
-    'acls': [{
-      'accessType': '*',
-      'principalType': 'ROLE',
-      'principalId': '$everyone',
-      'permission': 'DENY'
-    }],
-    'methods': {}
+    'methods': {},
+    'indexes': {
+      'ValueLang': {
+        'keys': {
+          'value': 1,
+          'lang': 1
+        },
+        'options': {
+          'unique': true
+        }
+      }
+    }
   };
 };

@@ -23,10 +23,6 @@ module.exports = {
     dataSource: 'db',
     public: true
   },
-  App_Page: {
-    dataSource: 'db',
-    public: true
-  },
   Email_Template: {
     dataSource: false,
     public: true
