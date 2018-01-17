@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: services/boot/search/methods_source.js
+ *   Source file: services/boot/search/source.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -25,11 +25,11 @@ module.exports = function(Model, app, models) {
   Model.engine = {
     find: require('./find')(app, models)
   };
-
+  
   //-----------------------------------------------------------
 
-  Model.searchKeywords = function(language) {
-      return [];
+  Model.searchKeywords = function() {
+    //return [];
   };
 
   Model.remoteMethod(
