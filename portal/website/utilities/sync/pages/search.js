@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/website/utilities/sync/pages/search.js
+ *   Source file: portal/website/utilities/sync/keywords/generate.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,7 +14,11 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+const _ = require('lodash');
+const Promise = require('bluebird');
 const Keywords = require('../keywords');
+const searchPages = require('search-pages');
 
 module.exports = function(util) {
 
@@ -26,16 +30,29 @@ module.exports = function(util) {
     title: 'path'
   });
 
-  return function(options) {
-    if (!options.source.search) {
-      return;
-    }
+  var locals = util.locals;
+  var web = locals.web.project;
+  var pages = web.site.pages.find().toArray();
 
-    util.log('Deploying search data...');
-    switch (options.target) {
-      case 'staging':
-        return require('../keywords/generate')(util);
-    }
-  };
+  return util.keywords.clear()
+    .then(function() {
+      return Promise.map(_.keys(web.site.languages), function(language) {
+
+        web.site.lang = language;
+        return searchPages({
+          util: util,
+          pages: pages,
+          language: language
+        });
+
+      }, {
+        concurrency: 1
+      });
+    })
+    .then(function(data) {
+      return {
+        languages: data
+      };
+    });
 
 };

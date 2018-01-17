@@ -82,7 +82,7 @@
     -
       page: 'utilities/deploy'
     -
-      page: 'utilities/media'
+      page: 'utilities/sync'
 -
   title:
     en: System

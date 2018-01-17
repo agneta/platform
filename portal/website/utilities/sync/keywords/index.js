@@ -19,11 +19,11 @@ const GreekUtils = require('greek-utils');
 
 module.exports = function(util, options) {
 
+  options.models = util.app.get('search')[options.name].models;
+
   var deploy = require('./deploy')(util, options);
   var json = require('./json')(util, options);
-
-  var Keyword = util.locals.services.models[options.model.keyword];
-
+  var Keyword = util.locals.services.models[options.models.keyword];
   var keywordsLng = {};
 
   function scan(original, type) {

@@ -19,7 +19,7 @@ const _ = require('lodash');
 
 module.exports = function(util, options) {
 
-  var Page = util.locals.services.models[options.model.source];
+  var Page = util.locals.services.models[options.models.source];
 
   return function(data) {
 

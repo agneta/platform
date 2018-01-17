@@ -19,7 +19,7 @@ const Promise = require('bluebird');
 
 module.exports = function(util) {
 
-  var media = require('./media')(util);
+  var promote = require('./promote')(util);
   var pages = require('./pages')(util);
   var services = require('./services')(util);
 
@@ -34,7 +34,7 @@ module.exports = function(util) {
           return pages(options);
         })
         .then(function() {
-          return media(options);
+          return promote(options);
         })
         .then(function() {
           return services(options);
