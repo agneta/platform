@@ -16,7 +16,7 @@
  */
 /*global Fuse*/
 
-agneta.directive('AgEditFilePrivate', function(data, MediaOpt, Account) {
+agneta.directive('AgEditFilePrivate', function(data, AgMedia, Account) {
 
   var onFile = data.onFile;
   var vm = this;
@@ -30,7 +30,7 @@ agneta.directive('AgEditFilePrivate', function(data, MediaOpt, Account) {
     }
   };
 
-  data.media = MediaOpt.private;
+  data.media = AgMedia.private;
 
   vm.loading = true;
   Account.roles()

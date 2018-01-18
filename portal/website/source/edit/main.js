@@ -19,7 +19,7 @@
 /*global Fuse:true*/
 
 (function() {
-  agneta.directive('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, MediaOpt, Role_Editor) {
+  agneta.directive('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, AgMedia, Role_Editor) {
     var vm = this;
     var fuseOptions = {
       shouldSort: true,
@@ -57,7 +57,7 @@
 
     require('edit/_pages/field-state.module')(vm, helpers);
     require('edit/_pages/content.module')(vm, helpers);
-    require('edit/_pages/media.module')(vm, MediaOpt, $mdDialog, helpers);
+    require('edit/_pages/media.module')(vm, AgMedia, $mdDialog, helpers);
     require('edit/_pages/helpers.module')(vm, $mdToast, $timeout, helpers);
     require('edit/_pages/history.module')(vm, helpers);
     require('edit/_pages/main.module')(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeEdit, Portal);

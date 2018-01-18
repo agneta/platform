@@ -31,11 +31,13 @@ app.service('Search_Engine', function($http, $location, $timeout) {
     var keywords;
     var fuse;
 
-    Model.searchKeywords()
+    Model.searchKeywords({
+      name: options.name
+    })
       .$promise
       .then(function(response) {
 
-        keywords = response.data;
+        keywords = response;
         if (!keywords.length) {
           return;
         }

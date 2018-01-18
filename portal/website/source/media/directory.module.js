@@ -15,7 +15,15 @@
  *   limitations under the License.
  */
 
-module.exports = function(vm, Portal, $location, $rootScope, Media, MediaPreview, $mdDialog, Upload, apiMedia, partialFile) {
+module.exports = function(options) {
+
+  var vm = options.vm;
+  var Portal = options.Portal;
+  var $location = options.$location;
+  var $rootScope = options.$rootScope;
+  var config = options.config;
+  var $mdDialog = options.$mdDialog;
+  var Upload = options.Upload;
 
   var socket = Portal.socket.media;
   var objects = [];
@@ -45,8 +53,8 @@ module.exports = function(vm, Portal, $location, $rootScope, Media, MediaPreview
   socket.on('file:upload:complete', readdir);
   socket.on('files:upload:complete', readdir);
 
-  vm.onHover = function(object){
-    objects.map(function(obj){
+  vm.onHover = function(object) {
+    objects.map(function(obj) {
       obj.hovered = false;
     });
     object.hovered = true;
@@ -103,11 +111,11 @@ module.exports = function(vm, Portal, $location, $rootScope, Media, MediaPreview
 
         //console.warn('fetchMoreItems_', index, this.numLoaded_, this.toLoad_);
         var loader = 'loading';
-        if(objects.length){
+        if (objects.length) {
           loader = 'isLoadingMore';
         }
         vm[loader] = true;
-        Media.list(params)
+        config.model.list(params)
           .$promise
           .then(function(result) {
 
@@ -118,7 +126,7 @@ module.exports = function(vm, Portal, $location, $rootScope, Media, MediaPreview
               object.onChange = function() {
                 vm.refresh();
               };
-              MediaPreview.set(object);
+              config.preview.set(object);
             }
 
             $rootScope.loadingMain = false;
@@ -131,7 +139,7 @@ module.exports = function(vm, Portal, $location, $rootScope, Media, MediaPreview
 
             self.numLoaded_ = objects.length;
           })
-          .finally(function(){
+          .finally(function() {
             vm[loader] = false;
           });
 
@@ -169,7 +177,7 @@ module.exports = function(vm, Portal, $location, $rootScope, Media, MediaPreview
       partial: 'new-folder',
       data: {
         onApply: function(name) {
-          return Media.newFolder({
+          return config.model.newFolder({
             dir: vm.dir.location,
             name: name
           })
@@ -211,11 +219,11 @@ module.exports = function(vm, Portal, $location, $rootScope, Media, MediaPreview
   vm.openObject = vm.openObject || function(object) {
 
     $mdDialog.open({
-      partial: partialFile,
+      partial: config.partial,
       data: {
-        apiMedia: apiMedia,
-        Media: Media,
-        MediaPreview: MediaPreview,
+        apiMedia: config.api,
+        Media: config.model,
+        MediaPreview: config.preview,
         location: object.location,
         onChange: function() {
           vm.refresh();
@@ -232,7 +240,7 @@ module.exports = function(vm, Portal, $location, $rootScope, Media, MediaPreview
 
     if (objects && objects.length) {
       Upload.upload({
-        url: agneta.url(apiMedia + 'upload-files'),
+        url: agneta.url(config.api + 'upload-files'),
         data: {
           dir: vm.dir.location,
           objects: objects

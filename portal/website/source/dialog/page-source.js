@@ -24,7 +24,6 @@
     var myCodeMirror;
     var vm = this;
 
-
     agneta.extend(vm, 'AgDialogCtrl');
 
     setTimeout(function() {

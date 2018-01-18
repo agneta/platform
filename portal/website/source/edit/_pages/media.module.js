@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function(vm, MediaOpt, $mdDialog, helpers) {
+module.exports = function(vm, AgMedia, $mdDialog, helpers) {
 
   var media = {};
 
@@ -31,7 +31,7 @@ module.exports = function(vm, MediaOpt, $mdDialog, helpers) {
 
     var parentValue = parent.__value || parent;
     var dataValue = parentValue[key].__value;
-    var mediaOptions = MediaOpt.public;
+    var mediaOptions = AgMedia.public;
 
     if (dataValue.private && isPrivate == undefined) {
       isPrivate = true;
@@ -39,7 +39,7 @@ module.exports = function(vm, MediaOpt, $mdDialog, helpers) {
 
     if (isPrivate) {
       dataValue.private = true;
-      mediaOptions = MediaOpt.private;
+      mediaOptions = AgMedia.private;
 
     } else {
       delete dataValue.private;
@@ -99,10 +99,10 @@ module.exports = function(vm, MediaOpt, $mdDialog, helpers) {
 
   function getMedia(data) {
     if (data.private) {
-      return MediaOpt.private;
+      return AgMedia.private;
     }
 
-    return MediaOpt.public;
+    return AgMedia.public;
   }
 
   media.backgroundImage = function(child, size) {

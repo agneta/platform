@@ -15,7 +15,7 @@
  *   limitations under the License.
  */
 
-agneta.directive('AgEditFile', function(data, EditFile,MediaOpt) {
+agneta.directive('AgEditFile', function(data, EditFile,AgMedia) {
 
   var vm = this;
 
@@ -25,7 +25,7 @@ agneta.directive('AgEditFile', function(data, EditFile,MediaOpt) {
 
   //-------------------------------------------------------------
 
-  data.media = data.media || MediaOpt.public;
+  data.media = data.media || AgMedia.public;
   var MediaPreview = data.media.preview;
 
   //-------------------------------------------------------------

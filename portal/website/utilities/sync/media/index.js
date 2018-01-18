@@ -51,6 +51,7 @@ module.exports = function(util, parameters) {
       }
 
       return init(_.extend({
+        name: 'private',
         bucket: mediaBucket.private,
         model: services.models.Media_Private
       },shared));
@@ -63,6 +64,7 @@ module.exports = function(util, parameters) {
       }
 
       return init(_.extend({
+        name: 'public',
         bucket: mediaBucket.staging,
         model: services.models.Media
       },shared));

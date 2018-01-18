@@ -34,7 +34,7 @@ module.exports = function(util, options) {
   var keywords = Keywords(util, {
     name: 'media',
     filename: function() {
-      return 'keywords_media';
+      return `keywords_media_${options.name}`;
     },
     title: 'location.value'
   });

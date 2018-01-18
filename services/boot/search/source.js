@@ -14,10 +14,11 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var Promise = require('bluebird');
-var _ = require('lodash');
-const fs = require('fs');
+const Promise = require('bluebird');
+const _ = require('lodash');
+const fs = require('fs-extra');
 const path = require('path');
+
 module.exports = function(Model, app, models) {
 
   var Field = models.field;
@@ -29,8 +30,12 @@ module.exports = function(Model, app, models) {
 
   //-----------------------------------------------------------
 
+  var appOptions = app.get('options');
+  var appPaths = _.get(appOptions, 'web.project.paths') ||
+    _.get(appOptions, 'client.project.paths');
+
   var keywordsDir = path.join(
-    app.get('options').paths.app.services,
+    appPaths.app.services,
     'keywords'
   );
 
@@ -38,23 +43,24 @@ module.exports = function(Model, app, models) {
     //return [];
 
     var filePath = path.join(keywordsDir, name) + '.json';
+    //console.log('filePath',filePath);
+    var exists = fs.pathExistsSync(filePath);
 
-    return Promise.resolve()
-      .then(function(){
-        return fs.pathExists(filePath);
-      })
-      .then(function(exists){
+    if (!exists) {
+      var err = new Error(`Keywords were not found with name: ${name}`);
+      err.statusCode =  404;
+      throw err;
+    }
 
-        if(!exists){
-          return Promise.reject({
-            statusCode: 401,
-            message: 'Keywords were not found'
-          });
-        }
+    res.setHeader('content-type', 'application/json');
+    var reader = fs.createReadStream(filePath);
 
-        res.setHeader('content-type', 'application/json');
-        fs.createReadStream(filePath).pipe(res);
-      });
+    reader.on('error', function (err) {
+      res.type('application/json');
+      res.send(500, { error: err });
+    });
+
+    reader.pipe(res);
 
   };
 
@@ -65,7 +71,7 @@ module.exports = function(Model, app, models) {
         arg: 'name',
         type: 'string',
         required: true
-      },{
+      }, {
         arg: 'res',
         type: 'object',
         'http': {
@@ -74,7 +80,7 @@ module.exports = function(Model, app, models) {
       }],
       returns: {
         arg: 'result',
-        type: 'object',
+        type: 'array',
         root: true
       },
       http: {

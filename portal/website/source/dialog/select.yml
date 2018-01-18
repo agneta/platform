@@ -1,8 +1,7 @@
 controller: 'AgMediaSelect'
 
 scripts:
-  - 'media/file'
-  - 'edit/media/main'
+  - 'media'
 
 class: dialog-file-select
 
@@ -10,7 +9,7 @@ authorization:
   - editor
 
 styles:
-  - 'edit/media/main'
+  - 'media'
 
 angular_libs:
   -

@@ -2,9 +2,7 @@ title:
   en: Private Media
 
 template: edit/media/main
-
-viewData:
-  private: true
+controller: AgMediaPrivate
 
 authorization:
   - administrator

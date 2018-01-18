@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/website/source/dialog/select.js
+ *   Source file: portal/website/source/edit/media/main.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,32 +14,12 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-agneta.directive('AgMediaSelect', function(data, $mdDialog, AgMedia) {
 
-  var vm = this;
+(function() {
 
-  agneta.extend(vm, 'AgDialogCtrl');
+  require('media/file.module');
+  require('media/preview.module');
+  require('media/item-menu.module');
+  require('media/main.module');
 
-  vm.startingLocation = data.file.dir;
-
-  vm.openObject = function(object) {
-    data.onSelect(object);
-    $mdDialog.hide();
-  };
-
-  vm.onObjects = function(objects) {
-    for (var index in objects) {
-      var object = objects[index];
-      if (object.location == data.file.location) {
-        object.selected = true;
-        break;
-      }
-    }
-  };
-
-  AgMedia.init({
-    vm: vm,
-    config: data.media
-  });
-
-});
+})();
