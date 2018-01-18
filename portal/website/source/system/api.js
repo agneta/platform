@@ -13,6 +13,14 @@ agneta.directive('AgSystemApi',function(API){
 
   vm.model.select = function(model){
     vm.model.selected = model.name;
+
+    API.methods({
+      name: model.name
+    })
+      .$promise
+      .then(function(result) {
+        console.log(result);
+      });
   };
 
 });

@@ -1,18 +1,18 @@
 const Promise = require('bluebird');
-const _ = require('lodash');
 
 module.exports = function(Model, app) {
 
   Model.models = function() {
 
+    var remotes = app.remotes();
+
     return Promise.resolve()
       .then(function() {
 
-        return Promise.map(app.models(), function(model) {
-          console.log(model);
+        return Promise.map(remotes.classes(), function(remoteClass) {
           return {
-            name: model.modelName,
-            dataSource: model.dataSource.name
+            name: remoteClass.name,
+            http: remoteClass.http
           };
         });
 
