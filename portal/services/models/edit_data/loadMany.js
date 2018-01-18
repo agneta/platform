@@ -47,11 +47,11 @@ module.exports = function(Model, app) {
               var data = yaml.safeLoad(content);
               var fileNameParsed = path.parse(fileName);
               var name = fileNameParsed.name;
-
+              var id = [template, name].join('/');
               return {
                 title: app.lng(data.title, req),
-                path: '/' + name,
-                id: [template, name].join('/')
+                path: '/' + id,
+                id: id
               };
             });
         });

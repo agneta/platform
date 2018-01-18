@@ -20,7 +20,10 @@
     var vm = this;
     agneta.extend(vm, 'AgEditMainCtrl');
 
-    vm.init(Edit_Data);
+    vm.init({
+      model: Edit_Data,
+      mediaRoot: 'data'
+    });
 
   });
 

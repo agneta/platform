@@ -118,8 +118,9 @@
       return angular.isArray(val);
     };
 
-    vm.init = function(_Model) {
-      helpers.Model = _Model;
+    vm.init = function(options) {
+      helpers.Model = options.model;
+      helpers.mediaRoot = options.mediaRoot;
       vm.restart()
         .then(function() {
           if ($routeParams.id) {

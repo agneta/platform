@@ -42,7 +42,7 @@ module.exports = function(vm, $mdToast, $timeout, helpers) {
   };
   //------------------------------------------
   helpers.getBasePath = function() {
-    var base = agneta.urljoin('_t_configPrj("media.storageRoot");',vm.page.path);
+    var base = agneta.urljoin(helpers.mediaRoot,vm.page.path);
     return helpers.fixPath(base);
   };
   //------------------------------------------

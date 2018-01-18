@@ -103,22 +103,3 @@ agneta.directive('AgDialogCtrl', function($rootScope, $mdDialog, data) {
     vm.loading = false;
   });
 });
-
-agneta.directive('DialogConfirm', function($rootScope, data, $mdDialog) {
-
-  var vm = this;
-
-  vm.confirm = function() {
-    if (data.onConfirm) {
-      data.onConfirm();
-    }
-    $mdDialog.hide();
-  };
-  vm.reject = function() {
-    if (data.onReject) {
-      data.onReject();
-    }
-    $mdDialog.hide();
-  };
-
-});

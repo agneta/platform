@@ -55,7 +55,7 @@ module.exports = function(Model, app) {
             id: id,
             data: data,
             log: log,
-            path: '/' + parsedId.fileName
+            path: '/' + path.join(parsedId.templateId,parsedId.fileName)
           },
           template: template
         };

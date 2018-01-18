@@ -114,7 +114,7 @@
     });
 
     socket.on('file:operation:progress', function(result) {
-      console.log(result);
+      //console.log(result);
       vm.files[result.location] = result;
       onUpdate();
     });
