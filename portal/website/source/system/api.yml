@@ -1,0 +1,13 @@
+title:
+  en: 'API Explorer'
+  gr: 'Διερευνητής API'
+description:
+  en: "Explore your API."
+
+controller: AgSystemApi
+icon: material/settings-ethernet
+menuLock: true
+
+authorization:
+  - administrator
+  - editor

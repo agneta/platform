@@ -1,0 +1,9 @@
+<div class="models" layout="column">
+  <div
+  class="ag-list-item"
+  ng-click="model.select(item)"
+  ng-class="{active:model.selected == item.name}"
+  ng-repeat="item in model.list">
+    {{item.name}}
+  </div>
+</div>

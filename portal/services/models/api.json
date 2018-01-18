@@ -1,7 +1,8 @@
 {
-    "name": "Application",
-    "plural": "Applications",
+    "name": "API",
+    "plural": "API",
     "base": "Model",
+    "idInjection": true,
     "options": {},
     "validations": [],
     "acls": [{
@@ -14,12 +15,6 @@
         "principalType": "ROLE",
         "principalId": "administrator",
         "permission": "ALLOW"
-    }, {
-        "accessType": "EXECUTE",
-        "principalType": "ROLE",
-        "principalId": "editor",
-        "permission": "ALLOW",
-        "property": "restart"
     }],
     "methods": {}
 }

@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/models/application.js
+ *   Source file: portal/services/models/activity_item.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,31 +14,11 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function(Model) {
 
 
-  Model.restart = function() {
+module.exports = function(Model, app) {
 
-    process.send({
-      restart: true
-    });
-
-  };
-
-  Model.remoteMethod(
-    'restart', {
-      description: 'Restart the application',
-      accepts: [],
-      returns: {
-        arg: 'result',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'post',
-        path: '/restart'
-      },
-    }
-  );
+  require('./api/methods')(Model,app);
+  require('./api/models')(Model,app);
 
 };

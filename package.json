@@ -69,7 +69,6 @@
     "lodash-deep": "2.0.0",
     "loopback": "3.14.0",
     "loopback-boot": "2.26.2",
-    "loopback-component-explorer": "5.1.0",
     "loopback-connector-mongodb": "3.2.1",
     "loopback-connector-sendgrid": "2.2.2",
     "loopback-datasource-juggler": "3.12.0",

@@ -23,6 +23,10 @@ module.exports = {
     dataSource: 'db',
     public: true
   },
+  API: {
+    dataSource: false,
+    public: true
+  },
   Email_Template: {
     dataSource: false,
     public: true
@@ -40,10 +44,6 @@ module.exports = {
     public: true
   },
   GIT: {
-    dataSource: false,
-    public: true
-  },
-  Application: {
     dataSource: false,
     public: true
   }
