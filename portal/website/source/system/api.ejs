@@ -1,2 +1,43 @@
-<div class="">
+<div layout="row">
+
+<div flex="50" class="methods" layout="column">
+  <div
+  class="ag-list-item"
+  ng-click="method.select(item)"
+  ng-class="{active:method.selected == item}"
+  ng-repeat="item in method.list">
+    {{item.path}}
+  </div>
+</div>
+
+<div flex="50" class="method ag-margin" layout="column">
+  <table>
+  <tr>
+    <td>Description:</td>
+    <td>{{method.selected.description}}</td>
+  </tr>
+  <tr>
+    <td>Path:</td>
+    <td>{{method.selected.path}}</td>
+  </tr>
+  <tr>
+    <td>Verb:</td>
+    <td>{{method.selected.verb}}</td>
+  </tr>
+  <tr>
+    <td>Method:</td>
+    <td>{{method.selected.method}}</td>
+  </tr>
+  <tr class="accepts">
+    <td>Accepts</td>
+    <td>
+    <div ng-repeat="item in method.selected.accepts">
+      <p>Argument: {{item.arg}}</p>
+      <p>Type: {{item.type}}</p>
+    </div>
+    </td>
+  </tr>
+  <table>
+</div>
+
 </div>
