@@ -16,7 +16,8 @@
  */
 var Promise = require('bluebird');
 var _ = require('lodash');
-
+const fs = require('fs');
+const path = require('path');
 module.exports = function(Model, app, models) {
 
   var Field = models.field;
@@ -25,20 +26,51 @@ module.exports = function(Model, app, models) {
   Model.engine = {
     find: require('./find')(app, models)
   };
-  
+
   //-----------------------------------------------------------
 
-  Model.searchKeywords = function() {
+  var keywordsDir = path.join(
+    app.get('options').paths.app.services,
+    'keywords'
+  );
+
+  Model.searchKeywords = function(name, res) {
     //return [];
+
+    var filePath = path.join(keywordsDir, name) + '.json';
+
+    return Promise.resolve()
+      .then(function(){
+        return fs.pathExists(filePath);
+      })
+      .then(function(exists){
+
+        if(!exists){
+          return Promise.reject({
+            statusCode: 401,
+            message: 'Keywords were not found'
+          });
+        }
+
+        res.setHeader('content-type', 'application/json');
+        fs.createReadStream(filePath).pipe(res);
+      });
+
   };
 
   Model.remoteMethod(
     'searchKeywords', {
       description: 'Get search keywords for fuzzy search on the client side',
       accepts: [{
-        arg: 'language',
+        arg: 'name',
         type: 'string',
         required: true
+      },{
+        arg: 'res',
+        type: 'object',
+        'http': {
+          source: 'res'
+        }
       }],
       returns: {
         arg: 'result',
@@ -64,6 +96,9 @@ module.exports = function(Model, app, models) {
       }, {
         arg: 'keywords',
         type: 'array',
+        items: {
+          type: 'string'
+        },
         required: true
       }, {
         arg: 'req',

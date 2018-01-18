@@ -18,8 +18,9 @@ const S = require('string');
 const GreekUtils = require('greek-utils');
 
 module.exports = function(util, options) {
-  console.log(util.locals.services.get('search'));
+
   options.models = util.locals.services.get('search')[options.name].models;
+
   if(!options.models){
     throw new Error(`Could not find search models with name: ${options.name}`);
   }
@@ -133,7 +134,7 @@ module.exports = function(util, options) {
 
   //-----------------------------------
 
-  var Keywords = {
+  var keywords = {
     scan: scan,
     dict: keywordsLng,
     deploy: deploy,
@@ -146,8 +147,8 @@ module.exports = function(util, options) {
     }
   };
 
-  util.keywords = Keywords;
+  util.keywords = keywords;
 
-  return Keywords;
+  return keywords;
 
 };

@@ -22,7 +22,9 @@ module.exports = function(util, options) {
   var limit = 200;
 
   var where = {
-    isSize: false
+    isSize: {
+      neq: true
+    }
   };
 
   var bar;
@@ -34,8 +36,7 @@ module.exports = function(util, options) {
     filename: function() {
       return 'keywords_media';
     },
-    title: 'location.value',
-    outputJson: util.locals.project.paths.appPortal.generated
+    title: 'location.value'
   });
 
   function getItems(skip) {
@@ -51,6 +52,7 @@ module.exports = function(util, options) {
       skip: skip
     })
       .then(function(objects) {
+
         return Promise.map(objects, function(object) {
 
           bar.tick({
@@ -77,7 +79,7 @@ module.exports = function(util, options) {
     .then(function(_count) {
       count = _count;
       bar = util.progress(count, {
-        title: 'Scanning media search items'
+        title: `Scanning ${count} media search items`
       });
 
       return getItems();
