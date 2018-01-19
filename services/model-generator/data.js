@@ -9,7 +9,11 @@ module.exports = function(app, config) {
   var dataDir = path.join(
     process.cwd(), 'edit/data-remote'
   );
-  var dataTemplates = [];
+  var templates = [];
+
+  app.dataRemote = {
+    templates: templates
+  };
 
   return Promise.resolve()
     .then(function() {
@@ -20,7 +24,6 @@ module.exports = function(app, config) {
     })
     .then(function(files) {
       return Promise.map(files, function(filePath) {
-        var filename = path.parse(filePath).name;
 
         return fs.readFile(
           path.join(dataDir, filePath)
@@ -28,15 +31,26 @@ module.exports = function(app, config) {
           .then(function(content) {
 
             var data = yaml.safeLoad(content);
-            console.log(data);
+            data.name = data.name || path.parse(filePath).name;
 
-            dataTemplates.push({
+            templates.push({
+              name: data.name,
               title: data.title
             });
 
-            config._definitions[filename] = {
-              definition: dataDefinition(data)
+            let definition = dataDefinition(app,data);
+            let fileName = data.model.toLowerCase() + '.json';
+            console.log(definition);
+
+            config._definitions[fileName] = {
+              definition: definition
             };
+
+            config.models[definition.name] = {
+              dataSource: 'db',
+              public: true
+            };
+
           });
 
       });

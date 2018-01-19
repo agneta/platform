@@ -23,20 +23,18 @@ module.exports = function(app, clientHelpers) {
     var form = options.form;
     var onField = options.onField;
     var formFields = {};
-
+    var formName;
 
     if (_.isString(form)) {
-      form = {
-        name: form,
-        data: clientHelpers.get_data('form/presets/' + form)
-      };
+      formName = form;
+      form = clientHelpers.get_data('form/presets/' + formName);
     }
 
-    if(!form.data.name){
-      form.data.name = form.name;
+    if(!form.name){
+      form.name = options.name || formName;
     }
 
-    scan(form.data);
+    scan(form);
 
     function scan(data) {
 
@@ -47,23 +45,17 @@ module.exports = function(app, clientHelpers) {
       for (var field of data.fields) {
 
         field = clientHelpers.form_field(field, data);
+
+        if(field.name && !field.static){
+          formFields[field.name] = field;
+
+          if (onField) {
+            onField(field);
+          }
+        }
+
         if (field.fields) {
           scan(field);
-          continue;
-        }
-
-        if (!field.name) {
-          continue;
-        }
-
-        if (field.static) {
-          continue;
-        }
-
-        formFields[field.name] = field;
-
-        if (onField) {
-          onField(field);
         }
 
       }

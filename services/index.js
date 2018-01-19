@@ -69,6 +69,8 @@ module.exports = function(options) {
         _definitions: {}
       };
 
+      require('./lib/form')(app);
+
       return Promise.resolve()
         .then(function() {
           return modelGenerator(app, modelConfig);

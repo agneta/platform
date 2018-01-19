@@ -1,6 +1,6 @@
-module.exports = function(data) {
+module.exports = function(app, data) {
   var result = {
-    name: data.name,
+    name: data.model,
     base: 'PersistedModel',
     idInjection: true,
     options: {},
@@ -10,12 +10,39 @@ module.exports = function(data) {
     indexes: {}
   };
 
-  for(var field in data.fields){
-    console.log(field);
-    result.properties[field.name] = {
+  app.form.fields({
+    form: data,
+    onField: function(field) {
 
-    };
-  }
+      if(field.parent){
+        return;
+      }
+
+      var type = field.valueType || field.type;
+
+      switch (field.type) {
+        case 'number':
+          type = 'number';
+          break;
+      }
+
+      switch (field.valueType) {
+        case 'value':
+          type = 'string';
+          break;
+      }
+
+      var property = {
+        type: type
+      };
+
+      if(field.validators && field.validators.required){
+        property.required = true;
+      }
+
+      result.properties[field.name] = property;
+    }
+  });
 
   return result;
 };

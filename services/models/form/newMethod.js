@@ -32,7 +32,7 @@ module.exports = function(Model, app) {
     }];
 
     var formFields = app.form.fields({
-      form: formMethod,
+      form: form,
       onField: function(field) {
         var type = field.valueType || 'string';
 
