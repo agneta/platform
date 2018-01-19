@@ -32,9 +32,9 @@ module.exports = function(util, options) {
   var count;
 
   var keywords = Keywords(util, {
-    name: 'media',
+    name: options.name,
     filename: function() {
-      return `keywords_media_${options.name}`;
+      return options.filename;
     },
     title: 'location.value'
   });
