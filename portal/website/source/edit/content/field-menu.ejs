@@ -1,0 +1,20 @@
+<script type="text/ng-template" id="edit-item-menu.html">
+
+  <div class="md-open-menu-container md-whiteframe-z2 edit-item-menu">
+    <md-menu-content layout="column">
+
+      <md-button ng-click="editAttributes(data)">
+        <md-icon class="attributes"  md-svg-icon="<%-get_icon('material/label')%>"></md-icon>
+        Attributes
+      </md-button>
+
+      <md-button class="delete" ng-if="!field.validators.required&&!field.hidden" ng-click="removeValue(key,parent)">
+        <md-icon  md-svg-icon="<%-get_icon('material/delete')%>"></md-icon>
+        Delete
+      </md-button>
+
+    </md-menu-content>
+
+  </div>
+
+</script>

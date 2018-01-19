@@ -1,7 +1,7 @@
 <div class="field array" data-as-sortable="dragControlListeners" data-ng-model="data.__value">
 
-  <div ng-repeat="(key,child) in data.__value" ng-init="childField=getField(field,child);" data-as-sortable-item>
-    <div data-as-sortable-item-handle class="header highlight md-padding" layout="row" layout-align="start center" ng-mouseover="fieldHover(data)">
+  <div edit-item-menu ng-repeat="(key,child) in data.__value" ng-init="childField=getField(field,child);" data-as-sortable-item>
+    <div data-as-sortable-item-handle class="header highlight md-padding" layout="row" layout-align="start center">
       <%-template('edit/content/label',{model:'lng(childField.title)',prefix:'{{$index+1}}.'})%>
       <%-template('edit/content/fields-inline')%>
 

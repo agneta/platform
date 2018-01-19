@@ -1,6 +1,6 @@
 <div ng-form="dataForm" class="md-padding page-data">
-    <div ng-repeat="field in template.fields" ng-if="page.data[field.name]" ng-init="key=field.name;data=page.data[key];parent=page.data;" class="data-node" ng-class="{contracted:data._expanded}">
-        <div layout="row" class="header" layout-align="left center"  ng-mouseover="fieldHover(data)">
+    <div ng-repeat="field in template.fields" edit-item-menu ng-if="page.data[field.name]" ng-init="key=field.name;data=page.data[key];parent=page.data;" class="data-node" ng-class="{contracted:data._expanded}">
+        <div layout="row" class="header" layout-align="left center">
             <%-template('edit/content/label',{model:'edit.lng(field.title)||key'})%>
             <%-template('edit/content/fields-inline')%>
             <%-template('edit/content/expander',{if:"field.type=='array'"})%>

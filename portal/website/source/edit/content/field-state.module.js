@@ -17,6 +17,7 @@
 module.exports = function(vm) {
 
   var focused = null;
+
   vm.fieldFocus = function(data) {
     if (focused) {
       delete focused.__focused;
@@ -25,20 +26,8 @@ module.exports = function(vm) {
     focused = data;
   };
 
-  var hovered = null;
-  vm.fieldHover = function(data) {
-    if (hovered) {
-      delete hovered.__hovered;
-    }
-    data.__hovered = true;
-    hovered = data;
-  };
-
   vm.clearHiddenData = function() {
 
-    if (hovered) {
-      delete hovered.__hovered;
-    }
     if (focused) {
       delete focused.__focused;
     }

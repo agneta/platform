@@ -41,6 +41,7 @@ app.run(function($rootScope, $templateRequest, $compile, $mdMenu) {
       };
 
       element.bind('contextmenu', function(event) {
+        event.stopPropagation();
         scope.$apply(function() {
           event.preventDefault();
           RightClickMenuCtrl.open(event);
