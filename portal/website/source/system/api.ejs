@@ -1,3 +1,12 @@
+<div class="md-padding ag-margin" layout="row">
+  <div flex="50">
+    <%-template('system/api/data',{data:page.data.model})%>
+</div>
+  <div flex="50">
+    <%-template('system/api/list',{data:page.data.properties})%>
+</div>
+</div>
+
 <div layout="row">
 
 <div flex="50" class="methods" layout="column">
@@ -11,33 +20,8 @@
 </div>
 
 <div flex="50" class="method ag-margin" layout="column">
-  <table>
-  <tr>
-    <td>Description:</td>
-    <td>{{method.selected.description}}</td>
-  </tr>
-  <tr>
-    <td>Path:</td>
-    <td>{{method.selected.path}}</td>
-  </tr>
-  <tr>
-    <td>Verb:</td>
-    <td>{{method.selected.verb}}</td>
-  </tr>
-  <tr>
-    <td>Method:</td>
-    <td>{{method.selected.method}}</td>
-  </tr>
-  <tr class="accepts">
-    <td>Accepts</td>
-    <td>
-    <div ng-repeat="item in method.selected.accepts">
-      <p>Argument: {{item.arg}}</p>
-      <p>Type: {{item.type}}</p>
-    </div>
-    </td>
-  </tr>
-  <table>
+  <%-template('system/api/data',{data:page.data.method})%>
+  <%-template('system/api/list',{data:page.data.accepts})%>
 </div>
 
 </div>

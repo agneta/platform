@@ -1,0 +1,20 @@
+<div class="<%-data.name%> ag-margin" layout="column">
+  <div layout="row" layout-align="start center">
+  <p class="title"><%-lng(data.title)%> ({{<%-data.model%> | numkeys}})</p>
+  <span flex></span>
+  <md-button ng-click="hide.<%-data.name%>=!hide.<%-data.name%>?true:false" class="md-icon-button" aria-label="expand">
+    <md-icon md-svg-icon="<%-get_icon('material/keyboard-arrow-down')%>">
+    </md-icon>
+  </md-button>
+  </div>
+  <div ng-show="hide.<%-data.name%>" class="ag-margin" layout="column">
+    <table ng-repeat="(key, item) in <%-data.model%>">
+      <%for(var item of data.list){%>
+        <tr>
+        <td class="label"><%-lng(item.label)%>:</td>
+        <td class="value">{{<%-item.value%>}}</td>
+        </tr>
+        <%}%>
+      </table>
+  </div>
+  </div>

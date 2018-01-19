@@ -363,6 +363,15 @@ app.config(function($mdThemingProvider, $sceDelegateProvider) {
   };
 });
 
+app.filter('numkeys', function() {
+  return function(object) {
+    if(!object){
+      return;
+    }
+    return Object.keys(object).length;
+  };
+});
+
 app.filter('filesize', function() {
 
   return function(bytes) {

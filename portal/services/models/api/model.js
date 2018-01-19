@@ -2,9 +2,7 @@ const Promise = require('bluebird');
 
 module.exports = function(Model, app) {
 
-  Model.methods = function(name) {
-
-
+  Model.model = function(name) {
 
     return Promise.resolve()
       .then(function(){
@@ -25,7 +23,8 @@ module.exports = function(Model, app) {
       })
       .then(function(list) {
         return {
-          list: list
+          list: list,
+          schema: app.modelSchemas[name]
         };
       });
 
@@ -87,9 +86,9 @@ module.exports = function(Model, app) {
   }
 
   Model.remoteMethod(
-    'methods',
+    'model',
     {
-      description: 'Get API remote methods from a specified model',
+      description: 'Get API remote methods and schema from a specified model',
       accepts: [{
         arg: 'name',
         type: 'string',
@@ -102,7 +101,7 @@ module.exports = function(Model, app) {
       },
       http: {
         verb: 'get',
-        path: '/methods'
+        path: '/model'
       },
     }
   );

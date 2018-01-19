@@ -1,7 +1,6 @@
 agneta.directive('AgSystemApi',function(API){
 
   var vm = this;
-
   vm.model = {};
   vm.method = {};
 
@@ -14,13 +13,16 @@ agneta.directive('AgSystemApi',function(API){
 
   vm.model.select = function(model){
     vm.model.selected = model;
+    vm.model.schema = null;
+    vm.method.list = null;
 
-    API.methods({
+    API.model({
       name: model.name
     })
       .$promise
       .then(function(result) {
         vm.method.list = result.list;
+        vm.model.schema = result.schema;
       });
   };
 

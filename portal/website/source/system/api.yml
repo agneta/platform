@@ -11,3 +11,52 @@ menuLock: true
 authorization:
   - administrator
   - editor
+
+data:
+  model:
+    -
+      label: Name
+      value: model.schema.name
+    -
+      label: Base
+      value: model.schema.base
+  properties:
+    title:
+      en: Properties
+    model: model.schema.properties
+    name: properties
+    list:
+      -
+        label: Name
+        value: key
+      -
+        label: Type
+        value: item.type
+      -
+        label: Required
+        value: item.required
+  accepts:
+    name: accepts
+    title:
+      en: Accepts
+    model: method.selected.accepts
+    list:
+      -
+        label: Argument
+        value: item.arg
+      -
+        label: Type
+        value: item.type
+  method:
+    -
+      label: Description
+      value: method.selected.description
+    -
+      label: Path
+      value: method.selected.path
+    -
+      label: Verb
+      value: method.selected.verb
+    -
+      label: Method
+      value: method.selected.method
