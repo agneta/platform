@@ -34,8 +34,8 @@
 <div layout="column" class="page-main" ng-class="{active:page}">
 
   <div layout="row" class="heading" layout="start center" layout-margin>
-    <%if(locals.toolbar){%>
-      <%-template(locals.toolbar)%>
+    <%if(page.editor&&page.editor.toolbar){%>
+      <%-template(page.editor.toolbar)%>
         <%}%>
           <span flex></span>
 

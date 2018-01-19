@@ -20,7 +20,7 @@ module.exports = function(Model, app) {
 
   var webPrj = app.get('options').web.project;
 
-  Model.editConfigDir = path.join(webPrj.paths.core.project, 'edit', 'data');
+  Model.editConfigDir = path.join(webPrj.paths.core.project, 'edit', 'data-local');
 
   Model.parseId = function(id) {
 
@@ -37,12 +37,12 @@ module.exports = function(Model, app) {
 
   };
 
-  require('./edit_data/loadCommit')(Model, app);
-  require('./edit_data/loadOne')(Model, app);
-  require('./edit_data/delete')(Model, app);
-  require('./edit_data/save')(Model, app);
-  require('./edit_data/new')(Model, app);
-  require('./edit_data/loadMany')(Model, app);
+  require('./data-local/loadCommit')(Model, app);
+  require('./data-local/loadOne')(Model, app);
+  require('./data-local/delete')(Model, app);
+  require('./data-local/save')(Model, app);
+  require('./data-local/new')(Model, app);
+  require('./data-local/loadMany')(Model, app);
   require('./edit/loadTemplates')(Model, app);
 
 };

@@ -40,12 +40,12 @@
         dep: angularMoment
     keypress: true
     menuLock: true
+    sidebar: edit/content/sidebar/main
     class: 'page-editor'
     authorization:
       - administrator
       - editor
   templates:
-    - 'edit/pages'
     - 'edit/content'
 -
   data:

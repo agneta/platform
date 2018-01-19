@@ -31,11 +31,11 @@ module.exports = {
     dataSource: false,
     public: true
   },
-  Edit_Page: {
+  Data_Local: {
     dataSource: false,
     public: true
   },
-  Edit_Data: {
+  Data_Remote: {
     dataSource: false,
     public: true
   },

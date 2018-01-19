@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/website/source/edit/pages.js
+ *   Source file: portal/website/source/edit/data.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -16,11 +16,14 @@
  */
 (function() {
 
-  agneta.directive('AgEditPagesCtrl', function(Page) {
+  agneta.directive('AgEditDataLocal', function(Data_Local) {
     var vm = this;
-
     agneta.extend(vm, 'AgEditMainCtrl');
-    vm.init(Page);
+
+    vm.init({
+      model: Data_Local,
+      mediaRoot: 'data'
+    });
 
   });
 

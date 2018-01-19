@@ -70,12 +70,12 @@ module.exports = function(Model, app) {
     return path.join(webPrj.paths.app.website, page.full_source);
   };
 
-  require('./edit_page/loadCommit')(Model, app);
-  require('./edit_page/loadOne')(Model, app);
-  require('./edit_page/delete')(Model, app);
-  require('./edit_page/save')(Model, app);
-  require('./edit_page/new')(Model, app);
-  require('./edit_page/loadMany')(Model, app);
+  require('./page/loadCommit')(Model, app);
+  require('./page/loadOne')(Model, app);
+  require('./page/delete')(Model, app);
+  require('./page/save')(Model, app);
+  require('./page/new')(Model, app);
+  require('./page/loadMany')(Model, app);
   require('./edit/loadTemplates')(Model, app);
 
 };

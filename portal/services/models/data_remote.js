@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/website/source/edit/data.js
+ *   Source file: portal/services/models/edit_data.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,17 +14,20 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
+var path = require('path');
 
-  agneta.directive('AgEditDataCtrl', function(Edit_Data) {
-    var vm = this;
-    agneta.extend(vm, 'AgEditMainCtrl');
+module.exports = function(Model, app) {
 
-    vm.init({
-      model: Edit_Data,
-      mediaRoot: 'data'
-    });
+  var webPrj = app.get('options').web.project;
 
-  });
+  Model.editConfigDir = path.join(webPrj.paths.core.project, 'edit', 'data-remote');
 
-})();
+  require('./data-remote/loadCommit')(Model, app);
+  require('./data-remote/loadOne')(Model, app);
+  require('./data-remote/delete')(Model, app);
+  require('./data-remote/save')(Model, app);
+  require('./data-remote/new')(Model, app);
+  require('./data-remote/loadMany')(Model, app);
+  require('./edit/loadTemplates')(Model, app);
+
+};

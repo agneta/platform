@@ -1,6 +1,6 @@
 {
-    "name": "Edit_Page",
-    "plural": "Edit_Pages",
+    "name": "Data_Local",
+    "plural": "Data_Local",
     "base": "Model",
     "idInjection": true,
     "options": {},
@@ -10,11 +10,6 @@
         "principalType": "ROLE",
         "principalId": "$everyone",
         "permission": "DENY"
-    }, {
-        "accessType": "EXECUTE",
-        "principalType": "ROLE",
-        "principalId": "administrator",
-        "permission": "ALLOW"
     }, {
         "accessType": "EXECUTE",
         "principalType": "ROLE",

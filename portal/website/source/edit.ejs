@@ -1,0 +1,13 @@
+<div class="md-padding" layout="column">
+  <div layout="row" layout-xs="column">
+    <%-template('ui/page-card',{data:get_page('edit/pages')})%>
+  </div>
+  <div layout="row" layout-xs="column">
+    <%-template('ui/page-card',{data:get_page('edit/media-public')})%>
+    <%-template('ui/page-card',{data:get_page('edit/media-private')})%>
+  </div>
+  <div layout="row" layout-xs="column">
+    <%-template('ui/page-card',{data:get_page('edit/data-local')})%>
+    <%-template('ui/page-card',{data:get_page('edit/data-remote')})%>
+  </div>
+</div>

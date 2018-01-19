@@ -1,6 +1,6 @@
 {
-    "name": "Edit_Data",
-    "plural": "Edit_Data",
+    "name": "Data_Remote",
+    "plural": "Data_Remote",
     "base": "Model",
     "idInjection": true,
     "options": {},

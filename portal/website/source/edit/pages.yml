@@ -6,7 +6,7 @@ description:
   en: "Create, Edit, or even remove pages based on your website's templates"
   gr: "Δημιουργία, επεξεργασία, ή ακόμη και διαγραφή σελίδων που βασίζονται σε πρότυπά σας (templates)"
 
-template: 'edit/pages'
+template: 'edit/content'
 noHeader: true
 controller: 'AgEditPagesCtrl'
 icon: 'agneta/pages'
@@ -17,6 +17,7 @@ scripts:
 
 editor:
   main: true
+  toolbar: 'edit/pages/toolbar'
 
 authorization:
   - administrator

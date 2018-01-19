@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/website/source/edit/pages.js
+ *   Source file: portal/services/models/edit_data/delete.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,14 +14,33 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
+var fs = require('fs-extra');
 
-  agneta.directive('AgEditPagesCtrl', function(Page) {
-    var vm = this;
+module.exports = function(Model) {
 
-    agneta.extend(vm, 'AgEditMainCtrl');
-    vm.init(Page);
+  Model.delete = function(id) {
+    var parsedId = Model.parseId(id);
+    return fs.remove(parsedId.source);
+  };
 
-  });
+  Model.remoteMethod(
+    'delete', {
+      description: 'Delete a file',
+      accepts: [{
+        arg: 'id',
+        type: 'string',
+        required: true
+      }],
+      returns: {
+        arg: 'result',
+        type: 'object',
+        root: true
+      },
+      http: {
+        verb: 'post',
+        path: '/delete'
+      },
+    }
+  );
 
-})();
+};

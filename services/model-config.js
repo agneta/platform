@@ -120,7 +120,7 @@ module.exports = function() {
     },
     Page: {
       dataSource: 'db',
-      public: false
+      public: true
     },
     Attachment: {
       dataSource: 'db',

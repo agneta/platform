@@ -6,7 +6,8 @@ description:
 icon: 'material/cloud-queue'
 
 template: edit/content
-controller: 'AgEditDataLocal'
+
+controller: 'AgEditDataRemote'
 
 editor:
   main: false
