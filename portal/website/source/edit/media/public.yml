@@ -1,9 +1,0 @@
-title:
-  en: Public Media
-
-template: edit/media/main
-controller: AgMediaPublic
-
-authorization:
-  - administrator
-  - editor

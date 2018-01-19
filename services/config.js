@@ -49,6 +49,9 @@ module.exports = {
     },
     media: {
       model: 'Media'
+    },
+    mediaPrivate: {
+      model: 'Media_Private'
     }
   },
   remoting: {

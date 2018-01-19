@@ -1,9 +1,0 @@
-title:
-  en: Private Media
-
-template: edit/media/main
-controller: AgMediaPrivate
-
-authorization:
-  - administrator
-  - editor

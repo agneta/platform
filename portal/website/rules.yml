@@ -20,6 +20,7 @@
         priority: 0
       - 'edit/content'
       - 'media'
+      - 'lib/fuse.min'
     styles:
       - 'lib/quill.snow'
       - 'lib/ng-sortable.min'
@@ -38,10 +39,14 @@
         js: lib/angular-moment.min
         dep: angularMoment
     keypress: true
+    menuLock: true
     class: 'page-editor'
+    authorization:
+      - administrator
+      - editor
   templates:
     - 'edit/pages'
-    - 'edit/data'
+    - 'edit/content'
 -
   data:
     menuLock: true

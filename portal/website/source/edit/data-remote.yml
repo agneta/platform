@@ -1,0 +1,12 @@
+title:
+  en: Remote Data
+  gr: Δεδομένα Διαδικτύου
+description:
+  en: "Edit your project's remote data while they are updated in your database"
+icon: 'material/cloud-queue'
+
+template: edit/content
+controller: 'AgEditDataLocal'
+
+editor:
+  main: false
