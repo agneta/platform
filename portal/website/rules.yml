@@ -18,12 +18,12 @@
       -
         path: 'lib/moment/moment.min'
         priority: 0
-      - 'edit/main'
+      - 'edit/content'
       - 'media'
     styles:
       - 'lib/quill.snow'
       - 'lib/ng-sortable.min'
-      - 'edit/main'
+      - 'edit/content'
     angular_libs:
       -
         js: lib/ng-quill

@@ -1,18 +1,13 @@
 <div ng-form="dataForm" class="md-padding page-data">
     <div ng-repeat="field in template.fields" ng-if="page.data[field.name]" ng-init="key=field.name;data=page.data[key];parent=page.data;" class="data-node" ng-class="{contracted:data._expanded}">
         <div layout="row" class="header" layout-align="left center"  ng-mouseover="fieldHover(data)">
-            <%-template('edit/main/icon')%>
-            <label>{{edit.lng(field.title)||key}}</label>
-            <%-template('edit/main/fields-inline')%>
-            <span flex></span>
-            <md-button ng-if="field.type=='array'" ng-click="toggleView(data)" class="md-fab md-mini md-white expander" aria-label="expander">
-                <md-icon md-svg-icon="<%-get_icon('material/keyboard-arrow-down')%>"></md-icon>
-            </md-button>
-            <%-template('edit/main/data-tools')%>
-            <%-template('edit/main/contributors')%>
+            <%-template('edit/content/label',{model:'edit.lng(field.title)||key'})%>
+            <%-template('edit/content/fields-inline')%>
+            <%-template('edit/content/expander',{if:"field.type=='array'"})%>
+            <%-template('edit/content/contributors')%>
         </div>
 
-        <%-template('edit/main/fields-standard',{attr:'class="data-field"'})%>
+        <%-template('edit/content/fields-standard',{attr:'class="data-field"'})%>
 
     </div>
     <div layout="row">

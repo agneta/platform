@@ -1,15 +1,12 @@
 <div ng-repeat="(key,value) in data.__value" ng-if="getField(field,key)" ng-init="parentField=field;parent=data; data = value;name=key; field = getField(field,key)">
 
   <div layout="row" class="header" layout-align="left center" ng-mouseover="fieldHover(data)">
-    <%-template('edit/main/icon')%>
-    <label>{{edit.lng(field.title)||key}}</label>
-    <%-template('edit/main/fields-inline')%>
-    <span flex></span>
-    <%-template('edit/main/data-tools')%>
-    <%-template('edit/main/contributors')%>
+    <%-template('edit/content/label',{model:'edit.lng(field.title)||key'})%>
+    <%-template('edit/content/fields-inline')%>
+    <%-template('edit/content/contributors')%>
   </div>
 
-  <%-template('edit/main/fields-standard')%>
+  <%-template('edit/content/fields-standard')%>
 
 </div>
 <div layout="row" layout-wrap class="add-value-row">

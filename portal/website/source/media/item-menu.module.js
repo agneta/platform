@@ -15,7 +15,7 @@
  *   limitations under the License.
  */
 
-agneta.directive('mediaItem', function($mdMenu,$element, EditFile, $rootScope, $templateRequest, $compile, $mdDialog) {
+agneta.directive('mediaItem', function($mdMenu,$element, EditFile, $rootScope, $mdDialog) {
 
   var scope = this;
 
@@ -119,44 +119,16 @@ agneta.directive('mediaItem', function($mdMenu,$element, EditFile, $rootScope, $
 
   };
 
-  $templateRequest('media-item-menu.html').then(function(html) {
-    var template = angular.element(
-      $compile(html)(scope)
-    );
-
-    var RightClickMenuCtrl = {
-      open: function(event) {
-        scope.object.selected = true;
-        $mdMenu.show({
-          scope: $rootScope.$new(),
-          mdMenuCtrl: RightClickMenuCtrl,
-          element: template,
-          target: event.target
-        });
-      },
-      close: function() {
-        scope.object.selected = false;
-        $mdMenu.hide();
-      },
-      positionMode: function() {
-        return {
-          left: 'target',
-          top: 'target'
-        };
-      },
-      offsets: function() {
-        return {
-          left: event.offsetX,
-          top: event.offsetY
-        };
-      }
-    };
-
-    $element.bind('contextmenu', function(event) {
-      scope.$apply(function() {
-        event.preventDefault();
-        RightClickMenuCtrl.open(event);
-      });
-    });
+  agneta.contextMenu({
+    scope: scope,
+    element: $element,
+    template: 'media-item-menu.html',
+    onOpen: function(){
+      scope.object.selected = true;
+    },
+    onClose: function(){
+      scope.object.selected = false;
+    }
   });
+
 });

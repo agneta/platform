@@ -55,15 +55,15 @@
     }
     ];
 
-    require('edit/_pages/field-state.module')(vm, helpers);
-    require('edit/_pages/content.module')(vm, helpers);
-    require('edit/_pages/media.module')(vm, AgMedia, $mdDialog, helpers);
-    require('edit/_pages/helpers.module')(vm, $mdToast, $timeout, helpers);
-    require('edit/_pages/history.module')(vm, helpers);
-    require('edit/_pages/main.module')(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeEdit, Portal);
-    require('edit/_pages/search.module')(vm, $timeout);
-    require('edit/_pages/source.module')(vm, $mdDialog, $timeout);
-    require('edit/_pages/contributor.module')(vm, $rootScope, Account, Portal, $timeout, Role_Editor);
+    require('edit/content/field-state.module')(vm, helpers);
+    require('edit/content/content.module')(vm, helpers);
+    require('edit/content/media.module')(vm, AgMedia, $mdDialog, helpers);
+    require('edit/content/helpers.module')(vm, $mdToast, $timeout, helpers);
+    require('edit/content/history.module')(vm, helpers);
+    require('edit/content/main.module')(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeEdit, Portal);
+    require('edit/content/search.module')(vm, $timeout);
+    require('edit/content/source.module')(vm, $mdDialog, $timeout);
+    require('edit/content/contributor.module')(vm, $rootScope, Account, Portal, $timeout, Role_Editor);
 
     vm.onKeyPress = function(event) {
 

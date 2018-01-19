@@ -495,3 +495,4 @@ require('main/dialog.module');
 require('main/menu-side.module');
 require('main/interceptors.module');
 require('main/account.module');
+require('main/menu-context.module');
