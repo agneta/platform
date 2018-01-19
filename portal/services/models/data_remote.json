@@ -1,8 +1,22 @@
 {
     "name": "Data_Remote",
     "plural": "Data_Remote",
-    "base": "Model",
+    "base": "PersistedModel",
     "idInjection": true,
+    "properties": {
+      "title": {
+        "type": "string",
+        "required": true
+      },
+      "name": {
+        "type": "string",
+        "required": true
+      },
+      "template": {
+        "type": "string",
+        "required": true
+      }
+    },
     "options": {},
     "validations": [],
     "acls": [{
@@ -16,5 +30,13 @@
         "principalId": "editor",
         "permission": "ALLOW"
     }],
+    "uniqueName": {
+      "keys": {
+        "name": 1
+      },
+      "options": {
+        "unique": true
+      }
+    },
     "methods": {}
 }

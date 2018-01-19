@@ -14,8 +14,17 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+var Promise = require('bluebird');
+
 module.exports = function(app, config) {
 
-  require('./search')(app,config);
-  
+  return Promise.resolve()
+    .then(function() {
+      return require('./search')(app,config);
+    })
+    .then(function() {
+      return require('./data')(app,config);
+    });
+
 };

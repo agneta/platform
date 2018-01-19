@@ -69,9 +69,13 @@ module.exports = function(options) {
         _definitions: {}
       };
 
-      modelGenerator(app, modelConfig);
-
-      return modelDefinitions(app, modelConfig)
+      return Promise.resolve()
+        .then(function() {
+          return modelGenerator(app, modelConfig);
+        })
+        .then(function() {
+          return modelDefinitions(app, modelConfig);
+        })
         .then(function() {
           return new Promise(function(resolve, reject) {
 

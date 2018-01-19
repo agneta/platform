@@ -14,48 +14,29 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var fs = require('fs-extra');
-var path = require('path');
 var Promise = require('bluebird');
-var yaml = require('js-yaml');
-var readdir = Promise.promisify(fs.readdir);
-var readFile = Promise.promisify(fs.readFile);
 
 module.exports = function(Model, app) {
 
-  var webProject = app.get('options').web.project;
-
   Model.loadMany = function(template, req) {
-
-    var templateDir = path.join(webProject.paths.app.data, template);
 
     return Promise.resolve()
       .then(function() {
-        return fs.ensureDir(templateDir);
-      })
-      .then(function() {
-        return readdir(templateDir);
-      })
-      .then(function(files) {
-
-        return Promise.map(files, function(fileName) {
-          return readFile(
-            path.join(templateDir, fileName)
-          )
-            .then(function(content) {
-
-              var data = yaml.safeLoad(content);
-              var fileNameParsed = path.parse(fileName);
-              var name = fileNameParsed.name;
-              var id = [template, name].join('/');
-              return {
-                title: app.lng(data.title, req),
-                path: '/' + id,
-                id: id
-              };
-            });
+        return Model.find({
+          where:{
+            template: template
+          }
         });
+      })
+      .then(function(items) {
 
+        return Promise.map(items, function(item) {
+          return {
+            title: app.lng(item.title, req),
+            path: '/' + [template, item.name].join('/'),
+            id: item.id
+          };
+        });
       })
       .then(function(result) {
 
@@ -68,7 +49,7 @@ module.exports = function(Model, app) {
 
   Model.remoteMethod(
     'loadMany', {
-      description: 'Load all pages with optional limit',
+      description: 'Load all remote data with specified template',
       accepts: [{
         arg: 'template',
         type: 'string',

@@ -18,25 +18,21 @@ var path = require('path');
 
 module.exports = function(Model, app) {
 
-  var web = app.get('options').web;
-  var webPrj = web.project;
-
   Model.new = function(title, dataPath, template, req) {
-
-    var source = path.join(webPrj.paths.app.data, dataPath + '.yml');
 
     var yamlTitle = {};
     yamlTitle[app.getLng(req)] = title;
 
     var name = path.parse(dataPath).name;
 
-    return app.git.createYaml(source, {
+    return Model.create({
       name: name,
-      title: yamlTitle
+      title: yamlTitle,
+      template: template
     })
-      .then(function() {
+      .then(function(item) {
         return {
-          id: dataPath
+          id: item.id
         };
       });
 
