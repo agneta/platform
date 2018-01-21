@@ -16,7 +16,6 @@
  */
 var path = require('path');
 var fs = require('fs-extra');
-var saveYaml = require('../edit/saveYaml');
 
 module.exports = function(Model, app) {
 
@@ -29,7 +28,7 @@ module.exports = function(Model, app) {
 
     return fs.access(filePath)
       .then(function() {
-        return saveYaml(filePath, data);
+        return app.edit.saveYaml(filePath, data);
       })
       .then(function() {
         var relativePath = filePath.substring(webPrj.paths.app.website.length);

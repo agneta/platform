@@ -6,7 +6,8 @@
 
     vm.init({
       model: Data_Remote,
-      mediaRoot: 'data'
+      mediaRoot: 'data',
+      isRemote: true
     });
 
   });

@@ -122,11 +122,20 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $o
   vm.init = function(options) {
     helpers.Model = options.model;
     helpers.mediaRoot = options.mediaRoot;
+    helpers.isRemote = options.isRemote;
     vm.restart()
       .then(function() {
-        if ($routeParams.id) {
-          vm.getPage($routeParams.id);
+
+        if (!$routeParams.template) {
+          return;
         }
+
+        vm.selectTemplate($routeParams.template)
+          .then(function(){
+            if ($routeParams.id) {
+              vm.getPage($routeParams.id);
+            }
+          });
       });
   };
 
@@ -140,16 +149,13 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $o
 
         vm.itemsLoaded = result.templates;
         vm.templates = null;
+        vm.templates = vm.itemsLoaded;
+        vm.template = null;
+        vm.page = null;
+        vm.pages = null;
+        vm.fuse = new Fuse(vm.itemsLoaded, fuseOptions);
 
-        $timeout(function() {
-
-          vm.templates = vm.itemsLoaded;
-          vm.template = null;
-          vm.page = null;
-          vm.pages = null;
-          vm.fuse = new Fuse(vm.itemsLoaded, fuseOptions);
-
-        }, 10);
+        $timeout();
 
       });
 
@@ -171,13 +177,25 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $o
     });
   };
 
+
+
   vm.selectTemplate = function(template) {
 
     if (template) {
+
+      if(!template.id){
+        template = vm.fuse.search(template)[0];
+      }
+
       vm.template = template;
     } else {
       template = vm.template;
     }
+
+    $location.search({
+      template: vm.template.id,
+      id: $routeParams.id
+    });
 
     return helpers.Model.loadMany({
       template: template.id

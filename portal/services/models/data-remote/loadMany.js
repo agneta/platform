@@ -22,11 +22,12 @@ module.exports = function(Model, app) {
 
     return Promise.resolve()
       .then(function() {
-        return Model.find({
-          where:{
-            template: template
-          }
-        });
+
+        return Model.getTemplateModel(template);
+      })
+      .then(function(model) {
+
+        return model.find();
       })
       .then(function(items) {
 

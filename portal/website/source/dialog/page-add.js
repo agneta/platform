@@ -25,6 +25,8 @@
     var helpers = data.helpers;
     var vm = this;
 
+    vm.title = data.title;
+
     agneta.extend(vm, 'AgDialogCtrl');
 
     if (!scopeEdit.template) {
@@ -64,27 +66,41 @@
       var fields = vm.formSubmitFields;
       vm.loading = true;
 
-      helpers.Model.new({
+      var promise = helpers.Model.new({
         title: fields.title,
         path: fields.path,
         template: vm.template.id
       })
-        .$promise
-        .then(function(result) {
+        .$promise;
+
+      if(helpers.isRemote){
+        promise.then(function(result){
+          return finalize(result);
+        });
+      }else{
+        promise.then(function(result) {
           helpers.toast(result.message || 'File created');
 
           Portal.socket.once('page-reload', function() {
-            return scopeEdit.getPage(result.id)
-              .then(function() {
-                vm.close();
-                return scopeEdit.selectTemplate();
-              })
-              .finally(function() {
-                vm.loading = false;
-              });
+            return finalize(result);
           });
 
         });
+      }
+
+      function finalize(result) {
+
+        return scopeEdit.getPage(result.id)
+          .then(function() {
+            vm.close();
+            return scopeEdit.selectTemplate();
+          })
+          .finally(function() {
+            vm.loading = false;
+          });
+
+      }
+
 
     };
 

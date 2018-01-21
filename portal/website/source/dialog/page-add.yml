@@ -1,6 +1,6 @@
 title:
-  en: Add {{template.title}}
-  gr: Προσθήκη {{template.title}}
+  en: Add {{viewData.title}}
+  gr: Προσθήκη {{viewData.title}}
 
 authorization:
   - editor

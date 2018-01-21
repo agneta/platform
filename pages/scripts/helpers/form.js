@@ -15,35 +15,38 @@
  *   limitations under the License.
  */
 var _ = require('lodash');
+const path = require('path');
 
 module.exports = function(locals) {
 
   var project = locals.project;
 
-  project.extend.helper.register('form_field', function(fieldProp, form) {
+  project.extend.helper.register('form_field', function(options) {
 
+    var form = options.form;
+    var fieldProp = options.field;
     var self = this;
-
-    function getPreset(name) {
-      var preset = self.get_data('form/fields/' + name);
-      return _.extend({}, preset);
-    }
-
-    //
-
     var fieldName = null;
     var field = null;
+    var dir = options.dir || 'form/fields';
 
     if (typeof fieldProp === 'string') {
       fieldName = fieldProp;
-      field = getPreset(fieldProp);
+      field = _.extend({},self.get_data(
+        path.join(dir ,fieldProp)));
+
     } else {
       field = _.extend({}, fieldProp);
     }
 
-    if (field.base) {
+    var extension = field.base || field.extend;
 
-      var preset = getPreset(field.base);
+    if (extension) {
+
+      var preset = self.form_field({
+        field: extension,
+        form: form
+      });
       field = _.deepMerge(
         field,
         preset

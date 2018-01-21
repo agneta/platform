@@ -9,11 +9,8 @@ module.exports = function(app, config) {
   var dataDir = path.join(
     process.cwd(), 'edit/data-remote'
   );
-  var templates = [];
 
-  app.dataRemote = {
-    templates: templates
-  };
+  app.dataRemote = {};
 
   return Promise.resolve()
     .then(function() {
@@ -33,14 +30,13 @@ module.exports = function(app, config) {
             var data = yaml.safeLoad(content);
             data.name = data.name || path.parse(filePath).name;
 
-            templates.push({
-              name: data.name,
-              title: data.title
-            });
-
             let definition = dataDefinition(app,data);
             let fileName = data.model.toLowerCase() + '.json';
-            console.log(definition);
+
+            app.dataRemote[data.name] = {
+              title: data.title,
+              modelName: definition.name
+            };
 
             config._definitions[fileName] = {
               definition: definition

@@ -1,7 +1,7 @@
 {
     "name": "Data_Remote",
     "plural": "Data_Remote",
-    "base": "PersistedModel",
+    "base": "Model",
     "idInjection": true,
     "properties": {
       "title": {

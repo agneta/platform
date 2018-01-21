@@ -70,6 +70,7 @@ module.exports = function(options) {
       };
 
       require('./lib/form')(app);
+      require('./lib/edit')(app);
 
       return Promise.resolve()
         .then(function() {

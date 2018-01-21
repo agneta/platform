@@ -20,41 +20,44 @@ const fs = require('fs-extra');
 const yaml = require('js-yaml');
 const _ = require('lodash');
 
-module.exports = function(filePath, data) {
+module.exports = function(app) {
 
-  data = _.omitDeep(data, ['undefined', '$$hashKey']);
-  var lockPath = filePath + '.lockfile';
+  app.edit.saveYaml = function(filePath, data){
 
-  return new Promise(function(resolve, reject) {
+    data = _.omitDeep(data, ['undefined', '$$hashKey']);
+    var lockPath = filePath + '.lockfile';
 
-    lockFile.lock(lockPath, {}, function(err) {
+    return new Promise(function(resolve, reject) {
 
-      if (err) {
-        return reject(err);
-      }
+      lockFile.lock(lockPath, {}, function(err) {
 
-      resolve();
-    });
-  })
-    .then(function() {
+        if (err) {
+          return reject(err);
+        }
 
-      return fs.writeFile(filePath, yaml.safeDump(data));
-
+        resolve();
+      });
     })
-    .then(function() {
+      .then(function() {
+
+        return fs.writeFile(filePath, yaml.safeDump(data));
+
+      })
+      .then(function() {
 
 
-      return new Promise(function(resolve, reject) {
+        return new Promise(function(resolve, reject) {
 
-        lockFile.unlock(lockPath, function(err) {
-          if (err) {
-            return reject(err);
-          }
-          return resolve();
+          lockFile.unlock(lockPath, function(err) {
+            if (err) {
+              return reject(err);
+            }
+            return resolve();
+          });
+
         });
 
       });
 
-    });
-
+  };
 };

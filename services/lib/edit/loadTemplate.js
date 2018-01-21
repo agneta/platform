@@ -17,27 +17,43 @@
 const fs = require('fs-extra');
 const yaml = require('js-yaml');
 const _ = require('lodash');
+const path = require('path');
 
-module.exports = function(options) {
+module.exports = function(app) {
 
-  var web = options.app.get('options').web;
-  var webHelpers = web.app.locals;
+  app.edit.loadTemplate = function(options){
 
-  return fs.readFile(options.path)
-    .then(function(content) {
+    var web = app.get('options');
+    web = web.web || web.client;
+    var webHelpers = web.app.locals;
 
-      var template = yaml.safeLoad(content);
+    if(options.path){
+      return fs.readFile(options.path)
+        .then(function(content) {
+          var template = yaml.safeLoad(content);
+          template.id = template.id || path.parse(options.path).name;
 
+          return scanTemplate(template);
+        });
+    }
+
+    if(options.data){
+      return scanTemplate(options.data);
+    }
+
+    function scanTemplate(template){
       function scan(collection) {
 
         for (var key in collection) {
-          var field = collection[key];
+          collection[key] = getField(collection[key]);
+        }
+
+        function getField(field) {
 
           if (_.isString(field)) {
             var name = field;
-            field = getField(field);
+            field = webHelpers.get_data('edit/fields/' + field);
             field.name = name;
-            collection[key] = field;
           }
 
           if (_.isObject(field)) {
@@ -51,17 +67,19 @@ module.exports = function(options) {
           if (field.fields) {
             scan(field.fields);
           }
-        }
-      }
 
-      function getField(field) {
-        return webHelpers.get_data('edit/fields/' + field);
+          return field;
+        }
+
       }
 
       scan(template.fields);
-      template.title = options.app.lng(template.title, options.req);
-      return template;
+      if(options.req){
+        template.title = app.lng(template.title, options.req);
+      }
 
-    });
+      return template;
+    }
+  };
 
 };

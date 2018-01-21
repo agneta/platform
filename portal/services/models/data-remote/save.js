@@ -14,29 +14,14 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var path = require('path');
-var fs = require('fs-extra');
-var saveYaml = require('../edit/saveYaml');
 
-module.exports = function(Model, app) {
 
-  var web = app.get('options').web;
-  var webPrj = web.project;
+module.exports = function(Model) {
 
-  Model.save = function(id, data) {
 
-    var filePath = path.join(webPrj.paths.app.data, id + '.yml');
+  Model.save = function() {
 
-    return fs.access(filePath)
-      .then(function() {
-        return saveYaml(filePath, data);
-      })
-      .then(function() {
-        var relativePath = filePath.substring(webPrj.paths.app.website.length);
-        return {
-          message: `Saved at:\n${relativePath}`
-        };
-      });
+
 
   };
 

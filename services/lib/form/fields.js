@@ -44,7 +44,10 @@ module.exports = function(app, clientHelpers) {
 
       for (var field of data.fields) {
 
-        field = clientHelpers.form_field(field, data);
+        field = clientHelpers.form_field({
+          field: field,
+          form: data
+        });
 
         if(field.name && !field.static){
           formFields[field.name] = field;

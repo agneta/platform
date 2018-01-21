@@ -21,7 +21,8 @@ module.exports = function(vm, $rootScope, helpers, $location, $timeout, $mdDialo
     var id = obj.id || obj;
     $rootScope.loadingMain = true;
     return helpers.Model.loadOne({
-      id: id
+      id: id,
+      template: vm.template.id
     })
       .$promise
       .then(function(result) {
@@ -41,6 +42,7 @@ module.exports = function(vm, $rootScope, helpers, $location, $timeout, $mdDialo
 
         $location.search({
           id: id,
+          template: vm.template.id
         });
 
         if (!vm.pages) {

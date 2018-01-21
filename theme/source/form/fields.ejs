@@ -3,7 +3,10 @@
 var form = locals.data || locals.field;
 for(var fieldProp of form.fields){
 
-	var field = form_field(fieldProp,form);
+	var field = form_field({
+		field: fieldProp,
+		form: form
+	});
 	var data = {
 		field: field
 	};
@@ -19,7 +22,7 @@ for(var fieldProp of form.fields){
 	if(field.if){
 		ngIf = 'ng-if="'+field.if+'"';
 	}
-	
+
 	if(field.if_relative){
 		ngIf = `ng-if="${field.lastWithName.model}.${field.if_relative}"`;
 	}

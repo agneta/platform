@@ -25,11 +25,17 @@ module.exports = function(Model, app) {
 
     var name = path.parse(dataPath).name;
 
-    return Model.create({
-      name: name,
-      title: yamlTitle,
-      template: template
-    })
+    return Promise.resolve()
+      .then(function() {
+
+        return Model.getTemplateModel(template);
+      })
+      .then(function(model) {
+        return model.create({
+          name: name,
+          title: yamlTitle
+        });
+      })
       .then(function(item) {
         return {
           id: item.id

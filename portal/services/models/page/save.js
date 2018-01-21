@@ -16,7 +16,6 @@
  */
 var _ = require('lodash');
 var path = require('path');
-var saveYaml = require('../edit/saveYaml');
 
 module.exports = function(Model, app) {
 
@@ -31,7 +30,7 @@ module.exports = function(Model, app) {
         var source = path.join(webPrj.paths.app.website, page.full_source);
 
         data = _.omit(data, Model.omitData);
-        return saveYaml(source, data);
+        return app.edit.saveYaml(source, data);
 
       })
       .then(function() {

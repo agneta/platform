@@ -22,6 +22,22 @@ module.exports = function(Model, app) {
 
   Model.editConfigDir = path.join(webPrj.paths.core.project, 'edit', 'data-remote');
 
+  Model.getTemplateModel = function(template){
+
+    return Promise.resolve()
+      .then(function() {
+        var templateConfig = app.dataRemote[template];
+
+        if(!templateConfig){
+          return Promise.reject({
+            statusCode: 404,
+            message: `Template config not found with name ${template}`
+          });
+        }
+        return app.models[templateConfig.modelName];
+      });
+
+  };
   require('./data-remote/loadCommit')(Model, app);
   require('./data-remote/loadOne')(Model, app);
   require('./data-remote/delete')(Model, app);

@@ -18,7 +18,6 @@ const fs = require('fs-extra');
 const yaml = require('js-yaml');
 const path = require('path');
 const templateBase = require('./templateBase');
-const loadTemplate = require('../edit/loadTemplate');
 
 module.exports = function(Model, app) {
 
@@ -54,7 +53,7 @@ module.exports = function(Model, app) {
 
         log = _log;
 
-        return loadTemplate({
+        return app.edit.loadTemplate({
           path: path.join(Model.editConfigDir, page.template + '.yml'),
           req: req,
           app: app

@@ -19,7 +19,6 @@ var Promise = require('bluebird');
 var fs = require('fs-extra');
 var readFile = Promise.promisify(fs.readFile);
 var path = require('path');
-var loadTemplate = require('../edit/loadTemplate');
 
 module.exports = function(Model, app) {
 
@@ -29,7 +28,7 @@ module.exports = function(Model, app) {
     var log;
     var parsedId = Model.parseId(id);
 
-    return loadTemplate({
+    return app.edit.loadTemplate({
       path: path.join(Model.editConfigDir, parsedId.templateId + '.yml'),
       req: req,
       app: app

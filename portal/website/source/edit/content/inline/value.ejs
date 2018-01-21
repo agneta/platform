@@ -4,6 +4,6 @@
     model = 'parent[key]';
   }
 %>
-    <md-input-container class="type-inline" ng-if="field.type == 'value'">
-        <input aria-label="{{field.name}}" ng-model="<%-model%>" ng-keypress="onFieldChange(data)" ng-init="registerInput(data)" md-select-on-focus>
-    </md-input-container>
+  <md-input-container class="type-inline" ng-if="field.type == 'value'">
+    <input type="{{field.valueType||'text'}}" aria-label="{{field.name}}" ng-model="<%-model%>" ng-keypress="onFieldChange(data)" ng-init="registerInput(data)" md-select-on-focus>
+  </md-input-container>
