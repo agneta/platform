@@ -24,9 +24,15 @@ module.exports = function(app, data) {
         break;
     }
 
-    switch (field.valueType) {
+
+    switch (type) {
+      case 'array':
+        if(field.fields){
+          type = ['object'];
+        }
+        break;
       case 'value':
-        type = 'string';
+        type = field.valueType || 'string';
         break;
     }
 

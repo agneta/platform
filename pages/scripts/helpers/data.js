@@ -185,19 +185,20 @@ module.exports = function(locals) {
     return obj;
   });
 
-  project.extend.helper.register('get_values', function(data, deep) {
+  project.extend.helper.register('get_values', function(data) {
     var self = this;
 
     function scan(obj) {
       for (var key in obj) {
         var value = self.get_value(obj[key]);
-        if (deep && _.isObject(value)) {
-          scan(value, true);
+        if(_.isObject(value) || _.isArray(value)){
+          value = scan(value);
         }
         obj[key] = value;
       }
+      return obj;
     }
-    scan(data);
+    return scan(data);
   });
 
 };

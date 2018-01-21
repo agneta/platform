@@ -14,13 +14,44 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+const _ = require('lodash');
+const path = require('path');
+module.exports = function(Model, app) {
 
+  var clientHelpers = app.get('options').client.app.locals;
 
-module.exports = function(Model) {
+  Model.save = function(id, template, data) {
 
+    var templateData;
+    var model;
 
-  Model.save = function() {
+    return Promise.resolve()
+      .then(function() {
+        return app.edit.loadTemplate({
+          path: path.join(Model.editConfigDir, template + '.yml'),
+        });
+      })
+      .then(function(_templateData) {
+        templateData = _templateData;
+        return Model.getTemplateModel(template);
+      })
+      .then(function(_model) {
+        model = _model;
 
+        return model.findById(id);
+      })
+      .then(function(item) {
+        if(!item){
+          return Promise.reject({
+            statusCode: 404,
+            message: `Item not found with id: ${id}`
+          });
+        }
+        data = clientHelpers.get_values(data);
+        data = _.pick(data,templateData.fieldNames);
+        console.log(data);
+        return item.updateAttributes(data);
+      });
 
 
   };
@@ -30,6 +61,10 @@ module.exports = function(Model) {
       description: 'Save project data',
       accepts: [{
         arg: 'id',
+        type: 'string',
+        required: true
+      }, {
+        arg: 'template',
         type: 'string',
         required: true
       }, {

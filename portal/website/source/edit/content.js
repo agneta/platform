@@ -177,8 +177,6 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $o
     });
   };
 
-
-
   vm.selectTemplate = function(template) {
 
     if (template) {

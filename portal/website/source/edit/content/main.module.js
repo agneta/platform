@@ -141,6 +141,7 @@ module.exports = function(vm, $rootScope, helpers, $location, $timeout, $mdDialo
 
         helpers.Model.save({
           id: vm.page.id,
+          template: vm.template.id,
           data: vm.page.data
         })
           .$promise
