@@ -12,3 +12,4 @@ fields:
     - text-single
     - boolean
     - select
+    - date-time

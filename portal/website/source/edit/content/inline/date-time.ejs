@@ -1,0 +1,10 @@
+<%
+  var model = '(parent.__value || parent)[key].__value';
+  if(locals.modelRoot){
+    model = 'parent[key]';
+  }
+%>
+<div class="type-inline" layout="row" layout-align="start center">
+  <mdp-date-picker ng-model="<%-model%>" mdp-placeholder="Date"></mdp-date-picker>
+  <mdp-time-picker ng-model="<%-model%>" mdp-placeholder="Time"></mdp-time-picker>
+</div>

@@ -24,8 +24,12 @@
     styles:
       - 'lib/quill.snow'
       - 'lib/ng-sortable.min'
+      - 'lib/mdPickers.min'
       - 'edit/content'
     angular_libs:
+      -
+        js: lib/mdPickers.min
+        dep: mdPickers
       -
         js: lib/ng-quill
         dep: ngQuill

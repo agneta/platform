@@ -38,11 +38,18 @@ module.exports = function(Model, app) {
       })
       .then(function(item) {
 
+        if(!item){
+          return Promise.reject({
+            statusCode: 404,
+            message: `Could not find item with id: ${id}`
+          });
+        }
+
         return {
           page: {
             id: item.id,
             data: item,
-            path: `/${item.name}`
+            path: `/${template}/${item.name}`
           },
           template: templateData
         };

@@ -65,6 +65,8 @@ module.exports = function(vm, $mdToast, $timeout, helpers) {
     var type = field.valueType || field.type;
 
     switch (type) {
+      case 'date-time':
+        return new Date();
       case 'number':
         return 0;
       case 'value':
@@ -113,6 +115,12 @@ module.exports = function(vm, $mdToast, $timeout, helpers) {
       }
     }
 
+    switch(childField.type){
+      case 'date-time':
+        childValue = new Date(childValue);
+        break;
+    }
+
     child.__value = childValue;
 
     if (parent.__value) {
@@ -147,13 +155,13 @@ module.exports = function(vm, $mdToast, $timeout, helpers) {
   //------------------------------------------
   helpers.structureData = function(field, data) {
 
-    var iteratee = helpers.dataValue(data);
+    var dataValue = helpers.dataValue(data);
 
-    if (!_.isArray(iteratee) && !_.isObject(iteratee)) {
+    if (!_.isArray(dataValue) && !_.isObject(dataValue)) {
       return;
     }
 
-    for (var key in iteratee) {
+    for (var key in dataValue) {
 
       if (!field.fields) {
         continue;
@@ -163,7 +171,7 @@ module.exports = function(vm, $mdToast, $timeout, helpers) {
         console.error('Fields must be an array', field.fields);
       }
 
-      var childData = iteratee[key];
+      var childData = dataValue[key];
 
       if(!childData){
         continue;

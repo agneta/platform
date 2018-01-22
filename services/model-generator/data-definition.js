@@ -34,6 +34,12 @@ module.exports = function(app, data) {
       case 'value':
         type = field.valueType || 'string';
         break;
+      case 'text-rich':
+        type = 'string';
+        break;
+      case 'date-time':
+        type = 'date';
+        break;
     }
 
     var property = {
