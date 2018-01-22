@@ -71,7 +71,8 @@ module.exports = function(app) {
     //console.log(definition);
     instructions.push({
       name: model.modelName,
-      definition: definition
+      definition: definition,
+      sourceName: model.modelName
     });
 
   });
@@ -100,9 +101,14 @@ module.exports = function(app) {
 
   app.helpers.runRemotes(instructions);
   instructions.forEach(function(data) {
-    app.model(data.model, {
-      dataSource: 'db_prd'
-    });
+
+    var modelOptions = _.extend({},app.modelConfig[data.sourceName]);
+
+    if(modelOptions.dataSource){
+      modelOptions.dataSource += '_prd';
+    }
+
+    app.model(data.model,modelOptions);
 
   });
 

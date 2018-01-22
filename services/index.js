@@ -80,6 +80,7 @@ module.exports = function(options) {
           return modelDefinitions(app, modelConfig);
         })
         .then(function() {
+          app.modelConfig = modelConfig.models;
           return new Promise(function(resolve, reject) {
 
             var middleware = app.configurator.load('middleware', true);
