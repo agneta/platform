@@ -49,7 +49,7 @@ module.exports = function(Model, app) {
         }
         data = clientHelpers.get_values(data);
         data = _.pick(data,templateData.fieldNames);
-        console.log(data);
+        //console.log(data);
         return item.updateAttributes(data);
       });
 

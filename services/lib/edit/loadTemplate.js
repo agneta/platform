@@ -21,21 +21,13 @@ const path = require('path');
 
 module.exports = function(app) {
 
-  var templates = {};
-
   app.edit.loadTemplate = function(options){
 
     var web = app.get('options');
     web = web.web || web.client;
     var webHelpers = web.app.locals;
-    var template;
 
     if(options.path){
-
-      template = templates[options.path];
-      if(template){
-        return template;
-      }
 
       return fs.readFile(options.path)
         .then(function(content) {
@@ -43,7 +35,6 @@ module.exports = function(app) {
           template.id = template.id || path.parse(options.path).name;
 
           template = scanTemplate(template);
-          templates[options.path] = template;
           return template;
         });
     }
@@ -85,6 +76,7 @@ module.exports = function(app) {
       }
 
       scan(template.fields);
+
       if(options.req){
         template.title = app.lng(template.title, options.req);
       }

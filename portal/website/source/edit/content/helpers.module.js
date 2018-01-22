@@ -62,8 +62,11 @@ module.exports = function(vm, $mdToast, $timeout, helpers) {
   };
   //------------------------------------------
   helpers.fieldValue = function(field) {
+    var type = field.valueType || field.type;
 
-    switch (field.valueType || field.type) {
+    switch (type) {
+      case 'number':
+        return 0;
       case 'value':
         return '';
       case 'boolean':
@@ -75,7 +78,7 @@ module.exports = function(vm, $mdToast, $timeout, helpers) {
         return {};
     }
 
-    console.error('unrecognised type: ', field.type || field);
+    console.error('unrecognised type: ', type);
   };
   //------------------------------------------
   helpers.fixValue = function(parent, key, childField) {
@@ -161,6 +164,11 @@ module.exports = function(vm, $mdToast, $timeout, helpers) {
       }
 
       var childData = iteratee[key];
+
+      if(!childData){
+        continue;
+      }
+
       var fieldKey = childData.__key || childData.key || key;
 
       var childField = _.find(field.fields, {
