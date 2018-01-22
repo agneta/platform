@@ -36,6 +36,7 @@ module.exports = function(vm, $rootScope, helpers, $location, $timeout, $mdDialo
           }
         }
 
+        vm.relations = result.relations;
         vm.template = result.template;
         vm.pagePath = result.page.path;
         helpers.structureData(vm.template, data);

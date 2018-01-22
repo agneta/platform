@@ -5,6 +5,7 @@ module.exports = function(app, data) {
     idInjection: true,
     options: {},
     properties: {},
+    relations: {},
     validations: [],
     methods: {},
     indexes: {}
@@ -39,6 +40,26 @@ module.exports = function(app, data) {
         break;
       case 'date-time':
         type = 'date';
+        break;
+      case 'relation':
+        if(!field.relation){
+          throw new Error(`Field (${field.name}) needs to have a relation object defined`);
+        }
+        if(!field.relation.type){
+          throw new Error(`Field (${field.name}) needs to have a relation type defined`);
+        }
+        if(!field.relation.model){
+          throw new Error(`Field (${field.name}) needs to have a relation model defined`);
+        }
+        if(!field.relation.template){
+          throw new Error(`Field (${field.name}) needs to have a relation template defined`);
+        }
+        result.relations[field.relation.template] = {
+          model: field.relation.model,
+          type: field.relation.type,
+          foreignKey: field.name
+        };
+        type = 'string';
         break;
     }
 

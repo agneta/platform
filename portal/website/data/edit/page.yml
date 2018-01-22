@@ -13,3 +13,4 @@ fields:
     - boolean
     - select
     - date-time
+    - relation

@@ -69,6 +69,14 @@ module.exports = function(vm, $mdToast, $timeout, helpers) {
         return new Date();
       case 'number':
         return 0;
+      case 'relation':
+        switch(field.relation.type){
+          case 'belongsTo':
+            return '';
+          case 'hasMany':
+            return [];
+        }
+        break;
       case 'value':
         return '';
       case 'boolean':
@@ -118,6 +126,11 @@ module.exports = function(vm, $mdToast, $timeout, helpers) {
     switch(childField.type){
       case 'date-time':
         childValue = new Date(childValue);
+        break;
+      case 'relation':
+        childField.options = [
+          vm.relations[childField.relation.template]
+        ];
         break;
     }
 

@@ -86,6 +86,14 @@ module.exports = function(app) {
           return field.name;
         });
 
+      var relations = [];
+      template.fields.forEach(function(field){
+        if(field.type=='relation'){
+          relations.push(field.relation.template);
+        }
+      });
+      template.relations = relations;
+
       return template;
     }
   };

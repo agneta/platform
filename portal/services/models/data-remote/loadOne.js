@@ -14,8 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var Promise = require('bluebird');
-var path = require('path');
+const Promise = require('bluebird');
+const path = require('path');
+const _ = require('lodash');
 
 module.exports = function(Model, app) {
 
@@ -34,7 +35,18 @@ module.exports = function(Model, app) {
 
       })
       .then(function(model) {
-        return model.findById(id);
+
+        var include = _.map(templateData.relations,function(relation){
+          return {
+            relation: relation,
+            scope: {
+              fields: ['title','id']
+            }};
+        });
+
+        return model.findById(id,{
+          include:include
+        });
       })
       .then(function(item) {
 
@@ -44,13 +56,21 @@ module.exports = function(Model, app) {
             message: `Could not find item with id: ${id}`
           });
         }
+        var itemData = _.omit(item.__data, templateData.relations);
+        var relations = _.pick(item.__data, templateData.relations);
+
+        for(var key in relations){
+          var relation = relations[key];
+          relation.title = app.lng(relation.title,req);
+        }
 
         return {
           page: {
             id: item.id,
-            data: item,
+            data: itemData,
             path: `/${template}/${item.name}`
           },
+          relations: relations,
           template: templateData
         };
 
