@@ -106,6 +106,8 @@ module.exports = function(app) {
 
     if(modelOptions.dataSource){
       modelOptions.dataSource += '_prd';
+    }else{
+      modelOptions.dataSource = false;
     }
 
     app.model(data.model,modelOptions);

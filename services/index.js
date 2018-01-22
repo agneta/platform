@@ -14,11 +14,12 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var loopback = require('loopback');
-var path = require('path');
-var boot = require('loopback-boot');
-var modelDefinitions = require('./model-definitions');
-var modelGenerator = require('./model-generator');
+const loopback = require('loopback');
+const path = require('path');
+const boot = require('loopback-boot');
+const modelDefinitions = require('./model-definitions');
+const modelGenerator = require('./model-generator');
+const disableAllMethods = require('./lib/disableAllMethods');
 
 module.exports = function(options) {
 
@@ -103,6 +104,9 @@ module.exports = function(options) {
                 reject(err);
                 return;
               }
+              app.models().forEach(function(model){
+                disableAllMethods(model);
+              });
               app.indexes.updateDatasources(['db', 'db_prd']);
               app.emit('booted');
               resolve();

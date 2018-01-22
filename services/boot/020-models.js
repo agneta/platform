@@ -17,7 +17,6 @@
 var path = require('path');
 var fs = require('fs');
 var _ = require('lodash');
-var disableAllMethods = require('./models/disableAllMethods');
 
 module.exports = function(app) {
 
@@ -73,8 +72,6 @@ module.exports = function(app) {
     } else {
       Model = app.models[name];
     }
-
-    disableAllMethods(Model);
 
     //--------------------------------
 
