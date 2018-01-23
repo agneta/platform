@@ -35,8 +35,9 @@ module.exports = function(app, data) {
       case 'value':
         type = field.valueType || 'string';
         break;
+      case 'text':
       case 'text-rich':
-        type = 'string';
+        type = 'object';
         break;
       case 'date-time':
         type = 'date';

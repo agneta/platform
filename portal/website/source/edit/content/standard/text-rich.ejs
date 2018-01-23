@@ -3,7 +3,6 @@ on-content-changed="onFieldChange(data)"
 ng-mousedown="fieldFocus(data)"
 ng-init="registerInput(data)"
 ng-model="data.__value[edit.lang]"
-placeholder="{{edit.lng(data.__value) | limitTo:50}}..."
 >
     <ng-quill-toolbar ng-show="data.__focused">
         <div id="ng-quill-toolbar">

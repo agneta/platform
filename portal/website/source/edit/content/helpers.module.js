@@ -85,6 +85,7 @@ module.exports = function(vm, $mdToast, $timeout, helpers) {
         return [];
       case 'object':
       case 'text':
+      case 'text-rich':
         return {};
     }
 
