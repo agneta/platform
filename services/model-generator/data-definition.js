@@ -36,6 +36,9 @@ module.exports = function(app, data) {
       case 'value':
         type = field.valueType || 'string';
         break;
+      case 'select':
+        type = 'string';
+        break;
       case 'text':
       case 'text-rich':
         type = 'object';

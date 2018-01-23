@@ -74,6 +74,7 @@ module.exports = function(vm, $mdToast, $timeout, helpers) {
       case 'relation-hasMany':
         return null;
       case 'value':
+      case 'select':
         return '';
       case 'boolean':
         return false;
