@@ -56,16 +56,25 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $o
   }
   ];
 
+  var shared = {
+    vm: vm,
+    $rootScope: $rootScope,
+    helpers: helpers,
+    $location: $location,
+    $routeParams: $routeParams,
+    $timeout: $timeout,
+    $mdDialog: $mdDialog,
+    scopeEdit: scopeEdit,
+    Portal: Portal
+  };
+
   require('edit/content/field-state.module')(vm, helpers);
   require('edit/content/content.module')(vm, helpers);
   require('edit/content/media.module')(vm, AgMedia, $mdDialog, helpers);
-  require('edit/content/relation.module')({
-    vm: vm,
-    helpers: helpers
-  });
+  require('edit/content/relation.module')(shared);
   require('edit/content/helpers.module')(vm, $mdToast, $timeout, helpers);
   require('edit/content/history.module')(vm, helpers);
-  require('edit/content/main.module')(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeEdit, Portal);
+  require('edit/content/main.module')(shared);
   require('edit/content/search.module')(vm, $timeout);
   require('edit/content/source.module')(vm, $mdDialog, $timeout);
   require('edit/content/contributor.module')(vm, $rootScope, Account, Portal, $timeout, Role_Editor);

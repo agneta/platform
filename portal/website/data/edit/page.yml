@@ -7,10 +7,11 @@ fields:
     - text-rich
     - media
     - media-value
+    - relation-hasMany
   inline:
     - value
     - text-single
     - boolean
     - select
     - date-time
-    - relation
+    - relation-belongsTo

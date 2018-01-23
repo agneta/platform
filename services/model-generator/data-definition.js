@@ -43,13 +43,11 @@ module.exports = function(app, data) {
       case 'date-time':
         type = 'date';
         break;
-      case 'relation':
+      case 'relation-hasMany':
+      case 'relation-belongsTo':
 
         if(!relation){
           throw new Error(`Field (${field.name}) needs to have a relation object defined`);
-        }
-        if(!relation.type){
-          throw new Error(`Field (${field.name}) needs to have a relation type defined`);
         }
         if(!relation.model){
           throw new Error(`Field (${field.name}) needs to have a relation model defined`);
@@ -59,12 +57,12 @@ module.exports = function(app, data) {
         }
         var options = {
           model: relation.model,
-          type: relation.type
+          type: type.split('-')[1]
         };
 
-        switch(relation.type){
+        switch(options.type){
           case 'belongsTo':
-            options.foreignKey = relation.name;
+            options.foreignKey = field.name;
             result.properties[field.name] = {
               type: 'string'
             };

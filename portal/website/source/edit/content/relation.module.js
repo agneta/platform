@@ -17,7 +17,16 @@ module.exports = function(options) {
 
   };
 
-  relation.hasMany = function(){
+  relation.load = function(item,field){
+
+    vm.selectTemplate({
+      id: field.relation.template
+    });
+
+    vm.getPage({
+      id: item.id,
+      template: field.relation.template
+    });
   };
 
   vm.relation = relation;

@@ -15,14 +15,24 @@
  *   limitations under the License.
  */
 
-module.exports = function(vm, $rootScope, helpers, $location, $timeout, $mdDialog, scopeEdit, Portal) {
+module.exports = function(options) {
+
+  var vm =  options.vm;
+  var $rootScope =  options.$rootScope;
+  var helpers =  options.helpers;
+  var $location =  options.$location;
+  var $routeParams =  options.$routeParams;
+  var $timeout =  options.$timeout;
+  var $mdDialog =  options.$mdDialog;
+  var scopeEdit =  options.scopeEdit;
+  var Portal =  options.Portal;
 
   vm.getPage = function(obj) {
     var id = obj.id || obj;
     $rootScope.loadingMain = true;
     return helpers.Model.loadOne({
       id: id,
-      template: vm.template.id
+      template: obj.template || vm.template.id || $routeParams.template
     })
       .$promise
       .then(function(result) {
