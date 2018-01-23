@@ -57,6 +57,7 @@
       background: #5d5d5d;
       color: #fff;
       border-radius: 2px;
+
     }
 
     md-input-container{
@@ -67,9 +68,25 @@
         width: initial;
       }
 
+      &.has-postfix{
+        .md-input{
+          padding-right: 60px;
+        }
+      }
+
       .md-errors-spacer{
         display: none;
       }
+
+      .postfix{
+        position: absolute;
+        right: 10px;
+        color: white;
+        top: 50%;
+        margin-top: -20px;
+        line-height: 40px;
+      }
+
       label{
         display: none;
       }
