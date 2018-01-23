@@ -69,6 +69,7 @@ module.exports = function(app) {
       return;
     }
     //console.log(definition);
+    definition = _.cloneDeep(definition);
     instructions.push({
       name: model.modelName,
       definition: definition,
@@ -128,9 +129,7 @@ module.exports = function(app) {
     let newName = productionName(name);
     let definition = data.definition;
 
-    definition = _.extend({}, definition, {
-      name: newName
-    });
+    definition.name = newName;
 
     if (definition.relations) {
       for (var key in definition.relations) {

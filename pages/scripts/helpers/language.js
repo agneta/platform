@@ -130,7 +130,7 @@ module.exports = function(locals) {
         return;
       }
 
-      if (typeof obj !== 'object') {
+      if (!_.isObject(obj) && !_.isArray(obj)) {
         return;
       }
 
@@ -138,7 +138,6 @@ module.exports = function(locals) {
 
         var source = obj[key];
         var res = self.lng(source,lng);
-
 
         if (res) {
 
@@ -150,7 +149,11 @@ module.exports = function(locals) {
       }
     }
 
-    var result = _.cloneDeep(mainObj);
+    var result = JSON.stringify(mainObj);
+    if(!result){
+      return;
+    }
+    result = JSON.parse(result);
     scan(result);
 
     return result;
