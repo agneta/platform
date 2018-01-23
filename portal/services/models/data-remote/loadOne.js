@@ -58,12 +58,9 @@ module.exports = function(Model, app) {
         }
         var itemData = _.omit(item.__data, templateData.relations);
         var relations = _.pick(item.__data, templateData.relations);
-
-        for(var key in relations){
-          var relation = relations[key];
-          relation.title = app.lng(relation.title,req);
-        }
-
+        console.log('relations',relations);
+        app.lngScan(relations,req);
+        
         return {
           page: {
             id: item.id,

@@ -89,6 +89,9 @@ module.exports = function(app) {
       var relations = [];
       template.fields.forEach(function(field){
         if(field.type=='relation'){
+          if(!field.relation){
+            throw new Error(`Field must have a relation object (${field.name})`);
+          }
           relations.push(field.relation.template);
         }
       });

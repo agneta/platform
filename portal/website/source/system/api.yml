@@ -12,6 +12,20 @@ authorization:
   - administrator
   - editor
 
+sections:
+  -
+    title:
+      en: Properties
+    name: properties
+  -
+    title:
+      en: Relations
+    name: relations
+  -
+    title:
+      en: Methods
+    name: methods
+
 data:
   model:
     -
@@ -20,6 +34,24 @@ data:
     -
       label: Base
       value: model.schema.base
+  relations:
+    title:
+      en: Relations
+    model: model.schema.relations
+    name: relations
+    list:
+      -
+        label: Name
+        value: key
+      -
+        label: Model
+        value: item.model
+      -
+        label: Type
+        value: item.type
+      -
+        label: Foreign Key
+        value: item.foreignKey
   properties:
     title:
       en: Properties

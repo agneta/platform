@@ -18,6 +18,7 @@ module.exports = function(app, data) {
   for(var field of template.fields){
 
     var type = field.valueType || field.type;
+    var relation = field.relation;
 
     switch (field.type) {
       case 'number':
@@ -43,25 +44,42 @@ module.exports = function(app, data) {
         type = 'date';
         break;
       case 'relation':
-        if(!field.relation){
+
+        if(!relation){
           throw new Error(`Field (${field.name}) needs to have a relation object defined`);
         }
-        if(!field.relation.type){
+        if(!relation.type){
           throw new Error(`Field (${field.name}) needs to have a relation type defined`);
         }
-        if(!field.relation.model){
+        if(!relation.model){
           throw new Error(`Field (${field.name}) needs to have a relation model defined`);
         }
-        if(!field.relation.template){
+        if(!relation.template){
           throw new Error(`Field (${field.name}) needs to have a relation template defined`);
         }
-        result.relations[field.relation.template] = {
-          model: field.relation.model,
-          type: field.relation.type,
-          foreignKey: field.name
+        var options = {
+          model: relation.model,
+          type: relation.type
         };
-        type = 'string';
-        break;
+
+        switch(relation.type){
+          case 'belongsTo':
+            options.foreignKey = relation.name;
+            result.properties[field.name] = {
+              type: 'string'
+            };
+            break;
+          case 'hasMany':
+            if(!relation.foreignKey){
+              throw new Error(`Field (${field.name}) needs to have a foreignKey defined for a hasMany relation`);
+            }
+            options.foreignKey = relation.foreignKey;
+            type = 'array';
+            break;
+        }
+
+        result.relations[relation.template] = options;
+        continue;
     }
 
     var property = {

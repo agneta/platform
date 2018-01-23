@@ -1,0 +1,17 @@
+<div layout="column">
+  <div ng-init="activeSection='<%-page.defaultSection%>'" class="layout-wrap ui-tabs" layout="row" layout-align="start center">
+    <%for(var section of locals.list){%>
+      <md-button class="item" ng-class="{active:activeSection=='<%-section.name%>'}" ng-click="activeSection='<%-section.name%>'">
+        <%-lng(section.title)%>
+      </md-button>
+      <%}%>
+  </div>
+
+  <div>
+    <%for(var section of locals.list){%>
+      <div ng-show="activeSection=='<%-section.name%>'">
+        <%-template(path.join(locals.location,section.name))%>
+      </div>
+      <%}%>
+  </div>
+</div>

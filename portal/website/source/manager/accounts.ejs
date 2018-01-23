@@ -9,26 +9,10 @@
 <div ng-show="viewAccount">
   <div layout="column">
     <%-template('manager/accounts/overview')%>
+    <%-template('ui/tabs',{list:page.sections,location:'manager/accounts'})%>
+  </div>
+</div>
 
-    <div ng-init="activeSection='<%-page.defaultSection%>'" class="layout-wrap menu" layout="row" layout-align="start center">
-      <%for(var section of page.sections){%>
-        <md-button class="item" ng-class="{active:activeSection=='<%-section.name%>'}" ng-click="activeSection='<%-section.name%>'">
-        <%-lng(section.title)%>
-        </md-button>
-        <%}%>
-      </div>
-
-      <div>
-        <%for(var section of page.sections){%>
-          <div ng-show="activeSection=='<%-section.name%>'">
-          <%-template('manager/accounts/'+section.name)%>
-          </div>
-          <%}%>
-        </div>
-      </div>
-
-    </div>
-
-    <%-template('manager/accounts/empty')%>
-    <%-template('manager/accounts/toast')%>
-    <%-template('manager/accounts/check')%>
+<%-template('manager/accounts/empty')%>
+<%-template('manager/accounts/toast')%>
+<%-template('manager/accounts/check')%>
