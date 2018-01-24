@@ -10,6 +10,10 @@
             "type": "string",
             "required": false
         },
+        "image": {
+            "type": "object",
+            "required": false
+        },
         "type": {
             "type": "string",
             "required": true

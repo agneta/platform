@@ -17,6 +17,8 @@
 const _ = require('lodash');
 const Promise = require('bluebird');
 const path = require('path');
+const probe = require('probe-image-size');
+
 module.exports = function(options) {
 
   let services= options.services;
@@ -25,7 +27,7 @@ module.exports = function(options) {
   let Media= options.model;
   let util= options.util;
   let bucket= options.bucket;
-
+  let helpers = util.locals.app.locals;
   var barListAllKeys;
 
   barListAllKeys = util.progress(0, {
@@ -66,13 +68,28 @@ module.exports = function(options) {
           })
             .then(function(objectDB) {
 
+              var fields;
+
               //--------------------------------------------------------
               // Update Object
 
               if (objectDB) {
-
                 return getFields()
-                  .then(function(fields) {
+                  .then(function(_fields) {
+
+                    fields = _fields;
+
+                    if(objectDB.image &&
+                      objectDB.image.width &&
+                      objectDB.image.height){
+                      return;
+                    }
+
+                    return getImageSize(fields);
+
+
+                  })
+                  .then(function() {
 
                     var update = false;
 
@@ -101,12 +118,38 @@ module.exports = function(options) {
               // Create Object
 
               return getFields()
-                .then(function(fields) {
+                .then(function(_fields) {
+                  fields = _fields;
+                  return getImageSize(fields);
+                })
+                .then(function() {
                   return Media.create(fields);
                 })
                 .then(function(objectDB) {
                   util.log('Created: ' + objectDB.location);
                 });
+
+              //-------------------------------------------------
+
+              function getImageSize(fields) {
+
+                if(fields.type!='image'){
+                  return;
+                }
+
+                if(!fields.size){
+                  return;
+                }
+
+                return probe(helpers.get_media(fields.location))
+                  .then(function(size){
+                    fields.image = {
+                      width: size.width,
+                      height: size.height
+                    };
+                    console.log(fields.location,'Image:',fields.image);
+                  });
+              }
 
               //-------------------------------------------------
 
@@ -129,6 +172,10 @@ module.exports = function(options) {
 
 
 
+            })
+            .catch(function(err){
+              util.error(`Error for location: ${storageObject.Key}`);
+              return Promise.reject(err);
             })
             .then(function() {
               barListAllKeys.tick({
