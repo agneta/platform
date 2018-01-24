@@ -16,14 +16,19 @@
  */
 const Promise = require('bluebird');
 const _ = require('lodash');
+const probe = require('probe-image-size');
 
 module.exports = function(Model, app) {
+
+  var helpers  = app.get('options').client.app.locals;
 
   Model.__initOperation = function(options) {
 
     var latestEmit = {
       steps: {}
     };
+    var fileInstance;
+    var fileProps;
 
     return Promise.resolve()
       .then(function() {
@@ -66,19 +71,42 @@ module.exports = function(Model, app) {
           }
         });
       })
-      .then(function(fileInstance) {
+      .then(function(_fileInstance) {
+        fileInstance = _fileInstance;
 
         latestEmit.percentage = 70;
         latestEmit.steps.searchedDatabase = true;
         options.onProgress(latestEmit);
 
-        var fileProps = {
+        fileProps = {
           location: options.location,
           isSize: options.isSize,
           size: latestEmit.uploadedSize,
           type: options.type,
           contentType: options.mimetype
         };
+
+      })
+      .then(function() {
+
+        if(fileProps.type!='image'){
+          return;
+        }
+        
+        if(!fileProps.size){
+          return;
+        }
+
+        return probe(helpers.get_media(fileProps.location))
+          .then(function(size){
+            fileProps.image = {
+              width: size.width,
+              height: size.height
+            };
+          });
+
+      })
+      .then(function() {
 
         //console.log('media:initOperation:fileProps',fileProps);
 

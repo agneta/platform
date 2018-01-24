@@ -147,7 +147,6 @@ module.exports = function(options) {
                       width: size.width,
                       height: size.height
                     };
-                    console.log(fields.location,'Image:',fields.image);
                   });
               }
 
