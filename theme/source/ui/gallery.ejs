@@ -4,8 +4,8 @@
   <ul class="swiper-wrapper my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
     <!-- Slides -->
     <li class="swiper-slide" ng-repeat="item in <%-locals.gallery%>" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-      <a title="{{item.title}}" ng-href="{{item.src.large}}" itemprop="contentUrl" data-size="300x300">
-        <div style="background-image:url('{{item.src.thumbnail}}')" ng-src="{{item.src.thumbnail}}" itemprop="thumbnail" alt="{{item.title}}"></div>
+      <a layout="column" layout-align="center" title="{{item.title}}" ng-href="{{item.large.src}}" itemprop="contentUrl" data-size="{{item.large.width}}x{{item.large.height}}">
+        <img ng-src="{{item.thumbnail.src}}" itemprop="thumbnail" alt="{{item.title}}"/>
       </a>
     </li>
   </ul>

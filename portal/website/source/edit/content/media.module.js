@@ -89,7 +89,9 @@ module.exports = function(vm, AgMedia, $mdDialog, helpers) {
     });
 
     function onApply(file) {
+      console.log(file);
       dataValue.type = file.type;
+      dataValue.id = file.id;
       dataValue.updatedAt = file.updatedAt;
       helpers.setFilePath(dataValue, file.location);
       vm.save();

@@ -17,6 +17,10 @@ app.service('UiGallery',function() {
       slidesPerView: 'auto',
       spaceBetween: 7,
       centeredSlides: true,
+      speed: 800,
+      autoplay: {
+        delay: 4000,
+      },
       // If we need pagination
       pagination: {
         el: '.swiper-pagination',
@@ -189,7 +193,7 @@ app.service('UiGallery',function() {
 
           getThumbBoundsFn: function(index) {
             // See Options -> getThumbBoundsFn section of documentation for more info
-            var thumbnail = items[index].el.getElementsByTagName('div')[0], // find thumbnail
+            var thumbnail = items[index].el.getElementsByTagName('img')[0], // find thumbnail
               pageYScroll =
             window.pageYOffset || document.documentElement.scrollTop,
               rect = thumbnail.getBoundingClientRect();
