@@ -134,7 +134,9 @@ module.exports = function(app) {
     if (definition.relations) {
       for (var key in definition.relations) {
         var relation = definition.relations[key];
-        relation.model = productionName(relation.model);
+        if(relation.model){
+          relation.model = productionName(relation.model);
+        }
       }
     }
 

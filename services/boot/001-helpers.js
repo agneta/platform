@@ -23,6 +23,7 @@ module.exports = function(app) {
     normalizePath: require('./helpers/normalizePath'),
     dropCollection: require('./helpers/dropCollection')(app),
     limitObject: require('./helpers/limitObject'),
-    resubmitPassword: require('./helpers/resubmitPassword')(app)
+    resubmitPassword: require('./helpers/resubmitPassword')(app),
+    limitCollection: require('./helpers/limitCollection')(app)
   };
 };

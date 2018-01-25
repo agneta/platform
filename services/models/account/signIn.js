@@ -79,28 +79,20 @@ module.exports = function(Model, app) {
       })
       .then(function(_token) {
         token = _token;
-        return app.models.AccountToken.find({
-          skip: 10,
-          limit: 1,
-          order: 'created DESC',
+
+        return app.helper.limitCollection({
           where:{
             userId: token.userId
-          }
+          },
+          prop: 'created',
+          isDate: true,
+          model: app.models.AccountToken,
+          limit: 10
         });
+
       })
-      .then(function(result){
-        console.log('result',result);
-        result = result[0];
-        if(!result){
-          return;
-        }
-        return app.models.AccountToken.deleteAll({
-          userId: token.userId,
-          created: {lt:new Date(result.created)}
-        });
-      })
-      .then(function(deleted){
-        console.log('deleted',deleted);
+      .then(function(){
+        //console.log('deleted',deleted);
         account.token = token;
         return account;
 

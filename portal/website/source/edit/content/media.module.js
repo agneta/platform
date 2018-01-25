@@ -83,18 +83,16 @@ module.exports = function(vm, AgMedia, $mdDialog, helpers) {
         onApply: onApply,
         onDelete: function() {
           vm.removeValue(key, parentValue);
-          vm.save();
         }
       }
     });
 
     function onApply(file) {
-      console.log(file);
+      //console.log(file);
       dataValue.type = file.type;
       dataValue.id = file.id;
       dataValue.updatedAt = file.updatedAt;
       helpers.setFilePath(dataValue, file.location);
-      vm.save();
     }
 
   };

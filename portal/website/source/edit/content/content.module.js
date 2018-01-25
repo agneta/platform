@@ -39,9 +39,6 @@ module.exports = function(vm, helpers) {
     if (_.isArray(data)) {
       data.splice(key, 1);
     }
-
-    vm.save(true);
-
   };
 
   vm.addValue = function(field, parent, key) {
@@ -88,8 +85,6 @@ module.exports = function(vm, helpers) {
       }
 
     }
-
-    vm.save(true);
 
   };
 

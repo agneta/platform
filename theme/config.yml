@@ -156,4 +156,4 @@ libraries:
       - '**/*.jquery.**'
   photoswipe:
     dir: 'photoswipe'
-    include: '*.{css,min.js}'
+    include: '*.{css,min.js,svg}'

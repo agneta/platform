@@ -12,7 +12,7 @@ app.service('UiGallery',function() {
 
     var mySwiper = new Swiper(swiperContainer, {
       // If loop true set photoswipe - counterEl: false
-      loop: true,
+      //loop: true,
       /* slidesPerView || auto - if you want to set width by css like flickity.js layout - in this case width:80% by CSS */
       slidesPerView: 'auto',
       spaceBetween: 7,
@@ -184,8 +184,9 @@ app.service('UiGallery',function() {
           captionEl: true,
           fullscreenEl: true,
           zoomEl: true,
+          history: false,
           shareEl: true,
-          counterEl: false,
+          counterEl: true,
           arrowEl: true,
           preloaderEl: true,
           // define gallery index (for URL)

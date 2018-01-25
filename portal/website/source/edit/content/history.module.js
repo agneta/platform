@@ -19,7 +19,7 @@ module.exports = function(vm, helpers) {
   vm.showCommit = function(commit) {
     helpers.Model.loadCommit({
       id: vm.page.id,
-      commit: commit.hash
+      commit: commit.hash || commit.id
     })
       .$promise
       .then(function(result) {

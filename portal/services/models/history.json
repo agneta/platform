@@ -1,0 +1,73 @@
+{
+  "name": "History",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "properties": {
+    "refId": {
+      "type": "string",
+      "required": true
+    },
+    "collection": {
+      "type": "string",
+      "required": true
+    },
+    "timestamp": {
+      "type": "date",
+      "required": true
+    },
+    "message": {
+      "type": "string",
+      "required": false
+    },
+    "accountId": {
+      "type": "string",
+      "required": true
+    },
+    "data": {
+      "type": "object",
+      "required": true
+    },
+    "diff": {
+      "type": ["object"],
+      "required": false
+    }
+  },
+  "options": {
+    "strictObjectIDCoercion": true
+  },
+  "validations": [],
+  "acls": [{
+    "accessType": "*",
+    "principalType": "ROLE",
+    "principalId": "$everyone",
+    "permission": "DENY"
+  }, {
+    "accessType": "EXECUTE",
+    "principalType": "ROLE",
+    "principalId": "editor",
+    "permission": "ALLOW"
+  }],
+  "relations": {
+    "account": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "accountId"
+    },
+    "reference": {
+      "type": "belongsTo",
+      "polymorphic": {
+        "foreignKey": "refId",
+        "discriminator": "collection"
+      }
+    }
+  },
+  "methods": {},
+  "indexes": {
+    "version": {
+      "keys": {
+        "collection": 1,
+        "refId": 1
+      }
+    }
+  }
+}

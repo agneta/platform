@@ -19,9 +19,9 @@
                 <div ng-repeat="entry in page.log">
                     <md-list-item ng-click="showCommit(entry)" class="md-3-line">
                       <div class="md-list-item-text">
-                            <h3 class="time" am-time-ago="entry.date"></h3>
-                            <h4>{{entry.message}}</h4>
-                            <p>{{entry.author_name}}</p>
+                            <h3 class="time" am-time-ago="entry.date||entry.timestamp"></h3>
+                            <h4 class="message">{{entry.message}}</h4>
+                            <p>{{entry.author_name||entry.id}}</p>
                         </div>
                     </md-list-item>
                     <md-divider></md-divider>

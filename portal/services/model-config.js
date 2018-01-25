@@ -46,5 +46,9 @@ module.exports = {
   GIT: {
     dataSource: false,
     public: true
+  },
+  History: {
+    dataSource: 'db',
+    public: false
   }
 };

@@ -21,7 +21,11 @@ const _ = require('lodash');
 module.exports = function(Model, app) {
 
   Model.loadOne = function(id,template, req) {
+
     var templateData;
+    var item;
+    var model;
+
     return Promise.resolve()
       .then(function() {
         return app.edit.loadTemplate({
@@ -34,8 +38,8 @@ module.exports = function(Model, app) {
         return Model.getTemplateModel(template);
 
       })
-      .then(function(model) {
-
+      .then(function(_model) {
+        model = _model;
         var include = _.map(templateData.relations,function(relation){
           return {
             relation: relation,
@@ -48,7 +52,9 @@ module.exports = function(Model, app) {
           include:include
         });
       })
-      .then(function(item) {
+      .then(function(_item) {
+
+        item = _item;
 
         if(!item){
           return Promise.reject({
@@ -56,16 +62,26 @@ module.exports = function(Model, app) {
             message: `Could not find item with id: ${id}`
           });
         }
+
+        return app.models.History.load({
+          id: item.id,
+          model: model
+        });
+
+      })
+      .then(function(log) {
+
         var itemData = _.omit(item.__data, templateData.relations);
         var relations = _.pick(item.__data, templateData.relations);
-        console.log('relations',relations);
+        //console.log('relations',relations);
         relations = app.lngScan(relations,req);
-        console.log('relations.scanned',relations);
+        //console.log('relations.scanned',relations);
 
         return {
           page: {
             id: item.id,
             data: itemData,
+            log: log,
             path: `/${template}/${item.name}`
           },
           relations: relations,

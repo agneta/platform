@@ -28,6 +28,7 @@ module.exports = function(options) {
   var Portal =  options.Portal;
 
   vm.getPage = function(obj) {
+    obj = obj || vm.page.id;
     var id = obj.id || obj;
     $rootScope.loadingMain = true;
     return helpers.Model.loadOne({

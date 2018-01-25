@@ -16,14 +16,17 @@
  */
 const _ = require('lodash');
 const path = require('path');
+const diff = require('deep-diff').diff;
+
 module.exports = function(Model, app) {
 
   var clientHelpers = app.get('options').client.app.locals;
 
-  Model.save = function(id, template, data) {
+  Model.save = function(id, template, data, req) {
 
     var templateData;
     var model;
+    var item;
 
     return Promise.resolve()
       .then(function() {
@@ -40,19 +43,50 @@ module.exports = function(Model, app) {
 
         return model.findById(id);
       })
-      .then(function(item) {
-        if(!item){
+      .then(function(_item) {
+        item = _item;
+
+        if (!item) {
           return Promise.reject({
             statusCode: 404,
             message: `Item not found with id: ${id}`
           });
         }
-        data = clientHelpers.get_values(data);
-        data = _.pick(data,templateData.fieldNames);
-        //console.log(data);
-        return item.updateAttributes(data);
-      });
 
+        data = clientHelpers.get_values(data);
+        data = _.pick(data, templateData.fieldNames);
+
+        if(model.validateData){
+          // Important to alter data before saved into database so that the diff behaves properly
+          return model.validateData(data);
+        }
+
+      })
+      .then(function() {
+
+        var differences = diff(
+          _.pick(item.__data, templateData.fieldNames),
+          data
+        );
+        if(!differences){
+          return;
+        }
+        if(!differences.length){
+          return;
+        }
+        //console.log(data);
+        return item.updateAttributes(data)
+          .then(function(item) {
+            return app.models.History.add({
+              model: model,
+              data: data,
+              id: item.id,
+              diff: differences,
+              req: req
+            });
+          });
+
+      });
 
   };
 
@@ -71,6 +105,12 @@ module.exports = function(Model, app) {
         arg: 'data',
         type: 'object',
         required: true
+      }, {
+        arg: 'req',
+        type: 'object',
+        'http': {
+          source: 'req'
+        }
       }],
       returns: {
         arg: 'result',
