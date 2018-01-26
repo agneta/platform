@@ -144,6 +144,9 @@ libraries:
   oclazyload:
   ngstorage:
   Chart.js:
+  zxcvbn:
+    include:
+      - dist/**
   moment:
     dir: 'moment'
     include: '*.js'

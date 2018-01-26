@@ -1,19 +1,21 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
- *
- *   Source file: services/models/account/register.js
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- */
+*
+*   Source file: services/models/account/register.js
+*
+*   Licensed under the Apache License, Version 2.0 (the "License");
+*   you may not use this file except in compliance with the License.
+*   You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+*   Unless required by applicable law or agreed to in writing, software
+*   distributed under the License is distributed on an "AS IS" BASIS,
+*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*   See the License for the specific language governing permissions and
+*   limitations under the License.
+*/
+
+var zxcvbn = require('zxcvbn');
 
 module.exports = function(Model, app) {
 
@@ -143,7 +145,22 @@ module.exports = function(Model, app) {
 
   Model.beforeRemote('register', function(context) {
 
-    return app.recaptcha.verify(context.req.recaptcha)
+    return Promise.resolve()
+      .then(function() {
+
+        var strength = zxcvbn(context.req.body.password);
+        if (strength.score <= 2){
+          return Promise.reject({
+            statusCode: 400,
+            message: 'Password does not meet strength requirements',
+            feedback: strength.feedback
+          });
+        }
+
+      })
+      .then(function() {
+        return app.recaptcha.verify(context.req.recaptcha);
+      })
       .then(function(response) {
 
         if (!response.success) {

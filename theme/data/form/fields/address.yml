@@ -8,3 +8,4 @@ validators:
   minlength: 4
   maxlength: 40
   required: true
+  password: true

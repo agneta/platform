@@ -1,0 +1,20 @@
+title:
+  en: Register
+
+controller: AgDialogRegister
+
+styles:
+  - form/password
+
+scripts:
+  - lib/zxcvbn
+  - form/password
+  - form/recaptcha
+
+form:
+  name: formRegister
+  onSubmit: register()
+  fields:
+    - email
+    - password
+    - password-confirm

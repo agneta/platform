@@ -80,7 +80,7 @@ module.exports = function(Model, app) {
       .then(function(_token) {
         token = _token;
 
-        return app.helper.limitCollection({
+        return app.helpers.limitCollection({
           where:{
             userId: token.userId
           },
