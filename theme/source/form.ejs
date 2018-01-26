@@ -1,7 +1,6 @@
 <%
 var onSubmit = null;
 var autocomplete = null;
-var layoutMargin = 'layout-margin="layout-margin"';
 
 if(_.isString(form)){
 	form = get_data('form/presets/'+form);
@@ -15,13 +14,9 @@ if(form.disableAutocomplete){
 	autocomplete = 'autocomplete="off"';
 }
 
-if(form.noMargin){
-	layoutMargin = null;
-}
-
 %>
 
-<form layout="column" <%-layoutMargin%> <%-onSubmit%> <%-autocomplete%> <%-form.attr%> method="post" name="<%-form.name%>">
+<form layout="column" class="ag-margin" <%-onSubmit%> <%-autocomplete%> <%-form.attr%> method="post" name="<%-form.name%>">
 
 	<%-template('form/fields',{data: form
 	})%>

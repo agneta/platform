@@ -5,7 +5,6 @@ var app = angular.module('MainApp');
 app.directive('agPassword', function() {
   return {
     restrict: 'A',
-    scope: true,
     require: 'ngModel',
     link: function(scope, element, attrs, ngModel) {
       if (!ngModel) return;
@@ -19,18 +18,16 @@ app.directive('agPassword', function() {
         }
 
         var strength = zxcvbn(value);
-        console.log(strength);
+        //console.log(strength);
         ngModel.strength = {
           score: strength.score,
           percentage: (strength.score+1)/5*100
         };
         ngModel.feedback = strength.feedback;
         ngModel.$setValidity('password', strength.score>2);
-
       });
 
-      //model.assign(scope.$parent, name);
-      //ngModel.$setViewValue(name);
+
     }
   };
 });

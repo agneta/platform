@@ -3,6 +3,8 @@ title:
 
 controller: AgDialogRegister
 
+class: register
+
 styles:
   - form/password
 
@@ -17,4 +19,11 @@ form:
   fields:
     - email
     - password
-    - password-confirm
+    -
+      base: password_confirm
+      validators:
+        compareTo: password
+    - recaptcha
+
+action:
+  en: Register

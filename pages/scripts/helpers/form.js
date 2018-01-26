@@ -60,6 +60,8 @@ module.exports = function(locals) {
       field.name = field.name || fieldName || field.base;
     }
 
+    form.model = `${form.name}Fields`;
+
     this.field_props(form, field);
 
     return field;
@@ -98,7 +100,7 @@ module.exports = function(locals) {
     var formName = field.name.shift();
     field.name = field.name.join('_');
     field.prop = `${formName}.${field.name}`;
-    field.parent = fieldParent.lastWithName;
+    field.parent = fieldParent.lastWithName || fieldParent;
 
   });
 
