@@ -19,19 +19,12 @@ var zxcvbn = require('zxcvbn');
 
 module.exports = function(Model, app) {
 
-  var callbacks = app.get('account').callbacks;
-
   Model.__register = function(options) {
 
     var email = options.email;
     var username = options.username;
     var password = options.password;
     var req = options.req;
-    var path = options.path;
-
-    if (path) {
-      path = callbacks.indexOf(path) >= 0 ? path : null;
-    }
 
     if (!email && !username) {
 
@@ -53,14 +46,41 @@ module.exports = function(Model, app) {
       });
     }
 
-    return Model.findOne({
-      where: {
-        or: or
-      },
-      fields: {
-        id: true
-      }
-    })
+    return Promise.resolve()
+      .then(function() {
+
+        var strength = zxcvbn(password);
+        if (strength.score <= 2){
+          return Promise.reject({
+            statusCode: 400,
+            message: 'Password does not meet strength requirements',
+            feedback: strength.feedback
+          });
+        }
+
+      })
+      .then(function() {
+        return app.recaptcha.verify(req.recaptcha);
+      })
+      .then(function(response) {
+
+        if (!response.success) {
+          return Promise.reject({
+            code: 'RECAPTCHA_ERROR',
+            statusCode: 400,
+            message: 'The recaptcha you sent is invalid'
+          });
+        }
+
+        return Model.findOne({
+          where: {
+            or: or
+          },
+          fields: {
+            id: true
+          }
+        });
+      })
       .then(function(result) {
 
         if (result) {
@@ -81,99 +101,16 @@ module.exports = function(Model, app) {
 
       })
       .then(function(account) {
-        Model.sendVerification({
+        var verifOptions = {
           account: account,
-          path: 'partner/dashboard',
           req: req
-        });
+        };
+        verifOptions.path = options.path;
+        Model.sendVerification(verifOptions);
         return account;
       });
 
   };
-
-  Model.register = function(email, username, password, recaptcha, req) {
-
-    return Model.__register({
-      email: email,
-      username: username,
-      password: password,
-      req: req
-    })
-      .then(function(account) {
-        return {
-          account: account,
-          success: {
-            title: 'Thank you for registering',
-            content: 'We sent an email for you to verify your account'
-          }
-        };
-      });
-
-  };
-
-  Model.remoteMethod(
-    'register', {
-      description: 'Register user with email and password.',
-      accepts: [{
-        arg: 'email',
-        type: 'string',
-        required: false,
-      }, {
-        arg: 'username',
-        type: 'string',
-        required: false,
-      }, {
-        arg: 'password',
-        type: 'string',
-        required: true
-      }, {
-        arg: 'recaptcha',
-        type: 'string',
-        required: true
-      }],
-      returns: {
-        arg: 'result',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'post',
-        path: '/register'
-      }
-    }
-  );
-
-  Model.beforeRemote('register', function(context) {
-
-    return Promise.resolve()
-      .then(function() {
-
-        var strength = zxcvbn(context.req.body.password);
-        if (strength.score <= 2){
-          return Promise.reject({
-            statusCode: 400,
-            message: 'Password does not meet strength requirements',
-            feedback: strength.feedback
-          });
-        }
-
-      })
-      .then(function() {
-        return app.recaptcha.verify(context.req.recaptcha);
-      })
-      .then(function(response) {
-
-        if (!response.success) {
-          return Promise.reject({
-            code: 'RECAPTCHA_ERROR',
-            statusCode: 400,
-            message: 'The recaptcha you sent is invalid'
-          });
-        }
-
-      });
-
-  });
 
 
 };
