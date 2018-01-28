@@ -21,6 +21,7 @@ var _ = require('lodash');
 module.exports = function(locals) {
 
   var project = locals.project;
+  var helpers = locals.app.locals;
 
   project.extend.helper.register('viewController', function(tag) {
     tag = tag.split('-');
@@ -140,34 +141,51 @@ module.exports = function(locals) {
   });
 
 
-  project.extend.helper.register('viewAuthData', function() {
+  project.extend.helper.register('viewAuthData', function(page) {
 
-    var page = _.extend({}, this.page, {
-      styles: ['authorization'],
+    page = page || this.page;
+    page = _.extend(_.pick(page,[
+      'title',
+      'path',
+      'pathSource',
+      'templateSource'
+    ]),{
       class: 'page-authorization'
     });
-    return this.viewData(page);
+    var data = getData(page);
+    data.dependencies = [
+      [
+        this.get_asset('authorization.css')
+      ]
+    ];
+    return JSON.stringify(data);
+
   });
 
 
   project.extend.helper.register('viewData', function(page) {
 
     page = page || this.page;
-    var data = this.viewBasicData(page);
+    return JSON.stringify(getData(page));
 
-    var config = this.config;
-    var self = this;
+  });
+
+  function getData(page) {
+    var data = helpers.viewBasicData(page);
+
+    var config = helpers.config;
+    var self = helpers;
 
     data.authorization = page.authorization;
     data.keypress = page.keypress;
     data.controller = page.controller;
     data.menuLock = config.lockSidebar || page.menuLock;
-    data.extra = this.lngScan(page.viewData);
+    data.extra = helpers.lngScan(page.viewData);
 
     //----------------------------------------
 
-    if (page.toolbar && this.has_template(path.join('partials', page.toolbar))) {
-      data.toolbar = this.get_path(urljoin('partial', page.toolbar));
+    if (page.toolbar && helpers.has_template(path.join('partials', page.toolbar))) {
+      data.toolbar = helpers.get_path(urljoin('partial', page.toolbar));
     }
 
     //----------------------------------------
@@ -238,8 +256,7 @@ module.exports = function(locals) {
 
     }
 
-    return JSON.stringify(data);
-
-  });
+    return data;
+  }
 
 };
