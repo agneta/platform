@@ -92,10 +92,7 @@ app.run(function($rootScope, $route, $timeout, $location, Account, $mdDialog) {
     }
 
     if (rejection.login) {
-      $mdDialog.open({
-        partial: 'log-in',
-        data: {}
-      });
+      $rootScope.account.login();
     }
 
     console.error(rejection);

@@ -31,7 +31,7 @@ app.directive('hasRole', function($rootScope) {
 
       function check() {
 
-        var account = $rootScope.account;
+        var account = $rootScope.account.profile;
         if (!account) {
           return;
         }

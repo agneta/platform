@@ -1,0 +1,8 @@
+title:
+  en: Account not verified
+
+controller: 'AgResendVrfCtrl'
+
+action:
+  title:
+    en: 'Resend Verification'

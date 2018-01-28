@@ -30,7 +30,7 @@
       }
     });
 
-    if ($rootScope.account) {
+    if ($rootScope.account.profile) {
       init();
     }
 

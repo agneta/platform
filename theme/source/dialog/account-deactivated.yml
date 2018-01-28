@@ -1,0 +1,11 @@
+title:
+  en: Account Deactivated
+
+controller: 'AgAccountDeactivated'
+
+content:
+  en: 'This Account was deactivated and can be recovered with an email verification.'
+
+action:
+  title:
+    en: 'Recover'

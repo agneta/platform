@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: theme/source/main/account/recovery.js
+ *   Source file: theme/source/main/account/popup.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,46 +14,29 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-agneta.directive('AgAccountRecoverCtrl', function(Account) {
+agneta.directive('AgAccountLogin', function($rootScope, $mdDialog) {
 
   var vm = this;
 
   agneta.extend(vm, 'AgDialogCtrl');
 
-  vm.submitPassword = function() {
+  vm.submit = function() {
+
+    var email = vm.formLoginFields.email;
+    var password = vm.formLoginFields.password;
 
     vm.loading = true;
 
-    Account.recover(vm.formPassFields, function() {
-      vm.loading = false;
-
-    });
-
-  };
-
-});
-
-agneta.directive('AgRequestRecoveryCtrl', function(Account, $mdDialog, email) {
-
-  var vm = this;
-
-  agneta.extend(vm, 'AgDialogCtrl');
-
-  vm.data = {
-    title: 'Account Deactivated',
-    content: 'This Account was deactivated and can be recovered with an email verification.',
-    action: {
-      title: 'Recover Account'
-    }
-  };
-
-  vm.action = function() {
-
-    vm.loading = true;
-
-    Account.requestRecovery({
-      email: email
-    });
+    vm.signIn({
+      email: email,
+      password: password
+    })
+      .then(function() {
+        $mdDialog.hide();
+      })
+      .finally(function() {
+        vm.loading = false;
+      });
   };
 
 });

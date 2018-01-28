@@ -60,7 +60,14 @@ module.exports = function(Model, app) {
 
       })
       .then(function() {
-        return app.recaptcha.verify(req.recaptcha);
+        var recaptcha = options.recaptcha || req.body.recaptcha;
+        if(!recaptcha){
+          return Promise.reject({
+            statusCode: 400,
+            message: 'Recaptcha was not provided'
+          });
+        }
+        return app.recaptcha.verify(recaptcha);
       })
       .then(function(response) {
 
@@ -68,7 +75,8 @@ module.exports = function(Model, app) {
           return Promise.reject({
             code: 'RECAPTCHA_ERROR',
             statusCode: 400,
-            message: 'The recaptcha you sent is invalid'
+            message: 'The recaptcha you sent is invalid',
+            details: response
           });
         }
 

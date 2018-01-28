@@ -359,7 +359,7 @@ app.config(function($mdThemingProvider, $sceDelegateProvider) {
   $rootScope.lng = agneta.lng;
 
   $rootScope.loggedClass = function() {
-    return $rootScope.account ? 'logged-in' : 'logged-out';
+    return $rootScope.account.profile ? 'logged-in' : 'logged-out';
   };
 });
 

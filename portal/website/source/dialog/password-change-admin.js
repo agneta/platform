@@ -34,7 +34,7 @@
         .$promise
         .then(function() {
 
-          if (data.account.id == $rootScope.account.id) {
+          if (data.account.id == $rootScope.account.profile.id) {
             LoopBackAuth.clearUser();
             LoopBackAuth.save();
             $rootScope.me();

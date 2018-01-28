@@ -1,0 +1,29 @@
+title:
+  en: 'Account Login'
+  gr: 'Σύνδεση Λογαριασμού'
+
+submit:
+  label:
+    en: 'Login'
+    gr: 'Σύνδεση'
+
+controller: 'AgAccountLogin'
+class: account-login
+viewData:
+  loginRedirect: '/'
+
+skipAuthorization: true
+
+options:
+  -
+    click: account.register()
+    message:
+      en: Do not have an account yet?
+    action:
+      en: Register
+  -
+    click: account.lostPassword()
+    message:
+      en: Forgot your password?
+    action:
+      en: Reset

@@ -16,7 +16,7 @@
  */
 (function() {
 
-  agneta.directive('AgRecaptchaCtrl', function($element, $attrs, $timeout, $parse, $ocLazyLoad) {
+  agneta.directive('AgRecaptchaCtrl', function($element, $attrs,$rootScope, $timeout, $parse, $ocLazyLoad) {
 
     var element = $element[0];
     var vm = this;
@@ -36,9 +36,18 @@
       window.onloadRecaptcha();
     }
 
+    var lng = agneta.lang;
+    switch (lng) {
+      case 'gr':
+        lng = 'el';
+        break;
+      default:
+
+    }
+
     $ocLazyLoad.load({
       files: [
-        '//www.google.com/recaptcha/api.js?onload=onloadRecaptcha&render=explicit&hl=el'
+        `//www.google.com/recaptcha/api.js?onload=onloadRecaptcha&render=explicit&hl=${lng}`
       ]
     });
 

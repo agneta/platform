@@ -26,12 +26,8 @@
 
   });
 
-  require('main/account/login');
-  require('main/account/password');
-  require('main/account/popup');
-  require('main/account/recovery');
-  require('main/account/root');
-  require('main/account/verification');
-  require('main/account/directives');
+  require('main/account/params.module');
+  require('main/account/methods.module');
+  require('main/account/directives.module');
 
 })();

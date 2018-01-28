@@ -91,7 +91,7 @@ module.exports = function(vm, $rootScope, Account, Portal, $timeout, Role_Editor
       lastEdit.id = child.__id;
       lastEdit.value = data.value;
 
-      if (data.actor != $rootScope.account.id) {
+      if (data.actor != $rootScope.account.profile.id) {
         child.__value[data.lang] = data.value;
       }
 
