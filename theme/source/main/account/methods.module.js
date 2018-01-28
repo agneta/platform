@@ -21,73 +21,14 @@ app.run(function($rootScope, LoopBackAuth, $mdDialog, $route, Account, $location
   var account = {};
   $rootScope.account = account;
 
-  account.signIn = function(credentials) {
-
-    Account.signIn(credentials)
-      .$promise
-      .then(function(account) {
-        LoopBackAuth.rememberMe = true;
-        LoopBackAuth.setUser(account.token.id, account.token.userId);
-        LoopBackAuth.save();
-        onAccount(account);
-        reload();
-      })
-      .catch(function(err){
-        switch (err.code) {
-          case 'LOGIN_FAILED_EMAIL_NOT_VERIFIED':
-            $mdDialog.show({
-              partial: 'account-unverified',
-              data: {
-                email: credentials.email,
-                html: err.message
-              }
-            });
-            break;
-          case 'USER_DEACTIVATED':
-            $mdDialog.show({
-              clickOutsideToClose: true,
-              partial: 'account-deactivated',
-              data: {
-                email: credentials.email
-              }
-            });
-            break;
-
-          default:
-            break;
-        }
-      });
-  };
-
-  account.signOut = function(cb) {
-
-    cb = cb || function() {
-
-    };
-
-    $rootScope.loadingMain = true;
-
-    Account.signOut(function() {
-      LoopBackAuth.clearUser();
-      LoopBackAuth.clearStorage();
-      LoopBackAuth.save();
-      $rootScope.account.profile = null;
-      $rootScope.$emit('accountCheck', null);
-      reload();
-      cb();
-      $rootScope.loadingMain = false;
-    }, cb);
-  };
-
   account.me = function() {
 
     //TODO: Somehow reload loopback auth from storage
     //LoopBackAuth.load();
-
-    return Account.me({})
+    return Account.me()
       .$promise
-      .then(function(account){
-        onAccount(account);
+      .then(function(result){
+        account.profile = result;
       });
 
   };
@@ -102,18 +43,17 @@ app.run(function($rootScope, LoopBackAuth, $mdDialog, $route, Account, $location
     });
   };
 
-  function onAccount(account) {
+  $rootScope.$watch('account.profile',function(value){
 
-    if (account && account.email) {
-      $rootScope.account.profile = account;
-    } else {
-      $rootScope.account.profile = null;
+    if (!value || !value.email) {
+      account.profile = null;
+      return;
     }
 
-    $rootScope.account.checked = true;
-    $rootScope.$emit('accountCheck', account);
+    account.checked = true;
+    $rootScope.$emit('accountCheck', value);
 
-  }
+  });
 
   function reload() {
     window.location.href = $location.path();
@@ -124,6 +64,27 @@ app.run(function($rootScope, LoopBackAuth, $mdDialog, $route, Account, $location
       partial: 'account-login'
     });
   };
+
+  account.logout = function(cb) {
+
+    cb = cb || function() {
+
+    };
+
+    $rootScope.loadingMain = true;
+
+    Account.signOut(function() {
+      LoopBackAuth.clearUser();
+      LoopBackAuth.clearStorage();
+      LoopBackAuth.save();
+      account.profile = null;
+      $rootScope.$emit('accountCheck', null);
+      reload();
+      cb();
+      $rootScope.loadingMain = false;
+    }, cb);
+  };
+
 
   ////////////////////////////////////////////////////////////////
   // Check if User is logged in

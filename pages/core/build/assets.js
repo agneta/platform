@@ -190,13 +190,8 @@ module.exports = function(locals, options) {
           })
         );
       case '.styl':
-
-        var str = fs.readFileSync(source_file_path, {
-          encoding: 'utf8'
-        });
-
         return exportCSS(
-          stylusCompiler(str, source_file_path).render()
+          stylusCompiler.compile(source_file_path)
         );
       default:
         return copy();

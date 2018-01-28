@@ -14,18 +14,20 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var _ = require('lodash');
-var stylus = require('stylus');
-var nib = require('nib');
-var path = require('path');
-var fs = require('fs-extra');
-var color = require('color');
+const _ = require('lodash');
+const stylus = require('stylus');
+const nib = require('nib');
+const path = require('path');
+const fs = require('fs-extra');
+const color = require('color');
+const Promise = require('bluebird');
 
 module.exports = function(locals) {
 
-  return function(str, pathFile) {
+  var project = locals.project;
 
-    var project = locals.project;
+  function getCompiler(str, pathFile) {
+
     var compiler = stylus(str)
       .set('filename', pathFile)
       .set('include css', true)
@@ -111,5 +113,61 @@ module.exports = function(locals) {
     }
 
     return compiler;
+
+  }
+
+
+  //----------------------------------------
+
+  function compile(source_file_path){
+
+    var str = fs.readFileSync(source_file_path, {
+      encoding: 'utf8'
+    });
+
+    return getCompiler(str, source_file_path).render();
+
+  }
+
+  function middleware(req,res,next){
+
+    return Promise.resolve()
+      .then(function() {
+
+        var parsedPath = path.parse(req.path);
+
+        if (parsedPath.ext!='css') {
+          return;
+        }
+
+        parsedPath.ext = '.styl';
+        let pathRelative = path.format(parsedPath);
+        let pathSource = project.theme.getFile(path.join('source', pathRelative));
+        console.log(pathRelative,pathSource);
+        if(!pathSource){
+          return;
+        }
+
+        return fs.readFile(pathSource, {
+          encoding: 'utf8'
+        })
+          .then(function(content){
+            content = getCompiler(content, pathSource).render();
+            let pathOutput = path.join(
+              project.paths.app.cache,
+              req.path
+            );
+            return fs.outputFile(pathOutput,content);
+          });
+
+
+      })
+      .asCallback(next);
+
+  }
+
+  return {
+    compile: compile,
+    middleware: middleware
   };
 };

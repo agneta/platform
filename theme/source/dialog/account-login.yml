@@ -2,10 +2,6 @@ title:
   en: 'Account Login'
   gr: 'Σύνδεση Λογαριασμού'
 
-submit:
-  label:
-    en: 'Login'
-    gr: 'Σύνδεση'
 
 controller: 'AgAccountLogin'
 class: account-login
@@ -14,15 +10,22 @@ viewData:
 
 skipAuthorization: true
 
+form:
+  name: 'formLogin'
+  onSubmit: 'submit()'
+  fields:
+    - 'email'
+    - 'password'
+
 options:
   -
-    click: account.register()
+    click: register()
     message:
       en: Do not have an account yet?
     action:
       en: Register
   -
-    click: account.lostPassword()
+    click: lostPassword()
     message:
       en: Forgot your password?
     action:

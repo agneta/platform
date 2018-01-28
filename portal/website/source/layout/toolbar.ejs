@@ -30,18 +30,9 @@ if(!toolbar.disabled){
 
 			<%-template('ui/button',{
 				title:lng('general.login'),
-				href: get_path('login'),
+				click: 'account.login',
 			}
 		)%>
-
-		<% if(has_path('register')){%>
-			<%-template('ui/button',{
-				title:lng('general.register'),
-				href: get_path('register'),
-				extraClass: 'hide show-gt-xs'
-			}
-		)%>
-		<% } %>
 
 		</div>
 		<%-template('ui/account-menu')%>

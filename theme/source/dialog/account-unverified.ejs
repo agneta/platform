@@ -1,6 +1,6 @@
 <%-template('ui/loader')%>
 
-<md-toolbar>
+<md-toolbar class="bg-warn">
   <div class="md-toolbar-tools">
     <md-icon class="header-icon" md-svg-src=<%-get_icon( "material/warning")%>></md-icon>
     <h2><%-lng(page.title)%></h2>
@@ -15,10 +15,10 @@
 </md-dialog-content>
 
 <md-dialog-actions layout="row">
-  <md-button ng-show="data.action" ng-click="action()">
-    <%-lng(page.action.title)%>
-  </md-button>
   <md-button ng-click="close()">
     <%-lng('general.close')%>
+  </md-button>
+  <md-button class="md-raised md-primary" ng-click="action()">
+    <%-lng(page.action.title)%>
   </md-button>
 </md-dialog-actions>

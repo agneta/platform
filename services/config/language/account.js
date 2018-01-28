@@ -70,5 +70,9 @@ module.exports = {
   wrongPassword:{
     en: 'You have entered an invalid password. Please try again.',
     gr: 'Έχετε εισάγει έναν μη έγκυρο κωδικό πρόσβασης. Παρακαλώ δοκιμάστε ξανά.'
+  },
+  notVerified:{
+    en: 'Login failed as the email has not been verified',
+    gr: 'Η σύνδεση απέτυχε καθώς το email δεν έχει επαληθευτεί.'
   }
 };

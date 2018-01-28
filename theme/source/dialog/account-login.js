@@ -14,11 +14,19 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-agneta.directive('AgAccountLogin', function($rootScope, $mdDialog) {
+agneta.directive('AgAccountLogin', function($rootScope, $mdDialog,$location, Account, LoopBackAuth) {
 
   var vm = this;
 
   agneta.extend(vm, 'AgDialogCtrl');
+
+  vm.register = function() {
+    $rootScope.account.register();
+  };
+
+  vm.lostPassword = function() {
+    $rootScope.account.lostPassword();
+  };
 
   vm.submit = function() {
 
@@ -27,12 +35,43 @@ agneta.directive('AgAccountLogin', function($rootScope, $mdDialog) {
 
     vm.loading = true;
 
-    vm.signIn({
+    Account.signIn({
       email: email,
       password: password
     })
-      .then(function() {
-        $mdDialog.hide();
+      .$promise
+      .then(function(account) {
+        LoopBackAuth.rememberMe = true;
+        LoopBackAuth.setUser(account.token.id, account.token.userId);
+        LoopBackAuth.save();
+        $rootScope.account.profile = account;
+        window.location.href = $location.path();
+      })
+      .catch(function(err){
+        switch (err.code) {
+          case 'LOGIN_FAILED_EMAIL_NOT_VERIFIED':
+            $mdDialog.open({
+              partial: 'account-unverified',
+              nested: true,
+              data: {
+                email: email,
+                html: err.message
+              }
+            });
+            break;
+          case 'USER_DEACTIVATED':
+            $mdDialog.open({
+              partial: 'account-deactivated',
+              nested: true,
+              data: {
+                email: email
+              }
+            });
+            break;
+
+          default:
+            break;
+        }
       })
       .finally(function() {
         vm.loading = false;

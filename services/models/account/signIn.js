@@ -69,10 +69,17 @@ module.exports = function(Model, app) {
         }
 
         return Model.login(credentials, null)
-          .catch(function(){
+          .catch(function(err){
+            var message = 'account.wrongPassword';
+            switch (err.code) {
+              case 'LOGIN_FAILED_EMAIL_NOT_VERIFIED':
+                message = 'account.notVerified';
+                break;
+            }
             return Promise.reject({
               statusCode: 400,
-              message: app.lng('account.wrongPassword',req)
+              code: err.code,
+              message: app.lng(message,req)
             });
           });
 

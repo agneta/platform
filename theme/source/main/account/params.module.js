@@ -19,42 +19,46 @@ var app = window.angular.module('MainApp');
 
 app.run(function($window, $location, $mdDialog, $rootScope, $routeParams, Account, LoopBackAuth) {
 
-  var token;
+  $rootScope.$on('$routeChangeSuccess', function() {
 
-  switch ($routeParams.action) {
-    case 'recover-account':
+    var token;
 
-      token = $routeParams.token;
-      LoopBackAuth.setUser(token);
+    switch ($routeParams.action) {
+      case 'recover-account':
 
-      $mdDialog.open({
-        partial: 'account-recover',
-      });
+        token = $routeParams.token;
+        LoopBackAuth.setUser(token);
 
-      break;
-    case 'password-reset':
+        $mdDialog.open({
+          partial: 'account-recover',
+        });
 
-      token = $routeParams.token;
-      LoopBackAuth.setUser(token);
-      console.log($routeParams.token);
-      $mdDialog.open({
-        partial: 'password-new',
-        data:{
+        break;
+      case 'password-reset':
+
+        token = $routeParams.token;
+        LoopBackAuth.setUser(token);
+        console.log($routeParams.token);
+        $mdDialog.open({
+          partial: 'password-new',
+          data:{
+            token: $routeParams.token
+          }
+        });
+
+        break;
+      case 'verify':
+
+        var data = {
+          uid: $routeParams.uid,
           token: $routeParams.token
-        }
-      });
+        };
 
-      break;
-    case 'verify':
+        Account.verifyEmail(data);
 
-      var data = {
-        uid: $routeParams.uid,
-        token: $routeParams.token
-      };
+        break;
+    }
 
-      Account.verifyEmail(data);
-
-      break;
-  }
+  });
 
 });

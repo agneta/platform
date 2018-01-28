@@ -16,7 +16,6 @@
  */
 var express = require('express');
 var bodyParser = require('body-parser');
-var stylus = require('stylus');
 var StylusCompiler = require('../core/compiler/style');
 var ScriptCompiler = require('../core/compiler/script');
 
@@ -48,15 +47,7 @@ module.exports = function(locals) {
     sources = sources.concat(locals.includeSources);
   }
 
-  for (let source of sources) {
-
-    app.use(stylus.middleware({
-      src: source.path,
-      dest: project.paths.app.cache,
-      compile: stylusCompiler
-    }));
-
-  }
+  app.use(stylusCompiler.middleware);
   app.use(scriptCompiler.middleware);
   app.use(express.static(project.paths.app.cache));
 

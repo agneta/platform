@@ -2,7 +2,7 @@ title:
   en: Account not verified
 
 controller: 'AgResendVrfCtrl'
-
+class: account-unverified
 action:
   title:
     en: 'Resend Verification'

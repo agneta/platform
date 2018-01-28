@@ -2,27 +2,19 @@
 
     <md-menu md-offset="0 70">
 
-        <md-button class="md-icon-button picture" ng-click="$mdMenu.open()" ng-style="{'background-image': 'url(' + account.picture + ')'}" aria-label="Account">
-          <md-icon ng-if="account.avatar" md-svg-src="{{get_avatar(account.avatar)}}">
+        <md-button class="md-icon-button picture" ng-click="$mdMenu.open()" ng-style="{'background-image': 'url(' + account.profile.picture + ')'}" aria-label="Account">
+          <md-icon ng-if="account.profile.avatar" md-svg-src="{{get_avatar(account.profile.avatar)}}">
           </md-icon>
         </md-button>
 
         <md-menu-content>
             <md-list-item>
-                {{account.email}}
+                {{account.profile.email}}
             </md-list-item>
-            <md-divider>
-            </md-divider>
-            <%if(has_path('control-panel/overview')){%>
-            <md-button ng-href="<%-get_path('control-panel/overview')%>">
-                <%-lng('general.controlpanel')%>
-            </md-button>
-            <% } %>
-
 
             <%-template('ui/button',{
 			title:lng('general.logout'),
-			click: 'account.signOut()'
+			click: 'account.logout()'
 		}
 		)%>
 

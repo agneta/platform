@@ -29,7 +29,7 @@ module.exports = function(app) {
 
   //--------------------------------------------------------------
 
-  var subjectPrefix = _.get(config,'subject.prefix') || '';
+  var subjectPrefix = _.get(config,'subject.prefix');
 
   //--------------------------------------------------------------
 
@@ -100,7 +100,7 @@ module.exports = function(app) {
       options.html = renderResult.html;
       options.text = renderResult.text;
 
-    } 
+    }
     send();
 
     ///////////////////////////////////////////////////////////////
@@ -117,7 +117,9 @@ module.exports = function(app) {
         subject = app.lng(subject, options.language);
       }
 
-      options.subject = app.lng(subjectPrefix,options.language) + subject;
+      if(subjectPrefix){
+        options.subject = app.lng(subjectPrefix,options.language) + subject;
+      }
 
       //----------------------------------
 
