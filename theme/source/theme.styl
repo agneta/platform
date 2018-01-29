@@ -20,6 +20,7 @@
 @import "style/page-loader"
 @import "style/loader-top"
 @import "style/compatibility"
+@import "style/layout"
 @import "style/notifications"
 @import "ui/tabs"
 
@@ -61,29 +62,6 @@ md-content{
 
 .pswp{
   display: none;
-}
-
-.ag-margin{
-  &.layout-row{
-    >*{
-      margin: 0;
-      margin-left: 10px;
-
-      &:first-child{
-        margin-left: 0;
-      }
-    }
-  }
-  &.layout-column{
-    >*{
-      margin: 0;
-      margin-top: 10px;
-
-      &:first-child{
-        margin-top: 0;
-      }
-    }
-  }
 }
 
 md-checkbox:last-of-type{
