@@ -131,19 +131,21 @@ module.exports = function(locals) {
 
   function middleware(req,res,next){
 
-    return Promise.resolve()
+    Promise.resolve()
       .then(function() {
 
         var parsedPath = path.parse(req.path);
 
-        if (parsedPath.ext!='css') {
+        if (parsedPath.ext!='.css') {
           return;
         }
 
         parsedPath.ext = '.styl';
+        delete parsedPath.base;
+
         let pathRelative = path.format(parsedPath);
         let pathSource = project.theme.getFile(path.join('source', pathRelative));
-        console.log(pathRelative,pathSource);
+
         if(!pathSource){
           return;
         }
