@@ -38,6 +38,9 @@ app.directive('hasRole', function($rootScope) {
 
         var roles = JSON.parse(attrs.hasRole) || [];
         var hasRoles = [];
+        if(!roles.length){
+          return;
+        }
 
         for (var index in roles) {
 
