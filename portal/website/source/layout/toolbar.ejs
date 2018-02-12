@@ -19,26 +19,8 @@ if(!toolbar.disabled){
 		</div>
 		<%-template('ui/uploader')%>
 		<%-template('layout/toolbar/memory')%>
+		<%-template('layout/toolbar/account')%>
 
-		<%if(has_path('login')){%>
-
-			<div class="user-check account" layout="row">
-
-			<%-template('ui/loader',{diameter: 34})%>
-
-			<div ng-show="!account.profile" layout="row">
-
-			<%-template('ui/button',{
-				title:lng('general.login'),
-				click: 'account.login',
-			}
-		)%>
-
-		</div>
-		<%-template('ui/account-menu')%>
-		</div>
-
-		<%}%>
 
 	</div>
 </md-menu-toolbar>

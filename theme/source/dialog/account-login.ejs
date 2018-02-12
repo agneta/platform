@@ -22,7 +22,13 @@
     </div>
 
     <div class="options md-padding" layout="column">
-      <%for(var item of page.options){%>
+      <%for(var item of page.options){
+        if(item.isConfig){
+          if(!_.get(config,item.isConfig)){
+            continue;
+          }
+        }
+        %>
       <div class="option" layout="row" layout-align="start center">
         <span>
           <%-lng(item.message)%>

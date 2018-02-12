@@ -21,27 +21,16 @@
       - 'edit/content'
       - 'media'
       - 'lib/fuse.min'
+      - 'lib/mdPickers.min'
+      - lib/ng-quill
+      - lib/ng-sortable.min
+      - lib/ng-file-upload.min
+      - lib/angular-moment.min
     styles:
       - 'lib/quill.snow'
       - 'lib/ng-sortable.min'
       - 'lib/mdPickers.min'
       - 'edit/content'
-    angular_libs:
-      -
-        js: lib/mdPickers.min
-        dep: mdPickers
-      -
-        js: lib/ng-quill
-        dep: ngQuill
-      -
-        js: lib/ng-sortable.min
-        dep: as.sortable
-      -
-        js: 'lib/ng-file-upload.min'
-        dep: 'ngFileUpload'
-      -
-        js: lib/angular-moment.min
-        dep: angularMoment
     keypress: true
     menuLock: true
     sidebar: edit/content/sidebar/main

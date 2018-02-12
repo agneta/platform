@@ -1,0 +1,45 @@
+<%
+  var data = get_data('toolbar').account;
+%>
+<md-menu class="account" md-offset="0 60">
+<md-button ng-click="$mdMenu.open()">
+  <span><%-lng(data.title)%></span>
+</md-button>
+<md-menu-content class="toolbar-account-menu" width="4" class="md-padding">
+
+
+  <div ng-hide="account.profile" layout="column" class="signed-out md-padding" layout-align="center">
+    <md-icon md-svg-src="<%-get_icon('material/person')%>"></md-icon>
+    <p class="title"><%-lng(data.signedOut.title)%></p>
+    <p class="message"><%-lng(data.signedOut.messageLogin)%></p>
+    <%if(config.account.register){%>
+    <p class="message"><%-lng(data.signedOut.messageRegister)%></p>
+    <%}%>
+    <div layout="column" class="ag-margin">
+    <%for(var action of data.signedOut.actions){
+      if(action.isConfig){
+        if(!_.get(config,action.isConfig)){
+          continue;
+        }
+      }
+      %>
+      <md-button class="bg-grey" ng-click="<%-action.click%>">
+      <%-lng(action.title)%>
+      </md-button>
+    <%}%>
+  </div>
+  </div>
+
+  <div class="ag-margin md-padding" ng-show="account.profile" layout="column">
+    <p>{{account.profile.username || account.profile.email}}</p>
+    <md-button class="bg-grey" ng-href="<%-get_path('account')%>">
+      Profile
+    </md-button>
+    <md-button class="bg-grey" ng-click="account.logout()">
+      Sign out
+    </md-button>
+  </div>
+
+
+</md-menu-content>
+</md-menu>

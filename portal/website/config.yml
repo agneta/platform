@@ -33,6 +33,10 @@ language:
 
 #-----------------------------------------------
 
+account:
+  menu:
+    - account
+
 toolbar:
   image: false
   icon: 'icons/agneta/logo'

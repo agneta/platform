@@ -15,6 +15,8 @@
  *   limitations under the License.
  */
 var _ = require('lodash');
+const path = require('path');
+const presetBase = 'form/presets';
 
 module.exports = function(app, clientHelpers) {
 
@@ -27,7 +29,16 @@ module.exports = function(app, clientHelpers) {
 
     if (_.isString(form)) {
       formName = form;
-      form = clientHelpers.get_data('form/presets/' + formName);
+      let dataPath = formName;
+      if(dataPath.indexOf(presetBase)!=0){
+        dataPath = path.join(presetBase,dataPath);
+      }
+      form = clientHelpers.get_data(dataPath);
+
+      if(!form){
+        throw new Error(`Could not find form with name: ${formName}`);
+      }
+
     }
 
     if(!form.name){

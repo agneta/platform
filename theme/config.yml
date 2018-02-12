@@ -29,6 +29,12 @@ colors:
 
 #-----------------------------------------------
 
+account:
+  register: false
+  menu: null
+
+#-----------------------------------------------
+
 page:
   viewBase:
     local: 'private/page-local'

@@ -139,7 +139,7 @@ var injector = angular.injector(['ng']);
 
 app.factory('$exceptionHandler', function() {
   return function(exception) {
-    console.error(exception.stack);
+    console.error(exception.stack || exception);
   };
 });
 
@@ -264,78 +264,6 @@ app.config(function($mdThemingProvider, $sceDelegateProvider) {
 
   ////////////////////////////////////////////////////////////////
 
-  $rootScope.loadData = function(path) {
-
-    var params = $route.current.params;
-    path = path || params.path;
-
-    var dataPath = agneta.urljoin({
-      path: [agneta.services.view, path, 'view-data'],
-      query: {
-        version: agneta.page.version
-      }
-    });
-
-    var data;
-
-    return $http.get(dataPath)
-      .then(function(response) {
-
-        data = app.pageData = response.data;
-        //console.log('$rootScope.loadData', data);
-
-        //----------------------------------------------
-        // Load page dependencies
-
-        var dependencies = data.dependencies || [];
-        var priorityIndex = 0;
-
-        function loadPriority() {
-
-          var priority = dependencies[priorityIndex];
-
-          if (!priority) {
-            return;
-          }
-
-          priorityIndex++;
-
-          return $q(function(resolve) {
-
-            if (priority.length) {
-
-              $ocLazyLoad.load([{
-                name: 'MainApp',
-                files: priority
-              }]).then(resolve);
-
-            } else {
-              resolve();
-            }
-
-          })
-            .then(loadPriority);
-
-        }
-
-        //----------------------------------------------
-        // Load angular modules
-
-        if (data.inject && data.inject.length) {
-          $ocLazyLoad.inject(data.inject);
-        }
-
-        return loadPriority();
-
-
-      })
-      .then(function() {
-        return data;
-      });
-  };
-
-  ////////////////////////////////////////////////////////////////
-
   $rootScope.urlActive = function(viewLocation) {
     return viewLocation === $location.path();
   };
@@ -363,140 +291,10 @@ app.config(function($mdThemingProvider, $sceDelegateProvider) {
   };
 });
 
-app.filter('numkeys', function() {
-  return function(object) {
-    if(!object){
-      return;
-    }
-    return Object.keys(object).length;
-  };
-});
-
-app.filter('filesize', function() {
-
-  return function(bytes) {
-
-    return window.filesize(bytes);
-
-  };
-
-});
-
-
-app.filter('highlight', function($sce) {
-  return function(text, phrase) {
-    if (!text) {
-      return;
-    }
-    if (!phrase) {
-      return text;
-    }
-    phrase = phrase.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>{}[]\\\/]/gi, '');
-    phrase = phrase.split(' ').join('|');
-    text = text.replace(new RegExp('(' + phrase + ')', 'gi'),
-      '<span class="highlighted">$1</span>');
-    return $sce.trustAsHtml(text);
-  };
-});
-
-app.filter('highlight_fuse', function($sce) {
-
-  var wrapStart = '<span class="highlighted">';
-  var wrapEnd = '</span>';
-  var wrapSize = wrapStart.length + wrapEnd.length;
-
-  return function(text, matches, name) {
-
-    if (!text) {
-      return;
-    }
-    if (!matches || !matches.length) {
-      return text;
-    }
-
-    for (var key in matches) {
-      var match = matches[key];
-
-      if (match.key != name) {
-        continue;
-      }
-
-      var offset = 0;
-      for (var keyIndices in match.indices) {
-        var indice = match.indices[keyIndices];
-        var start = indice[0] + offset;
-        var end = indice[1] + offset + 1;
-        text = text.substring(0, start) + wrapStart + text.substring(start, end) + wrapEnd + text.substring(end);
-        offset += wrapSize;
-      }
-    }
-
-    return $sce.trustAsHtml(text);
-  };
-});
-
-app.directive('agKeydown', function() {
-  return {
-    restrict: 'A',
-    link: function(scope, elem) {
-      elem.on('keydown', function(ev) {
-        ev.stopPropagation();
-      });
-    }
-  };
-});
-
-app.directive('onEnter', function() {
-  return function(scope, element, attrs) {
-    element.bind('keydown keypress', function(event) {
-      if (event.keyCode === 13) {
-        scope.$apply(function() {
-          scope.$eval(attrs.onEnter);
-        });
-
-        event.preventDefault();
-      }
-    });
-  };
-});
-
-app.directive('focusMe', function($timeout) {
-  return {
-    scope: {
-      trigger: '@focusMe'
-    },
-    link: function(scope, element) {
-      scope.$watch('trigger', function(value) {
-        if (value === 'true') {
-          $timeout(function() {
-            element[0].focus();
-          });
-        }
-      });
-    }
-  };
-});
-
-app.directive('compareTo', function() {
-  return {
-    require: 'ngModel',
-    scope: {
-      otherModelValue: '=compareTo'
-    },
-    link: function(scope, element, attributes, ngModel) {
-
-      ngModel.$validators.compareTo = function(modelValue) {
-        return modelValue == scope.otherModelValue;
-      };
-
-      scope.$watch('otherModelValue', function() {
-        ngModel.$validate();
-      });
-    }
-  };
-});
-
 require('main/search-engine.module');
+require('main/data.module');
+require('main/filters.module');
+require('main/directives.module');
 require('main/route.module');
 require('main/form.module');
 require('main/scroll.module');

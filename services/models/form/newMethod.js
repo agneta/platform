@@ -23,6 +23,10 @@ module.exports = function(Model, app) {
 
     var form = formMethod.data;
 
+    if(!form){
+      throw new Error(`Cannot create form method with name: ${formMethod.name}`);
+    }
+
     var accepts = [{
       arg: 'req',
       type: 'object',

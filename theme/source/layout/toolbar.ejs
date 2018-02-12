@@ -14,35 +14,7 @@
 		<div ng-include="viewData.toolbar">
 		</div>
 
-		<%if(has_path('login')){%>
-
-			<div class="user-check account" layout="row">
-
-			<%-template('ui/loader', {diameter: 34})%>
-
-			<div ng-show="!account" layout="row">
-
-			<%-template('ui/button',{
-				title:lng('general.login'),
-				href: get_path('login'),
-			}
-		)%>
-
-		<% if(has_path('register')){%>
-			<%-template('ui/button',{
-				title:lng('general.register'),
-				href: get_path('register'),
-				extraClass: 'hide show-gt-xs'
-			}
-		)%>
-		<% } %>
-
-		</div>
-
-		<%-template('ui/account-menu')%>
-		</div>
-
-		<%}%>
+		<%-template('layout/toolbar/account')%>
 
 	</div>
 </md-menu-toolbar>

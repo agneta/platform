@@ -205,8 +205,8 @@ module.exports = function(locals) {
     data.scripts = data.scripts.concat(page.scripts);
     data.styles = data.styles.concat(page.styles);
 
-    setAssets(data.scripts, '.js');
-    setAssets(data.styles, '.css');
+    setAssets(data.scripts, 'js');
+    setAssets(data.styles, 'css');
 
     for (var index in tmpDependencies) {
       var value = tmpDependencies[index];
@@ -217,7 +217,8 @@ module.exports = function(locals) {
     delete data.scripts;
     delete data.styles;
 
-    function setAssets(assets, ext) {
+    function setAssets(assets, type) {
+      var ext = '.'+type;
       for (var y in assets) {
 
         var asset = assets[y];
@@ -238,11 +239,18 @@ module.exports = function(locals) {
           throw new Error('Could not find asset path');
         }
 
-        if (assetPath.indexOf(ext) < 0) {
+        if (!asset.noExt && assetPath.indexOf(ext) < 0) {
           assetPath += ext;
         }
 
         assetPath = self.get_asset(assetPath);
+
+        if(asset.noExt){
+          assetPath = {
+            path: assetPath,
+            type: type
+          };
+        }
 
         if (!assetPath) {
           throw new Error(`Could not find asset ${asset}`);

@@ -1,0 +1,20 @@
+account:
+  title:
+    en: Account
+  signedOut:
+    title:
+      en: You are not signed in.
+    messageLogin:
+      en: Login if you registered already
+    messageRegister:
+      en: or create a new account.
+    actions:
+      -
+        title:
+          en: Login
+        click: account.login()
+      -
+        title:
+          en: Register
+        isConfig: account.register
+        click: account.register()

@@ -20,6 +20,7 @@ form:
 options:
   -
     click: register()
+    isConfig: account.register
     message:
       en: Do not have an account yet?
     action:

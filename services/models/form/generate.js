@@ -28,7 +28,9 @@ module.exports = function(Model, app) {
     formMethod.name = name;
 
     if(_.isString(formMethod.data)){
+      var formName = formMethod.data;
       formMethod.data = Model.clientHelpers.get_data(formMethod.data);
+      formMethod.data.name = formMethod.data.name || formName;
     }
     var result = Model.newMethod(formMethod);
     formMethod.remote = result;

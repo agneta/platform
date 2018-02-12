@@ -20,7 +20,9 @@
     var vm = this;
 
     agneta.extend(vm, 'AgEditMainCtrl');
-    vm.init(Page);
+    vm.init({
+      model: Page
+    });
 
   });
 
