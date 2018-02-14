@@ -31,10 +31,10 @@ module.exports = function(Model, app) {
   });
 
   Model._roleAdd = function(id, name, _fields) {
-
+    var account;
     return Model.__get(id)
-      .then(function(account) {
-
+      .then(function(_account) {
+        account = _account;
         var role = Model.roleOptions[name];
 
         if (!role) {
@@ -70,6 +70,7 @@ module.exports = function(Model, app) {
 
         return {
           success: message,
+          account: account,
           role: role
         };
 

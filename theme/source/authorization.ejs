@@ -1,19 +1,19 @@
 <div layout="column" layout-align="center center" flex="100" class="view-authorization">
 
-  <div class="auth-box"layout="column" class="message">
+  <div class="auth-box" layout="column" class="ag-margin">
 
-    <h3 class="md-primary">
+    <h3 class="title md-primary">
       <%-lng(page.title)%>
     </h3>
 
-    <md-icon class="md-primary lock" md-svg-src="<%-get_icon('material/lock-outline')%>"></md-icon>
-
-    <p class="title"><%-lng('authorization.title')%></p>
-    <p><%-lng('authorization.description')%></p>
-
-    <md-button ng-click="account.login()" class="login">
-      <%-lng('general.login')%>
-    </md-button>
+    <div class="content ag-margin" layout="column">
+      <md-icon class="md-primary lock" md-svg-src="<%-get_icon('material/lock-outline')%>"></md-icon>
+      <p class="message"><%-lng('authorization.title')%></p>
+      <p><%-lng('authorization.description')%></p>
+      <md-button ng-click="account.login()" class="login">
+        <%-lng('general.login')%>
+      </md-button>
+    </div>
 
   </div>
 

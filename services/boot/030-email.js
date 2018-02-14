@@ -23,7 +23,7 @@ const fs = require('fs-extra');
 const htmlToText = require('html-to-text');
 const juice = require('juice');
 const stylus = require('stylus');
-
+const nib = require('nib');
 
 module.exports = function(app) {
 
@@ -54,10 +54,15 @@ module.exports = function(app) {
   //////////////////////////////////////////////////////////////////////
 
   var dataMain = {};
+  var themeDir = path.join(__dirname, '../templates');
   var templatePaths = [
-    path.join(__dirname, '../templates'),
-    path.join(project.paths.core.project, 'email')
+    path.join(project.paths.core.project, 'email'),
+    themeDir
   ];
+
+  var helpers = require('./email/helpers')({
+    templatePaths: templatePaths
+  });
 
   return Promise.map(templatePaths, function(pathTemplates) {
 
@@ -71,27 +76,6 @@ module.exports = function(app) {
       );
 
     }
-
-    var helpers = {
-      partial: function(path_partial, data) {
-
-        var file_path = path.join(pathTemplates, path_partial + '.ejs');
-        var file_content = fs.readFileSync(file_path, 'utf8');
-
-        data = _.extend({}, this, data);
-
-        return ejs.render.apply(this, [file_content, data]);
-      },
-      lng: function(obj) {
-        if (!obj) {
-          return;
-        }
-        if (_.isString(obj)) {
-          return obj;
-        }
-        return obj[this.language] || obj.en || obj.gr;
-      }
-    };
 
     return Promise.map(templateDirs, function(templateDir) {
 
@@ -109,15 +93,46 @@ module.exports = function(app) {
 
       var templateData;
       var templateStyle;
-      var templateStylePath = path.join(pathTemplate, 'style.stylus');
 
-      return fs.readFile(templateStylePath,'utf8')
-        .then(function(content){
+      return Promise.resolve()
+        .then(function() {
 
-          templateStyle = stylus(content)
-            .set('filename', templateStylePath)
-            .set('include css', true)
-            .render();
+          var layoutStylePath = helpers.getPath('_layout/style.styl');
+          if(!layoutStylePath){
+            throw new Error('Could not find a layout style');
+          }
+          var templateStylePath = helpers.getPath(
+            path.join(templateDir, 'style.styl')
+          );
+
+          if(!templateStylePath){
+            templateStylePath = layoutStylePath;
+          }
+
+          return fs.readFile(templateStylePath,'utf8')
+            .then(function(content){
+              var compiler =  stylus(content)
+                .set('filename', templateStylePath);
+
+              if(templateStylePath != layoutStylePath){
+                compiler.import(layoutStylePath);
+              }
+
+              return compiler;
+            });
+        })
+        .then(function(styleCompiler){
+
+          styleCompiler.define('theme', function(params) {
+            var themePath = path.join(themeDir, params.val);
+            return new stylus.nodes.String(themePath);
+          });
+
+          styleCompiler.use(nib())
+            .import('nib')
+            .set('include css', true);
+
+          templateStyle = styleCompiler.render();
 
           return fs.readFile(path.join(pathTemplate, 'data.yml'));
         })
@@ -150,10 +165,7 @@ module.exports = function(app) {
 
             }
           };
-
         });
-
-
     });
   })
     .then(function() {
@@ -162,6 +174,4 @@ module.exports = function(app) {
       return email;
 
     });
-
-
 };

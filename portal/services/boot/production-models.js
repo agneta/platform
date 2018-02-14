@@ -57,6 +57,9 @@ module.exports = function(app) {
   },
   appPrd.secrets.get('db'));
   app.dataSource('db_prd', db_prd);
+  app.dataSource('transient_prd', {
+    connector: 'transient'
+  });
 
   //--------------------------------------------------
 

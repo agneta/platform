@@ -22,7 +22,16 @@ module.exports = function(Model) {
 
     return Promise.resolve()
       .then(function() {
-        return Model.__email.templates[name].render({
+        var template = Model.__email.templates[name];
+
+        if(!template){
+          return Promise.reject({
+            statusCode: 400,
+            message: `Email template could not be found with name ${name}`
+          });
+        }
+
+        return template.render({
           language: lng
         });
       })
