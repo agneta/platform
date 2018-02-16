@@ -16,6 +16,16 @@
  */
 module.exports = function(Model, app) {
 
+  Model.io = app.socket.namespace({
+    name: 'email',
+    auth: {
+      allow: [
+        'administrator',
+        'editor'
+      ]
+    }
+  });
+
   Model.__email = app.get('email');
 
   require('./email_template/getAll')(Model,app);

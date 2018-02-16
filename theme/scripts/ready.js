@@ -54,7 +54,6 @@ module.exports = function(locals) {
     }
 
     project.site.locale = locale;
-    console.log('locale:',locale);
     //----------------------------------------------
 
     if (!project.site.building) {

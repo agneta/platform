@@ -53,31 +53,40 @@ module.exports = function(app) {
 
   email.compiler = compiler;
   email.templatePaths = templatePaths;
+  email.reloadAll = reloadAll;
 
-  return Promise.mapSeries(templatePaths, function(pathTemplates) {
+  return reloadAll();
 
-    var templateDirs = fs.readdirSync(pathTemplates);
-    var dataPath = path.join(pathTemplates, 'data.yml');
+  function reloadAll(){
 
-    if (fs.existsSync(dataPath)) {
-      _.merge(dataMain,
-        yaml.safeLoad(fs.readFileSync(dataPath, 'utf8'))
-      );
+    return Promise.mapSeries(templatePaths, function(pathTemplates) {
 
-    }
+      var templateDirs = fs.readdirSync(pathTemplates);
+      var dataPath = path.join(pathTemplates, '_layout', 'data.yml');
 
-    return Promise.map(templateDirs, function(templateDir) {
+      if (fs.existsSync(dataPath)) {
+        _.merge(dataMain,
+          yaml.safeLoad(fs.readFileSync(dataPath, 'utf8'))
+        );
 
-      return compiler({
-        pathTemplate: path.join(pathTemplates, templateDir)
+      }
+
+      return Promise.map(templateDirs, function(templateDir) {
+
+        return compiler({
+          pathTemplate: path.join(pathTemplates, templateDir)
+        });
+
+      });
+    },{
+      concurrency: 1
+    })
+      .then(function() {
+        email.templates = templates;
+        return email;
       });
 
-    });
-  },{
-    concurrency: 1
-  })
-    .then(function() {
-      email.templates = templates;
-      return email;
-    });
+  }
+
+
 };

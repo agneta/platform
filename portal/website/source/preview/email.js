@@ -16,9 +16,15 @@
  */
 (function() {
 
-  agneta.directive('AgPreviewEmailCtrl', function($sce, $rootScope, Email_Template) {
+  agneta.directive('AgPreviewEmailCtrl', function($sce,SocketIO, $rootScope, Email_Template) {
 
     var vm = this;
+    var socket = SocketIO.connect('email');
+    socket.on('edit',function(data) {
+      if(data.global || vm.template.name==data.name){
+        vm.loadTemplate(data.name);
+      }
+    });
 
     Email_Template.getAll()
       .$promise
@@ -28,7 +34,7 @@
       });
 
     vm.loadTemplate = function(item) {
-
+      item = item || vm.template.name;
       $rootScope.loadingMain = true;
 
       Email_Template.render({

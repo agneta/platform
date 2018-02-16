@@ -21,6 +21,8 @@ module.exports = function(initOptions) {
 
     var templateData;
     var templateStyle;
+    var layoutStylePath;
+    var templateStylePath;
     var templateDir = path.parse(pathTemplate).name;
 
     var stats = fs.statSync(pathTemplate);
@@ -36,11 +38,11 @@ module.exports = function(initOptions) {
     return Promise.resolve()
       .then(function() {
 
-        var layoutStylePath = helpers.getPath('_layout/style.styl');
+        layoutStylePath = helpers.getPath('_layout/style.styl');
         if(!layoutStylePath){
           throw new Error('Could not find a layout style');
         }
-        var templateStylePath = helpers.getPath(
+        templateStylePath = helpers.getPath(
           path.join(templateDir, 'style.styl')
         );
 
@@ -50,14 +52,8 @@ module.exports = function(initOptions) {
 
         return fs.readFile(templateStylePath,'utf8')
           .then(function(content){
-            var compiler =  stylus(content)
+            return stylus(content)
               .set('filename', templateStylePath);
-
-            if(templateStylePath != layoutStylePath){
-              compiler.import(layoutStylePath);
-            }
-
-            return compiler;
           });
       })
       .then(function(styleCompiler){
@@ -71,6 +67,10 @@ module.exports = function(initOptions) {
           .import('nib')
           .import(helpers.getPath('_layout/variables.styl'))
           .set('include css', true);
+
+        if(templateStylePath != layoutStylePath){
+          styleCompiler.import(layoutStylePath);
+        }
 
         templateStyle = styleCompiler.render();
 
@@ -89,7 +89,8 @@ module.exports = function(initOptions) {
           templateContent
         );
 
-        templates[templateDir] = {
+        var template = {
+          name: templateDir,
           renderer: renderer,
           data: templateData,
           render: function(data) {
@@ -105,6 +106,10 @@ module.exports = function(initOptions) {
 
           }
         };
+
+        templates[templateDir] = template;
+
+        return template;
       });
 
   };
