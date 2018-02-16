@@ -38,7 +38,8 @@ var theme = {
   data: path.join(themeBase, 'data'),
   scripts: path.join(themeBase, 'scripts'),
   source: path.join(themeBase, 'source'),
-  config: path.join(themeBase, 'config.yml')
+  config: path.join(themeBase, 'config.yml'),
+  email: path.join(themeBase, 'email')
 };
 
 // Storage
@@ -78,6 +79,9 @@ function setStructure(obj){
   // services
   obj.services = path.join(obj.base, 'services');
   obj.models = path.join(obj.services, 'models');
+  // email
+  obj.email = path.join(obj.base, 'email');
+
 
   return obj;
 }
