@@ -56,21 +56,20 @@ module.exports = function(app) {
   var dataMain = {};
   var themeDir = path.join(__dirname, '../templates');
   var templatePaths = [
-    path.join(project.paths.core.project, 'email'),
-    themeDir
+    themeDir,
+    path.join(project.paths.core.project, 'email')
   ];
 
   var helpers = require('./email/helpers')({
-    templatePaths: templatePaths
+    templatePaths: _.reverse([].concat(templatePaths))
   });
 
-  return Promise.map(templatePaths, function(pathTemplates) {
+  return Promise.mapSeries(templatePaths, function(pathTemplates) {
 
     var templateDirs = fs.readdirSync(pathTemplates);
-    var dataPath = path.join(pathTemplates, '_data.yml');
+    var dataPath = path.join(pathTemplates, 'data.yml');
 
     if (fs.existsSync(dataPath)) {
-
       _.merge(dataMain,
         yaml.safeLoad(fs.readFileSync(dataPath, 'utf8'))
       );
@@ -130,6 +129,7 @@ module.exports = function(app) {
 
           styleCompiler.use(nib())
             .import('nib')
+            .import(helpers.getPath('_layout/variables.styl'))
             .set('include css', true);
 
           templateStyle = styleCompiler.render();
@@ -167,6 +167,8 @@ module.exports = function(app) {
           };
         });
     });
+  },{
+    concurrency: 1
   })
     .then(function() {
 

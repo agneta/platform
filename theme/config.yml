@@ -131,7 +131,7 @@ libraries:
   angular-i18n:
     dir: 'angular-i18n'
     include:
-      - 'angular-locale_el-gr.js'
+      - 'angular-locale_**.js'
   angular-material-sidemenu:
     include:
       - 'dest/**'
