@@ -23,15 +23,20 @@ module.exports = function(locals) {
 
   var project = locals.project;
 
-  _.templateSettings = {
-    interpolate: /\$\{(.+?)\}/g
-  };
-
-  project.extend.helper.register('render', function(template) {
+  project.extend.helper.register('render', function(template,data) {
     if (!_.isString(template)) {
       return template;
     }
-    return _.template(template)(this);
+
+    if(data){
+      data = _.extend({},data,this);
+    }else{
+      data = this;
+    }
+
+    return _.template(template,{
+      interpolate: /\$\{(.+?)\}/g
+    })(data);
 
   });
 

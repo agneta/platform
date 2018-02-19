@@ -4,7 +4,7 @@ for(var item of data){
 	%>
   <li class="item">
   	<span <%-contentAttr(item)%>>
-    <%-render(lng(item))%>
+    <%-lng(item)%>
   	</span>
   	<%
   	if(item.list){

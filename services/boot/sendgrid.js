@@ -51,83 +51,62 @@ module.exports = function(app) {
 
   app.loopback.Email.send = function(options, cb) {
 
-    cb = cb || utils.createPromiseCallback();
-
-    options.from = options.from || config.contacts.default;
-
-    //-------
     if (!options.req) {
       return cb(new Error('Must have a request object to send email'));
     }
-    options.language = app.getLng(options.req);
 
-    //-------
-
-    options.sender = options.from;
-    if (_.isString(options.from)) {
-      options.sender = {
-        email: options.from
-      };
+    if (!options.to) {
+      return cb(new Error('Must provide an email to send to'));
     }
-    options.from = options.sender.email;
 
-    //-------
+    cb = cb || utils.createPromiseCallback();
 
-    options.receiver = options.to;
-    if (_.isString(options.to)) {
-      options.receiver = {
-        email: options.to
-      };
-    }
-    options.to = options.receiver.email;
+    //--------------------------------------------------
 
-    //-------
-
-    _.extend(options.data, {
+    var language = app.getLng(options.req);
+    var emailData = _.extend({},options.data, {
       info: config.info,
-      language: options.language
+      language: language
     });
+    var emailOptions = {
+      to: options.to,
+      from: options.from || _.get(config,'contacts.default.email')
+    };
 
-    ///////////////////////////////////////////////////////////////
-    //
-    ///////////////////////////////////////////////////////////////
+    //--------------------------------------------------
 
     var template = config.templates[options.templateName];
 
-    if (template) {
-      var renderResult = template.render(options.data);
-
-      options.html = renderResult.html;
-      options.text = renderResult.text;
-
+    if (!template) {
+      throw new Error(`Email template not found: ${options.templateName}`);
     }
-    send();
 
-    ///////////////////////////////////////////////////////////////
+    var renderResult = template.render(emailData);
+    emailOptions.html = renderResult.html;
+    emailOptions.text = renderResult.text || config.text(emailOptions.html);
 
-    function send() {
+    //--------------------------------------------------
 
-      options.text = options.text || config.text(options.html);
+    var subject = options.subject || template.data.subject;
 
-      //----------------------------------
-
-      var subject = options.subject || template.data.subject;
-
-      if (_.isObject(subject)) {
-        subject = app.lng(subject, options.language);
-      }
-
-      if(subjectPrefix){
-        options.subject = app.lng(subjectPrefix,options.language) + subject;
-      }
-
-      //----------------------------------
-
-      emailSend.call(app.loopback.Email, options)
-        .catch(function(err) {
-          console.error(err);
-        });
+    if (_.isObject(subject)) {
+      subject = app.lng(subject, language);
     }
+
+    if(subjectPrefix){
+      subject = app.lng(subjectPrefix,language) + subject;
+    }
+
+    emailOptions.subject = subject;
+
+    //--------------------------------------------------
+
+    console.log('email options',emailOptions);
+
+    emailSend.call(app.loopback.Email, emailOptions)
+      .catch(function(err) {
+        console.error(err);
+      });
 
 
     return cb.promise;

@@ -41,7 +41,8 @@ module.exports = function(app) {
   ];
 
   const helpers = require('./email/helpers')({
-    templatePaths: _.reverse([].concat(templatePaths))
+    templatePaths: _.reverse([].concat(templatePaths)),
+    app: app
   });
   const compiler = require('./email/compiler')({
     helpers: helpers,

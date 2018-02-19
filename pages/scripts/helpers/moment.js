@@ -31,7 +31,10 @@ module.exports = function(locals) {
     }
 
     var localLocale = moment(date);
-    localLocale.locale(langs[project.site.lang] || 'en');
+    localLocale.locale(
+      langs[this.language] ||
+      langs[project.site.lang] ||
+      'en');
 
     return localLocale.format(format);
   }

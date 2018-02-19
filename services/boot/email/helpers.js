@@ -7,9 +7,11 @@ const fs = require('fs-extra');
 module.exports = function(options){
 
   var templatePaths = options.templatePaths;
+  var app = options.app;
+  var clientHelpers = options.app.get('options').client.app.locals;
 
-  var helpers = {
-    partial: function(path_partial, data) {
+  var helpers = _.extend({},clientHelpers,{
+    template: function(path_partial, data) {
 
       var file_path = helpers.getPath(path_partial + '.ejs');
       var file_content = fs.readFileSync(file_path, 'utf8');
@@ -19,13 +21,11 @@ module.exports = function(options){
       return ejs.render.apply(this, [file_content, data]);
     },
     lng: function(obj) {
-      if (!obj) {
-        return;
-      }
-      if (_.isString(obj)) {
-        return obj;
-      }
-      return obj[this.language] || obj.en || obj.gr;
+      return app.lng({
+        source: obj,
+        lang: this.language,
+        templateData: this
+      });
     },
     getPath: function(path_partial){
 
@@ -39,7 +39,7 @@ module.exports = function(options){
       console.warn(`Could not find path for: ${path_partial}`);
 
     }
-  };
+  });
 
   return helpers;
 };

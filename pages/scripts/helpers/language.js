@@ -25,7 +25,22 @@ module.exports = function(locals) {
   // GET LANGUAGE
   /////////////////////////////////////////////////////////////////
 
-  project.extend.helper.register('lng', function(obj, lang, strict) {
+  project.extend.helper.register('lng', function(obj, lang) {
+
+    if(!obj){
+      return;
+    }
+
+    var strict;
+    var templateData;
+
+    if(obj.source){
+      var options = obj;
+      obj = options.source;
+      lang = options.lang;
+      strict = options.strict;
+      templateData = options.templateData;
+    }
 
     var res;
 
@@ -69,6 +84,10 @@ module.exports = function(locals) {
         return null;
       }
       res = obj.en || obj.gr;
+    }
+
+    if(_.isString(res)){
+      res = this.render(res,templateData);
     }
 
     return res;

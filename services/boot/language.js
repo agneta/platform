@@ -64,9 +64,7 @@ module.exports = function(app) {
       obj = obj.__value || obj;
     }
 
-    var result = lng ? obj[lng] : null;
-
-    return result || obj.en || obj.gr;
+    return helpers.lng(obj,lng);
   };
 
   app.lngScan = function(obj, lng) {
