@@ -46,15 +46,6 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $o
   vm.page = null;
 
   vm.edit.lang = agneta.lang;
-  vm.edit.languages = [{
-    code: 'en',
-    title: 'English'
-  },
-  {
-    code: 'gr',
-    title: 'Greek'
-  }
-  ];
 
   var shared = {
     vm: vm,
@@ -81,20 +72,22 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $o
 
   vm.onKeyPress = function(event) {
 
+    var languages = $rootScope.viewData.languages;
+
     // CTRL + SHIFT + S : Save Changes
     if (event.ctrlKey && event.shiftKey && event.keyCode == 19) {
       vm.save();
     }
     // CTRL + SHIFT + L : Change Language
     if (event.ctrlKey && event.shiftKey && event.keyCode == 12) {
-      var index = _.findIndex(vm.edit.languages, {
+      var index = _.findIndex(languages, {
         code: vm.edit.lang
       });
       index++;
-      if (index == vm.edit.languages.length) {
+      if (index == languages.length) {
         index = 0;
       }
-      var language = vm.edit.languages[index];
+      var language = languages[index];
       vm.edit.lang = language.code;
     }
   };

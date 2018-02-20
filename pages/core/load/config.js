@@ -20,7 +20,6 @@ const url = require('url');
 const urljoin = require('url-join');
 const fs = require('fs-extra');
 const Promise = require('bluebird');
-const readFile = Promise.promisify(fs.readFile);
 const _ = require('lodash');
 const child_process = require('child_process');
 
@@ -33,7 +32,7 @@ module.exports = function(locals) {
     var themeConfig;
     var websiteConfig;
 
-    return readFile(
+    return fs.readFile(
       path.join(project.paths.theme.base, 'config.yml'),
       'utf8'
     )
@@ -41,7 +40,7 @@ module.exports = function(locals) {
 
         themeConfig = yaml.safeLoad(content);
 
-        return readFile(
+        return fs.readFile(
           path.join(project.paths.app.website, 'config.yml'),
           'utf8'
         );
@@ -49,6 +48,22 @@ module.exports = function(locals) {
       .then(function(content) {
 
         websiteConfig = yaml.safeLoad(content);
+
+        // Get some configurations in the portal from the project
+        if(locals.web){
+          return fs.readFile(
+            path.join(locals.web.project.paths.app.website, 'config.yml'),
+            'utf8'
+          )
+            .then(function(content) {
+              var projectConfig = yaml.safeLoad(content);
+              projectConfig = _.pick(projectConfig,['languages']);
+              _.extend(websiteConfig, projectConfig);
+            });
+        }
+
+      })
+      .then(function() {
 
         _.extend(project.config, merge(websiteConfig));
 

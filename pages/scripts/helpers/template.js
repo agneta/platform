@@ -19,6 +19,9 @@ const ejs = require('ejs');
 const _ = require('lodash');
 const path = require('path');
 
+_.templateSettings.escape = null;
+_.templateSettings.evaluate = null;
+
 module.exports = function(locals) {
 
   var project = locals.project;

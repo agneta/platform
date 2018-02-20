@@ -21,16 +21,6 @@ menu:
   side: true
   top: false
 
-language:
-  default:
-    key: 'en'
-    value: 'English'
-  extra:
-    -
-      key: 'gr'
-      value: 'Ελληνικά'
-      skipBuild: true
-
 #-----------------------------------------------
 
 account:

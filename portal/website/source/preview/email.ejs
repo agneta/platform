@@ -1,2 +1,17 @@
-<div ng-bind-html="template.html">
+<div class="frame md-padding ag-margin" layout="column">
+
+  <div layout="row" class="top-bar ag-margin" layout="start center">
+  <span flex></span>
+  <md-select md-offset="0 80" ng-change="email.loadTemplate()" ng-model="email.lang" placeholder="Language" class="md-no-underline">
+    <md-option ng-repeat="lng in viewData.languages" value="{{lng.code}}">{{lng.title}}</md-option>
+  </md-select>
+</div>
+
+<div class="info-container ag-margin" layout="row">
+<%-template('preview/email/info',page.about)%>
+<%-template('preview/email/info',page.defaults)%>
+</div>
+
+<div class="template" ng-bind-html="template.html">
+</div>
 </div>

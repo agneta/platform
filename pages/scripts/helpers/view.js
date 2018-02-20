@@ -75,10 +75,6 @@ module.exports = function(locals) {
 
     for (var lang_short in site.languages) {
 
-      if (page.title && !page.title[lang_short]) {
-        continue;
-      }
-
       var lang_full = site.languages[lang_short];
 
       var url = page.pathSource;
@@ -90,8 +86,9 @@ module.exports = function(locals) {
       var linkClass = (lang_short == site.lang) ? 'selected' : '';
 
       data.languages.push({
-        name: lang_full,
+        title: lang_full,
         href: url,
+        code: lang_short,
         linkClass: linkClass
       });
     }

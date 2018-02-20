@@ -7,3 +7,25 @@ menuLock: true
 authorization:
   - administrator
   - editor
+
+defaults:
+  title:
+    en: Defaults
+  list:
+    -
+      title:
+        en: Subject
+      value: subject
+    -
+      title:
+        en: From
+      value: from
+
+about:
+  title:
+    en: About
+  list:
+    -
+      title:
+        en: Template
+      value: template

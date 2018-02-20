@@ -1,0 +1,15 @@
+<div flex="50" class="info" layout="column">
+  <p class="title"><%-lng(locals.title)%></p>
+  <table>
+    <%for(var def of locals.list){%>
+  <tr>
+  <td>
+    <%-lng(def.title)%>:
+  </td>
+  <td>
+    {{defaults.<%-def.value%>}}
+  </td>
+  </tr>
+  <%}%>
+  </table>
+</div>
