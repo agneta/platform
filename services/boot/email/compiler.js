@@ -79,7 +79,10 @@ module.exports = function(initOptions) {
       .then(function(dataContent) {
         templateData = yaml.safeLoad(dataContent);
 
-        var templateHtmlPath = path.join(pathTemplate, 'html.ejs');
+
+        var templateHtmlPath = helpers.getPath('_layout/layout.ejs');
+        templateData.templatePath = `${templateDir}/html`;
+        //var templateHtmlPath = path.join(pathTemplate, 'html.ejs');
         //console.log('templateHtmlPath',templateHtmlPath);
         return fs.readFile(templateHtmlPath,'utf8');
       })

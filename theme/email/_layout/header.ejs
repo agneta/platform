@@ -1,46 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <!--[if !mso]><!-->
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-  <!--<![endif]-->
-  <!--[if (gte mso 9)|(IE)]><style type="text/css">
-table {border-collapse: collapse;}
-table, td {mso-table-lspace: 0pt;mso-table-rspace: 0pt;}
-img {-ms-interpolation-mode: bicubic;}
-</style>
-<![endif]-->
-
-</head>
-
-<body>
-  <center class="wrapper">
-    <div class="webkit">
-      <!--[if (gte mso 9)|(IE)]>
-<table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+<%if(locals.preheader){%>
+  <%-template('_layout/preheader')%>
+<%}%>
 <tr>
-<td>
-<![endif]-->
-      <table class="outer" align="center" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td>
-            <table class="main content wrapper" width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td align="center">
-                  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                    <%if(locals.preheader){%>
-                      <%-template('_layout/preheader')%>
-                    <%}%>
-                    <tr>
-                      <td align="center" class="logo">
-                        <!--Add Logo-->
-                        <a href="##" target="_blank"><img src="<%-logo.src%>" width="<%-logo.width%>" height="<%-logo.height%>" alt="Logo" border="0" /></a>
-                        <!--Add Logo-->
-                      </td>
-                    </tr>
-                    <tr>
-                      <td align="center" class="body-wrapper">
-                        <table width="85%" cellpadding="0" cellspacing="0" border="0">
+  <td align="center" class="logo">
+    <!--Add Logo-->
+    <a href="##" target="_blank"><img src="<%-logo.src%>" width="<%-logo.width%>" height="<%-logo.height%>" alt="Logo" border="0" /></a>
+    <!--Add Logo-->
+  </td>
+</tr>
