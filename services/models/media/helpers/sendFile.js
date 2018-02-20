@@ -18,6 +18,7 @@ const Promise = require('bluebird');
 const _ = require('lodash');
 const stream = require('stream');
 const path = require('path');
+const mime = require('mime-types');
 
 module.exports = function(Model) {
 
@@ -35,10 +36,14 @@ module.exports = function(Model) {
     var fileStream = new stream.PassThrough();
     fileStream = file.stream.pipe(fileStream);
 
+    var ext = mime.extension(file.mimetype);
+    var filename = path.parse(file.location).name + '.' + ext;
+
     var totalProgress = {};
     var operations = [];
     var options = {
       file: file.stream,
+      filename: filename,
       location: file.location,
       type: file.type,
       mimetype: file.mimetype,

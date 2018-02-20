@@ -32,7 +32,7 @@ module.exports = function(Model, app) {
 
       var size = sizes[key];
 
-      var transformer = gm(options.file);
+      var transformer = gm(options.file,options.filename);
 
       if (size.crop) {
         transformer = transformer.thumbnail(size.width, size.height+'^');
@@ -40,6 +40,8 @@ module.exports = function(Model, app) {
       } else {
         transformer = transformer.resize(size.width, size.height);
       }
+
+      transformer = transformer.noProfile();
 
       var parsed = path.parse(options.location);
       parsed.base += '/' + key;

@@ -1,5 +1,5 @@
 logo:
-  src: https://media-staging.agneta.io/demo/logo/small
+  src: demo/logo/small
   width: 240
   height: 95
 
@@ -13,7 +13,7 @@ info:
 
 footer:
   logo:
-    src: https://media-staging.agneta.io/demo/symbol/thumbnail
+    src: demo/symbol/thumbnail
     width: 75
     height: 75
   links: false

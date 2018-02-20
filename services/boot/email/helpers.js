@@ -21,11 +21,20 @@ module.exports = function(options){
       return ejs.render.apply(this, [file_content, data]);
     },
     lng: function(obj) {
-      return app.lng({
-        source: obj,
-        lang: this.language,
-        templateData: this
-      });
+      var options;
+      if(!obj){
+        return;
+      }
+      if(obj.source){
+        options = obj;
+      }else{
+        options = {
+          source: obj,
+          lang: this.language,
+          templateData: this
+        };
+      }
+      return app.lng(options);
     },
     getPath: function(path_partial){
 
