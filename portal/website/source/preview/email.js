@@ -23,7 +23,7 @@
     vm.email = email;
     var socket = SocketIO.connect('email');
     socket.on('edit',function(data) {
-      if(data.global || vm.template.name==data.name){
+      if(data.global || email.template.name==data.name){
         email.loadTemplate(data.name);
       }
     });
@@ -31,14 +31,14 @@
     Email_Template.getAll()
       .$promise
       .then(function(result) {
-        vm.templates = result.list;
+        email.templates = result.list;
         email.loadTemplate(result.list[0]);
       });
 
     email.lang = agneta.lang;
 
     email.loadTemplate = function(item) {
-      item = item || vm.template.name;
+      item = item || email.template.name;
       $rootScope.loadingMain = true;
 
       Email_Template.render({
@@ -49,7 +49,7 @@
         .then(function(result) {
           $rootScope.loadingMain = false;
           result.html = $sce.trustAsHtml(result.html);
-          vm.template = result;
+          email.template = result;
         });
 
     };

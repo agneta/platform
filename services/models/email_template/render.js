@@ -15,14 +15,15 @@
  *   limitations under the License.
  */
 const cheerio = require('cheerio');
+const _ = require('lodash');
 
-module.exports = function(Model) {
+module.exports = function(Model,app) {
 
   Model.render = function(name, lng) {
-
+    var template;
     return Promise.resolve()
       .then(function() {
-        var template = Model.__email.templates[name];
+        template = Model.__email.templates[name];
 
         if(!template){
           return Promise.reject({
@@ -41,7 +42,8 @@ module.exports = function(Model) {
         var html = $.html(changeTag.call($('body'), $, 'div'));
         return {
           name: name,
-          html: html
+          html: html,
+          data: app.lngScan(_.pick(template.data,['subject','from']),lng)
         };
 
       });

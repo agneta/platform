@@ -15,11 +15,11 @@ defaults:
     -
       title:
         en: Subject
-      value: subject
+      value: data.subject
     -
       title:
         en: From
-      value: from
+      value: data.from
 
 about:
   title:
@@ -28,4 +28,4 @@ about:
     -
       title:
         en: Template
-      value: template
+      value: name

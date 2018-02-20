@@ -3,11 +3,11 @@
   <table>
     <%for(var def of locals.list){%>
   <tr>
-  <td>
+  <td class="title">
     <%-lng(def.title)%>:
   </td>
   <td>
-    {{defaults.<%-def.value%>}}
+    {{email.template.<%-def.value%>}}
   </td>
   </tr>
   <%}%>
