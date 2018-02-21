@@ -91,6 +91,14 @@ module.exports = function(app) {
 
     //--------------------------------
 
+    Model.getCollection = function(name){
+      return Model.dataSource.connector.collection(
+        name || Model.definition.name
+      );
+    };
+
+    //--------------------------------
+
     name = name.toLowerCase();
 
     if (map) {

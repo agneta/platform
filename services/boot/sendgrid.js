@@ -14,9 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var DataSource = require('loopback-datasource-juggler').DataSource;
-var utils = require('loopback/lib/utils');
-var _ = require('lodash');
+const DataSource = require('loopback-datasource-juggler').DataSource;
+const _ = require('lodash');
+const Promise = require('bluebird');
 
 module.exports = function(app) {
 
@@ -49,67 +49,67 @@ module.exports = function(app) {
 
   var emailSend = app.loopback.Email.send;
 
-  app.loopback.Email.send = function(options, cb) {
+  app.loopback.Email.send = function(options,cb) {
 
-    if (!options.req) {
-      return cb(new Error('Must have a request object to send email'));
-    }
+    return Promise.resolve()
+      .then(function() {
 
-    if (!options.to) {
-      return cb(new Error('Must provide an email to send to'));
-    }
+        if (!options.req) {
+          throw new Error('Must have a request object to send email');
+        }
 
-    cb = cb || utils.createPromiseCallback();
+        if (!options.to) {
+          throw new Error('Must provide an email to send to');
+        }
 
-    //--------------------------------------------------
+        //--------------------------------------------------
 
-    var language = app.getLng(options.req);
-    var emailData = _.extend({},options.data, {
-      info: config.info,
-      language: language
-    });
-    var emailOptions = {
-      to: options.to,
-      from: options.from || _.get(config,'contacts.default.email')
-    };
+        var language = app.getLng(options.req);
+        var emailData = _.extend({},options.data, {
+          info: config.info,
+          language: language
+        });
+        var emailOptions = {
+          to: options.to,
+          from: options.from || _.get(config,'contacts.default.email')
+        };
 
-    //--------------------------------------------------
+        //--------------------------------------------------
 
-    var template = config.templates[options.templateName];
+        var template = config.templates[options.templateName];
 
-    if (!template) {
-      throw new Error(`Email template not found: ${options.templateName}`);
-    }
+        if (!template) {
+          throw new Error(`Email template not found: ${options.templateName}`);
+        }
 
-    var renderResult = template.render(emailData);
-    emailOptions.html = renderResult.html;
-    emailOptions.text = renderResult.text || config.text(emailOptions.html);
+        var renderResult = template.render(emailData);
+        emailOptions.html = renderResult.html;
+        emailOptions.text = renderResult.text || config.text(emailOptions.html);
 
-    //--------------------------------------------------
+        //--------------------------------------------------
 
-    var subject = options.subject || template.data.subject;
+        var subject = options.subject || template.data.subject;
 
-    if (_.isObject(subject)) {
-      subject = app.lng(subject, language);
-    }
+        if (_.isObject(subject)) {
+          subject = app.lng(subject, language);
+        }
 
-    if(subjectPrefix){
-      subject = app.lng(subjectPrefix,language) + subject;
-    }
+        if(subjectPrefix){
+          subject = app.lng(subjectPrefix,language) + subject;
+        }
 
-    emailOptions.subject = subject;
+        emailOptions.subject = subject;
 
-    //--------------------------------------------------
+        //--------------------------------------------------
 
-    console.log('email options',emailOptions);
+        //console.log('email options',emailOptions);
 
-    emailSend.call(app.loopback.Email, emailOptions)
-      .catch(function(err) {
-        console.error(err);
-      });
+        return emailSend.call(app.loopback.Email, emailOptions);
+
+      })
+      .asCallback(cb);
 
 
-    return cb.promise;
   };
 
 };

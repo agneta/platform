@@ -195,7 +195,7 @@ module.exports = function(Model, app) {
           };
           aggregateId[aggregate] = '$' + aggregate;
 
-          return Model.dataSource.connector.collection('Activity_Item')
+          return Model.getCollection('Activity_Item')
             .aggregate([{
               $match: where
             },

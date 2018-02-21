@@ -32,7 +32,7 @@ module.exports = function(options) {
 
   function tile(geometry) {
 
-    return options.model.dataSource.connector.collection(options.geoModel).find({
+    return options.model.getCollection(options.geoModel).find({
       point: {
         $geoIntersects: {
           $geometry: {

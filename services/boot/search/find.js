@@ -108,7 +108,7 @@ module.exports = function(app, models) {
           _.extend(findFields, options.fields);
         }
 
-        return Keyword.dataSource.connector.collection(Page.definition.name)
+        return Page.getCollection()
           .find(findWhere, findFields)
           .sort({
             score: {

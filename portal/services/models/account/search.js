@@ -35,7 +35,7 @@ module.exports = function(Model) {
       verificationToken: false
     };
 
-    return Model.dataSource.connector.collection(Model.definition.name)
+    return Model.getCollection()
       .find(findWhere, findFields)
       .sort({
         score: {
