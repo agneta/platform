@@ -81,7 +81,8 @@ Promise.resolve()
           if (indexStart === 0) {
             var indexEnd = content.indexOf(copyrightEnd);
             if (indexEnd < 0) {
-              return Promise.reject('Could not find end of copyright');
+              console.log('Could not find end of copyright:',pathRelative);
+              return;
             }
             content = content.slice(indexEnd + copyrightEnd.length);
           }
