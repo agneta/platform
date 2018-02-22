@@ -15,14 +15,17 @@
  *   limitations under the License.
  */
 const path = require('path');
-const appName = process.env.APP_NAME || 'website';
+const yaml = require('js-yaml');
+const fs = require('fs-extra');
+const extensions = require('./extensions');
+const structure = require('./structure');
 //console.log('Application folder:', appName);
 
 //--------------------------------------------------------------------
 
 var core = {};
 core.project = process.cwd();
-core.platform = path.join(__dirname, '..');
+core.platform = path.join(__dirname, '../..');
 core.services = path.join(core.platform, 'services');
 core.models = path.join(core.services, 'models');
 
@@ -50,11 +53,11 @@ core.storage = {
 };
 
 // Portal
-var portal = setStructure({
+var portal = structure({
   base: path.join(core.platform, 'portal')
 });
 
-var appPortal = setStructure({
+var appPortal = structure({
   base: path.join(core.project,'portal')
 });
 
@@ -62,38 +65,24 @@ var appPortal = setStructure({
 
 module.exports = loadApp();
 
-function setStructure(obj){
-
-  obj.website = path.join(obj.base, obj.appName || appName);
-
-  // website
-  obj.config = path.join(obj.website, 'config.yml');
-  obj.data = path.join(obj.website, 'data');
-  obj.build = path.join(obj.website, 'build');
-  obj.tmp = path.join(obj.website, 'tmp');
-  obj.scripts = path.join(obj.website, 'scripts');
-  // source
-  obj.source = path.join(obj.website, 'source');
-  obj.lib = path.join(obj.source, 'lib');
-  obj.generated = path.join(obj.source, 'generated');
-  // services
-  obj.services = path.join(obj.base, 'services');
-  obj.models = path.join(obj.services, 'models');
-  // email
-  obj.email = path.join(obj.base, 'email');
-
-
-  return obj;
-}
-
 function loadApp(options) {
 
   options = options || {};
 
-  var app = setStructure({
-    base: options.dir || core.project
+  var base = options.dir || core.project;
+  var app = structure({
+    base: base
   });
 
+  var appConfig = fs.readFileSync(app.config,'utf8');
+  appConfig = yaml.safeLoad(appConfig);
+
+  //----------------------------
+
+  app.extensions = extensions({
+    config: appConfig,
+    paths: app
+  });
   app.cache = path.join(app.website, 'cache');
 
   return {
@@ -105,4 +94,6 @@ function loadApp(options) {
     portal: portal,
     loadApp: loadApp
   };
+
+
 }

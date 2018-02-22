@@ -28,7 +28,7 @@ const url = require('url');
 const Promise = require('bluebird');
 const path = require('path');
 const paths = require('../paths');
-const configstore = require('configstore');
+const config = require('../config');
 
 //---------------------------------------------------
 // Look for server certificates
@@ -74,9 +74,7 @@ module.exports = Promise.resolve()
     //---------------------------------------------------
     // Set environment variables
 
-    var config = new configstore('agneta');
-
-    process.env.SERVER_NAME = process.env.SERVER_NAME || config.get('server.name');
+    process.env.SERVER_NAME = process.env.SERVER_NAME || config.agneta.get('server.name');
 
     process.env.HOST_NAME = process.env.HOST_NAME || 'localhost';
     process.env.PORT = process.env.PORT || port;

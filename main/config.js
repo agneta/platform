@@ -14,14 +14,14 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var error = require('./error');
+const error = require('./error');
+const configstore = require('configstore');
 
 var port = parseFloat(process.env.PORT) || 8181;
 var protocol = process.env.PROTOCOL || 'https';
 var hostName = process.env.HOST_NAME || 'localhost';
 var host = process.env.ENDPOINT || 'localhost';
 var env = process.env.NODE_ENV || 'development';
-
 
 //-------------------------------------
 
@@ -40,6 +40,6 @@ var result = {
   },
 };
 
-console.log(result);
+result.agneta = new configstore('agneta');
 
 module.exports = result;
