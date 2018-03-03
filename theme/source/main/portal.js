@@ -18,23 +18,25 @@
 
   var app = window.angular.module('MainApp');
 
-  app.service('Portal', function(SocketIO, $rootScope, $route, $timeout) {
+  app.service('Portal', function(SocketIO) {
 
     var socket = SocketIO.connect('portal');
     this.socket = socket;
-
     socket.media = SocketIO.connect('media');
     socket.editor = SocketIO.connect('editor');
 
-    socket.on('page-saved', function(id) {
+  });
+
+  app.run(function(Portal, $rootScope, $route, $timeout){
+    var socket = Portal.socket;
+    console.log('Listen');
+    socket.on('page-reload', function(id) {
 
       if ($rootScope.viewData.path == id) {
 
-        socket.once('page-reload', function() {
-          $timeout(function() {
-            $route.reload();
-          }, 10);
-        });
+        $timeout(function() {
+          $route.reload();
+        }, 10);
 
       }
     });

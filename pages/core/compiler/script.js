@@ -143,6 +143,7 @@ module.exports = function(locals) {
         rules: [{
           test: canParse,
           loader: path.join(__dirname,'script-template'),
+          enforce: 'pre',
           options: {
             locals: locals,
           }

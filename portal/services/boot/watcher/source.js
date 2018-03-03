@@ -15,30 +15,50 @@
  *   limitations under the License.
  */
 const path = require('path');
-
+const Promise = require('bluebird');
 module.exports = function(watcher) {
 
   var locals = watcher.locals;
-  var reload = watcher.reload;
+  var project = watcher.project;
+  var app = watcher.app;
 
   return function(pathFile) {
     var params = path.parse(pathFile);
+    return Promise.resolve()
+      .then(function() {
 
-    switch (params.ext) {
+        switch (params.ext) {
 
-      case '.yml':
-        return locals.main.load.pages();
-      case '.styl':
-        reload();
-        break;
-      case '.js':
-        reload();
-        break;
-      case '.ejs':
-        locals.cache.templates.invalidate(pathFile);
-        reload();
-        break;
-    }
+          case '.yml':
+            return locals.main.load.pages();
+          case '.styl':
+            break;
+          case '.js':
+            break;
+          case '.ejs':
+            locals.cache.templates.invalidate(pathFile);
+            break;
+        }
 
+      })
+      .then(function() {
+        var pathSearch = '/source/';
+        var pathPage = path.join(
+          params.dir,
+          params.name
+        );
+        pathPage = pathPage.substring(
+          pathPage.indexOf(pathSearch)+pathSearch.length-1
+        );
+        var page = project.site.pages.findOne({
+          path: pathPage
+        });
+
+        if(!page){
+          return;
+        }
+
+        app.portal.socket.emit('page-reload',page.path);
+      });
   };
 };

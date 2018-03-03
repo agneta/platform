@@ -71,9 +71,16 @@ agneta.url_api = function(path) {
 
 };
 
-agneta.langPath = function() {
-  var args = Array.prototype.slice.call(arguments);
-  args.unshift(agneta.lang);
+agneta.langPath = function(data) {
+  var args;
+  if(angular.isObject(data)){
+    args = [angular.extend(data,{
+      path: [agneta.lang].concat(data.path)
+    })];
+  }else{
+    args = Array.prototype.slice.call(arguments);
+    args.unshift(agneta.lang);
+  }
   return agneta.url.apply(this, args);
 };
 

@@ -41,7 +41,8 @@ module.exports = function(app) {
     var options = {
       project: project,
       locals: locals,
-      reload: reload
+      reload: reload,
+      app: app
     };
 
     //----------------------------------------------------------

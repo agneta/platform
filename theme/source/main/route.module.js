@@ -89,13 +89,22 @@ app.run(function($rootScope, $route, $timeout, $location, Account, $mdDialog) {
         partial: 'unauthorized',
         data: {}
       });
+      return;
     }
 
     if (rejection.login) {
       $rootScope.account.login();
+      return;
     }
 
-    console.error(rejection);
+    $mdDialog.open({
+      partial: 'error',
+      nested: true,
+      data: {
+        title: 'Unable to load page',
+        content: 'The location provided could not load'
+      }
+    });
 
   });
 
