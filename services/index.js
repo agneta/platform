@@ -87,16 +87,25 @@ module.exports = function(options) {
             var middleware = app.configurator.load('middleware', true);
             //console.log(middleware);
             //console.log(modelConfig.modelDefinitions);
+
+            var bootDirs = [
+              path.join(__dirname, 'boot'),
+              path.join(app.get('services_dir'), 'boot')
+            ];
+
+            bootDirs = bootDirs.concat(
+              options.include.map(function(dir){
+                return path.join(dir,'boot');
+              })
+            );
+
             var bootOptions = {
               appRootDir: __dirname,
               models: modelConfig.models,
               modelDefinitions: modelConfig.modelDefinitions,
               middleware: middleware,
               dataSources: app.configurator.load('datasources'),
-              bootDirs: [
-                path.join(__dirname, 'boot'),
-                path.join(app.get('services_dir'), 'boot')
-              ]
+              bootDirs: bootDirs
             };
 
             boot(app, bootOptions, function(err) {

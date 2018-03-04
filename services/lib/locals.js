@@ -29,12 +29,18 @@ module.exports = function(app, options) {
   if (options.include && !_.isArray(options.include)) {
     options.include = [options.include];
   }
+  options.include = options.include || [];
+
+  for(var name in options.paths.app.extensions){
+    var extPaths = options.paths.app.extensions[name];
+    options.include.push(extPaths.services);
+  }
 
   app.set('env', env);
   app.set('website_dir', path.join(baseDir, 'website'));
   app.set('services_dir', path.join(baseDir, 'services'));
   app.set('options', options);
-  app.set('services_include', options.include || []);
+  app.set('services_include', options.include);
   app.set('root', options.root);
 
   //---------------------------------------------

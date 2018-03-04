@@ -22,14 +22,32 @@ module.exports = function(locals) {
 
   var project = locals.project;
 
+  //--------------------------------------------------
+
+  var filePaths = [
+    project.paths.app.website
+  ];
+
+  for(var name in project.paths.app.extensions){
+    var extPaths = project.paths.app.extensions[name];
+    filePaths.push(extPaths.website);
+  }
+
+  if(locals.web){
+    filePaths.push(locals.web.project.paths.appPortal.base);
+  }
+
+  filePaths.push(project.paths.theme.base);
+
+  //--------------------------------------------------
+
   project.theme = {
 
     readDir: function(base) {
 
-      var dirs = [
-        path.join(project.paths.theme.base, base),
-        path.join(project.paths.app.website, base)
-      ];
+      var dirs = filePaths.map(function(dir){
+        return path.join(dir,base);
+      });
 
       var files = {};
 
@@ -81,15 +99,6 @@ module.exports = function(locals) {
   };
 
   function getObject(getPath, method) {
-
-    var filePaths = [
-      project.paths.app.website,
-      project.paths.theme.base
-    ];
-
-    if(locals.web){
-      filePaths.push(locals.web.project.paths.appPortal.base);
-    }
 
     var filePath;
 

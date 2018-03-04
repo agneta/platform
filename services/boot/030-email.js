@@ -23,8 +23,8 @@ const htmlToText = require('html-to-text');
 
 module.exports = function(app) {
 
-  var project = app.get('options');
-  project = project.web || project.client;
+  var options = app.get('options');
+  var project = options.web || options.client;
   project = project.project;
 
   var email = app.get('email');
@@ -55,6 +55,12 @@ module.exports = function(app) {
     project.paths.theme.email,
     project.paths.app.email
   ];
+
+  for(var name in project.paths.app.extensions){
+    var extPaths = project.paths.app.extensions[name];
+    templatePaths.push(extPaths.email);
+  }
+  //console.log(templatePaths);
 
   const helpers = require('./email/helpers')({
     templatePaths: _.reverse([].concat(templatePaths)),

@@ -17,7 +17,6 @@
 var path = require('path');
 var url = require('url');
 var _ = require('lodash');
-var fs = require('fs');
 var urljoin = require('url-join');
 const querystring = require('querystring');
 
@@ -159,35 +158,25 @@ module.exports = function(locals) {
 
   project.extend.helper.register('has_file', function(pathFile) {
 
-    var portalPath = path.join(project.paths.appPortal.source, pathFile);
-    var projectPath = path.join(project.paths.app.source, pathFile);
-    var themePath = path.join(project.paths.theme.source, pathFile);
-
-    //console.log(portalPath);
-
-    if (fs.existsSync(projectPath)) {
-      return fs.statSync(projectPath);
-    }
-
-    if (fs.existsSync(themePath)) {
-      return fs.statSync(themePath);
-    }
-
-    if (fs.existsSync(portalPath)) {
-      return fs.statSync(portalPath);
-    }
+    pathFile = path.join('source',pathFile);
 
     var pathParsed = path.parse(pathFile);
+    var sourceFile = project.theme.getFile(pathFile);
 
-    switch (pathParsed.ext) {
-      case '.css':
-        pathParsed.base = pathParsed.name + '.styl';
-        return this.has_file(path.format(pathParsed));
-      default:
-
+    if(!sourceFile){
+      switch (pathParsed.ext) {
+        case '.css':
+          pathParsed.base = pathParsed.name + '.styl';
+          pathFile = path.format(pathParsed);
+          break;
+        default:
+          return false;
+      }
+      sourceFile = project.theme.getFile(pathFile);
     }
 
-    return false;
+
+    return sourceFile ? true : false;
 
   });
 
