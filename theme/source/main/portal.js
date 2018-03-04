@@ -29,7 +29,7 @@
 
   app.run(function(Portal, $rootScope, $route, $timeout){
     var socket = Portal.socket;
-    console.log('Listen');
+    //console.log('Listen');
     socket.on('page-reload', function(data) {
 
       if(!data){

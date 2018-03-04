@@ -56,7 +56,7 @@ app.run(function($rootScope, LoopBackAuth, $mdDialog, $route, Account, $location
   });
 
   function reload() {
-    window.location.href = $location.path();
+    window.location.href = $location.url();
   }
 
   account.login = function() {

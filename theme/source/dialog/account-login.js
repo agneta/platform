@@ -45,7 +45,7 @@ agneta.directive('AgAccountLogin', function($rootScope, $mdDialog,$location, Acc
         LoopBackAuth.setUser(account.token.id, account.token.userId);
         LoopBackAuth.save();
         $rootScope.account.profile = account;
-        window.location.href = $location.path();
+        window.location.href = $location.url();
       })
       .catch(function(err){
         switch (err.code) {
