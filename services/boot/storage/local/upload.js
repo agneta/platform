@@ -11,6 +11,12 @@ module.exports = function(data) {
 
     return Promise.resolve()
       .then(function() {
+        return fs.remove(target);
+      })
+      .then(function() {
+        return fs.ensureFile(target);
+      })
+      .then(function() {
 
         var promiseHash = new Promise(function(resolve, reject) {
 
@@ -43,12 +49,6 @@ module.exports = function(data) {
           ContentEncoding: options.ContentEncoding,
           ETag: ETag
         });
-      })
-      .then(function() {
-        return fs.ensureFile(target);
-      })
-      .then(function() {
-
       });
 
   };

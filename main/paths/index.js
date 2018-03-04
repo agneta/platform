@@ -46,12 +46,7 @@ var theme = {
 };
 
 // Storage
-var storage = path.join(core.project, 'storage');
-core.storage = {
-  buckets: path.join(storage, 'buckets'),
-  root: storage
-};
-
+core.storage = path.join(core.project, 'storage');
 // Portal
 var portal = structure({
   base: path.join(core.platform, 'portal')

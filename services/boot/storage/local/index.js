@@ -20,7 +20,7 @@ const path = require('path');
 module.exports = function(app) {
 
   var webPrj = app.get('options').client.project;
-  var root = path.join(webPrj.paths.core.storage.buckets);
+  var root = path.join(webPrj.paths.core.storage);
 
   var data = {
     root: root

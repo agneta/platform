@@ -55,10 +55,10 @@ module.exports = function(Model) {
         for(var key in totalProgress){
           totalPercentage += totalProgress[key].percentage;
         }
-        console.log('totalPercentage',totalPercentage);
+        //console.log('totalPercentage',totalPercentage);
 
         totalPercentage /= operations.length;
-        console.log('totalPercentage /= operations.length',operations.length,totalPercentage);
+        //console.log('totalPercentage /= operations.length',operations.length,totalPercentage);
 
 
         emit('file:operation:progress', {
