@@ -37,14 +37,12 @@ var keys = fs.readJsonSync(secretsPath);
 //----------------------------------------------------
 // Check if secret key is valid
 
-var isValid = keys.isValid;
-
-if (!isValid) {
+if (!keys.isValid) {
   throw new Error('Not a correct secret file');
 }
 
-isValid = cryptojs.AES.decrypt(
-  isValid.toString(), secretKey).toString(cryptojs.enc.Utf8);
+var isValid = cryptojs.AES.decrypt(keys.isValid, secretKey);
+isValid = isValid.toString(cryptojs.enc.Utf8);
 
 //console.log(keys);
 //console.log('isValid', isValid);
@@ -74,7 +72,7 @@ module.exports = function(app) {
       obj = keys[env];
       value = _.get(obj, path);
     }
-    
+
     if (!value) {
       obj = keys.default;
       value = _.get(obj, path);

@@ -21,7 +21,7 @@ module.exports = function() {
     version: {},
     config: require(
       path.join(process.cwd(),'services/config')
-    ).git
+    ).git || {}
   };
 
   require('./update')(app);

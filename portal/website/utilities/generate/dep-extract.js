@@ -46,7 +46,13 @@ module.exports = function(util, dir) {
 
   var rules = {};
 
-  return bower(util, dir.root)
+  return Promise.resolve()
+    .then(function() {
+      return fs.ensureDir(dir.modules);
+    })
+    .then(function() {
+      return bower(util, dir.root);
+    })
     .then(function() {
 
       return fs.readFile(

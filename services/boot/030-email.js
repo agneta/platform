@@ -84,23 +84,28 @@ module.exports = function(app) {
 
     return Promise.mapSeries(templatePaths, function(pathTemplates) {
 
-      var templateDirs = fs.readdirSync(pathTemplates);
-      var dataPath = path.join(pathTemplates, '_layout', 'data.yml');
+      return fs.ensureDir(pathTemplates)
+        .then(function() {
+          var templateDirs = fs.readdirSync(pathTemplates);
+          var dataPath = path.join(pathTemplates, '_layout', 'data.yml');
 
-      if (fs.existsSync(dataPath)) {
-        _.merge(dataMain,
-          yaml.safeLoad(fs.readFileSync(dataPath, 'utf8'))
-        );
+          if (fs.existsSync(dataPath)) {
+            _.merge(dataMain,
+              yaml.safeLoad(fs.readFileSync(dataPath, 'utf8'))
+            );
 
-      }
+          }
 
-      return Promise.map(templateDirs, function(templateDir) {
+          return Promise.map(templateDirs, function(templateDir) {
 
-        return compiler({
-          pathTemplate: path.join(pathTemplates, templateDir)
+            return compiler({
+              pathTemplate: path.join(pathTemplates, templateDir)
+            });
+
+          });
+
         });
 
-      });
     },{
       concurrency: 1
     })
