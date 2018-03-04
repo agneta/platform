@@ -24,18 +24,25 @@ module.exports = function(watcher) {
 
   return function(pathFile) {
     var params = path.parse(pathFile);
+    var filter = null;
+    var type = null;
     return Promise.resolve()
       .then(function() {
 
         switch (params.ext) {
 
           case '.yml':
+            type='page';
             return locals.main.load.pages();
           case '.styl':
+            type='style';
+            filter = `/${params.name}.css`;
             break;
           case '.js':
+            type='script';
             break;
           case '.ejs':
+            type='template';
             locals.cache.templates.invalidate(pathFile);
             break;
         }
@@ -58,7 +65,11 @@ module.exports = function(watcher) {
           return;
         }
 
-        app.portal.socket.emit('page-reload',page.path);
+        app.portal.socket.emit('page-reload',{
+          path: page.path,
+          type: type,
+          filter: filter
+        });
       });
   };
 };

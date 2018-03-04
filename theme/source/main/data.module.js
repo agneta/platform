@@ -24,9 +24,19 @@ app.run(function(
   $ocLazyLoad
 ) {
 
-  $rootScope.loadData = function(path) {
+  $rootScope.loadData = function(options) {
 
+    var path;
+    var filter;
     var params = $route.current.params;
+
+    if(angular.isObject(options)){
+      path = options.path;
+      filter = options.filter;
+    }else{
+      path = options;
+    }
+
     path = path || params.path;
 
     var dataPath = agneta.urljoin({
@@ -42,13 +52,29 @@ app.run(function(
       .then(function(response) {
 
         data = app.pageData = response.data;
+        var dependencies = data.dependencies || [];
+        var priorityIndex = 0;
         //console.log('$rootScope.loadData', data);
 
         //----------------------------------------------
-        // Load page dependencies
+        // Filter Dependencies to load
 
-        var dependencies = data.dependencies || [];
-        var priorityIndex = 0;
+        if(filter){
+          var result = [];
+          for(var index in dependencies){
+            var filtered = [];
+            for(var dep of dependencies[index]){
+              if(dep.indexOf(filter)>0){
+                filtered.push(dep);
+              }
+            }
+            result[index] = filtered;
+          }
+          dependencies = result;
+          //console.log('filtered deps', dependencies);
+        }
+        //----------------------------------------------
+        // Load page dependencies
 
         function loadPriority() {
 
@@ -62,11 +88,19 @@ app.run(function(
 
           return $q(function(resolve) {
 
+            var options = {
+              name: 'MainApp',
+              files: priority
+            };
+
+            switch(agneta.env){
+              case 'development':
+                options.cache = false;
+                break;
+            }
+
             if (priority.length) {
-              $ocLazyLoad.load([{
-                name: 'MainApp',
-                files: priority
-              }]).then(resolve);
+              $ocLazyLoad.load([options]).then(resolve);
 
             } else {
               resolve();

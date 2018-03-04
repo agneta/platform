@@ -62,6 +62,7 @@ module.exports = function(locals) {
       path: this.path_relative(),
       root: this.config.root,
       title: this.lng(this.config.title),
+      env: this.services_config('env'),
       server:{
         lib: this.site.servers.lib,
         media: this.site.servers.media,

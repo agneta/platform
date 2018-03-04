@@ -30,14 +30,28 @@
   app.run(function(Portal, $rootScope, $route, $timeout){
     var socket = Portal.socket;
     console.log('Listen');
-    socket.on('page-reload', function(id) {
+    socket.on('page-reload', function(data) {
 
-      if ($rootScope.viewData.path == id) {
+      if(!data){
+        return;
+      }
 
-        $timeout(function() {
-          $route.reload();
-        }, 10);
+      if ($rootScope.viewData.path == data.path) {
 
+        switch(data.type){
+          case 'style':
+            $timeout(function() {
+              $rootScope.loadData({
+                filter: data.filter
+              });
+            }, 100);
+            break;
+          default:
+            $timeout(function() {
+              $route.reload();
+            }, 10);
+            break;
+        }
       }
     });
 
