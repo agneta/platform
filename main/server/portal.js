@@ -52,6 +52,9 @@ module.exports = function(options) {
     });
   }
 
+  var storage = require('./storage')({
+  });
+
   var portalServices = setupServer('services',{
     root: 'services',
     id: 'portal',
@@ -88,14 +91,19 @@ module.exports = function(options) {
 
   portalServices.locals.client = portalPages.locals;
   portalServices.locals.web = webPages.locals;
+  portalServices.locals.storage = storage.locals;
+
   webServices.locals.client = webPages.locals;
   webServices.locals.portal = portalServices.locals;
+  webServices.locals.storage = storage.locals;
 
   portalPages.locals.services = portalServices.locals.app;
   portalPages.locals.web = webPages.locals;
 
   webPages.locals.portal = portalServices.locals.app;
   webPages.locals.services = webServices.locals.app;
+
+  storage.locals.services = webServices.locals;
 
   //----------------------------------------------------------------
 
@@ -157,11 +165,13 @@ module.exports = function(options) {
 
   return start.init([
     webServices,
+    storage,
     portalServices,
     webPages,
     portalPages,
   ])
     .then(function() {
+
       return {
         portalSettings: _.pick(portalServices.locals.app.settings,[
           'account'

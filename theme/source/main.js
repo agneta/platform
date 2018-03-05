@@ -146,14 +146,17 @@ app.factory('$exceptionHandler', function() {
 //---------------------------------------------------------------
 
 
-app.config(function($mdThemingProvider, $sceDelegateProvider) {
+app.config(function($mdThemingProvider, $sceDelegateProvider, $qProvider) {
 
-  $sceDelegateProvider.resourceUrlWhitelist([
+  $qProvider.errorOnUnhandledRejections(false);
+  var trustList = [
     'self',
     agneta.services.url + '/**',
     agneta.server.media + '/**',
     agneta.server.lib + '/**'
-  ]);
+  ];
+  console.log('trustList',trustList);
+  $sceDelegateProvider.resourceUrlWhitelist(trustList);
 
   //////////////////////////////////////////////////////////////
   // Theme

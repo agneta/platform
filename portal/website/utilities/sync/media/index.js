@@ -81,7 +81,7 @@ module.exports = function(util, parameters) {
     return Promise.resolve()
       .then(function() {
 
-        if(!parameters.process.source){
+        if(!_.get(parameters,'process.source')){
           return;
         }
 
@@ -102,7 +102,7 @@ module.exports = function(util, parameters) {
       })
       .then(function() {
 
-        if (!parameters.process.search) {
+        if(!_.get(parameters,'process.search')){
           return;
         }
 

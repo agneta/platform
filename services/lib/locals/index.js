@@ -44,22 +44,6 @@ module.exports = function(app, options) {
   app.set('root', options.root);
 
   //---------------------------------------------
-
-  switch (env) {
-    case 'development':
-    case 'local':
-
-      var services_url = urljoin('/', options.root);
-      if (services_url.indexOf('//') == 0) {
-        services_url = services_url.substring(1);
-      }
-
-      app.set('services_url', services_url);
-      break;
-  }
-
-
-  //---------------------------------------------
   // Merge Config
 
   var configurator = require('./configurator')(app);
@@ -86,6 +70,17 @@ module.exports = function(app, options) {
   website.url = urljoin(website.host, website.root);
   //console.log('services:url_web',website.url);
   app.set('website', website);
+
+  //---------------------------------------------
+
+  switch (env) {
+    case 'development':
+    case 'local':
+
+      var services_url = urljoin( website.url, options.root);
+      app.set('services_url', services_url);
+      break;
+  }
 
   //-------------------------------------------
   // Origins
@@ -129,49 +124,8 @@ module.exports = function(app, options) {
   //-------------------------------------------
   // Storage
 
-  var configName = 'storage';
-  var storageConfig = app.get(configName);
-
-  if (!storageConfig) {
-    app.set(configName, {});
-    storageConfig = app.get(configName);
-  }
-
-  var domain = options.web || options.client;
-
-  if (domain) {
-    domain = domain.project.config.domain.production;
-
-    var buckets = {
-      media: {
-        staging: `media-staging.${domain}`,
-        private: `media-private.${domain}`,
-        production: `media.${domain}`
-      },
-      pages: {
-        staging: `staging-private.${domain}`,
-        production: `private.${domain}`
-      },
-      assets: {
-        staging: `assets-staging.${domain}`,
-        production: `assets.${domain}`
-      }
-    };
-
-    switch (env) {
-      case 'production':
-        buckets.media.host = buckets.media.production;
-        buckets.pages.host = buckets.pages.production;
-        buckets.assets.host = buckets.assets.production;
-        break;
-      default:
-        buckets.media.host = buckets.media.staging;
-        buckets.pages.host = buckets.pages.staging;
-        buckets.assets.host = buckets.assets.staging;
-        break;
-    }
-  }
-
-  storageConfig.buckets = buckets;
-
+  require('./storage')({
+    app:app,
+    options: options
+  });
 };

@@ -46,7 +46,7 @@ var theme = {
 };
 
 // Storage
-core.storage = path.join(core.project, 'storage');
+core.storage = path.join(core.project, '.agneta', 'storage');
 // Portal
 var portal = structure({
   base: path.join(core.platform, 'portal')

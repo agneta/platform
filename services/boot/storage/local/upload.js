@@ -7,14 +7,20 @@ module.exports = function(data) {
 
   return function(options){
     var target = path.join(data.root, options.Bucket, options.Key);
+    var targetFile = `${target}.file`;
     var ETag;
-
     return Promise.resolve()
       .then(function() {
-        return fs.remove(target);
+        return fs.pathExists(targetFile)
+          .then(function(exists) {
+            if(!exists){
+              return;
+            }
+            return fs.remove(targetFile);
+          });
       })
       .then(function() {
-        return fs.ensureFile(target);
+        return fs.ensureFile(targetFile);
       })
       .then(function() {
 
@@ -33,7 +39,7 @@ module.exports = function(data) {
 
         var promiseOutput = new Promise(
           function(resolve, reject) {
-            const file = fs.createWriteStream(target);
+            const file = fs.createWriteStream(targetFile);
             file.on('finish', resolve);
             file.on('error', reject);
             options.Body.pipe(file);
@@ -43,10 +49,15 @@ module.exports = function(data) {
 
       })
       .then(function() {
+        return fs.stat(targetFile);
+      })
+      .then(function(stats) {
 
-        return fs.outputJson(`${target}.meta.json`, {
+        return fs.outputJson(`${target}.json`, {
           ContentType: options.ContentType,
+          ContentLength: stats.size,
           ContentEncoding: options.ContentEncoding,
+          LastModified: new Date(),
           ETag: ETag
         });
       });

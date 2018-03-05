@@ -27,6 +27,7 @@ module.exports = function(app) {
   };
 
   return {
+    isLocal: true,
     listObjects: require('./listObjects')(data),
     headObject: function() {},
     copyObject: function() {},

@@ -109,6 +109,9 @@ var start = {
     options.paths = paths.loadApp(options);
     return getComponent('services', paths.core.services, options);
 
+  },
+  storage: function(options) {
+    return getComponent('storage', './server/storage', options);
   }
 };
 

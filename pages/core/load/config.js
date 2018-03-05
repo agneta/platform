@@ -135,24 +135,6 @@ module.exports = function(locals) {
 
         project.config.languages = languages;
 
-        //---------------------
-
-        var servers = locals.services.get('storage')
-          .buckets;
-
-        project.site.servers = {};
-        for (var key in servers) {
-          var server = servers[key];
-          project.site.servers[key] = project.site.protocol + '//' + server.host;
-        }
-
-        switch (project.site.env) {
-          case 'development':
-          case 'local':
-            project.site.servers.assets = project.site.url_web;
-            break;
-        }
-
         //-------------------------------------------
         //
 
@@ -184,6 +166,31 @@ module.exports = function(locals) {
           //console.log('pages:url_services', project.site.services.url);
 
         }
+
+        //---------------------
+
+        var storageConfig = locals.services.get('storage');
+        var servers = storageConfig.buckets;
+        project.site.servers = {};
+        for (let key in servers) {
+          let server = servers[key];
+          let result = server.host;
+          switch(storageConfig.provider){
+            case 'local':
+              result = `localhost:${storageConfig.port}/${result}.ag`;
+              break;
+          }
+          result = project.site.protocol + '//' + result;
+          project.site.servers[key] = result;
+        }
+
+        switch (project.site.env) {
+          case 'development':
+          case 'local':
+            project.site.servers.assets = project.site.url_web;
+            break;
+        }
+
 
       });
 

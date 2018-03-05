@@ -29,7 +29,10 @@ module.exports = function(options) {
     }
 
     if (component.init) {
-      return component.init()
+      return Promise.resolve()
+        .then(function() {
+          return component.init();
+        })
         .then(function() {
           return component.locals;
         });

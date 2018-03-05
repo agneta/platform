@@ -108,7 +108,11 @@ module.exports = function(Model) {
 
         Model.__checkFolders({
           dir: path.parse(file.location).dir
-        });
+        })
+          .catch(function(err) {
+            console.error('Checking folder error');
+            console.error(err);
+          });
 
         var object = {
           location: file.location,
@@ -118,10 +122,6 @@ module.exports = function(Model) {
         };
         return object;
 
-      })
-      .catch(function(err) {
-        console.error('File Upload error');
-        console.error(err);
       });
 
   };
