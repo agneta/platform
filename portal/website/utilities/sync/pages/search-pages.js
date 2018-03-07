@@ -16,6 +16,7 @@
  */
 const cheerio = require('cheerio');
 const urljoin = require('url-join');
+const Promise = require('bluebird');
 
 module.exports = function(options) {
 

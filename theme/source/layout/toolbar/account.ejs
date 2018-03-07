@@ -29,7 +29,7 @@
     <%}%>
   </div>
   </div>
-
+  <%if(has_path('account')){%>
   <div class="ag-margin md-padding" ng-show="account.profile" layout="column">
     <p>{{account.profile.username || account.profile.email}}</p>
     <md-button class="bg-grey" ng-href="<%-get_path('account')%>">
@@ -39,6 +39,7 @@
       Sign out
     </md-button>
   </div>
+  <%}%>
 
 
 </md-menu-content>

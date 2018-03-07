@@ -33,7 +33,7 @@ module.exports = function(util, options) {
     var filename = options.filename({
       language: lang
     }) + '.json';
-    var filePath = path.join(webProject.paths.app.services,'keywords', filename);
+    var filePath = path.join(webProject.paths.app.generated, filename);
 
     return outputJson(filePath, keywords)
       .then(function() {

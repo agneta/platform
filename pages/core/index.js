@@ -27,15 +27,25 @@ module.exports = function(options) {
 
   function init() {
 
-    require('./project')(locals);
-    require('./database')(locals);
-    require('./helpers')(locals);
-
-    return load.init()
+    return Promise.resolve()
+      .then(function() {
+        return require('./project')(locals);
+      })
+      .then(function() {
+        return require('./database')(locals);
+      })
+      .then(function() {
+        return require('./helpers')(locals);
+      })
+      .then(function() {
+        return load.init();
+      })
+      .then(function() {
+        return require('./files')(locals);
+      })
       .then(function() {
         return project.call_listeners('initiated');
       });
-
   }
 
   function start() {

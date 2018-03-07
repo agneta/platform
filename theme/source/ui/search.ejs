@@ -1,4 +1,7 @@
-<%if(config.services && config.search){%>
+<%
+var data = locals.data || {};
+if(config.services && config.search){
+%>
     <div ag-page-search-ctrl class="search <%-data.class%>" ng-show="initialized">
         <md-autocomplete
             flex=""
