@@ -1,8 +1,8 @@
 const nodemailer = require('nodemailer');
 
-module.exports = function(app){
+module.exports = function(options){
 
-  var secrets = app.secrets.get('nodemailer');
+  var secrets = options.secrets;
   var transporter;
 
   return {

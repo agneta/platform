@@ -18,33 +18,38 @@ const _ = require('lodash');
 const Promise = require('bluebird');
 const assert = require('assert');
 
-module.exports = MailConnector;
-
 function MailConnector(options) {
   var app = options.app;
+  var self = this;
 
-  this.config = app.get('email');
-  this.secrets = app.secrets.get('email');
+  self.config = app.get('email');
+  self.secrets = app.secrets.get('email');
 
-  if (!this.config) {
+  if (!self.config) {
     throw new Error('No Email config is present');
   }
 
   //--------------------------------------------------------------
 
-  this.subjectPrefix = _.get(this.config,'subject.prefix');
+  self.subjectPrefix = _.get(self.config,'subject.prefix');
   //--------------------------------------------------------------
 
-  switch(this.secrets.provider){
+  var provider;
+
+  switch(self.secrets.provider){
     case 'sendgrid':
-      this.provider = require('./sendgrid');
+      provider = require('./sendgrid');
       break;
     case 'nodemailer':
-      this.provider = require('./nodemailer');
+      provider = require('./nodemailer');
       break;
     default:
-      throw new Error(`Uknown email provider: ${this.secrets.provider}`);
+      throw new Error(`Uknown email provider: ${self.secrets.provider}`);
   }
+
+  self.provider = provider({
+    secrets: self.secrets
+  });
 }
 
 MailConnector.name = 'email';
@@ -54,11 +59,13 @@ function Mailer() {
 
 MailConnector.prototype.DataAccessObject = Mailer;
 
-MailConnector.initialize = function(cb){
-  var self = this;
+MailConnector.initialize = function(dataSource,cb){
+
+  dataSource.connector = new MailConnector(dataSource.settings);
+
   return Promise.resolve()
     .then(function(){
-      return self.provider.init();
+      return dataSource.connector.provider.init();
     })
     .asCallback(cb);
 };
@@ -134,3 +141,5 @@ Mailer.send = function(options,cb) {
 Mailer.prototype.send = function(fn) {
   this.constructor.send(this, fn);
 };
+
+module.exports = MailConnector;

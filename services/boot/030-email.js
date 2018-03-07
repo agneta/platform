@@ -26,8 +26,9 @@ const DataSource = require('loopback-datasource-juggler').DataSource;
 module.exports = function(app) {
 
   loopback.Email.attachTo(new DataSource(
-    require('./email/connector'),{
+    {
       name: 'email',
+      connector: require('./email/connector'),
       app:app
     }
   ));

@@ -45,6 +45,13 @@ agneta.directive('AgAccountLogin', function($rootScope, $mdDialog,$location, Acc
         LoopBackAuth.setUser(account.token.id, account.token.userId);
         LoopBackAuth.save();
         $rootScope.account.profile = account;
+
+        var searchData = $location.search();
+        delete searchData.uid;
+        delete searchData.token;
+        delete searchData.action;
+        $location.search(searchData);
+
         window.location.href = $location.url();
       })
       .catch(function(err){
