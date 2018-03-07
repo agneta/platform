@@ -18,7 +18,7 @@
 const _ = require('lodash');
 const Promise = require('bluebird');
 const Keywords = require('../keywords');
-const searchPages = require('search-pages');
+const searchPages = require('./search-pages');
 
 module.exports = function(util) {
 

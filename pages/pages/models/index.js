@@ -15,6 +15,6 @@
  *   limitations under the License.
  */
 
-exports.Cache = require('./cache');
-exports.Data = require('./data');
-exports.Page = require('./page');
+module.exports.Cache = require('./cache');
+module.exports.Data = require('./data');
+module.exports.Page = require('./page');

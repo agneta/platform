@@ -47,10 +47,6 @@ module.exports = function(app) {
     })
     .then(function(remotes) {
 
-      if(!config.remote){
-        return;
-      }
-      
       var foundRemote = _.find(remotes, {
         name: config.remote.name
       });

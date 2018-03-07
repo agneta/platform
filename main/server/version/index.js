@@ -15,6 +15,8 @@
  *   limitations under the License.
  */
 const path = require('path');
+const _ = require('lodash');
+
 module.exports = function() {
 
   var app = {
@@ -23,6 +25,10 @@ module.exports = function() {
       path.join(process.cwd(),'services/config')
     ).git || {}
   };
+
+  if(!_.get(app.config,'remote.name')){
+    return;
+  }
 
   require('./update')(app);
 

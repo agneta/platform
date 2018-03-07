@@ -16,9 +16,11 @@
  */
 'use strict';
 
-exports.Filter = require('./filter');
-exports.Generator = require('./generator');
-exports.Helper = require('./helper');
-exports.Migrator = require('./migrator');
-exports.Processor = require('./processor');
-exports.Renderer = require('./renderer');
+module.exports = {
+  Filter: require('./filter'),
+  Generator: require('./generator'),
+  Helper: require('./helper'),
+  Migrator: require('./migrator'),
+  Processor: require('./processor'),
+  Renderer: require('./renderer')
+};

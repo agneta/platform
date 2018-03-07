@@ -20,7 +20,7 @@ var _ = require('lodash');
 module.exports = function(options) {
 
   options.mode = options.mode || 'default';
-  var locals = options.locals || {};
+  var locals = options.locals = options.locals || {};
   //--------------------------------------------
   // Loading Config
 
@@ -68,10 +68,7 @@ module.exports = function(options) {
 
   locals.mode = locals.mode || {};
   locals.mode[options.mode] = locals.mode[options.mode] || {};
-
-
-  require(path.join(options.paths.pages.base, 'core/main'))(locals);
-  var mode = require(path.join(options.paths.pages.base, 'main', options.mode))(locals);
+  var core = require('./core')(options);
 
   //-----------------------------------------------------------------
   return {
@@ -90,8 +87,8 @@ module.exports = function(options) {
     start: function() {
       return locals.main.start()
         .then(function() {
-          if (_.isFunction(mode)) {
-            return mode();
+          if (_.isFunction(core.mode)) {
+            return core.mode();
           }
         })
         .then(function() {

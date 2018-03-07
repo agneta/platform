@@ -32,9 +32,8 @@ module.exports = function(locals) {
     var extPaths = project.paths.app.extensions[name];
     filePaths.push(extPaths.website);
   }
-
   if(locals.web){
-    filePaths.push(locals.web.project.paths.appPortal.base);
+    filePaths.push(locals.web.project.paths.appPortal.website);
   }
 
   filePaths.push(project.paths.theme.base);

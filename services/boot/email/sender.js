@@ -14,7 +14,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const DataSource = require('loopback-datasource-juggler').DataSource;
 const _ = require('lodash');
 const Promise = require('bluebird');
 
@@ -30,24 +29,19 @@ module.exports = function(app) {
   //--------------------------------------------------------------
 
   var subjectPrefix = _.get(config,'subject.prefix');
-
+  var provider;
   //--------------------------------------------------------------
 
-  var dataSource;
-
-  if (config.sendgrid) {
-    dataSource = new DataSource('loopback-connector-sendgrid', {
-      api_key: config.sendgrid.apiKey
-    });
+  switch(config.provider){
+    case 'sendgrid':
+      provider = require('./sendgrid');
+      break;
+    case 'nodemailer':
+      provider = require('./nodemailer');
+      break;
+    default:
+      throw new Error(`Uknown email provider: ${config.provider}`);
   }
-
-  if (!dataSource) {
-    throw new Error('Must have an email datasource');
-  }
-
-  app.loopback.Email.attachTo(dataSource);
-
-  var emailSend = app.loopback.Email.send;
 
   app.loopback.Email.send = function(options,cb) {
 
@@ -104,12 +98,17 @@ module.exports = function(app) {
 
         //console.log('email options',emailOptions);
 
-        return emailSend.call(app.loopback.Email, emailOptions);
+        return provider.send(emailOptions);
 
       })
       .asCallback(cb);
 
 
   };
+
+  return Promise.resolve()
+    .then(function(){
+      return provider.init();
+    });
 
 };

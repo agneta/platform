@@ -99,7 +99,7 @@ function Tail(filename, options) {
 
   function onChange(path, diff, position) {
 
-    const buffer = new Buffer(diff);
+    const buffer = Buffer.from(diff);
     fd = fs.openSync(path, 'r');
 
     return fs.read(fd, buffer, 0, diff, position)

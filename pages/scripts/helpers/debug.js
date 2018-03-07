@@ -27,8 +27,6 @@ module.exports = function(locals) {
     return result;
   }
 
-  exports.inspectObject = inspectObject;
-
   project.extend.helper.register('inspect', inspectObject);
 
 };

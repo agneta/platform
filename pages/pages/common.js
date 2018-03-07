@@ -29,7 +29,7 @@ function isHiddenFile(path){
   if (path[0] === '_') return true;
   return /\/_/.test(path);
 }
-
+var exports = module.exports = {};
 exports.ignoreTmpAndHiddenFile = new Pattern(function(path){
   if (isTmpFile(path) || isHiddenFile(path)) return false;
   return true;

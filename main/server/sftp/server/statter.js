@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var constants = require('constants');
+var fs = require('fs');
 var ssh2 = require('ssh2');
 
 function Statter(sftpStream1, reqid1) {
@@ -23,11 +23,11 @@ function Statter(sftpStream1, reqid1) {
 }
 
 Statter.prototype.is_file = function() {
-  return this.type = constants.S_IFREG;
+  return this.type = fs.constants.S_IFREG;
 };
 
 Statter.prototype.is_directory = function() {
-  return this.type = constants.S_IFDIR;
+  return this.type = fs.constants.S_IFDIR;
 };
 
 Statter.prototype.file = function() {

@@ -77,7 +77,7 @@ module.exports = function(app, options) {
     case 'development':
     case 'local':
 
-      var services_url = urljoin( website.url, options.root);
+      var services_url = urljoin( website.host, options.root);
       app.set('services_url', services_url);
       break;
   }

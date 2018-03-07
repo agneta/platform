@@ -108,8 +108,15 @@ module.exports = function(locals) {
           content += `require('${scriptPath}');\n`;
         });
 
-        var outputPath = path.join(project.paths.app.source, 'main/bundle.js');
-        return fs.outputFile(outputPath, content);
+        var sourcePath;
+        if(locals.portal){
+          sourcePath = project.paths.app.source;
+        }else{
+          sourcePath = project.paths.appPortal.source;
+        }
+        return fs.outputFile(
+          path.join(sourcePath, 'main/bundle.js')
+          , content);
 
       });
 

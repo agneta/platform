@@ -45,7 +45,7 @@ module.exports = function(app) {
             });
           }
           cert = cert.__data;
-          
+
           if (!cert.pfxFile || !cert.pfxFile.data || !cert.pfxPass) {
             return Promise.reject({
               message: 'Must have a pfx assigned to the client certificate',
@@ -72,7 +72,7 @@ module.exports = function(app) {
       return Promise.resolve()
         .then(function() {
           options.headers = options.headers || {};
-          options.headers.Authorization = 'Basic ' + new Buffer((secrets.username + ':' + secrets.password) || '').toString('base64');
+          options.headers.Authorization = 'Basic ' + Buffer.from((secrets.username + ':' + secrets.password) || '').toString('base64');
         });
 
     }

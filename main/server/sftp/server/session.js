@@ -64,12 +64,12 @@ SFTPSession.prototype.fetchhandle = function() {
   var prevhandle;
   prevhandle = this.max_filehandle;
   this.max_filehandle++;
-  return new Buffer(prevhandle.toString());
+  return Buffer.from(prevhandle.toString());
 };
 
 SFTPSession.prototype.REALPATH = function(reqid, path) {
   var callback;
-  if (EventEmitter.listenerCount(this, 'realpath')) {
+  if (this.listenerCount('realpath')) {
     callback = (function(_this) {
       return function(name) {
         return _this.sftpStream.name(reqid, {
@@ -90,7 +90,7 @@ SFTPSession.prototype.REALPATH = function(reqid, path) {
 };
 
 SFTPSession.prototype.do_stat = function(reqid, path, kind) {
-  if (EventEmitter.listenerCount(this, 'stat')) {
+  if (this.listenerCount('stat')) {
     return this.emit('stat', path, kind, new Statter(this.sftpStream, reqid));
   } else {
     console.log('WARNING: No stat function for ' + kind + ', all files exist!');

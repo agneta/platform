@@ -25,8 +25,9 @@ function startsWith(str, prefix) {
   return str.substring(0, prefix.length) === prefix;
 }
 
-exports.parseFilename = parseFilename;
+var exports = module.exports = {};
 
+exports.parseFilename = parseFilename;
 
 exports.process = function(file) {
   return processPost.call(this, file);

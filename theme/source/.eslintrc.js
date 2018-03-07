@@ -14,16 +14,25 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
- module.exports = {
-   "globals": {
-     angular: true,
-     agneta: true,
-     module: true,
-     require: true
-   },
-   "env": {
-     "browser": true,
-     "node": false,
-     "es6": true
-   }
- }
+var path = require('path');
+
+module.exports = {
+  "globals": {
+    angular: true,
+    agneta: true,
+    module: true,
+    require: true
+  },
+  "env": {
+    "browser": true,
+    "node": false,
+    "es6": true
+  },
+  "rules": {
+    "node/no-missing-require": ["error", {
+      "allowModules": [],
+      "resolvePaths": [__dirname],
+      "tryExtensions": [".js", ".json", ".node"]
+    }]
+  }
+}

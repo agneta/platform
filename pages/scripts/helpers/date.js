@@ -14,9 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var moment = require('moment-timezone');
-var isMoment = moment.isMoment;
-var isDate = require('util').isDate;
+const moment = require('moment-timezone');
+const isMoment = moment.isMoment;
+const _ = require('lodash');
 
 module.exports = function(locals) {
 
@@ -24,7 +24,7 @@ module.exports = function(locals) {
 
   function output(date, format, lang, timezone) {
     if (date == null) date = moment();
-    if (!isMoment(date)) date = moment(isDate(date) ? date : new Date(date));
+    if (!isMoment(date)) date = moment(_.isDate(date) ? date : new Date(date));
 
     if (lang) date = date.locale(lang);
     if (timezone) date = date.tz(timezone);

@@ -21,14 +21,14 @@ module.exports = function(options) {
     locals: locals,
     init: function() {
 
+      var storageConfig = locals.services.app.get('storage');
+
+      if(storageConfig.provider != 'local'){
+        return;
+      }
+
       return Promise.resolve()
         .then(function() {
-
-          var storageConfig = locals.services.app.get('storage');
-
-          if(storageConfig.provider != 'local'){
-            return;
-          }
 
           console.log('using local storage');
 

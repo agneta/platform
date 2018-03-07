@@ -14,6 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+var path = require('path');
+
 module.exports = {
   "globals": {
     angular: true,
@@ -25,5 +27,15 @@ module.exports = {
     "browser": true,
     "node": false,
     "es6": true
+  },
+  "rules": {
+    "node/no-missing-require": ["error", {
+      "allowModules": [],
+      "resolvePaths": [
+        path.join(__dirname,'../../../theme/source'),
+        __dirname
+      ],
+      "tryExtensions": [".js", ".json", ".node"]
+    }]
   }
 }

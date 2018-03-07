@@ -190,7 +190,7 @@ module.exports = function(locals, options) {
             // gzip
 
             return gzip(
-              new Buffer(html, 'utf-8')
+              Buffer.from(html)
             )
               .then(function(html) {
                 return locals.exportFile({
