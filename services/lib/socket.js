@@ -91,7 +91,7 @@ module.exports = function(options) {
 
   }
 
-  server.addMiddleware(server.MIDDLEWARE_HANDSHAKE, function(req, next) {
+  server.addMiddleware(server.MIDDLEWARE_HANDSHAKE_WS, function(req, next) {
 
     req.header = function(name) {
       return req.headers[name];

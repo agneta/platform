@@ -56,6 +56,9 @@ if (isValid != 'yes') {
 // Decrypt all the object values
 
 _.deepMapValues(keys, function(value, path) {
+  if(!_.isString(value)){
+    return;
+  }
   value = cryptojs.AES.decrypt(value, secretKey)
     .toString(cryptojs.enc.Utf8);
   _.set(keys, path, value);

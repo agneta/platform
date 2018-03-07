@@ -16,7 +16,7 @@
  */
 const path = require('path');
 const express = require('express');
-const SocketCluster = require('socketcluster').SocketCluster;
+const SocketCluster = require('socketcluster');
 
 //var workerCount = process.env.WEB_CONCURRENCY || 1;
 // TODO: Make more stable the multiple workers
@@ -46,6 +46,8 @@ module.exports = function(options) {
     port: process.env.PORT,
     protocol: process.env.PROTOCOL,
     path: socketPath,
+    wsEngine: 'uws',
+    rebootWorkerOnCrash: true,
     environment: 'prod',
     workerController: path.join(__dirname, 'worker.js'),
     logLevel: 3,

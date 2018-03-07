@@ -67,7 +67,7 @@ module.exports = function(app, options) {
     root: webOpts.root
   };
 
-  website.url = urljoin(website.host, website.root);
+  website.url = urljoin(website.host, website.root||'');
   //console.log('services:url_web',website.url);
   app.set('website', website);
 
@@ -77,7 +77,7 @@ module.exports = function(app, options) {
     case 'development':
     case 'local':
 
-      var services_url = urljoin( website.host, options.root);
+      var services_url = urljoin( website.host, options.root||'');
       app.set('services_url', services_url);
       break;
   }

@@ -20,8 +20,17 @@ const _ = require('lodash');
 const yaml = require('js-yaml');
 const fs = require('fs-extra');
 const htmlToText = require('html-to-text');
+const loopback = require('loopback');
+const DataSource = require('loopback-datasource-juggler').DataSource;
 
 module.exports = function(app) {
+
+  loopback.Email.attachTo(new DataSource(
+    require('./email/connector'),{
+      name: 'email',
+      app:app
+    }
+  ));
 
   var options = app.get('options');
   var project = options.web || options.client;
@@ -63,6 +72,7 @@ module.exports = function(app) {
   //console.log(templatePaths);
 
   const helpers = require('./email/helpers')({
+
     templatePaths: _.reverse([].concat(templatePaths)),
     app: app
   });
