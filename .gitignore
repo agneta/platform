@@ -4,7 +4,6 @@ node_modules
 bower_components
 *.sublime-workspace
 *.log
-package-lock.json
 theme/icons
 portal/website/cache
 /theme/source/lib
