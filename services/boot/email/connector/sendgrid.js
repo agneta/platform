@@ -1,8 +1,8 @@
 const sgMail = require('@sendgrid/mail');
 
-module.exports = function(app){
+module.exports = function(options){
 
-  var secrets = app.secrets.get('sendgrid');
+  var secrets = options.secrets;
 
   return {
     init: function(){
