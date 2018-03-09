@@ -155,7 +155,6 @@ app.config(function($mdThemingProvider, $sceDelegateProvider, $qProvider) {
     agneta.server.media + '/**',
     agneta.server.lib + '/**'
   ];
-  console.log('trustList',trustList);
   $sceDelegateProvider.resourceUrlWhitelist(trustList);
 
   //////////////////////////////////////////////////////////////

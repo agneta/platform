@@ -22,8 +22,6 @@ const Promise = require('bluebird');
 const fs = require('fs-extra');
 const klaw = require('klaw');
 const _ = require('lodash');
-const StylusCompiler = require('../compiler/style');
-const ScriptCompiler = require('../compiler/script');
 
 module.exports = function(locals, options) {
 
@@ -41,9 +39,6 @@ module.exports = function(locals, options) {
 
   var bar;
   var sourcePaths = {};
-
-  var scriptCompiler = ScriptCompiler(locals);
-  var stylusCompiler = StylusCompiler(locals);
 
   return Promise.each(sources, function(sourceDir) {
 
@@ -164,10 +159,13 @@ module.exports = function(locals, options) {
           }
         }
 
-        return scriptCompiler.compile(options.relative, {
-          minify: minifyJS,
-          output: path.join(locals.build_dir, 'public')
-        })
+        return project
+          .compiler
+          .script
+          .compile(options.relative, {
+            minify: minifyJS,
+            output: path.join(locals.build_dir, 'public')
+          })
           .catch(function(err) {
             if (err.skip) {
               return copy();
@@ -191,7 +189,10 @@ module.exports = function(locals, options) {
         );
       case '.styl':
         return exportCSS(
-          stylusCompiler.compile(source_file_path)
+          project
+            .compiler
+            .style
+            .compile(source_file_path)
         );
       default:
         return copy();

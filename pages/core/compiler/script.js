@@ -53,7 +53,14 @@ module.exports = function(locals) {
 
     options = options || {};
 
-    let pathSource = project.theme.getFile(path.join('source', pathRelative));
+    let pathSource;
+
+    if(options.base){
+      pathSource = path.join(options.base,pathRelative);
+    }else{
+      pathSource = project.theme.getFile(path.join('source', pathRelative));
+    }
+
     let pathOutput = options.output || project.paths.app.cache;
     let pathRelativeParsed = path.parse(pathRelative);
     let pathNameParsed = path.parse(pathRelativeParsed.name);
@@ -95,7 +102,7 @@ module.exports = function(locals) {
     ];
 
     function canParse(testPath) {
-
+      console.log(testPath);
       if (testPath.indexOf('/source/lib/') > 0) {
         return;
       }
@@ -134,7 +141,7 @@ module.exports = function(locals) {
       },
       output: {
         path: path.join(pathOutput, pathRelativeParsed.dir),
-        filename: pathRelativeParsed.base
+        filename: options.outputName || pathRelativeParsed.base
       },
       module: {
         noParse: function(content) {
@@ -164,6 +171,7 @@ module.exports = function(locals) {
         }]
       }
     };
+    console.log(compilerOptions);
 
     let compiler = webpack(compilerOptions);
 

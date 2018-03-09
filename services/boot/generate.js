@@ -38,8 +38,18 @@ module.exports = function(app) {
       var target = options.filename || 'services.js';
       var outputPath = path.join(outputDir, target);
 
-      return fs.outputFile(outputPath, script);
-
+      return Promise.resolve()
+        .then(function() {
+          return fs.outputFile(outputPath, script);
+        })
+        .then(function() {
+          var targetParsed = path.parse(target);
+          return project.compiler.script.compile(target, {
+            base: outputDir,
+            output: outputDir,
+            outputName: targetParsed.name+'.min'+targetParsed.ext,
+          });
+        });
     }
   };
 

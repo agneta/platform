@@ -16,17 +16,12 @@
  */
 var express = require('express');
 var bodyParser = require('body-parser');
-var StylusCompiler = require('../core/compiler/style');
-var ScriptCompiler = require('../core/compiler/script');
 
 module.exports = function(locals) {
 
   locals.app = express();
   var app = locals.app;
   var project = locals.project;
-
-  var scriptCompiler = ScriptCompiler(locals);
-  var stylusCompiler = StylusCompiler(locals);
 
   app.use(bodyParser.urlencoded({
     extended: false
@@ -47,8 +42,9 @@ module.exports = function(locals) {
     sources = sources.concat(locals.includeSources);
   }
 
-  app.use(stylusCompiler.middleware);
-  app.use(scriptCompiler.middleware);
+  app.use(project.compiler.script.middleware);
+  app.use(project.compiler.style.middleware);
+
   app.use(express.static(project.paths.app.cache));
 
   for (let source of sources) {

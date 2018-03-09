@@ -33,7 +33,7 @@ module.exports = function(locals) {
 
     project.config.angular_libs.push({
       dep: 'lbServices',
-      js: 'generated/services'
+      js: 'generated/services.min'
     });
 
     //----------------------------------------------

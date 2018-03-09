@@ -25,6 +25,8 @@ module.exports = function(options) {
   var load = Loader(locals);
   var project = locals.project;
 
+  require('./compiler')(locals);
+
   function init() {
 
     return Promise.resolve()
