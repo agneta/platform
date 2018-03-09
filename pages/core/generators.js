@@ -187,7 +187,6 @@ module.exports = function(locals) {
 
     delete data.isSource;
     delete data._id;
-    delete data.full_source;
     delete data.source;
 
     var loadFields = locals.load.pages && locals.load.pages.fields;

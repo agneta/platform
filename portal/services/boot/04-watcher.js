@@ -36,7 +36,7 @@ module.exports = function(app) {
   //----------------------------------------------------------
 
   function init(locals) {
-    var project = locals.project;
+    var project = webLocals.project;
 
     var options = {
       project: project,

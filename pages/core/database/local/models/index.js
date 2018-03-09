@@ -15,6 +15,19 @@
  *   limitations under the License.
  */
 
-module.exports.Cache = require('./cache');
-module.exports.Data = require('./data');
-module.exports.Page = require('./page');
+var models = {};
+models.Cache = require('./cache');
+models.Data = require('./data');
+models.Page = require('./page');
+
+module.exports = function(ctx){
+  var db = ctx.database;
+
+  var keys = Object.keys(models);
+  var key = '';
+
+  for (var i = 0, len = keys.length; i < len; i++){
+    key = keys[i];
+    db.model(key, models[key](ctx));
+  }
+};

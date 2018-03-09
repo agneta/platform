@@ -36,7 +36,7 @@ module.exports = function(watcher) {
             return locals.main.load.pages();
           case '.styl':
             type='style';
-            filter = `/${params.name}.css`;
+            filter = '.css';
             break;
           case '.js':
             type='script';
@@ -49,16 +49,26 @@ module.exports = function(watcher) {
 
       })
       .then(function() {
-        var pathSearch = '/source/';
+        var pathSource = project.theme.getSourcePath(pathFile);
+        var pathParams = path.parse(pathSource);
         var pathPage = path.join(
-          params.dir,
-          params.name
+          pathParams.dir,
+          pathParams.name+'.yml'
         );
-        pathPage = pathPage.substring(
-          pathPage.indexOf(pathSearch)+pathSearch.length-1
-        );
+
+        var pathSourceAbs = project.theme.getSourceFile(pathPage);
+        if(!pathSourceAbs){
+          pathPage = path.join(pathParams.dir+'.yml');
+          pathSourceAbs = project.theme.getSourceFile(pathPage);
+        }
+        if(!pathSourceAbs){
+          return;
+        }
+        pathSource = project.theme.getSourcePath(pathSourceAbs);
+        console.log(pathSource, pathSourceAbs);
+
         var page = project.site.pages.findOne({
-          path: pathPage
+          source: pathSource
         });
 
         if(!page){

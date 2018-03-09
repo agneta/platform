@@ -15,7 +15,7 @@
  *   limitations under the License.
  */
 var Database = require('warehouse');
-var registerModels = require('../../pages/register_models');
+var models = require('./models');
 var path = require('path');
 var _ = require('lodash');
 
@@ -32,7 +32,7 @@ module.exports = function(locals) {
     return db.model(name, schema);
   };
 
-  registerModels(project);
+  models(project);
 
   var Page = db.model('Page');
 
@@ -56,8 +56,5 @@ module.exports = function(locals) {
       }
     }
   });
-
-  _.extend(project.locals, project.site);
-  _.extend(project.locals.cache, project.site);
 
 };

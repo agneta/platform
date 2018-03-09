@@ -69,7 +69,13 @@ module.exports = function(locals) {
               return Promise.map(files, function(path_file) {
 
                 var filePath = path.relative(dir, path_file);
-                var path_url = filePath.split(path.sep).join('/');
+                var pathParsed = path.parse(filePath);
+                var path_url = filePath;
+
+                if(pathParsed.base==='index.yml'){
+                  path_url = path.join(filePath,'..');
+                }
+                path_url = path_url.split(path.sep).join('/');
 
                 if (pageExists(path_url)) {
                   return;
@@ -91,7 +97,7 @@ module.exports = function(locals) {
 
                     data = _data;
                     data.path = data.path || path_url;
-
+                    data.name = path.parse(data.path).name;
                     //---------------------------------------
                     // extend
 

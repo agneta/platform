@@ -102,7 +102,7 @@ module.exports = function(locals) {
     ];
 
     function canParse(testPath) {
-      console.log(testPath);
+      //console.log(testPath);
       if (testPath.indexOf('/source/lib/') > 0) {
         return;
       }
@@ -171,7 +171,6 @@ module.exports = function(locals) {
         }]
       }
     };
-    console.log(compilerOptions);
 
     let compiler = webpack(compilerOptions);
 

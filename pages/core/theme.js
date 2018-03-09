@@ -76,19 +76,40 @@ module.exports = function(locals) {
       return _.values(files);
     },
     getFile: function(getPath) {
-      return getObject(getPath, 'isFile');
+
+      var result = getObject(getPath, 'isFile');
+
+      if (!result) {
+        var parsedPath = path.parse(getPath);
+        getPath = path.join(
+          parsedPath.dir,
+          parsedPath.name,
+          `index${parsedPath.ext}`);
+        result = getObject(getPath,'isFile');
+      }
+
+      return result;
     },
     getDir: function(getPath) {
       return getObject(getPath, 'isDirectory');
     },
-    getTemplateFile: function(getFile) {
+    getSourcePath: function(getFile) {
+      for (var _filePath of filePaths) {
+        if(getFile.indexOf(_filePath)===0){
+          return path.relative(
+            path.join(_filePath,'source'),
+            getFile);
+        }
+      }
+    },
+    getSourceFile: function(getFile) {
       var result = project.theme.getFile(getFile);
       if (result) {
         return result;
       }
       return project.theme.getFile(path.join('source', getFile));
     },
-    readTemplateDir: function(dir) {
+    readSourceDir: function(dir) {
       var result = project.theme.readDir(dir);
       if (result) {
         return result;
