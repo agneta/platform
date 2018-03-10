@@ -49,6 +49,7 @@ module.exports = function(watcher) {
 
       })
       .then(function() {
+        var page = null;
         var pathSource = project.theme.getSourcePath(pathFile);
         var pathParams = path.parse(pathSource);
         var pathPage = path.join(
@@ -57,29 +58,32 @@ module.exports = function(watcher) {
         );
 
         var pathSourceAbs = project.theme.getSourceFile(pathPage);
+
         if(!pathSourceAbs){
           pathPage = path.join(pathParams.dir+'.yml');
           pathSourceAbs = project.theme.getSourceFile(pathPage);
         }
-        if(!pathSourceAbs){
-          return;
-        }
-        pathSource = project.theme.getSourcePath(pathSourceAbs);
-        console.log(pathSource, pathSourceAbs);
 
-        var page = project.site.pages.findOne({
-          source: pathSource
-        });
+        if(pathSourceAbs){
+          pathSource = project.theme.getSourcePath(pathSourceAbs);
 
-        if(!page){
-          return;
+          page = project.site.pages.findOne({
+            source: pathSource
+          });
         }
 
-        app.portal.socket.emit('page-reload',{
-          path: page.path,
+        var emitOptions = {
           type: type,
           filter: filter
-        });
+        };
+
+        if(page){
+          emitOptions.path = page.path;
+        }else{
+          emitOptions.global = true;
+        }
+
+        app.portal.socket.emit('page-reload',emitOptions);
       });
   };
 };

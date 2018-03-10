@@ -27,18 +27,21 @@
 
   });
 
-  app.run(function(Portal, $rootScope, $route, $timeout){
+  app.run(function(Portal, $rootScope, $route, $timeout, $location) {
     var socket = Portal.socket;
     //console.log('Listen');
     socket.on('page-reload', function(data) {
 
-      if(!data){
+      if (!data) {
         return;
       }
+      console.log(data);
+      if (data.global) {
+        window.location.href = $location.url();
+      }
+      else if ($rootScope.viewData.path == data.path) {
 
-      if ($rootScope.viewData.path == data.path) {
-
-        switch(data.type){
+        switch (data.type) {
           case 'style':
             $timeout(function() {
               $rootScope.loadData({
