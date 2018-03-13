@@ -39,6 +39,15 @@ var dataAct = get_data('activity');
         </md-select>
     </div>
 
+    <div class="dropdown">
+        <label><%-lng(dataAct.year)%></label>
+        <md-select aria-label="<%-lng(dataAct.year)%>" ng-model="page.yearSelected" ng-change="loadTotals()">
+            <md-option ng-repeat="year in years" ng-value="year">
+                {{year}}
+            </md-option>
+        </md-select>
+    </div>
+
 </div>
 
 <md-progress-linear ng-show="true" md-mode="{{progressMode}}"></md-progress-linear>

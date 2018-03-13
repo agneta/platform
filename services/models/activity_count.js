@@ -20,7 +20,7 @@ var _ = require('lodash');
 
 module.exports = function(Model) {
 
-  
+
 
   Model.details = function(feedId, period, value, year) {
 
@@ -64,7 +64,7 @@ module.exports = function(Model) {
     var Feed = Model.getModel('Activity_Feed');
     var prep = preparePeriod(period, value, year);
 
-    prep.result.feeds = [];
+    var resultFeeds = [];
 
     return Feed.getByType(type)
       .then(function(feeds) {
@@ -81,12 +81,15 @@ module.exports = function(Model) {
                 return;
               }
 
-              prep.result.feeds.push(
+              resultFeeds.push(
                 _.extend({}, feed.__data || feed, result));
             });
         });
       })
       .then(function() {
+        resultFeeds = _.orderBy(resultFeeds,['total'],['desc']);
+        resultFeeds = _.slice(resultFeeds,0,10);
+        prep.result.feeds = resultFeeds;
         return prep.result;
       });
   };
@@ -221,7 +224,7 @@ module.exports = function(Model) {
       year = utc.year();
     }
 
-    if (value) {
+    if (value || value ===0) {
       utc[period](value);
     } else {
       value = utc[period]();

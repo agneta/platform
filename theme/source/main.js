@@ -21,7 +21,7 @@ require('main/helpers.module');
 
 var agneta = window.agneta;
 var app = window.angular.module('MainApp',
-  window.angularDeps.concat(['angular-q-limit'])
+  agneta.deps.concat(['angular-q-limit'])
 );
 
 //---------------------------------------------------------------
@@ -291,8 +291,16 @@ app.config(function($mdThemingProvider, $sceDelegateProvider, $qProvider) {
   $rootScope.loggedClass = function() {
     return $rootScope.account.profile ? 'logged-in' : 'logged-out';
   };
+
+  //---------------------------------------
+
+  document.dispatchEvent(
+    new Event('agneta-ready')
+  );
+
 });
 
+require('main/socket.module');
 require('main/search-engine.module');
 require('main/data.module');
 require('main/filters.module');

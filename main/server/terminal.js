@@ -25,11 +25,11 @@ module.exports = function() {
   process.env.MODE = 'terminal';
 
   var webPages = start.default();
-  var webPortal = start.default();
+  var webPortal = start.default({
+    dir: projectPaths.portal.base
+  });
 
-  var commonOptions = {
-    client: webPages.locals
-  };
+  var commonOptions = {};
 
   var servicesPortal = start.services(_.extend({
     dir: projectPaths.portal.base,
@@ -40,6 +40,9 @@ module.exports = function() {
     dir: projectPaths.core.project
   }, commonOptions));
 
+  servicesWebsite.locals.client = webPages.locals;
+
+  servicesPortal.locals.client = webPortal.locals;
   servicesPortal.locals.web = webPages.locals;
 
   webPages.locals.portal = servicesPortal.locals.app;

@@ -65,10 +65,10 @@ var start = {
   },
   default: function(options) {
 
-    var component = start.pages({
-      mode: 'default',
-      locals: options
-    });
+    var component = start.pages(
+      _.extend({
+        mode: 'default'
+      },options));
 
     return component;
 

@@ -66,7 +66,6 @@ module.exports = function(locals) {
       .then(function() {
 
         _.extend(project.config, merge(websiteConfig));
-
         function merge(config) {
 
           return _.mergeWith(themeConfig, config,

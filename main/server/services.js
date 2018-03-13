@@ -24,11 +24,12 @@ module.exports = function(options) {
   options = options || {};
 
   var webPages = start.default({
-    load: {
-      media: false
-    },
-    host: config.host
-  });
+    locals:{
+      load: {
+        media: false
+      },
+      host: config.host
+    }});
 
   var services = start.services({
     worker: options.worker,

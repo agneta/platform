@@ -21,6 +21,10 @@ periods:
       en: 'Day'
       gr: 'Ημέρα'
 
+year:
+  en: Year
+  gr: Χρόνος
+
 select:
   en: Select
   gr: Επιλογή

@@ -56,42 +56,47 @@ minify:
 cookies: true
 search: true
 languages_toolbar: false
-languages_sidebar: true
+languages_sidebar: false
 languages_footer: true
 
 #-----------------------------------------------
 
 scripts:
-  - 'main'
-
-#-----------------------------------------------
-
-angular_libs:
--
-  js: 'lib/angular-aria.min'
--
-  js: 'lib/angular-animate.min'
--
-  dep: 'ngMessages'
-  js: 'lib/angular-messages.min'
--
-  dep: 'ngMaterial'
-  js: 'lib/angular-material.min'
--
-  dep: 'ngResource'
-  js: 'lib/angular-resource.min'
--
-  dep: 'oc.lazyLoad'
-  js: 'lib/ocLazyLoad.min'
--
-  dep: 'ngRoute'
-  js: 'lib/angular-route.min'
--
-  dep: 'ngSanitize'
-  js: 'lib/angular-sanitize.min'
--
-  dep: 'ngStorage'
-  js: 'lib/ngStorage.min'
+  lib:
+    - 'lib/angular.min'
+    -
+      path: 'lib/angular-aria.min'
+    -
+      path: 'lib/angular-animate.min'
+    -
+      dep: 'ngMessages'
+      path: 'lib/angular-messages.min'
+    -
+      dep: 'ngMaterial'
+      path: 'lib/angular-material.min'
+    -
+      dep: 'ngResource'
+      path: 'lib/angular-resource.min'
+    -
+      dep: 'oc.lazyLoad'
+      path: 'lib/ocLazyLoad.min'
+    -
+      dep: 'ngRoute'
+      path: 'lib/angular-route.min'
+    -
+      dep: 'ngSanitize'
+      path: 'lib/angular-sanitize.min'
+    -
+      dep: 'ngStorage'
+      path: 'lib/ngStorage.min'
+    -
+      name: 'socketCluster'
+      path: 'lib/socketcluster.min'
+  app:
+    -
+      dep: lbServices
+      path: generated/services.min
+    - 'main'
 
 #-----------------------------------------------
 

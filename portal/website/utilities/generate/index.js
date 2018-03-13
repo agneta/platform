@@ -30,8 +30,8 @@ module.exports = function(util) {
           }
         })
         .then(function() {
-          if (options.type.services) {
-            return require('./services')(util);
+          if (options.type.scripts) {
+            return require('./scripts')(util);
           }
         });
 
@@ -44,8 +44,8 @@ module.exports = function(util) {
         name: 'dependencies',
         title: 'Dependencies'
       }, {
-        name: 'services',
-        title: 'Services'
+        name: 'scripts',
+        title: 'Scripts'
       }]
     }]
   };

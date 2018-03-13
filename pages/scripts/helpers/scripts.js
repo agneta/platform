@@ -20,34 +20,33 @@ module.exports = function(locals) {
 
   var project = locals.project;
 
-  project.extend.helper.register('loadScripts', function() {
+  function deps() {
 
     //------------------------------
 
-    var arr;
-    var angularDeps = '';
-    var angular_libs = this.config.angular_libs;
+    var result = [];
+    var arr =
+    [].concat(
+      project.config.angular_libs,
+      project.config.scripts.lib,
+      project.config.scripts.app
+    );
 
     //-------------------------------
-
-    arr = _.uniqBy(angular_libs,'js');
-
     for (var lib of arr) {
-
-      if (angularDeps.length) {
-        angularDeps += ',';
+      if(!lib){
+        continue;
       }
-
       if (lib.dep) {
-        angularDeps += '\'' + lib.dep + '\'';
+        result.push(lib.dep);
       }
     }
 
+    result = _.uniqBy(result);
 
-    return {
-      angularDeps: angularDeps
-    };
-  });
+
+    return result;
+  }
 
   project.extend.helper.register('agnetaConfig', function() {
 
@@ -57,6 +56,7 @@ module.exports = function(locals) {
       },
       urls: {},
       keys: {},
+      deps: deps(),
       lang: this.site.lang,
       locale: this.site.locale,
       path: this.path_relative(),

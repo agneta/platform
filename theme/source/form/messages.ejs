@@ -22,9 +22,7 @@ for(var name in field.validators){
     console.warn(`Could not find validator: ${message}`);
     continue;
   }
-  console.log('message',validatorData.message);
   text = lng(validatorData.message);
-  console.log('text',text);
 
   %>
 
@@ -33,8 +31,6 @@ for(var name in field.validators){
   </div>
 
   <%
-  console.log('render_template');
-
 }
 %>
 </div>

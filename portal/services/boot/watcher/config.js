@@ -15,6 +15,7 @@
  *   limitations under the License.
  */
 const path = require('path');
+const Promise = require('bluebird');
 
 module.exports = function(watcher) {
 
@@ -28,7 +29,10 @@ module.exports = function(watcher) {
     switch (params.ext) {
       case '.yml':
 
-        return locals.main.load.config()
+        return Promise.resolve()
+          .then(function() {
+            locals.main.load.config();
+          })
           .then(function() {
             return locals.main.load.pages();
           })

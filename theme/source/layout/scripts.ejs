@@ -12,20 +12,22 @@ for(var key of errorList){
 }
 
 jsErrors = JSON.stringify(jsErrors);
-
-var scripts = loadScripts();
 %>
 
 <script>
 
-  window.agneta = <%-agnetaConfig()%>
-  agneta.errors = JSON.parse('<%-jsErrors%>');
-  window.angularDeps = [<%-scripts.angularDeps%>];
+window.agneta = <%-agnetaConfig()%>
+agneta.errors = JSON.parse('<%-jsErrors%>');
 
-  window.require = function(name){
-    return window[name];
-  };
+window.require = function(name){
+  return window[name];
+};
 
-  </script>
+</script>
 
-  <script async src="<%-get_asset('main/bundle.js')%>" type="text/javascript"></script>
+<script async src="<%-get_asset('generated/lib.min.js')%>" type="text/javascript"></script>
+<script async src="<%-get_asset('generated/app.js')%>" type="text/javascript"></script>
+
+<%if (site.portal && !site.building) {%>
+  <script async src="<%-get_asset('dev.js')%>" type="text/javascript"></script>
+<%}%>

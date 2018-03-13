@@ -22,7 +22,6 @@
 
     var socket = SocketIO.connect('portal');
     this.socket = socket;
-    socket.media = SocketIO.connect('media');
     socket.editor = SocketIO.connect('editor');
 
   });

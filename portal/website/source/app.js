@@ -18,6 +18,15 @@
 
   var app = angular.module('MainApp');
 
+  app.service('Portal', function(SocketIO) {
+
+    var socket = SocketIO.connect('portal');
+    this.socket = socket;
+    socket.media = SocketIO.connect('media');
+    socket.editor = SocketIO.connect('editor');
+
+  });
+
   app.run(function($rootScope, $mdToast, Portal) {
 
     $rootScope.portal = {};

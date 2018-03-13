@@ -33,7 +33,7 @@ module.exports = function(util) {
   ], function(service) {
 
 
-    return service.server.generate.methods({
+    return service.server.generate.scripts({
       outputDir: service.dir
     });
   })

@@ -14,43 +14,11 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var generator = require('loopback-sdk-angular');
-var path = require('path');
-var fs = require('fs-extra');
 
 module.exports = function(app) {
 
-  var options = app.get('options');
-  var project = options.client.project;
-
   app.generate = {
-    methods: function(options) {
-
-      var script = generator.services(app, {});
-      var token = app.get('token');
-
-      options = options || {};
-
-      var outputDir = options.outputDir || project.paths.app.generated;
-
-      script = script.replace('$LoopBack$', `$${token.name}$`);
-
-      var target = options.filename || 'services.js';
-      var outputPath = path.join(outputDir, target);
-
-      return Promise.resolve()
-        .then(function() {
-          return fs.outputFile(outputPath, script);
-        })
-        .then(function() {
-          var targetParsed = path.parse(target);
-          return project.compiler.script.compile(target, {
-            base: outputDir,
-            output: outputDir,
-            outputName: targetParsed.name+'.min'+targetParsed.ext,
-          });
-        });
-    }
+    scripts: require('./generate/scripts')(app)
   };
 
 };

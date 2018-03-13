@@ -16,25 +16,12 @@
 */
 
 const _ = require('lodash');
-const fs = require('fs-extra');
-const path = require('path');
 
 module.exports = function(locals) {
 
   var project = locals.project;
 
   project.on('ready', function() {
-
-    var scripts = project.config.scripts;
-
-    if (project.config.contact_form) {
-      scripts.push('main/contact');
-    }
-
-    project.config.angular_libs.push({
-      dep: 'lbServices',
-      js: 'generated/services.min'
-    });
 
     //----------------------------------------------
 
@@ -56,71 +43,7 @@ module.exports = function(locals) {
     project.site.locale = locale;
     //----------------------------------------------
 
-    if (!project.site.building) {
-
-      scripts.push({
-        name: 'socketCluster',
-        path: 'lib/socketcluster.min'
-      });
-      scripts.push('main/socket');
-      scripts.push('main/portal');
-
-    }
-
-    bundle();
   });
-
-  function bundle() {
-    let scripts = [];
-    return Promise.resolve()
-      .then(function() {
-        let content = '';
-
-        scripts.push('lib/angular.min');
-
-        for (var lib of project.config.angular_libs) {
-          scripts.push(lib.js);
-        }
-
-        for (var script of project.config.scripts) {
-          scripts.push(script);
-        }
-
-        scripts = scripts.map(function(script){
-          if(_.isString(script)){
-            return {
-              path: script
-            };
-          }
-          return script;
-        });
-
-        scripts = _.uniqBy(scripts,'path');
-
-        scripts = scripts.map(function(script){
-
-          var scriptPath = script.path || script;
-
-          if(script.name){
-            content += `window.${script.name}=`;
-          }
-
-          content += `require('${scriptPath}');\n`;
-        });
-
-        var sourcePath;
-        if(locals.portal){
-          sourcePath = project.paths.app.source;
-        }else{
-          sourcePath = project.paths.appPortal.source;
-        }
-        return fs.outputFile(
-          path.join(sourcePath, 'main/bundle.js')
-          , content);
-
-      });
-
-  }
 
 
 };

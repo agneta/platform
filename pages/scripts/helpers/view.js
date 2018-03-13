@@ -200,6 +200,15 @@ module.exports = function(locals) {
     data.dependencies = [];
 
     data.scripts = data.scripts.concat(page.scripts);
+    data.scripts.map(function(script){
+      if(!script){
+        return;
+      }
+      if(script.dep){
+        data.inject.push(script.dep);
+      }
+    });
+
     data.styles = data.styles.concat(page.styles);
 
     setAssets(data.scripts, 'js');

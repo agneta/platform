@@ -56,6 +56,20 @@
     };
     vm.type = 'view_page';
 
+    //-----------------------------------------
+
+    (function() {
+
+      var yearCurrent = (new Date()).getFullYear();
+      vm.years = [];
+      for(var i=0;i<5;i++){
+        vm.years.push(yearCurrent-i);
+      }
+      vm.page.yearSelected = vm.years[0];
+
+    })();
+
+
 
     /////////////////////////////////////////////////////////////
 
@@ -116,7 +130,8 @@
         var query = {
           type: vm.type,
           period: vm.page.periodSelected,
-          value: vm.page.valueSelected
+          value: vm.page.valueSelected,
+          year: vm.page.yearSelected
         };
 
         return Model_Count.totalsByType(query)
@@ -195,9 +210,10 @@
         var dataset = {
           fill: true,
           type: 'line',
-          backgroundColor: 'rgba(' + rgb + ',.4)',
-          borderColor: 'rgba(' + rgb + ',.7)',
+          backgroundColor: 'rgba(' + rgb + ',.1)',
+          borderColor: 'rgba(' + rgb + ',.85)',
           borderCapStyle: 'butt',
+          borderWidth: 2,
           borderDash: [],
           borderDashOffset: 0.0,
           borderJoinStyle: 'miter',
