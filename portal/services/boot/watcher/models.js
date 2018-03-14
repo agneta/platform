@@ -32,9 +32,11 @@ module.exports = function(watcher) {
         //console.log(pathFile);
         return getModel(pathFile)
           .then(function(model) {
+
             if (!model) {
               return;
             }
+
             //console.log('found model', model.definition.name);
 
             delete require.cache[require.resolve(pathFile)];
@@ -57,24 +59,39 @@ module.exports = function(watcher) {
   function getModel(pathFile) {
 
     var pathParsed = path.parse(pathFile);
+    var modelPath;
     var model;
 
     return Promise.map([
       locals.project.paths.core.models,
       locals.project.paths.app.models
     ], function(dir) {
-      var modelPath = path.join(dir, pathParsed.name) + '.json';
+      modelPath = path.join(dir, pathParsed.name) + '.json';
 
-      return fs.exists(modelPath)
-        .then(function(exists) {
-          if (exists) {
-            var definition = require(modelPath);
-            if (!definition.name) {
-              return;
-            }
-            model = app.models[definition.name];
-          }
-        });
+      var exists = fs.existsSync(modelPath);
+
+      if (!exists) {
+        modelPath = path.join(dir,pathParsed.name,'index.json');
+        exists = fs.existsSync(modelPath);
+      }
+
+      if(!exists){
+        modelPath = path.join(dir,
+          path.parse(pathParsed.dir).name,
+          'index.json');
+        exists = fs.existsSync(modelPath);
+      }
+
+      if(!exists){
+        return;
+      }
+
+      var definition = require(modelPath);
+      if (!definition.name) {
+        return;
+      }
+
+      model = app.models[definition.name];
 
     })
       .then(function() {
@@ -88,7 +105,7 @@ module.exports = function(watcher) {
             );
           }
           modelName = modelName.join('_');
-          return app.models[modelName];
+          model = app.models[modelName];
         }
         return model;
       });

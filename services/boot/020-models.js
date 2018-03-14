@@ -114,10 +114,19 @@ module.exports = function(app) {
     dirs.forEach(function(dir) {
 
       var file = path.join(dir, name) + '.js';
+      var exists = fs.existsSync(file);
 
-      if (fs.existsSync(file)) {
-        require(file)(Model, Model.app);
+      if (!exists) {
+        file = path.join(dir,name,'index.js');
+        exists = fs.existsSync(file);
       }
+
+      if (!exists) {
+        return;
+      }
+
+      require(file)(Model, Model.app);
+
 
     });
 
