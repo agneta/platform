@@ -12,6 +12,9 @@
 					templateSidebar = page.sidebar;
 				}
 				if (!has_template(templateSidebar)) {
+					templateSidebar = path.join(page.templateSource, 'index.sidebar');
+				}
+				if (!has_template(templateSidebar)) {
 					templateSidebar = 'sidebar';
 				}
 				%>

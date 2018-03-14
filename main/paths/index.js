@@ -28,6 +28,7 @@ core.project = process.cwd();
 core.platform = path.join(__dirname, '../..');
 core.services = path.join(core.platform, 'services');
 core.models = path.join(core.services, 'models');
+core.tmp = path.join(core.project, 'tmp');
 
 // Base
 var pages = {};

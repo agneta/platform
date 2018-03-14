@@ -14,7 +14,8 @@
         },
         "feeds": {
             "type": "array",
-            "required": true
+            "required": true,
+            "index": true
         },
         "data": {
             "type": "object"
@@ -62,6 +63,15 @@
             "type": "belongsTo",
             "model": "Activity_Feed",
             "foreignKey": "actionId"
+        }
+    },
+    "indexes": {
+        "searchByMonth": {
+            "keys": {
+                "feeds": 1,
+                "month": 1,
+                "year": 1
+            }
         }
     },
     "acls": [{

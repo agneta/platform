@@ -17,6 +17,8 @@
 const _ = require('lodash');
 const url = require('url');
 const request = require('request-promise');
+const cachedRequest = require('cached-request')(request);
+const path = require('path');
 
 module.exports = function(options) {
 
@@ -32,6 +34,12 @@ module.exports = function(options) {
       project = result.webPages.locals.project;
       languages = _.get(project, 'site.languages');
       storageConfig = services.get('storage');
+
+      cachedRequest.setCacheDirectory(
+        path.join(project.paths.core.tmp,'live-cache')
+      );
+      cachedRequest.setValue('ttl', 10 * 60 * 1000);
+
 
       options.app.use(function(req, res, next) {
 
@@ -63,9 +71,9 @@ module.exports = function(options) {
                 req: req,
                 headers: headers
               });
-              
+
               res.writeHead(200,headers);
-              return request
+              return cachedRequest
                 .get(reqPath)
                 .pipe(res);
             }

@@ -9,7 +9,9 @@ description:
 icon: 'material/history'
 
 scripts:
-  - 'lib/Chart.min'
+  - lib/Chart.min
+  - lib/FileSaver.min
+  - lib/xlsx.full.min
 
 controller: 'AgHistoryCtrl'
 menuLock: true

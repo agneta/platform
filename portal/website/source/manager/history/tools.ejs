@@ -1,0 +1,52 @@
+<%
+var dataAct = get_data('activity');
+%>
+<div layout="row" class="tools" layout-align="start center" layout-padding>
+
+  <%-template('ui/live-toggle')%>
+
+  <md-button ng-show="feeds" ng-click="export()" md-no-ink>
+    Export
+  </md-button>
+  <md-button ng-show="page.feedSelected" ng-click="changedType()" md-no-ink class="md-warn">
+    Close Feed
+  </md-button>
+
+    <span flex="100"></span>
+
+    <div class="dropdown">
+        <label><%-lng(dataAct.period)%></label>
+        <md-select aria-label="<%-lng(dataAct.period)%>" ng-change="changedPeriod()" ng-model="page.periodSelected">
+            <%
+        for(var period of dataAct.periods){
+          var attr = '';
+          if(period.default){
+          attr+='selected="selected"'
+        }
+        %>
+            <md-option value="<%-period.name%>" <%-attr%>>
+                <%-lng(period.title)%>
+            </md-option>
+        <%}%>
+    </md-select>
+</div>
+
+<div class="dropdown">
+    <label><%-lng(dataAct.select)%></label>
+    <md-select aria-label="<%-lng(dataAct.select)%>" ng-model="page.valueSelected" ng-change="loadTotals()">
+        <md-option ng-repeat="value in values" ng-value="value.id">
+            {{value.label}}
+        </md-option>
+    </md-select>
+</div>
+
+<div class="dropdown">
+    <label><%-lng(dataAct.year)%></label>
+    <md-select aria-label="<%-lng(dataAct.year)%>" ng-model="page.yearSelected" ng-change="loadTotals()">
+        <md-option ng-repeat="year in years" ng-value="year">
+            {{year}}
+        </md-option>
+    </md-select>
+</div>
+
+</div>
