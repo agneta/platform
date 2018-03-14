@@ -34,11 +34,12 @@ module.exports = function(util) {
 
 
     return service.server.generate.scripts({
-      outputDir: service.dir
+      outputDir: service.dir,
+      log: util.log
     });
   })
     .then(function() {
-      util.success('Exported Services');
+      util.success('Exported Scripts');
     });
 
 

@@ -1,11 +1,9 @@
-<tr>
-  <td align="center" class="body-copy">
+<div align="center" class="body-copy">
+  <!--BODY-COPY TXT-->
+  <% for(var p of token_once){ %>
+    <p>
+    <%-lng(p)%>
+    </p>
+    <% } %>
     <!--BODY-COPY TXT-->
-    <% for(var p of token_once){ %>
-      <p>
-        <%-lng(p)%>
-      </p>
-      <% } %>
-        <!--BODY-COPY TXT-->
-  </td>
-</tr>
+  </div>

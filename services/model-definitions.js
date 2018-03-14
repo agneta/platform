@@ -56,22 +56,38 @@ module.exports = function(app, generated) {
 
         return Promise.map(files, function(file) {
 
-          if(path.parse(file).ext != '.json'){
-            return;
-          }
-
           var filePath = path.join(dir, file);
-          var data = require(filePath);
 
-          if (definitions[file]) {
-            _.mergeWith(definitions[file].definition, data, mergeFn);
-          } else {
-            definitions[file] = {
-              definition: data
-            };
-          }
+          return fs.stat(filePath)
+            .then(function(stat){
+
+              if(stat.isDirectory()){
+                filePath = path.join(filePath,'index.json');
+                return fs.pathExists(filePath);
+              }
+
+              if(path.parse(file).ext === '.json'){
+                return true;
+              }
+
+            })
+            .then(function(exists) {
+
+              if(!exists){
+                return;
+              }
+
+              var data = require(filePath);
+
+              if (definitions[file]) {
+                _.mergeWith(definitions[file].definition, data, mergeFn);
+              } else {
+                definitions[file] = {
+                  definition: data
+                };
+              }
+            });
         });
-
       });
   }, {
     concurrency: 1

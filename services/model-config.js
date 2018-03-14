@@ -106,6 +106,10 @@ module.exports = function() {
       dataSource: 'db',
       public: true
     },
+    System: {
+      dataSource: false,
+      public: true
+    },
     Process: {
       dataSource: 'db',
       public: true

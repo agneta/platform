@@ -1,16 +1,13 @@
-<tr>
-  <td align="center" class="body-copy">
+<div align="center" class="body-copy">
+  <!--BODY-COPY TXT-->
+  <% for(var p of body){ %>
+    <p>
+    <%-lng(p)%>
+    </p>
+    <% } %>
     <!--BODY-COPY TXT-->
-    <% for(var p of body){ %>
-      <p>
-        <%-lng(p)%>
-      </p>
-      <% } %>
-        <!--BODY-COPY TXT-->
-  </td>
-</tr>
-<tr>
-  <td align="center">
+  </div>
+  <div align="center">
     <table cellpadding="0" cellspacing="0" border="0">
       <tr>
         <td align="center" bgcolor="#32A9D6" class="button">
@@ -18,8 +15,8 @@
             <!--[if gte mso 9]>&nbsp;<![endif]-->
             <!--CTA-->
             <%-lng(action)%>
-              <!--CTA-->
-              <!--[if gte mso 9]>&nbsp;<![endif]-->
+            <!--CTA-->
+            <!--[if gte mso 9]>&nbsp;<![endif]-->
           </a>
         </td>
       </tr>
@@ -27,6 +24,5 @@
         <td height="50" class="spacer">&nbsp;</td>
       </tr>
     </table>
-  </td>
-</tr>
-<%-template('_layout/token-once')%>
+  </div>
+  <%-template('_layout/token-once')%>

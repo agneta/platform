@@ -1,14 +1,10 @@
-<tr>
-  <td align="center" class="body-copy">
-    <table class="data fields">
-      <tbody>
-        <%for(var name in fields){var field = fields[name]%>
-          <tr>
-          <td class="title"><%-lng(field.title)||name%></td>
-          <td class="value"><%-field.value%></td>
-          </tr>
-          <% } %>
-        </tbody>
-      </table>
-    </td>
-  </tr>
+<table class="data fields">
+  <tbody>
+    <%for(var name in fields){var field = fields[name]%>
+      <tr>
+      <td class="title"><%-lng(field.title)||name%></td>
+      <td class="value"><%-field.value%></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>

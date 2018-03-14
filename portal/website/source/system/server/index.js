@@ -16,7 +16,7 @@
  */
 (function() {
 
-  agneta.directive('AgSystemServerCtrl', function($rootScope, Process, SocketIO, $mdDialog) {
+  agneta.directive('AgSystemServerCtrl', function($rootScope, Process, System, SocketIO, $mdDialog) {
 
     var socket = SocketIO.connect('system');
     var vm = this;
@@ -144,7 +144,13 @@
 
     (function() {
 
-      Process.servers()
+      System.clusters()
+        .$promise
+        .then(function(result) {
+          console.log(result);
+        });
+
+      System.servers()
         .$promise
         .then(function(result) {
           vm.servers = result.list;

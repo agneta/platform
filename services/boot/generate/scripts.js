@@ -11,18 +11,22 @@ module.exports = function(app) {
 
     options = options || {};
     var outputDir = options.outputDir || project.paths.app.generated;
+    var log = options.log || console.log;
 
     return Promise.resolve()
       .then(function() {
+        log('Exporting Services...');
         return services();
       })
       .then(function() {
+        log('Exporting Library Bundle...');
         return bundle({
           name: 'lib',
           compile: true
         });
       })
       .then(function() {
+        log('Exporting App Script...');
         return bundle({
           name: 'app'
         });

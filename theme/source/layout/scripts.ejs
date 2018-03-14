@@ -28,6 +28,6 @@ window.require = function(name){
 <script async src="<%-get_asset('generated/lib.min.js')%>" type="text/javascript"></script>
 <script async src="<%-get_asset('generated/app.js')%>" type="text/javascript"></script>
 
-<%if (site.portal && !site.building) {%>
+<%if (!site.building) {%>
   <script async src="<%-get_asset('dev.js')%>" type="text/javascript"></script>
 <%}%>
