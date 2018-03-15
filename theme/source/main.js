@@ -292,11 +292,6 @@ app.config(function($mdThemingProvider, $sceDelegateProvider, $qProvider) {
     return $rootScope.account.profile ? 'logged-in' : 'logged-out';
   };
 
-  //---------------------------------------
-
-  document.dispatchEvent(
-    new Event('agneta-ready')
-  );
 
 });
 
@@ -313,3 +308,7 @@ require('main/menu-side.module');
 require('main/interceptors.module');
 require('main/account.module');
 require('main/menu-context.module');
+
+document.dispatchEvent(
+  new Event('agneta-ready')
+);

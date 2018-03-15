@@ -14,72 +14,67 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-(function() {
 
-  var app = window.angular.module('MainApp');
+var app = window.angular.module('MainApp');
 
-  app.service('Portal', function(SocketIO) {
+app.service('Portal', function(SocketIO) {
 
-    var socket = SocketIO.connect('portal');
-    this.socket = socket;
-    socket.editor = SocketIO.connect('editor');
+  var socket = SocketIO.connect('portal');
+  this.socket = socket;
+  socket.editor = SocketIO.connect('editor');
 
+});
+
+app.run(function(Portal, $rootScope, $route, $timeout, $location) {
+  var socket = Portal.socket;
+  socket.on('page-reload', function(data) {
+    if (!data) {
+      return;
+    }
+    console.log(data);
+    if (data.global) {
+      window.location.href = $location.url();
+    }
+    else if ($rootScope.viewData.path == data.path) {
+
+      switch (data.type) {
+        case 'style':
+          $timeout(function() {
+            $rootScope.loadData({
+              filter: data.filter
+            });
+          }, 100);
+          break;
+        default:
+          $timeout(function() {
+            $route.reload();
+          }, 10);
+          break;
+      }
+    }
   });
 
-  app.run(function(Portal, $rootScope, $route, $timeout, $location) {
-    var socket = Portal.socket;
-    //console.log('Listen');
-    socket.on('page-reload', function(data) {
+});
 
-      if (!data) {
-        return;
-      }
-      console.log(data);
-      if (data.global) {
-        window.location.href = $location.url();
-      }
-      else if ($rootScope.viewData.path == data.path) {
+app.directive('portalEdit', function(Portal, $rootScope) {
+  return {
+    restrict: 'A',
+    link: function(scope, elem) {
 
-        switch (data.type) {
-          case 'style':
-            $timeout(function() {
-              $rootScope.loadData({
-                filter: data.filter
-              });
-            }, 100);
-            break;
-          default:
-            $timeout(function() {
-              $route.reload();
-            }, 10);
-            break;
+      var contentId = elem.attr('portal-edit');
+      var listener = 'content-change:' + $rootScope.viewData.path + ':' + contentId;
+      //console.log(listener);
+
+      Portal.socket.editor.on(listener, function(data) {
+
+        //console.log(data);
+        var value = data.value;
+        if (angular.isObject(value)) {
+          value = agneta.lng(value);
         }
-      }
-    });
+        elem.html(value || '');
+      });
 
-  });
-
-  app.directive('portalEdit', function(Portal, $rootScope) {
-    return {
-      restrict: 'A',
-      link: function(scope, elem) {
-
-        var contentId = elem.attr('portal-edit');
-        var listener = 'content-change:' + $rootScope.viewData.path + ':' + contentId;
-        //console.log(listener);
-
-        Portal.socket.editor.on(listener, function(data) {
-
-          //console.log(data);
-          var value = data.value;
-          if (angular.isObject(value)) {
-            value = agneta.lng(value);
-          }
-          elem.html(value || '');
-        });
-
-      }
-    };
-  });
-
-})();
+    }
+  };
+});

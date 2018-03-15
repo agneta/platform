@@ -30,7 +30,8 @@
   </div>
   </div>
   <%if(has_path('account')){%>
-  <div class="ag-margin md-padding" ng-show="account.profile" layout="column">
+  <div class="ag-margin md-padding" ng-show="account.profile" layout="column" layout-align="center center">
+    <%-template('ui/account-avatar')%>
     <p>{{account.profile.username || account.profile.email}}</p>
     <md-button class="bg-grey" ng-href="<%-get_path('account')%>">
       Profile
