@@ -38,12 +38,12 @@ module.exports = function(Model, app) {
       });
 
   };
-  require('./data-remote/loadCommit')(Model, app);
-  require('./data-remote/loadOne')(Model, app);
-  require('./data-remote/delete')(Model, app);
-  require('./data-remote/save')(Model, app);
-  require('./data-remote/new')(Model, app);
-  require('./data-remote/loadMany')(Model, app);
-  require('./edit/loadTemplates')(Model, app);
+  require('./loadCommit')(Model, app);
+  require('./loadOne')(Model, app);
+  require('./delete')(Model, app);
+  require('./save')(Model, app);
+  require('./new')(Model, app);
+  require('./loadMany')(Model, app);
+  require('../edit/loadTemplates')(Model, app);
 
 };

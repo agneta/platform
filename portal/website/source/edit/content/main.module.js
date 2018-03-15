@@ -94,18 +94,22 @@ module.exports = function(options) {
     $mdDialog.show(confirm).then(function() {
       helpers.Model.delete({
         id: vm.page.id,
+        template: vm.template.id
       })
         .$promise
         .then(function() {
+          onReload();
           helpers.toast('File deleted');
-          Portal.socket.once('page-reload', function() {
-            $timeout(function() {
-              vm.page = null;
-              vm.selectTemplate();
-            }, 10);
-          });
+          Portal.socket.once('page-reload',onReload);
         });
     });
+
+    function onReload() {
+      $timeout(function() {
+        vm.page = null;
+        vm.selectTemplate();
+      }, 10);
+    }
 
   };
 

@@ -14,13 +14,26 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var fs = require('fs-extra');
 
 module.exports = function(Model) {
 
-  Model.delete = function(id) {
-    var parsedId = Model.parseId(id);
-    return fs.remove(parsedId.source);
+  Model.delete = function(id,template) {
+
+    return Model.getTemplateModel(template)
+      .then(function(model) {
+        return model.findById(id);
+      })
+      .then(function(item) {
+
+        if (!item) {
+          return Promise.reject({
+            statusCode: 404,
+            message: `Item not found with id: ${id}`
+          });
+        }
+        return item.destroy();
+      });
+
   };
 
   Model.remoteMethod(
@@ -28,6 +41,10 @@ module.exports = function(Model) {
       description: 'Delete a file',
       accepts: [{
         arg: 'id',
+        type: 'string',
+        required: true
+      },{
+        arg: 'template',
         type: 'string',
         required: true
       }],

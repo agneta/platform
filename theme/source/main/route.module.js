@@ -132,7 +132,7 @@ app.run(function($rootScope, $route, $timeout, $location, Account, $mdDialog) {
 
     $rootScope.viewData = data;
     $rootScope.loadingMain = false;
-
+    $mdDialog.hide();
 
   });
 });

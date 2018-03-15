@@ -26,7 +26,7 @@ app.service('UiGallery',function() {
     options = options || {};
     var swiperContainer = options.swiperContainer || '.swiper-container';
 
-    var mySwiper = new Swiper(swiperContainer, {
+    var swiperOptions = angular.extend({
       // If loop true set photoswipe - counterEl: false
       //loop: true,
       /* slidesPerView || auto - if you want to set width by css like flickity.js layout - in this case width:80% by CSS */
@@ -49,7 +49,8 @@ app.service('UiGallery',function() {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
       }
-    });
+    },options);
+    var mySwiper = new Swiper(swiperContainer, swiperOptions);
 
     //PHOTOSWIPE
     var initPhotoSwipeFromDOM = function(gallerySelector) {
