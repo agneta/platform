@@ -15,10 +15,33 @@
  *   limitations under the License.
  */
 
-/*global _:true*/
+/*global _*/
+/*global moment*/
 
 module.exports = function(vm, $mdToast, $timeout, helpers) {
 
+  //---------------------------------------
+  helpers.checkPages = function(pages){
+    pages.forEach(function(page){
+      checkField('title');
+      checkField('subtitle');
+      function checkField(key){
+        var field = page[key];
+        var value = field.value || field;
+        if(!value){
+          return;
+        }
+        if(field.type=='date'){
+          value = moment(value).format('LLLL');
+        }
+        value = value.value || value;
+        if(angular.isObject(value)){
+          value = '';
+        }
+        page[key] = value;
+      }
+    });
+  };
   //---------------------------------------
   helpers.setFilePath = function(file, location) {
     file.location = helpers.fixPath(location);

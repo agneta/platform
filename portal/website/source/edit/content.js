@@ -16,7 +16,6 @@
  */
 
 /*global _:true*/
-/*global moment*/
 /*global Fuse:true*/
 
 require('edit/content/field-menu.module');
@@ -42,6 +41,7 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $o
   vm.mainForm = {};
 
   vm.edit = {};
+  vm.sidebar = {};
   vm.templates = null;
   vm.pages = null;
   vm.page = null;
@@ -148,6 +148,8 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $o
 
   vm.restart = function() {
 
+    vm.sidebar.loading = true;
+
     return helpers.Model.loadTemplates({
 
     })
@@ -164,6 +166,9 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $o
 
         $timeout();
 
+      })
+      .finally(function() {
+        vm.sidebar.loading = false;
       });
 
   };
@@ -187,16 +192,15 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $o
   vm.selectTemplate = function(template) {
 
     if (template) {
-
       if(!template.id){
         template = vm.fuse.search(template)[0];
       }
-
       vm.template = template;
     } else {
       template = vm.template;
     }
 
+    vm.sidebar.loading = true;
     $location.search({
       template: vm.template.id,
       id: $routeParams.id
@@ -212,31 +216,15 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $o
 
         $timeout(function() {
 
-          result.pages.forEach(function(page){
-            checkField('title');
-            checkField('subtitle');
-            function checkField(key){
-              var field = page[key];
-              var value = field.value || field;
-              if(!value){
-                return;
-              }
-              if(field.type=='date'){
-                value = moment(value).format('LLLL');
-              }
-              value = value.value || value;
-              if(angular.isObject(value)){
-                value = '';
-              }
-              page[key] = value;
-            }
-          });
-
+          helpers.checkPages(result.pages);
           vm.itemsLoaded = result.pages;
           vm.pages = vm.itemsLoaded;
           vm.templates = null;
           vm.fuse = new Fuse(vm.itemsLoaded, fuseOptions);
         }, 10);
+      })
+      .finally(function() {
+        vm.sidebar.loading = false;
       });
 
   };

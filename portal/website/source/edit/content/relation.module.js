@@ -27,7 +27,7 @@ module.exports = function(options) {
     })
       .$promise
       .then(function(result){
-        console.log(result);
+        helpers.checkPages(result.pages);
         field.options = result.pages;
       });
 
