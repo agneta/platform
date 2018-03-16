@@ -26,6 +26,7 @@
     var vm = this;
 
     vm.title = data.title;
+    vm.skipForm = helpers.isRemote;
 
     agneta.extend(vm, 'AgDialogCtrl');
 
@@ -103,6 +104,10 @@
 
 
     };
+
+    if(vm.skipForm){
+      vm.submit();
+    }
 
   });
 })();

@@ -64,6 +64,7 @@ module.exports = function(app) {
     });
     watch({
       dirs: [
+        path.join(project.paths.portal.services, 'models'),
         path.join(project.paths.core.services, 'models'),
         path.join(project.paths.app.models),
         path.join(project.paths.appPortal.models)

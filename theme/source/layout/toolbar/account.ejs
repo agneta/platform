@@ -15,19 +15,7 @@
     <%if(config.account.register){%>
     <p class="message"><%-lng(data.signedOut.messageRegister)%></p>
     <%}%>
-    <div layout="column" class="ag-margin">
-    <%for(var action of data.signedOut.actions){
-      if(action.isConfig){
-        if(!_.get(config,action.isConfig)){
-          continue;
-        }
-      }
-      %>
-      <md-button class="bg-grey" ng-click="<%-action.click%>">
-      <%-lng(action.title)%>
-      </md-button>
-    <%}%>
-  </div>
+    <%-template('ui/account-actions')%>
   </div>
   <%if(has_path('account')){%>
   <div class="ag-margin md-padding" ng-show="account.profile" layout="column" layout-align="center center">

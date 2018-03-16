@@ -16,6 +16,7 @@
  */
 
 /*global _:true*/
+/*global moment*/
 /*global Fuse:true*/
 
 require('edit/content/field-menu.module');
@@ -206,8 +207,31 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $o
     })
       .$promise
       .then(function(result) {
+
         vm.pages = null;
+
         $timeout(function() {
+
+          result.pages.forEach(function(page){
+            checkField('title');
+            checkField('subtitle');
+            function checkField(key){
+              var field = page[key];
+              var value = field.value || field;
+              if(!value){
+                return;
+              }
+              if(field.type=='date'){
+                value = moment(value).format('LLLL');
+              }
+              value = value.value || value;
+              if(angular.isObject(value)){
+                value = '';
+              }
+              page[key] = value;
+            }
+          });
+
           vm.itemsLoaded = result.pages;
           vm.pages = vm.itemsLoaded;
           vm.templates = null;
