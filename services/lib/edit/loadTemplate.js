@@ -61,7 +61,7 @@ module.exports = function(app) {
           if (_.isObject(field)) {
             if (field.extend) {
               _.defaults(field, getField(field.extend));
-              field.name = field.extend;
+              field.name = field.name || field.extend;
               delete field.extend;
             }
           }

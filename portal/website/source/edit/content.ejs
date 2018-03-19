@@ -61,7 +61,7 @@
 
   <div class="edit-gui" ng-show="!sourceEnabled">
     <div class="general-info">
-      <div layout="row" layout-align="start center">
+      <div ng-if="page.path" layout="row" layout-align="start center">
         <label>Path:</label>
         <p class="path">{{page.path}}</p>
         <span flex="auto"></span>

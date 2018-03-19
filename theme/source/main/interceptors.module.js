@@ -115,7 +115,6 @@
               rejection.config.url.indexOf(agneta.services.url) !== 0) {
               return;
             }
-            //console.error(rejection);
 
             var code = error && error.code;
 
@@ -138,8 +137,8 @@
 
               rejection.message = message;
               $rootScope.$emit('error');
-
-              if (!(rejection.config.data && rejection.config.data.__skipDialog)) {
+              var data = rejection.config.data || rejection.config.params;
+              if (!(data && data.__skipDialog)) {
                 $mdDialog.open({
                   partial: 'error',
                   nested: true,

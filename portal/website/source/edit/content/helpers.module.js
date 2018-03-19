@@ -25,14 +25,18 @@ module.exports = function(vm, $mdToast, $timeout, helpers) {
     pages.forEach(function(page){
       checkField('title');
       checkField('subtitle');
+      checkField('image');
       function checkField(key){
-        var field = page[key];
+        var field = page[key] || {};
         var value = field.value || field;
         if(!value){
           return;
         }
         if(field.type=='date'){
           value = moment(value).format('LLLL');
+        }
+        if(field.type=='media'){
+          value = agneta.get_media(value,'thumbnail');
         }
         value = value.value || value;
         if(angular.isObject(value)){

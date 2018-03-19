@@ -165,6 +165,7 @@ module.exports = function(options) {
             if (!autosave) {
               helpers.toast(result.message || 'Changes saved');
             }
+            return vm.selectTemplate();
           })
           .finally(function() {
             $rootScope.loadingMain = false;

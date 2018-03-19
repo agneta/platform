@@ -110,10 +110,5 @@ module.exports = function(app, data) {
     result.properties[field.name] = property;
   }
 
-  result.properties.name = {
-    type: 'string',
-    required: true
-  };
-
   return result;
 };

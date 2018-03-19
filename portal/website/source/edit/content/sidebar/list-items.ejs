@@ -1,8 +1,10 @@
-<md-list ng-if="<%-name%>">
-    <md-list-item ng-repeat="item in <%-name%>" class="md-2-line" ng-click="<%-click%>(item)" aria-label="{{item.title}}" ng-class="pageActive(item.id)">
-        <div class="md-list-item-text">
-            <h3 ng-bind-html="item.title | highlight:pageSearch"></h3>
-            <p ng-bind-html="item.subtitle | highlight:pageSearch"></p>
-        </div>
-    </md-list-item>
-</md-list>
+<div ng-if="<%-name%>" layout="column">
+  <div class="ag-list-item" layout="row" layout-align="start center" ng-repeat="item in <%-name%>" ng-click="<%-click%>(item)" ng-class="pageActive(item.id)">
+    <div ng-if="item.image" class="image" style="background-image:url({{item.image}})">
+    </div>
+    <div flex="auto" layout="column">
+      <h3 ng-bind-html="item.title | highlight:pageSearch"></h3>
+      <p ng-bind-html="item.subtitle | highlight:pageSearch"></p>
+    </div>
+  </div>
+</div>

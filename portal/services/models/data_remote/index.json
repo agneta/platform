@@ -4,14 +4,6 @@
     "base": "Model",
     "idInjection": true,
     "properties": {
-      "title": {
-        "type": "string",
-        "required": true
-      },
-      "name": {
-        "type": "string",
-        "required": true
-      },
       "template": {
         "type": "string",
         "required": true
@@ -30,13 +22,5 @@
         "principalId": "editor",
         "permission": "ALLOW"
     }],
-    "uniqueName": {
-      "keys": {
-        "name": 1
-      },
-      "options": {
-        "unique": true
-      }
-    },
     "methods": {}
 }

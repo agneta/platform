@@ -81,8 +81,7 @@ module.exports = function(Model, app) {
           page: {
             id: item.id,
             data: itemData,
-            log: log,
-            path: `/${template}/${item.name}`
+            log: log
           },
           relations: relations,
           template: templateData

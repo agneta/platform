@@ -22,7 +22,7 @@ module.exports = function(Model, app) {
 
   Model.loadMany = function(template, req) {
 
-    var label;
+    var labels;
     var findFields;
     var templateData;
 
@@ -36,13 +36,14 @@ module.exports = function(Model, app) {
       })
       .then(function(_templateData) {
         templateData = _templateData;
-        label = templateData.label || {
+        labels = templateData.listItem || {
           title: 'title',
-          subtitle: 'path'
+          subtitle: 'path',
+          image: 'cover'
         };
         findFields = _.zipObject(
-          _.values(label),
-          _.map(_.keys(label),function(){return true;})
+          _.values(labels),
+          _.map(_.keys(labels),function(){return true;})
         );
         return Model.getTemplateModel(template);
       })
@@ -59,24 +60,24 @@ module.exports = function(Model, app) {
         return Promise.map(items, function(item) {
 
           var result = {
-            id: item.id,
-            title: formatField(label.title),
-            subtitle: formatField(label.subtitle)
+            id: item.id
           };
 
-          return result;
-
-          function formatField(label){
+          _.keys(labels).forEach(function(key){
+            var label = labels[key];
             var value = item[label];
-            var type = null;
             var field = templateData.fields[
               templateData.fieldNames.indexOf(label)
             ] || {};
+            var type = field.type;
 
             switch(field.type){
               case 'date-time':
                 type = 'date';
                 value = value+'';
+                break;
+              case 'media':
+                value = value.location;
                 break;
               case 'select':
                 value = _.get(
@@ -91,12 +92,15 @@ module.exports = function(Model, app) {
               value = app.lng(value, req);
             }
 
-            return {
+            result[key] = {
               type: type,
               value: value
             };
 
-          }
+          });
+
+          return result;
+
         });
       })
       .then(function(result) {

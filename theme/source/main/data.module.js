@@ -39,16 +39,15 @@ app.run(function(
 
     path = path || params.path;
 
-    var dataPath = agneta.urljoin({
-      path: [agneta.services.view, path, 'view-data'],
-      query: {
-        version: agneta.page.version
-      }
-    });
-
+    var dataPath = agneta.urljoin(agneta.services.view, path, 'view-data');
     var data;
 
-    return $http.get(dataPath)
+    return $http.get(dataPath,{
+      params:{
+        version: agneta.page.version,
+        __skipDialog: true
+      }
+    })
       .then(function(response) {
 
         data = app.pageData = response.data;
