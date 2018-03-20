@@ -71,6 +71,13 @@ module.exports = function(Model, app) {
             ] || {};
             var type = field.type;
 
+            if(!value){
+              return;
+            }
+            if(!field){
+              return;
+            }
+
             switch(field.type){
               case 'date-time':
                 type = 'date';
@@ -85,8 +92,6 @@ module.exports = function(Model, app) {
                 ) || value;
                 break;
             }
-
-            console.log(field,value);
 
             if(_.isObject(value)){
               value = app.lng(value, req);

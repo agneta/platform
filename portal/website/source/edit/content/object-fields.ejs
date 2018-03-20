@@ -1,6 +1,6 @@
-<div edit-item-menu ng-repeat="(key,value) in data.__value" ng-if="getField(field,key)" ng-init="parentField=field;parent=data; data = value;name=key; field = getField(field,key)">
+<div ng-repeat="(key,value) in data.__value" ng-if="getField(field,key)" ng-init="parentField=field;parent=data; data = value;name=key; field = getField(field,key)">
 
-  <div layout="row" class="header" layout-align="left center">
+  <div layout="row" edit-item-menu class="header" layout-align="left center">
     <%-template('edit/content/label',{model:'edit.lng(field.title)||key'})%>
     <%-template('edit/content/fields-inline')%>
     <%-template('edit/content/contributors')%>

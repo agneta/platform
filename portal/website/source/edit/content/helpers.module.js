@@ -44,6 +44,8 @@ module.exports = function(vm, $mdToast, $timeout, helpers) {
         }
         page[key] = value;
       }
+      page.title = page.title || 'untitled';
+      page.subtitle = page.subtitle || page.id;
     });
   };
   //---------------------------------------
