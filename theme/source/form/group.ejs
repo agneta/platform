@@ -2,10 +2,16 @@
     <%
   for(var fieldChild of field.fields){
   var attr = [];
+
+  fieldChild = form_field({
+		field: fieldChild,
+		form: field
+	});
+
   if(fieldChild.if){
     attr.push('ng-if="'+fieldChild.if+'"');
   }
-  field_props(form,fieldChild);
+
   fieldChild.attr = attr.join(' ');
   %>
         <%-template('form/'+fieldChild.group,{field:fieldChild})%>

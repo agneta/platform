@@ -59,14 +59,32 @@ module.exports = function(locals) {
     } else {
       field.name = field.name || fieldName || field.base;
     }
+    var parentName = form.name;
 
-    form.model = `${form.name}Fields`;
+    if(!parentName){
+      parentName = _.get(getLastWithName(form),'name');
+    }
+
+    if(!parentName){
+      console.error(form);
+      throw new Error('Form must have a name');
+    }
+    form.model = `${parentName}Fields`;
 
     this.field_props(form, field);
 
     return field;
 
   });
+
+  function getLastWithName(field){
+    while(field.parent){
+      if(field.parent&& field.parent.name){
+        return field.parent;
+      }
+      field = field.parent;
+    }
+  }
 
   project.extend.helper.register('field_props', function(fieldParent, field) {
 
