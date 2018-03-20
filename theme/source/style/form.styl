@@ -19,9 +19,20 @@ form{
     padding-left: 10px;
   }
   .field{
-    background: white;
     padding: 10px;
     border-radius: 4px;
+    background: white;
+
+    &.layout-row, &.layout-column{
+      background: transparent;
+      padding: 0;
+    }
+
+    mdp-time-picker{
+      button.md-button.md-icon-button{
+        margin: 0;
+      }
+    }
   }
   md-input-container{
     margin: 0;

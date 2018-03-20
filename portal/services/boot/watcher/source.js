@@ -58,7 +58,7 @@ module.exports = function(watcher) {
         );
 
         var pathSourceAbs = project.theme.getSourceFile(pathPage);
-        console.log('pathSourceAbs',pathSourceAbs);
+        //console.log('pathSourceAbs',pathSourceAbs);
         if(!pathSourceAbs){
           pathPage = path.join(pathParams.dir+'.yml');
           pathSourceAbs = project.theme.getSourceFile(pathPage);
@@ -82,7 +82,7 @@ module.exports = function(watcher) {
         }else{
           emitOptions.global = true;
         }
-        console.log('emitOptions',emitOptions);
+        //console.log('emitOptions',emitOptions);
 
 
         app.portal.socket.emit('page-reload',emitOptions);
