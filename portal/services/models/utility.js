@@ -30,7 +30,7 @@ module.exports = function(Model, app) {
     }
   });
 
-  var locals = app.get('options').client;
+  var locals = app.client;
   var project = locals.project;
 
   for (var key in project.utilities) {

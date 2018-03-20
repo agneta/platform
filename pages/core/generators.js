@@ -17,16 +17,15 @@
 var Promise = require('bluebird');
 var _ = require('lodash');
 var nPath = require('path');
-var Rules = require('./generator/rules');
-var Paths = require('./generator/paths');
 var pageProcessor = require('../pages/page');
 
 module.exports = function(locals) {
 
   var project = locals.project;
 
-  var rules = Rules(locals);
-  var paths = Paths(locals);
+  var rules = require('./generator/rules')(locals);
+  var paths = require('./generator/paths')(locals);
+  var templates = require('./generator/templates')(locals);
 
   var Page = project.model('Page');
 
@@ -100,7 +99,7 @@ module.exports = function(locals) {
       return project.site.pages.map(function(page) {
         rules.run(page);
         paths.run(page);
-
+        templates(page);
 
         page.save();
       });

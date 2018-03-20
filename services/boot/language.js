@@ -18,7 +18,7 @@ var _ = require('lodash');
 
 module.exports = function(app) {
 
-  var client = app.get('options').client;
+  var client = app.client;
   var project = client.project;
   var helpers = client.app.locals;
   var config = app.get('language');

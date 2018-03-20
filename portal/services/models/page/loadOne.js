@@ -29,6 +29,7 @@ module.exports = function(Model, app) {
 
     var page;
     var log;
+    var templatePath;
 
     return Model.getPage(id)
       .then(function(_page) {
@@ -52,9 +53,17 @@ module.exports = function(Model, app) {
       .then(function(_log) {
 
         log = _log;
+        templatePath = path.join(Model.editConfigDir, page.template + '.yml');
+        return fs.pathExists(templatePath);
+      })
+      .then(function(exists) {
+        if(!exists){
+          return {
 
+          };
+        }
         return app.edit.loadTemplate({
-          path: path.join(Model.editConfigDir, page.template + '.yml'),
+          path: templatePath,
           req: req,
           app: app
         });

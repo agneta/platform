@@ -24,7 +24,7 @@ module.exports = function(options){
 
   var templatePaths = options.templatePaths;
   var app = options.app;
-  var clientHelpers = options.app.get('options').client.app.locals;
+  var clientHelpers = options.app.client.app.locals;
 
   var helpers = _.extend({},clientHelpers,{
     template: function(path_partial, data) {

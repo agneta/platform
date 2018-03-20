@@ -21,7 +21,7 @@ const activity = require('./page-private/activity');
 
 module.exports = function(app) {
 
-  var client = app.get('options').client;
+  var client = app.client;
   var clientProject = client.project;
   var clientHelpers = client.app.locals;
 

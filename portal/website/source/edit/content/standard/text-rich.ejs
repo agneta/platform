@@ -6,11 +6,27 @@ ng-model="data.__value[edit.lang]"
 >
     <ng-quill-toolbar ng-show="data.__focused">
         <div id="ng-quill-toolbar">
+          <select class="ql-size">
+            <option value="small"></option>
+            <option selected></option>
+            <option value="large"></option>
+            <option value="huge"></option>
+          </select>
+          <select class="ql-header">
+            <option value="1">H1</option>
+            <option value="2">H2</option>
+            <option value="3">H3</option>
+            <option selected>Normal</option>
+          </select>
             <span class="ql-formats">
                 <button class="ql-bold" ng-attr-title="{{'Bold'}}"></button>
                 <button class="ql-italic" ng-attr-title="{{'Italic'}}"></button>
                 <button class="ql-underline" ng-attr-title="{{'Underline'}}"></button>
                 <button class="ql-link" ng-attr-title="{{'Link'}}"></button>
+            </span>
+            <span class="ql-formats">
+                <button class="ql-list" value="ordered"></button>
+                <button class="ql-list" value="bullet"></button>
             </span>
             <span class="ql-formats">
                 <select class="ql-align" ng-attr-title="{{'Aligment'}}">

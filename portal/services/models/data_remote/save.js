@@ -20,7 +20,7 @@ const diff = require('deep-diff').diff;
 
 module.exports = function(Model, app) {
 
-  var clientHelpers = app.get('options').client.app.locals;
+  var clientHelpers = app.client.app.locals;
 
   Model.save = function(id, template, data, req) {
 

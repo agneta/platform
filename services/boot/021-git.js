@@ -18,7 +18,7 @@ var path = require('path');
 
 module.exports = function(app) {
 
-  var webPrj = app.get('options').client.project;
+  var webPrj = app.client.project;
 
   function getPath(value) {
     if (value.indexOf(webPrj.paths.core.project) === 0) {

@@ -21,7 +21,7 @@ const request = require('request');
 
 module.exports = function(app) {
 
-  var project = app.get('options').client.project;
+  var project = app.client.project;
   var storageConfig = app.get('storage');
 
   return function(req, res) {

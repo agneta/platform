@@ -92,4 +92,6 @@ module.exports = function(Model, app) {
     }
   );
 
+  return Model.loadTemplates;
+
 };

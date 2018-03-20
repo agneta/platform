@@ -33,8 +33,6 @@ module.exports = function(Model, app) {
     'id',
     'isSource',
     'controller',
-    'scripts',
-    'styles',
     'isSource',
     'pathSource',
     'pathView',
@@ -70,12 +68,12 @@ module.exports = function(Model, app) {
     return path.join(webPrj.paths.app.website, page.full_source);
   };
 
-  require('./page/loadCommit')(Model, app);
-  require('./page/loadOne')(Model, app);
-  require('./page/delete')(Model, app);
-  require('./page/save')(Model, app);
-  require('./page/new')(Model, app);
-  require('./page/loadMany')(Model, app);
-  require('./edit/loadTemplates')(Model, app);
+  require('./loadCommit')(Model, app);
+  require('./loadOne')(Model, app);
+  require('./delete')(Model, app);
+  require('./save')(Model, app);
+  require('./new')(Model, app);
+  require('./loadMany')(Model, app);
+  require('./loadTemplates')(Model, app);
 
 };

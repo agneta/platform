@@ -16,7 +16,7 @@
  */
 module.exports = function(app) {
 
-  var client = app.get('options').client;
+  var client = app.client;
   var project = client.project;
 
   return function(data) {

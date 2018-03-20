@@ -4,7 +4,7 @@ const generator = require('loopback-sdk-angular');
 const fs = require('fs-extra');
 
 module.exports = function(app) {
-  var client = app.get('options').client;
+  var client = app.client;
   var project = client.project;
 
   return function(options){

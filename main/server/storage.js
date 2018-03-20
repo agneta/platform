@@ -33,7 +33,7 @@ module.exports = function(options) {
           console.log('using local storage');
 
           var base = storageConfig.buckets.media.host;
-          var webPrj = locals.services.app.get('options').client.project;
+          var webPrj = locals.services.app.client.project;
           var root = path.join(webPrj.paths.core.storage);
 
           locals.app.use(`/${base}.ag`,function(req,res, next){

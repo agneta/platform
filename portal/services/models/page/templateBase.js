@@ -38,7 +38,8 @@ module.exports = function(template) {
       gr: 'Περιγραφή'
     },
     type: 'text'
-  }
+  },
+  'cover'
   ];
 
   template.fields = [].concat(fields, template.fields);

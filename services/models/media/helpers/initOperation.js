@@ -20,7 +20,7 @@ const probe = require('probe-image-size');
 
 module.exports = function(Model, app) {
 
-  var helpers  = app.get('options').client.app.locals;
+  var helpers  = app.client.app.locals;
 
   Model.__initOperation = function(options) {
 

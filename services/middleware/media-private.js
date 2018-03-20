@@ -19,7 +19,7 @@ const path = require('path');
 
 module.exports = function(app) {
 
-  var client = app.get('options').client;
+  var client = app.client;
   var clientProject = client.project;
 
   var basePath = '/' + clientProject.config.media.base + '/';

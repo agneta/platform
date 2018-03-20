@@ -17,7 +17,7 @@
 module.exports = function(Model, app) {
 
   var config = app.get('storage');
-  var prjHelpers = app.get('options').client.app.locals;
+  var prjHelpers = app.client.app.locals;
 
   Model._url = prjHelpers.prv_media;
 

@@ -57,6 +57,7 @@ module.exports = function(app, generated) {
         return Promise.map(files, function(file) {
 
           var filePath = path.join(dir, file);
+          var name = path.parse(filePath).name;
 
           return fs.stat(filePath)
             .then(function(stat){
@@ -79,10 +80,10 @@ module.exports = function(app, generated) {
 
               var data = require(filePath);
 
-              if (definitions[file]) {
-                _.mergeWith(definitions[file].definition, data, mergeFn);
+              if (definitions[name]) {
+                _.mergeWith(definitions[name].definition, data, mergeFn);
               } else {
-                definitions[file] = {
+                definitions[name] = {
                   definition: data
                 };
               }
