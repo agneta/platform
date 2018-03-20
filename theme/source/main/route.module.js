@@ -73,6 +73,14 @@ app.config(function($routeProvider, $locationProvider) {
 
 app.run(function($rootScope, $route, $timeout, $location, Account, $mdDialog) {
 
+  $rootScope.changeLanguage = function(lang){
+    var url = agneta.langPath({
+      path: $rootScope.viewData.path,
+      lang: lang
+    });
+    window.location.href = url;
+  };
+
   $rootScope.$on('$routeChangeStart', function() {
 
     $rootScope.loadingMain = true;

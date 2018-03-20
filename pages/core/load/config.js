@@ -124,8 +124,6 @@ module.exports = function(locals) {
 
         //---------------------
 
-        project.site.lang = project.config.language.default.key;
-
         var languages = [project.config.language.default];
 
         if (project.config.language.extra) {
@@ -133,6 +131,15 @@ module.exports = function(locals) {
         }
 
         project.config.languages = languages;
+
+        project.site.languages = {};
+
+        for (var language of project.config.languages) {
+          project.site.languages[language.key] = language;
+        }
+
+        project.site.lang = project.config.language.default.key;
+        project.site.lang_others = _.omit(project.site.languages, [project.site.lang]);
 
         //-------------------------------------------
         //

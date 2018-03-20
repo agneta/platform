@@ -28,7 +28,7 @@ module.exports = function enableAuthentication(app) {
 
     app.models.Account.hasRoles(options.allow, options.req)
       .then(function(result) {
-        console.log('hasRoles',result);
+        //console.log('hasRoles',result);
         if (!result.has) {
           return options.res
             .redirect(`/${app.getLng(options.req)}/authorization?redirect=${options.req.originalUrl}`);

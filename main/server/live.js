@@ -58,7 +58,7 @@ module.exports = function(options) {
           .then(function() {
 
             if (pathParts.length == 0 ||
-              languages[pathParts[0]]
+              languages[pathParts[0]].key
             ) {
               return request.head(reqPath);
             }

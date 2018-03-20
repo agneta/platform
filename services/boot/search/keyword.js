@@ -16,7 +16,7 @@
  */
 module.exports = function(Model, app,models) {
 
-  app.helpers.runRemote({
+  app.$model.remotes({
     model: Model
   });
 

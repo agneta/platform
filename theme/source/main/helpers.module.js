@@ -75,7 +75,7 @@ agneta.langPath = function(data) {
   var args;
   if(angular.isObject(data)){
     args = [angular.extend(data,{
-      path: [agneta.lang].concat(data.path)
+      path: [data.lang || agneta.lang].concat(data.path)
     })];
   }else{
     args = Array.prototype.slice.call(arguments);

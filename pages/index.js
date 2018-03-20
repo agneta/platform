@@ -43,7 +43,18 @@ module.exports = function(options) {
       new_post_name: ':title.yml',
       root: '/'
     },
-    site: {},
+    site: {
+      set lang(value){
+        var language = locals.project.site.languages[value];
+        if(!language){
+          throw new Error(`Language with key "${value}" does not exist`);
+        }
+        locals.project.site.language = language;
+      },
+      get lang(){
+        return locals.project.site.language.key;
+      }
+    },
     locals: {
       cache: {
         data: {}

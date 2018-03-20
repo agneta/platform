@@ -15,8 +15,6 @@
  *   limitations under the License.
  */
 const path = require('path');
-const fs = require('fs-extra');
-const Promise = require('bluebird');
 const _ = require('lodash');
 
 module.exports = function(watcher) {
@@ -29,15 +27,18 @@ module.exports = function(watcher) {
 
     switch (params.ext) {
       case '.js':
-        //console.log(pathFile);
-        return getModel(pathFile)
+        console.log(pathFile);
+        return Promise.resolve()
+          .then(function() {
+            return app.$model.getByFile(pathFile);
+          })
           .then(function(model) {
 
             if (!model) {
               return;
             }
 
-            //console.log('found model', model.definition.name);
+            console.log('found model', model.definition.name);
 
             delete require.cache[require.resolve(pathFile)];
 
@@ -55,62 +56,5 @@ module.exports = function(watcher) {
     }
 
   };
-
-  function getModel(pathFile) {
-
-    var pathParsed = path.parse(pathFile);
-    var modelPath;
-    var model;
-
-    return Promise.map([
-      locals.project.paths.core.models,
-      locals.project.paths.app.models
-    ], function(dir) {
-      modelPath = path.join(dir, pathParsed.name) + '.json';
-
-      var exists = fs.existsSync(modelPath);
-
-      if (!exists) {
-        modelPath = path.join(dir,pathParsed.name,'index.json');
-        exists = fs.existsSync(modelPath);
-      }
-
-      if(!exists){
-        modelPath = path.join(dir,
-          path.parse(pathParsed.dir).name,
-          'index.json');
-        exists = fs.existsSync(modelPath);
-      }
-
-      if(!exists){
-        return;
-      }
-
-      var definition = require(modelPath);
-      if (!definition.name) {
-        return;
-      }
-
-      model = app.models[definition.name];
-
-    })
-      .then(function() {
-        if (!model) {
-          var name = pathParsed.name;
-          var nameParts = name.split('_');
-          var modelName = [];
-          for (var part of nameParts) {
-            modelName.push(
-              part[0].toUpperCase() + part.slice(1)
-            );
-          }
-          modelName = modelName.join('_');
-          model = app.models[modelName];
-        }
-        return model;
-      });
-
-
-  }
 
 };

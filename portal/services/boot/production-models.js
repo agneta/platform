@@ -103,7 +103,7 @@ module.exports = function(app) {
     productionModel(data);
   });
 
-  app.helpers.runRemotes(instructions);
+  app.$model.remotes(instructions);
   instructions.forEach(function(data) {
 
     var modelOptions = _.extend({},app.modelConfig[data.sourceName]);

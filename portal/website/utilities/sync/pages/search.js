@@ -37,7 +37,7 @@ module.exports = function(util) {
   return util.keywords.clear()
     .then(function() {
       return Promise.map(_.keys(web.site.languages), function(language) {
-
+        language = language.value;
         web.site.lang = language;
         return searchPages({
           util: util,

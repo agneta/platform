@@ -1,14 +1,34 @@
-<md-menu md-offset="0 40" hide show-gt-xs ng-show="viewData.languages.length>1">
+<md-menu md-offset="0 70" hide show-gt-xs>
+  <%if(site.language.icon){
+    var buttonClass="md-icon-button"
+  }%>
+  <md-button class="ui-language <%-buttonClass%>" ng-click="$mdMenu.open()">
+    <%if(site.language.icon){%>
+    <md-icon md-svg-src="<%-get_icon(site.language.icon)%>"></md-icon>
+    <%}else{%>
+  <span><%-site.language.value%></span>
+  <%}%>
+  </md-button>
 
-    <md-button ng-click="$mdMenu.open()"><%-site.lang_full%></md-button>
-
-    <md-menu-content>
-
-        <md-menu-item ng-repeat="language in viewData.languages">
-            <md-button class="{{language.linkClass}}" target="_self" ng-href="{{language.href}}{{queryString}}">
-                {{language.title}}
-            </md-button>
-        </md-menu-item>
-
-    </md-menu-content>
+  <md-menu-content>
+    <div class="ui-languages" layout="column">
+      <%for(var language of config.languages){
+        var langClass = '';
+        if(site.lang == language.key){
+          langClass = 'selected';
+        }
+        %>
+      <div
+      class="<%-langClass%> ag-list-item"
+      layout="row"
+      target="_self"
+      ng-click="changeLanguage('<%-language.key%>')">
+      <%if(language.icon){%>
+      <md-icon md-svg-src="<%-get_icon(language.icon)%>"></md-icon>
+      <%}%>
+      <span><%-language.value%></span>
+    </div>
+    <%}%>
+  </div>
+</md-menu-content>
 </md-menu>

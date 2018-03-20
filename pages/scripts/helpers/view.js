@@ -58,7 +58,6 @@ module.exports = function(locals) {
   project.extend.helper.register('viewBasicData', function(page) {
 
     var data = {};
-    var site = this.site;
     page = page || this.page;
 
     data.title = this.get_title(page);
@@ -69,29 +68,6 @@ module.exports = function(locals) {
     data.languages = [];
 
     page.controller = page.controller || this.viewController(this.viewTag(page));
-
-    //-----------------------------------------------------
-    // languages
-
-    for (var lang_short in site.languages) {
-
-      var lang_full = site.languages[lang_short];
-
-      var url = page.pathSource;
-      url = url.split('/');
-      url.unshift(lang_short);
-      url = url.join('/');
-      url = this.url_for(url);
-
-      var linkClass = (lang_short == site.lang) ? 'selected' : '';
-
-      data.languages.push({
-        title: lang_full,
-        href: url,
-        code: lang_short,
-        linkClass: linkClass
-      });
-    }
 
     //----------------------------------------
 

@@ -14,10 +14,10 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var chokidar = require('chokidar');
-var Promise = require('bluebird');
+const chokidar = require('chokidar');
+const Promise = require('bluebird');
 const path = require('path');
-
+const _ = require('lodash');
 module.exports = function(app) {
 
   var options = app.get('options');
@@ -63,12 +63,12 @@ module.exports = function(app) {
       onFile: require('./watcher/data')(options)
     });
     watch({
-      dirs: [
+      dirs: _.uniq([
         path.join(project.paths.portal.services, 'models'),
         path.join(project.paths.core.services, 'models'),
         path.join(project.paths.app.models),
         path.join(project.paths.appPortal.models)
-      ],
+      ]),
       onFile: require('./watcher/models')(options)
     });
     watch({
