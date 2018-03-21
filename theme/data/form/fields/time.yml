@@ -1,5 +1,6 @@
 title:
   en: Time
+  gr: Ώρα
 component: mdp-time-picker
 placeholder: Time
 group: date-time

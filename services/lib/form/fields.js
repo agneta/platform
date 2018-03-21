@@ -44,7 +44,6 @@ module.exports = function(app, clientHelpers) {
     if(!form.name){
       form.name = options.name || formName;
     }
-
     scan(form);
 
     function scan(data) {
@@ -75,7 +74,6 @@ module.exports = function(app, clientHelpers) {
       }
 
     }
-
     return formFields;
 
 

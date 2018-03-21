@@ -65,14 +65,15 @@ module.exports = function(app, data) {
       case 'relation-hasMany':
       case 'relation-belongsTo':
 
+        var relationName = relation.template || relation.name;
         if(!relation){
           throw new Error(`Field (${field.name}) needs to have a relation object defined`);
         }
         if(!relation.model){
           throw new Error(`Field (${field.name}) needs to have a relation model defined`);
         }
-        if(!relation.template){
-          throw new Error(`Field (${field.name}) needs to have a relation template defined`);
+        if(!relationName){
+          throw new Error(`Field (${field.name}) needs to have a relation name`);
         }
         var options = {
           model: relation.model,
@@ -95,7 +96,7 @@ module.exports = function(app, data) {
             break;
         }
 
-        result.relations[relation.template] = options;
+        result.relations[relationName] = options;
         continue;
     }
 
@@ -109,6 +110,8 @@ module.exports = function(app, data) {
 
     result.properties[field.name] = property;
   }
+
+  result.acls = template.acls;
 
   return result;
 };

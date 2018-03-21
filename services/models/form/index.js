@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: services/lib/form.js
+ *   Source file: services/models/form.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,14 +14,28 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function(app) {
 
-  app.form = {};
-  
+module.exports = function(Model, app) {
+
+
+
   var client = app.get('options');
   client = client.web || client.client;
   var clientHelpers = client.app.locals;
+  if (!clientHelpers.has_data('form/services')) {
+    return;
+  }
 
-  require('./form/fields')(app, clientHelpers);
-  require('./form/check')(app, clientHelpers);
+  var formServices = clientHelpers.get_data('form/services');
+
+  if (!formServices) {
+    return;
+  }
+
+  Model.formServices = formServices;
+  Model.clientHelpers = clientHelpers;
+
+  require('./generate')(Model, app);
+  require('./new')(Model, app);
+
 };

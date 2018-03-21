@@ -20,7 +20,7 @@
 
 require('edit/content/field-menu.module');
 
-agneta.directive('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, AgMedia, Role_Editor) {
+agneta.directive('AgEditMainCtrl', function($rootScope, $injector, $routeParams, $parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, AgMedia, Role_Editor) {
   var vm = this;
   var fuseOptions = {
     shouldSort: true,
@@ -55,6 +55,7 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $routeParams, $parse, $o
     $location: $location,
     $routeParams: $routeParams,
     $timeout: $timeout,
+    $injector: $injector,
     $mdDialog: $mdDialog,
     scopeEdit: scopeEdit,
     Portal: Portal

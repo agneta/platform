@@ -32,7 +32,7 @@ module.exports = function(Model, app) {
       formMethod.data = Model.clientHelpers.get_data(formMethod.data);
       formMethod.data.name = formMethod.data.name || formName;
     }
-    var result = Model.newMethod(formMethod);
+    var result = app.form.newMethod(formMethod);
     formMethod.remote = result;
 
     if (formMethod.hidden) {

@@ -156,11 +156,11 @@ module.exports = function(vm, $mdToast, $timeout, helpers) {
         break;
       case 'relation-belongsTo':
         childField.options = [
-          vm.relations[childField.relation.template]
+          vm.relations[childField.relation.name]
         ];
         break;
       case 'relation-hasMany':
-        childField.options = vm.relations[childField.relation.template];
+        childField.options = vm.relations[childField.relation.name];
         console.log(vm.relations);
         console.log(childField.relation);
         console.log(childField.options);

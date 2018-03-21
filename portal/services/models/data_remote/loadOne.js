@@ -42,12 +42,13 @@ module.exports = function(Model, app) {
         model = _model;
         var include = _.map(templateData.relations,function(relation){
           return {
-            relation: relation,
+            relation: relation.name,
             scope: {
-              fields: ['title','id']
+              fields: ['id'].concat(
+                relation.display?_.values(relation.display):['title']
+              )
             }};
         });
-
         return model.findById(id,{
           include:include
         });
@@ -70,9 +71,9 @@ module.exports = function(Model, app) {
 
       })
       .then(function(log) {
-
-        var itemData = _.omit(item.__data, templateData.relations);
-        var relations = _.pick(item.__data, templateData.relations);
+        var relationNames = _.map(templateData.relations, 'name');
+        var itemData = _.omit(item.__data, relationNames);
+        var relations = _.pick(item.__data, relationNames);
         //console.log('relations',relations);
         relations = app.lngScan(relations,req);
         //console.log('relations.scanned',relations);

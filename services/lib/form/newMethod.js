@@ -17,9 +17,9 @@
 var _ = require('lodash');
 var Promise = require('bluebird');
 
-module.exports = function(Model, app) {
+module.exports = function(app) {
 
-  Model.newMethod = function(formMethod) {
+  app.form.newMethod = function(formMethod) {
 
     var form = formMethod.data;
 
@@ -97,8 +97,11 @@ module.exports = function(Model, app) {
 
       });
 
+      var values = _.mapValues(fields, 'value');
+
       return Promise.resolve({
         fields: fields,
+        values: values,
         req: req,
         form: form
       });
@@ -107,6 +110,7 @@ module.exports = function(Model, app) {
     }
     return {
       fields: formFields,
+      fieldNames: _.keys(formFields),
       method: method,
       accepts: accepts
     };

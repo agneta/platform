@@ -88,8 +88,10 @@ module.exports = function(app) {
 
       var relations = [];
       template.fields.forEach(function(field){
-        if(field.relation){
-          relations.push(field.relation.template);
+        var relation = field.relation;
+        if(relation){
+          relation.name = relation.name || relation.template;
+          relations.push(relation);
         }
       });
       template.relations = relations;
