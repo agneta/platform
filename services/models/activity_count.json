@@ -34,9 +34,6 @@
             "index": true
         }
     },
-    "mixins": {
-        "TimeStamp": true
-    },
     "validations": [],
     "hidden": [],
     "relations": {

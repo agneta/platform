@@ -3,8 +3,5 @@
     "base": "PersistedModel",
     "properties": {},
     "validations": [],
-    "relations": {},
-    "mixins": {
-        "TimeStamp": true
-    }
+    "relations": {}
 }

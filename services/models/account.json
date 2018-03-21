@@ -54,9 +54,6 @@
       }
     }
   },
-  "mixins": {
-    "TimeStamp": true
-  },
   "acls": [{
     "accessType": "*",
     "principalType": "ROLE",

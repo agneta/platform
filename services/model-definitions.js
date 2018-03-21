@@ -104,9 +104,18 @@ module.exports = function(app, generated) {
           path: S(definition.name).slugify().s
         });
 
+        definition.mixins = definition.mixins || {};
+        _.extend(definition.mixins,{
+          mixins: {
+            'TimeStamp': true
+          }
+        });
+
         app.modelSchemas[definition.name] = definition;
         //console.log(definition.name,definition.http.path);
       });
       generated.modelDefinitions = values;
     });
+
+
 };

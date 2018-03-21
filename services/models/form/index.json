@@ -23,9 +23,6 @@
             "required": true
         }
     },
-    "mixins": {
-        "TimeStamp": true
-    },
     "relations": {
         "account": {
             "type": "belongsTo",
