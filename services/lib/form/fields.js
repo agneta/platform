@@ -15,35 +15,16 @@
  *   limitations under the License.
  */
 var _ = require('lodash');
-const path = require('path');
-const presetBase = 'form/presets';
+
 
 module.exports = function(app, clientHelpers) {
 
   app.form.fields = function(options) {
 
-    var form = options.form;
     var onField = options.onField;
     var formFields = {};
-    var formName;
+    var form = app.form.load(options);
 
-    if (_.isString(form)) {
-      formName = form;
-      let dataPath = formName;
-      if(dataPath.indexOf(presetBase)!=0){
-        dataPath = path.join(presetBase,dataPath);
-      }
-      form = clientHelpers.get_data(dataPath);
-
-      if(!form){
-        throw new Error(`Could not find form with name: ${formName}`);
-      }
-
-    }
-
-    if(!form.name){
-      form.name = options.name || formName;
-    }
     scan(form);
 
     function scan(data) {

@@ -97,11 +97,23 @@ Mailer.send = function(options,cb) {
         language: language
       });
       var emailOptions = {
-        to: options.to,
-        from: options.from || _.get(connector.config,'contacts.default.email')
+        to: checkContact(options.to),
+        from: checkContact(
+          options.from || _.get(connector.config,'contacts.default.email')
+        )
       };
 
-        //--------------------------------------------------
+      function checkContact(contact){
+        if(_.isString(contact)){
+          return contact;
+        }
+        if(contact.name && _.isObject(contact.name)){
+          contact.name = settings.app.lng(contact.name,options.req);
+        }
+        return contact;
+      }
+
+      //--------------------------------------------------
 
       var template = connector.config.templates[options.templateName];
 
@@ -129,7 +141,7 @@ Mailer.send = function(options,cb) {
 
       //--------------------------------------------------
 
-      //console.log('email options',emailOptions);
+      console.log('email options',emailOptions);
 
       return connector.provider.send(emailOptions);
 

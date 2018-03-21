@@ -102,10 +102,6 @@ module.exports = function() {
       public: true
     },
     //-----------------------------------------
-    Form: {
-      dataSource: 'db',
-      public: true
-    },
     System: {
       dataSource: false,
       public: true

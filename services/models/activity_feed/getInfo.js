@@ -78,27 +78,6 @@ module.exports = function(Model, app) {
 
   //----------------------------------------------
 
-  Model.registerInfo('form', function(feed, req) {
-
-    if (!app.models.Form.formServices) {
-      return;
-    }
-
-    var formMethod = app.models.Form.formServices.methods[feed.value];
-
-    if (!formMethod) {
-      return;
-    }
-    var form = formMethod.data;
-    if (!form) {
-      return;
-    }
-
-    feed.title = app.lng(form.title, req);
-  });
-
-  //----------------------------------------------
-
   Model.registerInfo('action', function(feed, req) {
     var action = activities.action[feed.value];
     if (action) {

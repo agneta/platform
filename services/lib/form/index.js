@@ -24,5 +24,6 @@ module.exports = function(app) {
 
   require('./fields')(app, clientHelpers);
   require('./check')(app, clientHelpers);
+  require('./load')(app, clientHelpers);
   require('./newMethod')(app);
 };

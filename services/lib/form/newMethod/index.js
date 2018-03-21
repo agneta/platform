@@ -15,7 +15,6 @@
  *   limitations under the License.
  */
 var _ = require('lodash');
-var Promise = require('bluebird');
 
 module.exports = function(app) {
 
@@ -26,6 +25,10 @@ module.exports = function(app) {
     if(!form){
       throw new Error(`Cannot create form method with name: ${formMethod.name}`);
     }
+
+    form = app.form.load({
+      form: form
+    });
 
     var accepts = [{
       arg: 'req',
@@ -54,64 +57,17 @@ module.exports = function(app) {
       }
     });
 
-    function method(args) {
+    var shared = {
+      app: app,
+      formFields: formFields,
+      accepts: accepts,
+      form: form
+    };
 
-      var req = args[0];
-      var fields = {};
-
-      _.map(args, function(value, index) {
-        var map = accepts[index];
-
-        if (!map) {
-          return;
-        }
-        var field = formFields[map.arg];
-
-        if (!field || field.sendDisabled) {
-          return;
-        }
-
-        var title = field.title || field.name;
-        var sourceValue = value;
-
-        if (field.options) {
-
-          var option = _.find(field.options, {
-            value: value
-          });
-
-          if (option && option.title) {
-            value = app.lng(option.title, req);
-          }
-
-        }
-
-        field = {
-          name: map.arg,
-          title: title,
-          value: value,
-          sourceValue: sourceValue
-        };
-
-        fields[map.arg] = field;
-
-      });
-
-      var values = _.mapValues(fields, 'value');
-
-      return Promise.resolve({
-        fields: fields,
-        values: values,
-        req: req,
-        form: form
-      });
-
-
-    }
     return {
       fields: formFields,
       fieldNames: _.keys(formFields),
-      method: method,
+      method: require('./method')(shared),
       accepts: accepts
     };
 

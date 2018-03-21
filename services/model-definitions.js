@@ -106,9 +106,7 @@ module.exports = function(app, generated) {
 
         definition.mixins = definition.mixins || {};
         _.extend(definition.mixins,{
-          mixins: {
-            'TimeStamp': true
-          }
+          'TimeStamp': true
         });
 
         app.modelSchemas[definition.name] = definition;
