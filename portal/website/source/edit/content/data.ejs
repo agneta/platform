@@ -3,7 +3,7 @@
 var fields = get_data('edit/page').fields;
 for(var field of fields.standard){%>
   <script type="text/ng-template" id="field-standard-<%-field%>.html">
-    <div class="data-node" content-id="{{data.__id}}" ng-class="{contracted:data._expanded}">
+    <div class="data-node" content-id="{{data.__id}}" ng-class="{readonly:field.readonly,contracted:data._expanded}">
       <%-template('edit/content/standard/'+field)%>
     </div>
   </script>

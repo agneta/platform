@@ -1,5 +1,5 @@
 <div ng-form="dataForm" class="md-padding page-data">
-    <div ng-repeat="field in template.fields" ng-if="page.data[field.name]" ng-init="key=field.name;data=page.data[key];parent=page.data;" class="data-node" ng-class="{contracted:data._expanded}">
+    <div ng-repeat="field in template.fields" ng-if="page.data[field.name]" ng-init="key=field.name;data=page.data[key];parent=page.data;" class="data-node" ng-class="{readonly:field.readonly,contracted:data._expanded}">
         <div edit-item-menu layout="row" class="header" layout-align="left center">
             <%-template('edit/content/label',{model:'edit.lng(field.title)||key'})%>
             <%-template('edit/content/fields-inline')%>

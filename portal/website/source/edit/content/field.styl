@@ -3,6 +3,13 @@
   &:empty{
     display: none;
   }
+  &.readonly{
+    mdp-date-picker, mdp-time-picker, input, select, md-input-container{
+      opacity: 0.8;
+      pointer-events: none;
+    }
+  }
+
   .header{
     min-height: 35px;
     box-sizing: content-box;

@@ -4,7 +4,10 @@
     model = 'parent[key]';
   }
 %>
-<div class="type-inline" layout="row" layout-align="start center">
+<div layout="column">
+  <p ng-if="!field.hide.date">{{<%-model%> | amDateFormat:'LLLL'}}</p>
+<div ng-show="<%-model%>" class="type-inline" layout="row" layout-align="start center">
   <mdp-date-picker mdp-open-on-click ng-if="!field.hide.date" ng-model="<%-model%>" mdp-placeholder="Date"></mdp-date-picker>
   <mdp-time-picker mdp-open-on-click ng-if="!field.hide.time" ng-model="<%-model%>" mdp-placeholder="Time"></mdp-time-picker>
+</div>
 </div>

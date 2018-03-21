@@ -63,16 +63,10 @@ module.exports = function(shared) {
       if(template.id==currentId){
         return;
       }
-      vm.template = template;
     } else {
       template = vm.template;
     }
-
     vm.sidebar.loading = true;
-    $location.search({
-      template: vm.template.id,
-      id: $routeParams.id
-    });
 
     return helpers.Model.loadMany({
       template: template.id
@@ -81,20 +75,31 @@ module.exports = function(shared) {
       .then(function(result) {
 
         vm.pages = null;
-        vm.page = null;
+        if(!vm.template || vm.template.id != template.id){
+          vm.page = null;
+        }
 
         $timeout(function() {
+
+          vm.template = template;
+
+          $location.search({
+            template: template.id,
+            id: $routeParams.id
+          });
 
           helpers.checkPages(result.pages);
           vm.itemsLoaded = result.pages;
           vm.pages = vm.itemsLoaded;
           vm.templates = null;
+
           vm.fuse = new Fuse(vm.itemsLoaded, fuseOptions);
         }, 10);
       })
       .finally(function() {
         vm.sidebar.loading = false;
-      });
+      })
+      .catch(console.error);
 
   };
 

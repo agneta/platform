@@ -53,8 +53,20 @@ module.exports = function(Model, app) {
           });
         }
 
+        var writableFields = [];
+        for(let field of templateData.fields){
+          if(field.readonly){
+            continue;
+          }
+          if(field.readOnly){
+            continue;
+          }
+          writableFields.push(field.name);
+        }
+
         data = clientHelpers.get_values(data);
         data = _.pick(data, templateData.fieldNames);
+        data = _.pick(data, writableFields);
 
         if(model.validateData){
           // Important to alter data before saved into database so that the diff behaves properly
