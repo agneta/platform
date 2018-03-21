@@ -56,6 +56,13 @@ module.exports = function(shared) {
       if(!template.id){
         template = vm.fuse.search(template)[0];
       }
+      var currentId = vm.template;
+      if(currentId){
+        currentId = currentId.id || currentId;
+      }
+      if(template.id==currentId){
+        return;
+      }
       vm.template = template;
     } else {
       template = vm.template;

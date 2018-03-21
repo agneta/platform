@@ -188,7 +188,6 @@ module.exports = function(shared) {
           });
 
         }
-        console.log(childField);
 
         childField.link = function(){
           $location.url(link.url);
@@ -197,9 +196,6 @@ module.exports = function(shared) {
         break;
       case 'relation-hasMany':
         childField.options = vm.relations[childField.relation.name];
-        console.log(vm.relations);
-        console.log(childField.relation);
-        console.log(childField.options);
         break;
     }
 

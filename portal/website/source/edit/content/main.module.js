@@ -28,6 +28,9 @@ module.exports = function(options) {
   var Portal =  options.Portal;
 
   vm.getPage = function(obj) {
+    if($rootScope.loadingMain){
+      return;
+    }
     obj = obj || vm.page.id;
     var id = obj.id || obj;
     $rootScope.loadingMain = true;
@@ -62,7 +65,7 @@ module.exports = function(options) {
         }
 
         vm.work = null;
-        vm.page = null;
+        vm.page = {};
 
         $timeout(function() {
           vm.page = result.page;
@@ -70,7 +73,9 @@ module.exports = function(options) {
 
       })
       .finally(function() {
-        $rootScope.loadingMain = false;
+        $timeout(function() {
+          $rootScope.loadingMain = false;
+        }, 500);
       });
   };
 
