@@ -121,19 +121,18 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $injector, $routeParams,
     helpers.Model = options.model;
     helpers.mediaRoot = options.mediaRoot;
     helpers.isRemote = options.isRemote;
-    vm.restart()
+    var routeParams = $location.search();
+    vm.restart(true)
       .then(function() {
 
-        if (!$routeParams.template) {
+        if (routeParams.id) {
+          vm.getPage(routeParams.id);
           return;
         }
+        if (routeParams.template) {
+          vm.selectTemplate(routeParams.template);
+        }
 
-        vm.selectTemplate($routeParams.template)
-          .then(function(){
-            if ($routeParams.id) {
-              vm.getPage($routeParams.id);
-            }
-          });
       });
   };
 

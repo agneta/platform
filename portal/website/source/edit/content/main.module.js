@@ -26,17 +26,24 @@ module.exports = function(options) {
   var $mdDialog =  options.$mdDialog;
   var scopeEdit =  options.scopeEdit;
   var Portal =  options.Portal;
-
+  var pageLoading = false;
   vm.getPage = function(obj) {
-    if($rootScope.loadingMain){
+    if(pageLoading){
       return;
     }
     obj = obj || vm.page.id;
     var id = obj.id || obj;
-    $rootScope.loadingMain = true;
+    $rootScope.loadingMain = pageLoading = true;
+
+    var template = obj.template;
+    if(!template){
+      template = vm.template?vm.template.id:null;
+      template = template || $routeParams.template;
+    }
+
     return helpers.Model.loadOne({
       id: id,
-      template: obj.template || vm.template.id || $routeParams.template
+      template: template
     })
       .$promise
       .then(function(result) {
@@ -74,9 +81,10 @@ module.exports = function(options) {
       })
       .finally(function() {
         $timeout(function() {
-          $rootScope.loadingMain = false;
+          $rootScope.loadingMain = pageLoading = false;
         }, 500);
-      });
+      })
+      .catch(console.error);
   };
 
 

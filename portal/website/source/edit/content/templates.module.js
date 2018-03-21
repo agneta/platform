@@ -21,7 +21,7 @@ module.exports = function(shared) {
     ]
   };
 
-  vm.restart = function() {
+  vm.restart = function(skipClear) {
 
     vm.sidebar.loading = true;
 
@@ -30,8 +30,10 @@ module.exports = function(shared) {
     })
       .$promise
       .then(function(result) {
+        if(!skipClear){
+          $location.search({});
+        }
 
-        $location.search({});
 
         vm.itemsLoaded = result.templates;
         vm.templates = null;
@@ -46,7 +48,8 @@ module.exports = function(shared) {
       })
       .finally(function() {
         vm.sidebar.loading = false;
-      });
+      })
+      .catch(console.error);
 
   };
 
@@ -61,7 +64,7 @@ module.exports = function(shared) {
         currentId = currentId.id || currentId;
       }
       if(template.id==currentId){
-        return;
+        //return;
       }
     } else {
       template = vm.template;
@@ -81,7 +84,9 @@ module.exports = function(shared) {
 
         $timeout(function() {
 
-          vm.template = template;
+          if(!(vm.template && vm.template.id==template.id)){
+            vm.template = template;
+          }
 
           $location.search({
             template: template.id,
@@ -110,9 +115,12 @@ module.exports = function(shared) {
     if(!newValue){
       return;
     }
-    if(vm.template==newValue){
-      return;
+    if(oldValue){
+      if(oldValue.id==newValue.id){
+        return;
+      }
     }
+
     vm.selectTemplate(newValue);
   });
 
