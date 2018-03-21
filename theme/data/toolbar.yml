@@ -1,20 +1,32 @@
 account:
   title:
-    en: Account
+    en: My Account
+    gr: Ο λογαριασμός μου
+  profile:
+    en: My profile
+    gr: Το προφίλ μου
+  signout:
+    en: Sign out
+    gr: Αποσύνδεση
   signedOut:
     title:
       en: You are not signed in.
+      gr: Δεν έχετε συνδεθεί.
     messageLogin:
       en: Login if you registered already
+      gr: Σύνδεση αν έχετε ήδη εγγραφεί
     messageRegister:
       en: or create a new account.
+      gr: ή δημιουργήσετε ένα νέο λογαριασμό.
     actions:
       -
         title:
           en: Login
+          gr: Σύνδεση
         click: account.login()
       -
         title:
           en: Register
-        isConfig: account.register
+          gr: Εγγραφή
+        isConfig: account.registe=r
         click: account.register()
