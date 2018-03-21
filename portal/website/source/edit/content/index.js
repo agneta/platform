@@ -16,25 +16,11 @@
  */
 
 /*global _:true*/
-/*global Fuse:true*/
 
 require('edit/content/field-menu.module');
-
 agneta.directive('AgEditMainCtrl', function($rootScope, $injector, $routeParams, $parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, AgMedia, Role_Editor) {
-  var vm = this;
-  var fuseOptions = {
-    shouldSort: true,
-    threshold: 0.6,
-    location: 0,
-    distance: 100,
-    maxPatternLength: 32,
-    minMatchCharLength: 1,
-    keys: [
-      'title',
-      'path'
-    ]
-  };
 
+  var vm = this;
   var helpers = {};
   var scopeEdit = vm;
 
@@ -48,11 +34,13 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $injector, $routeParams,
 
   vm.edit.lang = agneta.lang;
 
+
   var shared = {
     vm: vm,
     $rootScope: $rootScope,
     helpers: helpers,
     $location: $location,
+    $mdToast: $mdToast,
     $routeParams: $routeParams,
     $timeout: $timeout,
     $injector: $injector,
@@ -62,10 +50,12 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $injector, $routeParams,
   };
 
   require('edit/content/field-state.module')(vm, helpers);
+  require('edit/content/templates.module')(shared);
   require('edit/content/content.module')(vm, helpers);
+  require('edit/content/route.module')(shared);
   require('edit/content/media.module')(vm, AgMedia, $mdDialog, helpers);
   require('edit/content/relation.module')(shared);
-  require('edit/content/helpers.module')(vm, $mdToast, $timeout, helpers);
+  require('edit/content/helpers.module')(shared);
   require('edit/content/history.module')(vm, helpers);
   require('edit/content/main.module')(shared);
   require('edit/content/search.module')(vm, $timeout);
@@ -147,33 +137,6 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $injector, $routeParams,
       });
   };
 
-  vm.restart = function() {
-
-    vm.sidebar.loading = true;
-
-    return helpers.Model.loadTemplates({
-
-    })
-      .$promise
-      .then(function(result) {
-
-        vm.itemsLoaded = result.templates;
-        vm.templates = null;
-        vm.templates = vm.itemsLoaded;
-        vm.template = null;
-        vm.page = null;
-        vm.pages = null;
-        vm.fuse = new Fuse(vm.itemsLoaded, fuseOptions);
-
-        $timeout();
-
-      })
-      .finally(function() {
-        vm.sidebar.loading = false;
-      });
-
-  };
-
   vm.isInline = function(field) {
     switch (field.type) {
       case 'text-single':
@@ -188,46 +151,6 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $injector, $routeParams,
     return _.find(field.fields, {
       name: key.__key || key
     });
-  };
-
-  vm.selectTemplate = function(template) {
-
-    if (template) {
-      if(!template.id){
-        template = vm.fuse.search(template)[0];
-      }
-      vm.template = template;
-    } else {
-      template = vm.template;
-    }
-
-    vm.sidebar.loading = true;
-    $location.search({
-      template: vm.template.id,
-      id: $routeParams.id
-    });
-
-    return helpers.Model.loadMany({
-      template: template.id
-    })
-      .$promise
-      .then(function(result) {
-
-        vm.pages = null;
-
-        $timeout(function() {
-
-          helpers.checkPages(result.pages);
-          vm.itemsLoaded = result.pages;
-          vm.pages = vm.itemsLoaded;
-          vm.templates = null;
-          vm.fuse = new Fuse(vm.itemsLoaded, fuseOptions);
-        }, 10);
-      })
-      .finally(function() {
-        vm.sidebar.loading = false;
-      });
-
   };
 
   vm.$broadcast('code:ready');

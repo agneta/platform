@@ -5,6 +5,6 @@
   }
 %>
 <div class="type-inline" layout="row" layout-align="start center">
-  <mdp-date-picker ng-model="<%-model%>" mdp-placeholder="Date"></mdp-date-picker>
-  <mdp-time-picker ng-model="<%-model%>" mdp-placeholder="Time"></mdp-time-picker>
+  <mdp-date-picker mdp-open-on-click ng-if="!field.hide.date" ng-model="<%-model%>" mdp-placeholder="Date"></mdp-date-picker>
+  <mdp-time-picker mdp-open-on-click ng-if="!field.hide.time" ng-model="<%-model%>" mdp-placeholder="Time"></mdp-time-picker>
 </div>

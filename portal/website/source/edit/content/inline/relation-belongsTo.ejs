@@ -1,3 +1,4 @@
+<div layout="row" layout-align="start center">
 <md-input-container class="select">
   <md-select md-on-open="relation.belongsTo(field)" placeholder="Relation" class="md-no-underline md-raised" <%-template('edit/content/validators')%> ng-model="data.__value">
     <md-option ng-value="option.id" ng-repeat="option in field.options">
@@ -6,3 +7,7 @@
   </md-select>
   <div ng-include="'data-messages.html'"></div>
 </md-input-container>
+<md-button class="md-icon-button" ng-click="field.link()">
+  <md-icon aria-label="Open Relation" md-svg-src="<%-get_icon('material/open-in-new')%>"></md-icon>
+</md-button>
+</div>

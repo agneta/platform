@@ -2,7 +2,7 @@
 
   <div layout="row" class="search-list" layout-margin layout-align="start center">
     <input flex="auto" on-enter="search.query()" ng-model="search.text" placeholder="Search" aria-label="search page">
-    <md-button class="md-icon-button" ng-click="search.query()">
+    <md-button aria-label="Search Account" class="md-icon-button" ng-click="search.query()">
       <md-icon md-svg-src="<%-get_icon('material/search')%>"></md-icon>
     </md-button>
     <md-button ng-show="search.active" class="md-icon-button" ng-click="search.clear()">

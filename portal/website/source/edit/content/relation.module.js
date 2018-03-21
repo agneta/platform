@@ -22,8 +22,12 @@ module.exports = function(options) {
 
   relation.belongsTo = function(field){
 
+    var template = field.relation.template;
+    if(!template){
+      return;
+    }
     return helpers.Model.loadMany({
-      template: field.relation.template
+      template: template
     })
       .$promise
       .then(function(result){

@@ -1,14 +1,14 @@
 <div ng-show="!page">
 
 <div ng-show="!template" layout="column" class="md-padding template-select" layout-align="center">
-  <md-icon md-svg-src="<%-get_icon('material/folder')%>"></md-icon>
+  <md-icon aria-label="No Template" md-svg-src="<%-get_icon('material/folder')%>"></md-icon>
   <h2 ng-show="templates.length">Choose a template to view a list of items</h2>
   <h2 ng-show="!templates.length">No templates are defined yet. Add one to start editing items.</h2>
 </div>
 
 
 <div layout="column" class="md-padding template-select" layout-align="center" ng-show="template">
-  <md-icon md-svg-src="<%-get_icon('material/insert-drive-file')%>"></md-icon>
+  <md-icon aria-label="No Page" md-svg-src="<%-get_icon('material/insert-drive-file')%>"></md-icon>
   <h2 ng-show="pages.length">Choose a page to start editing</h2>
   <h2 ng-show="!pages.length">No items in template are added yet. Create a new one to start editing.</h2>
 </div>

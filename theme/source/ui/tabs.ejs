@@ -1,5 +1,5 @@
 <div layout="column">
-  <div ng-init="activeSection='<%-page.defaultSection%>'" class="layout-wrap ui-tabs" layout="row" layout-align="start center">
+  <div ng-init="activeSection='<%-locals.default||page.defaultSection%>'" class="layout-wrap ui-tabs" layout="row" layout-align="start center">
     <%for(var section of locals.list){%>
       <md-button class="item" ng-class="{active:activeSection=='<%-section.name%>'}" ng-click="activeSection='<%-section.name%>'">
         <%-lng(section.title)%>

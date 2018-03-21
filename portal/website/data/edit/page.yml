@@ -15,3 +15,16 @@ fields:
     - select
     - date-time
     - relation-belongsTo
+
+tabs:
+  default: list
+  location: edit/content/sidebar
+  list:
+    -
+      title:
+        en: List
+      name: list
+    -
+      title:
+        en: History
+      name: history

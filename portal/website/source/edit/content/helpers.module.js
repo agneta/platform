@@ -18,7 +18,13 @@
 /*global _*/
 /*global moment*/
 
-module.exports = function(vm, $mdToast, $timeout, helpers) {
+module.exports = function(shared) {
+
+  var vm = shared.vm;
+  var $mdToast = shared.$mdToast;
+  var $timeout = shared.$timeout;
+  var $location = shared.$location;
+  var helpers = shared.helpers;
 
   //---------------------------------------
   helpers.checkPages = function(pages){
@@ -33,6 +39,7 @@ module.exports = function(vm, $mdToast, $timeout, helpers) {
           return;
         }
         if(field.type=='date'){
+          value = new Date(value);
           value = moment(value).format('LLLL');
         }
         if(field.type=='media'){
@@ -158,6 +165,35 @@ module.exports = function(vm, $mdToast, $timeout, helpers) {
         childField.options = [
           vm.relations[childField.relation.name]
         ];
+
+        var link = childField.relation.link || {};
+        var query = {};
+
+        if(childField.relation.template){
+
+          link.url = agneta.langPath({
+            path: 'edit/data-remote',
+            query: {
+              id: childValue,
+              template: childField.relation.template
+            }
+          });
+
+        }else{
+
+          query[link.param] = childValue;
+          link.url = agneta.langPath({
+            path: link.path,
+            query: query
+          });
+
+        }
+        console.log(childField);
+
+        childField.link = function(){
+          $location.url(link.url);
+        };
+
         break;
       case 'relation-hasMany':
         childField.options = vm.relations[childField.relation.name];
