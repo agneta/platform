@@ -23,6 +23,10 @@ app.run(function($rootScope, $mdUtil, $timeout) {
     $mdUtil.animateScrollTo(scrollParent, 0, 500);
   };
   $rootScope.scrollTo = function(eID) {
+    var elm = document.getElementById(eID);
+    if(!elm){
+      return;
+    }
     $timeout(function() {
       var position = elmYPosition(eID);
       //console.log(position);

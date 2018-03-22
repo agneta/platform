@@ -126,6 +126,15 @@ app.run(function($rootScope, $route, $timeout, $location, Account, $mdDialog) {
       return;
     }
 
+    // Check if link has an anchor and scroll to that elmYPosition
+
+    var hash = $location.hash();
+    if(hash){
+      $timeout(function(){
+        $rootScope.scrollTo(hash);
+      },300);
+    }
+
     //
 
     var queryString = $location.url().split('?')[1];
