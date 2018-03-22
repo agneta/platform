@@ -63,7 +63,7 @@ module.exports = function(util, dir) {
     })
     .then(function(content) {
       var config = yaml.safeLoad(content);
-      rules = config.libraries;
+      rules = config.libraries || {};
 
       return fs.readdir(dir.modules);
 

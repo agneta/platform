@@ -19,7 +19,6 @@ module.exports = function(Model, app) {
           };
         });
         result.templates = result.templates.concat(templates);
-        console.log('result',result);
         return result;
       });
   };

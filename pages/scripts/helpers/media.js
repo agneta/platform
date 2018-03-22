@@ -86,7 +86,7 @@ module.exports = function(locals) {
     options = options || {};
     page = page || this.page;
 
-    var size = options.size || 'large';
+    var size = options.size || 'extra_large';
 
 
     if (page.cover) {

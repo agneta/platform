@@ -187,7 +187,7 @@ module.exports = function(locals) {
 
   project.extend.helper.register('get_values', function(data) {
     var self = this;
-
+    data = this.get_value(data);
     function scan(obj) {
       for (var key in obj) {
         var value = self.get_value(obj[key]);

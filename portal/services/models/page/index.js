@@ -32,8 +32,6 @@ module.exports = function(Model, app) {
     '_id',
     'id',
     'isSource',
-    'controller',
-    'isSource',
     'pathSource',
     'pathView',
     'pathData',

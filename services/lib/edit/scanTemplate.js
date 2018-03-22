@@ -9,7 +9,6 @@ module.exports = function(app){
   app.edit.scanTemplate = function(options){
 
     var template = options.data;
-    console.log(options);
     function scan(collection) {
 
       for (var key in collection) {
@@ -21,6 +20,12 @@ module.exports = function(app){
         if (_.isString(field)) {
           var name = field;
           field = webHelpers.get_data('edit/fields/' + field);
+          if(!field){
+            return Promise.reject({
+              statusCode: 400,
+              message: `Could not find field from template with name: ${name}`
+            });
+          }
           field.name = name;
         }
 
