@@ -18,14 +18,19 @@ var _ = require('lodash');
 
 module.exports = function(Model, app) {
 
-  var rolesConfig = app.get('roles');
+  var webServices = app.web.services;
+  var rolesConfig = webServices.get('roles');
 
   Model.get = function(req, id) {
 
+    var Account_Web = webServices.$model.get({
+      name: 'Account',
+      isProduction: Model.__isProduction
+    });
     if (req.accessToken.roles.administrator) {
 
-      return Model.__get(id, {
-        include: Model.rolesInclude
+      return Account_Web.__get(id, {
+        include: Account_Web.rolesInclude
       })
         .then(function(account) {
 
@@ -33,8 +38,8 @@ module.exports = function(Model, app) {
 
           //console.log(account);
 
-          var roles = _.pick(account, Model.roleKeys);
-          account = _.omit(account, Model.roleKeys.concat(['password']));
+          var roles = _.pick(account, Account_Web.roleKeys);
+          account = _.omit(account, Account_Web.roleKeys.concat(['password']));
 
           //console.log(roles);
 

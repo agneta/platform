@@ -3,15 +3,10 @@ var fs = require('fs');
 var _ = require('lodash');
 
 module.exports = function(options) {
+
   var dirs = options.dirs;
   var app = options.app;
-
-  function getModel(name) {
-    if (this.__isProduction) {
-      return app.models['Production_' + name];
-    }
-    return app.models[name];
-  }
+  var getModel = options.getModel;
 
   //--------------------------------------------------------
 
@@ -61,11 +56,14 @@ module.exports = function(options) {
       name = map.toLowerCase();
     }
 
-
-
     //--------------------------------
 
-    Model.getModel = getModel;
+    Model.getModel = function(name){
+      return getModel({
+        name: name,
+        model: this
+      });
+    };
 
     dirs.forEach(function(dir) {
 

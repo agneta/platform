@@ -17,7 +17,7 @@
 
 module.exports = function(app) {
 
-  var services = app.get('options').web.services;
+  var services = app.web.services;
 
   services.models.Activity_Feed.on('activity-update', function(feed) {
     app.portal.socket.emit('feed-update:' + feed.id);

@@ -19,7 +19,7 @@ module.exports = function(options){
   var vm = options.vm;
   var AccountList = options.AccountList;
   var $mdDialog = options.$mdDialog;
-  var reloadAccount = reloadAccount;
+  var reloadAccount = options.reloadAccount;
 
   //---------------------------------------------------------
 
@@ -29,7 +29,8 @@ module.exports = function(options){
       partial: 'role-' + roleName,
       data: {
         accountId: vm.viewAccount.id,
-        roleName: roleName
+        roleName: roleName,
+        reloadAccount: reloadAccount
       }
     });
 

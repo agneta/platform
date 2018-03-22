@@ -19,7 +19,7 @@ const express = require('express');
 
 module.exports = function(app) {
 
-  var projectPaths = app.get('options').web.project.paths;
+  var projectPaths = app.web.project.paths;
   let staticMiddleware = express.static(path.join(projectPaths.app.build, 'local'));
   //console.log(path.join(projectPaths.app.build, 'local'));
   return function(req, res, next) {

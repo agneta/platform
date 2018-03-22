@@ -16,11 +16,15 @@
  */
 var _ = require('lodash');
 
-module.exports = function(Model) {
+module.exports = function(Model,app) {
+
+  var webServices = app.web.services;
 
   Model.roles = function(cb) {
 
-    var result = _.map(Model.roleKeys, function(key) {
+    var roles = webServices.models.Account.roleKeys;
+
+    var result = _.map(roles, function(key) {
       return {
         name: key
       };

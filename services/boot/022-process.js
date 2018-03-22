@@ -19,7 +19,7 @@ const pm2 = Promise.promisifyAll(require('pm2'));
 
 module.exports = function(app) {
 
-  if (app.get('options').web) {
+  if (app.web) {
     return;
   }
 

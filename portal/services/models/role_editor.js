@@ -27,7 +27,7 @@ module.exports = function(Model, app) {
 
   Model.io = app.socket.namespace(mediaOptions);
 
-  var web = app.get('options').web;
+  var web = app.web;
 
   Model.contentChange = function(data, req) {
 

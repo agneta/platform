@@ -24,7 +24,7 @@ module.exports = function(options) {
   var req = options.req;
   var data = options.data;
 
-  var web = app.get('options').web;
+  var web = app.web;
 
   if (web) {
     return;

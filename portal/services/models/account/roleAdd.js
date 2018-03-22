@@ -15,11 +15,18 @@
  *   limitations under the License.
  */
 
-module.exports = function(Model) {
+module.exports = function(Model,app) {
+
+  var webServices = app.web.services;
 
   Model.roleAdd = function(id, name) {
 
-    return Model._roleAdd(id, name);
+    var Account_Web = webServices.$model.get({
+      name: 'Account',
+      isProduction: Model.__isProduction
+    });
+
+    return Account_Web._roleAdd(id, name);
 
   };
 

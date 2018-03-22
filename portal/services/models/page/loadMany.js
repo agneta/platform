@@ -18,7 +18,7 @@ var Promise = require('bluebird');
 
 module.exports = function(Model, app) {
 
-  var webPrj = app.get('options').web.project;
+  var webPrj = app.web.project;
 
 
   Model.loadMany = function(template, req) {

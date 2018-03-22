@@ -15,11 +15,18 @@
  *   limitations under the License.
  */
 
-module.exports = function(Model) {
+module.exports = function(Model, app) {
+
+  var webServices = app.web.services;
 
   Model.roleRemove = function(id, name) {
 
-    return Model.__get(id)
+    var Account_Web = webServices.$model.get({
+      name: 'Account',
+      isProduction: Model.__isProduction
+    });
+
+    return Account_Web.__get(id)
       .then(function(account) {
 
         var RoleModel = getRoleModel(account, name);
@@ -49,6 +56,18 @@ module.exports = function(Model) {
         };
       });
 
+    function getRoleModel(account, name) {
+
+      var role = Account_Web.roleOptions[name];
+
+      if (!role) {
+        throw new Error('No role found: ' + name);
+      }
+
+      return Account_Web.getModel(role.model);
+
+    }
+
   };
 
   Model.remoteMethod(
@@ -74,17 +93,5 @@ module.exports = function(Model) {
       }
     }
   );
-
-  function getRoleModel(account, name) {
-
-    var role = Model.roleOptions[name];
-
-    if (!role) {
-      throw new Error('No role found: ' + name);
-    }
-
-    return Model.getModel(role.model);
-
-  }
 
 };

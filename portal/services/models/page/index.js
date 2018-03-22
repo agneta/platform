@@ -42,7 +42,7 @@ module.exports = function(Model, app) {
     'full_source'
   ];
 
-  var webPrj = app.get('options').web.project;
+  var webPrj = app.web.project;
 
   Model.editConfigDir = path.join(webPrj.paths.core.project, 'edit', 'pages');
   fs.ensureDirSync(Model.editConfigDir);

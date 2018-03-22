@@ -16,7 +16,7 @@
  */
 module.exports = function(app) {
 
-  var pages = app.get('options').web;
+  var pages = app.web;
 
   return function(req, res, next) {
 

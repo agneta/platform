@@ -3,7 +3,7 @@ const string = require('string');
 module.exports = function(Model, app) {
 
   var loadTemplates = require('../edit/loadTemplates')(Model,app);
-  var project = app.get('options').web.project;
+  var project = app.web.project;
 
   Model.loadTemplates = function(req){
     return loadTemplates(req)

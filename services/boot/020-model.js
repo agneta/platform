@@ -37,21 +37,23 @@ module.exports = function(app) {
   dirs = _.uniq(dirs);
   //console.log('dirs',dirs);
 
-  var options = {
+  var shared = {
     dirs: dirs,
-    app: app
+    app: app,
+    getModel: require('./model/get')(app)
   };
 
   //--------------------------------------------------------
-  var remotes = require('./model/remotes')(options);
+  var remotes = require('./model/remotes')(shared);
 
   remotes(
     _.keys(app.models)
   );
 
   app.$model = {
-    getByFile: require('./model/getByFile')(options),
-    remotes: remotes
+    getByFile: require('./model/getByFile')(shared),
+    remotes: remotes,
+    get: shared.getModel
   };
 
 };

@@ -38,7 +38,11 @@ module.exports = function(Model, app) {
         var role = Model.roleOptions[name];
 
         if (!role) {
-          throw new Error('No role found: ' + name);
+          return Promise.reject({
+            statusCode: 400,
+            code: 'NOT_FOUND',
+            message: 'No role found: ' + name
+          });
         }
 
         var RoleModel = Model.getModel(role.model);
@@ -69,7 +73,7 @@ module.exports = function(Model, app) {
         }
 
         return {
-          success: message,
+          message: message,
           account: account,
           role: role
         };

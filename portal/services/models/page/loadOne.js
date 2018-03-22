@@ -23,7 +23,7 @@ module.exports = function(Model, app) {
 
   var source;
   var template;
-  var clientHelpers = app.get('options').web.app.locals;
+  var clientHelpers = app.web.app.locals;
 
   Model.loadOne = function(id, req) {
 

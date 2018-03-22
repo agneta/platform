@@ -19,7 +19,7 @@ var path = require('path');
 
 module.exports = function(Model, app) {
 
-  var web = app.get('options').web;
+  var web = app.web;
   var webPrj = web.project;
 
   Model.save = function(id, data, req) {

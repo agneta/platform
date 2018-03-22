@@ -23,7 +23,7 @@ var readFile = Promise.promisify(fs.readFile);
 
 module.exports = function(Model, app) {
 
-  var webProject = app.get('options').web.project;
+  var webProject = app.web.project;
 
   Model.loadMany = function(template, req) {
 

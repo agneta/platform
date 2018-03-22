@@ -146,9 +146,11 @@ app.factory('$exceptionHandler', function() {
 //---------------------------------------------------------------
 
 
-app.config(function($mdThemingProvider, $sceDelegateProvider, $qProvider) {
+app.config(function($mdThemingProvider, $sceDelegateProvider) {
 
-  $qProvider.errorOnUnhandledRejections(false);
+  // Not using this because it does not display errors in promise chains
+  //$qProvider.errorOnUnhandledRejections(false);
+
   var trustList = [
     'self',
     agneta.services.url + '/**',

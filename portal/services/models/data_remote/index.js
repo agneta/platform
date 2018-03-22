@@ -18,7 +18,7 @@ var path = require('path');
 
 module.exports = function(Model, app) {
 
-  var webPrj = app.get('options').web.project;
+  var webPrj = app.web.project;
 
   Model.editConfigDir = path.join(webPrj.paths.core.project, 'edit', 'data-remote');
 
