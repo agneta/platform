@@ -1,3 +1,4 @@
-<md-checkbox class="md-primary <%-field.class%>" ng-model="<%-field.model%>" aria-label="<%-lng(field.title)%>">
+<md-checkbox name="<%-field.name%>" class="md-primary <%-field.class%>" ng-model="<%-field.model%>" aria-label="<%-lng(field.title)%>" <%-formValidators(field)%>>
     <%-lng(field.title)%>
 </md-checkbox>
+<%-template('form/messages')%>
