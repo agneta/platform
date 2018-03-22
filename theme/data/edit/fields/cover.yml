@@ -1,5 +1,6 @@
+name: cover
+icon: material/photo
 title:
   en: 'Cover'
-type: 'media-value'
-valueType: 'object'
-default_name: 'cover'
+extend: 'media'
+content_type: 'image'

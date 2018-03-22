@@ -15,32 +15,27 @@
  *   limitations under the License.
  */
 
-module.exports = function(template) {
-
-  var fields = [{
-    name: 'title',
-    validators: {
-      required: true
-    },
-    title: {
-      en: 'Title',
-      gr: 'Τίτλος'
-    },
-    type: 'text-single'
+module.exports = [{
+  name: 'title',
+  validators: {
+    required: true
   },
-  {
-    name: 'description',
-    validators: {
-      required: true
-    },
-    title: {
-      en: 'Description',
-      gr: 'Περιγραφή'
-    },
-    type: 'text'
+  title: {
+    en: 'Title',
+    gr: 'Τίτλος'
   },
-  'cover'
-  ];
-
-  template.fields = [].concat(fields, template.fields);
-};
+  type: 'text-single'
+},
+{
+  name: 'description',
+  validators: {
+    required: true
+  },
+  title: {
+    en: 'Description',
+    gr: 'Περιγραφή'
+  },
+  type: 'text'
+},
+'cover'
+];

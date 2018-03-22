@@ -27,91 +27,94 @@ module.exports = function(app, data) {
     indexes: {}
   };
 
-  var template = app.edit.loadTemplate({
+  return app.edit.loadTemplate({
     data: data
-  });
+  })
+    .then(function(template) {
 
-  for(var field of template.fields){
+      for (var field of template.fields) {
 
-    var type = field.valueType || field.type;
-    var relation = field.relation;
+        var type = field.valueType || field.type;
+        var relation = field.relation;
 
-    switch (field.type) {
-      case 'number':
-        type = 'number';
-        break;
-    }
-
-
-    switch (type) {
-      case 'array':
-        if(field.fields){
-          type = ['object'];
+        switch (field.type) {
+          case 'number':
+            type = 'number';
+            break;
         }
-        break;
-      case 'value':
-        type = field.valueType || 'string';
-        break;
-      case 'select':
-        type = 'string';
-        break;
-      case 'text':
-      case 'text-rich':
-        type = 'object';
-        break;
-      case 'date-time':
-        type = 'date';
-        break;
-      case 'relation-hasMany':
-      case 'relation-belongsTo':
 
-        var relationName = relation.template || relation.name;
-        if(!relation){
-          throw new Error(`Field (${field.name}) needs to have a relation object defined`);
+
+        switch (type) {
+          case 'array':
+            if (field.fields) {
+              type = ['object'];
+            }
+            break;
+          case 'value':
+            type = field.valueType || 'string';
+            break;
+          case 'select':
+            type = 'string';
+            break;
+          case 'text':
+          case 'text-rich':
+            type = 'object';
+            break;
+          case 'date-time':
+            type = 'date';
+            break;
+          case 'relation-hasMany':
+          case 'relation-belongsTo':
+
+            var relationName = relation.template || relation.name;
+            if (!relation) {
+              throw new Error(`Field (${field.name}) needs to have a relation object defined`);
+            }
+            if (!relation.model) {
+              throw new Error(`Field (${field.name}) needs to have a relation model defined`);
+            }
+            if (!relationName) {
+              throw new Error(`Field (${field.name}) needs to have a relation name`);
+            }
+            var options = {
+              model: relation.model,
+              type: type.split('-')[1]
+            };
+
+            switch (options.type) {
+              case 'belongsTo':
+                options.foreignKey = field.name;
+                result.properties[field.name] = {
+                  type: 'string'
+                };
+                break;
+              case 'hasMany':
+                if (!relation.foreignKey) {
+                  throw new Error(`Field (${field.name}) needs to have a foreignKey defined for a hasMany relation`);
+                }
+                options.foreignKey = relation.foreignKey;
+                type = 'array';
+                break;
+            }
+
+            result.relations[relationName] = options;
+            continue;
         }
-        if(!relation.model){
-          throw new Error(`Field (${field.name}) needs to have a relation model defined`);
-        }
-        if(!relationName){
-          throw new Error(`Field (${field.name}) needs to have a relation name`);
-        }
-        var options = {
-          model: relation.model,
-          type: type.split('-')[1]
+
+        var property = {
+          type: type
         };
 
-        switch(options.type){
-          case 'belongsTo':
-            options.foreignKey = field.name;
-            result.properties[field.name] = {
-              type: 'string'
-            };
-            break;
-          case 'hasMany':
-            if(!relation.foreignKey){
-              throw new Error(`Field (${field.name}) needs to have a foreignKey defined for a hasMany relation`);
-            }
-            options.foreignKey = relation.foreignKey;
-            type = 'array';
-            break;
+        if (field.validators && field.validators.required) {
+          property.required = true;
         }
 
-        result.relations[relationName] = options;
-        continue;
-    }
+        result.properties[field.name] = property;
+      }
 
-    var property = {
-      type: type
-    };
+      result.acls = template.acls;
 
-    if(field.validators && field.validators.required){
-      property.required = true;
-    }
+      return result;
+    });
 
-    result.properties[field.name] = property;
-  }
-
-  result.acls = template.acls;
-
-  return result;
 };

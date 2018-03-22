@@ -58,14 +58,17 @@ module.exports = function(Model, app) {
       })
       .then(function(exists) {
         if(!exists){
-          return {
-
-          };
+          return app.edit.loadTemplate({
+            req: req,
+            data: {
+              fields: templateBase
+            }
+          });
         }
         return app.edit.loadTemplate({
           path: templatePath,
-          req: req,
-          app: app
+          base: templateBase,
+          req: req
         });
 
       })
@@ -73,7 +76,6 @@ module.exports = function(Model, app) {
 
         template = _template;
         template.id = page.template;
-        templateBase(template);
 
         return fs.readFile(source);
       })

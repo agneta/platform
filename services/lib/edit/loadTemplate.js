@@ -16,88 +16,38 @@
  */
 const fs = require('fs-extra');
 const yaml = require('js-yaml');
-const _ = require('lodash');
 const path = require('path');
-
+const _ = require('lodash');
 module.exports = function(app) {
 
-  app.edit.loadTemplate = function(options){
+  app.edit.loadTemplate = function(options) {
 
-    var web = app.get('options');
-    web = web.web || web.client;
-    var webHelpers = web.app.locals;
+    options = _.cloneDeep(options);
 
-    if(options.path){
+    return Promise.resolve()
+      .then(function() {
 
-      return fs.readFile(options.path)
-        .then(function(content) {
-          var template = yaml.safeLoad(content);
-          template.id = template.id || path.parse(options.path).name;
-
-          template = scanTemplate(template);
-          return template;
-        });
-    }
-
-    if(options.data){
-      return scanTemplate(options.data);
-    }
-
-    function scanTemplate(template){
-      function scan(collection) {
-
-        for (var key in collection) {
-          collection[key] = getField(collection[key]);
+        if (options.path) {
+          return fs.readFile(options.path)
+            .then(function(content) {
+              var template = yaml.safeLoad(content);
+              template.id = template.id || path.parse(options.path).name;
+              options.data = template;
+            });
         }
 
-        function getField(field) {
+      })
+      .then(function() {
 
-          if (_.isString(field)) {
-            var name = field;
-            field = webHelpers.get_data('edit/fields/' + field);
-            field.name = name;
-          }
-
-          if (_.isObject(field)) {
-            if (field.extend) {
-              _.defaults(field, getField(field.extend));
-              field.name = field.name || field.extend;
-              delete field.extend;
-            }
-          }
-
-          if (field.fields) {
-            scan(field.fields);
-          }
-
-          return field;
+        if (options.base) {
+          options.data.fields = options.base.concat(options.data.fields);
         }
 
-      }
+        return app.edit.scanTemplate(options);
 
-      scan(template.fields);
-
-      if(options.req){
-        template.title = app.lng(template.title, options.req);
-      }
-
-      template.fieldNames = _.map(template.fields,
-        function(field){
-          return field.name;
-        });
-
-      var relations = [];
-      template.fields.forEach(function(field){
-        var relation = field.relation;
-        if(relation){
-          relation.name = relation.name || relation.template;
-          relations.push(relation);
-        }
       });
-      template.relations = relations;
 
-      return template;
-    }
+
   };
 
 };

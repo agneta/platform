@@ -25,6 +25,7 @@ module.exports = function(app, config) {
   var dataDir = path.join(
     process.cwd(), 'edit/data-remote'
   );
+  var data;
 
   app.dataRemote = {};
 
@@ -43,10 +44,12 @@ module.exports = function(app, config) {
         )
           .then(function(content) {
 
-            var data = yaml.safeLoad(content);
+            data = yaml.safeLoad(content);
             data.name = data.name || path.parse(filePath).name;
 
-            let definition = dataDefinition(app,data);
+            return dataDefinition(app,data);
+          })
+          .then(function(definition){
             let fileName = data.model.toLowerCase() + '.json';
 
             app.dataRemote[data.name] = {
