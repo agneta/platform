@@ -1,7 +1,7 @@
-<div layout="column">
+<div ag-tabs layout="column">
   <div ng-init="activeSection='<%-locals.default||page.defaultSection%>'" class="layout-wrap ui-tabs" layout="row" layout-align="start center">
     <%for(var section of locals.list){%>
-      <md-button class="item" ng-class="{active:activeSection=='<%-section.name%>'}" ng-click="activeSection='<%-section.name%>'">
+      <md-button class="item" ng-class="{active:activeSection=='<%-section.name%>'}" ng-click="select('<%-section.name%>')">
         <%-lng(section.title)%>
       </md-button>
       <%}%>
@@ -9,9 +9,9 @@
 
   <div>
     <%for(var section of locals.list){%>
-      <div ng-show="activeSection=='<%-section.name%>'">
+      <script type="text/ng-template" id="ui-tab-<%-section.name%>.html">
         <%-template(path.join(locals.location,section.name))%>
-      </div>
+      </script>
       <%}%>
   </div>
 </div>

@@ -24,6 +24,9 @@ module.exports = function(locals) {
       page: data
     });
 
+    data.__scripts = data.scripts || [];
+    data.__styles = data.styles || [];
+
     var body = locals.app.locals.template('page', data_render);
     data_render.body = body;
 

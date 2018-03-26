@@ -25,8 +25,8 @@ module.exports = function(locals) {
   function layoutResource(filePath, config) {
 
     filePath = filePath || this.page.template;
-    filePath = filePath + config.extOut;
-    var stat = this.has_file(filePath);
+    var testFilePath = filePath + config.extOut;
+    var stat = this.has_file(testFilePath);
 
     if (stat) {
       return filePath;

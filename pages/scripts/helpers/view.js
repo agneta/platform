@@ -59,9 +59,10 @@ module.exports = function(locals) {
 
     var data = {};
     page = page || this.page;
+    page = this.get_page(page.pathSource);
 
     data.title = this.get_title(page);
-    data.path = page.pathSource;
+    data.path = page.path;
     data.parentPath = page.parentPath;
     data.scripts = [];
     data.styles = [];
@@ -72,7 +73,7 @@ module.exports = function(locals) {
     //----------------------------------------
 
     data.layoutClass = [
-      'page-' + page.templateSource.split('/')
+      'page-' + page.template.split('/')
         .join('-')
     ];
     if (page.class) {
@@ -82,13 +83,7 @@ module.exports = function(locals) {
 
     //----------------------------------------------------
 
-    var templateStyle = this.layout_style(page.templateSource);
-
-    if (templateStyle) {
-      data.styles.push(templateStyle);
-    }
-
-    var sourceStyle = this.layout_style(page.pathSource);
+    var sourceStyle = this.layout_style(page.path);
 
     if (sourceStyle) {
       data.styles.push(sourceStyle);
@@ -96,13 +91,7 @@ module.exports = function(locals) {
 
     //----------------------------------------
 
-    var templateScript = this.layout_script(page.templateSource);
-
-    if (templateScript) {
-      data.scripts.push(templateScript);
-    }
-
-    var sourceScript = this.layout_script(page.pathSource);
+    var sourceScript = this.layout_script(page.path);
 
     if (sourceScript) {
       data.scripts.push(sourceScript);
@@ -144,7 +133,11 @@ module.exports = function(locals) {
   });
 
   function getData(page) {
+
     var data = helpers.viewBasicData(page);
+    if(page.pathSource){
+      page = helpers.get_page(page.pathSource);
+    }
 
     var config = helpers.config;
     var self = helpers;
@@ -178,7 +171,7 @@ module.exports = function(locals) {
     var tmpDependencies = [];
     data.dependencies = [];
 
-    data.scripts = data.scripts.concat(page.scripts);
+    data.scripts = data.scripts.concat(page.__scripts||page.scripts);
     data.scripts.map(function(script){
       if(!script){
         return;
@@ -188,7 +181,7 @@ module.exports = function(locals) {
       }
     });
 
-    data.styles = data.styles.concat(page.styles);
+    data.styles = data.styles.concat(page.__styles||page.styles);
 
     setAssets(data.scripts, 'js');
     setAssets(data.styles, 'css');
