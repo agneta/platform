@@ -15,7 +15,6 @@
  *   limitations under the License.
  */
 (function() {
-
   var app = angular.module('MainApp');
 
   app.service('Portal', function(SocketIO) {
@@ -24,7 +23,6 @@
     this.socket = socket;
     socket.media = SocketIO.connect('media');
     socket.editor = SocketIO.connect('editor');
-
   });
 
   app.run(function($rootScope, $mdToast, Portal) {

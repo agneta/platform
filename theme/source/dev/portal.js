@@ -18,7 +18,6 @@
 var app = window.angular.module('MainApp');
 
 app.service('Portal', function(SocketIO) {
-
   var socket = SocketIO.connect('portal');
   this.socket = socket;
   socket.editor = SocketIO.connect('editor');
@@ -31,7 +30,7 @@ app.run(function(Portal, $rootScope, $route, $timeout, $location) {
     if (!data) {
       return;
     }
-    console.log(data);
+    //console.log(data);
     if (data.global || data.type=='style') {
       window.location.href = $location.url();
       return;

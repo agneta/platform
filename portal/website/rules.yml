@@ -66,6 +66,7 @@
   data:
     angular_libs:
       -
+        priority: 0
         js: 'lib/ng-file-upload.min'
         dep: 'ngFileUpload'
     scripts:

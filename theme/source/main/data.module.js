@@ -77,47 +77,55 @@ app.run(function(
 
         function loadPriority() {
 
-          var priority = dependencies[priorityIndex];
-
-          if (!priority) {
-            return;
-          }
-
-          priorityIndex++;
-
           return $q(function(resolve) {
-
-            var options = {
-              name: 'MainApp',
-              files: priority
-            };
-
-            switch(agneta.env){
-              case 'development':
-                options.cache = false;
-                break;
-            }
-
-            if (priority.length) {
-              $ocLazyLoad.load([options]).then(resolve);
-
-            } else {
-              resolve();
-            }
-
+            resolve();
           })
-            .then(loadPriority);
+            .then(function() {
+
+              var priority = dependencies[priorityIndex];
+
+              if (!priority) {
+                return;
+              }
+
+              priorityIndex++;
+
+              return $q(function(resolve) {
+
+                var options = {
+                  name: 'MainApp',
+                  files: priority
+                };
+
+                switch(agneta.env){
+                  case 'development':
+                    options.cache = false;
+                    break;
+                }
+
+                if (priority.length) {
+                  $ocLazyLoad.load([options]).then(resolve);
+
+                } else {
+                  resolve();
+                }
+
+              })
+                .then(loadPriority);
+            });
 
         }
 
         //----------------------------------------------
         // Load angular modules
 
-        if (data.inject && data.inject.length) {
-          $ocLazyLoad.inject(data.inject);
-        }
 
-        return loadPriority();
+        return loadPriority()
+          .then(function(){
+            if (data.inject && data.inject.length) {
+              $ocLazyLoad.inject(data.inject);
+            }
+          });
 
 
       })

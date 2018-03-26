@@ -2,7 +2,7 @@
     <md-list>
         <div ng-repeat="activity in activities" ng-init="action=activity.action">
             <md-list-item class="activity" layout="row" layout-align="start center">
-              <md-icon ng-if="action.icon" md-svg-src="{{get_icon(action.icon)}}">
+              <md-icon aria-label="action icon" ng-if="action.icon" md-svg-src="{{get_icon(action.icon)}}">
               </md-icon>
             <div layout="column">
               <h4>

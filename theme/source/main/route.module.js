@@ -105,12 +105,14 @@ app.run(function($rootScope, $route, $timeout, $location, Account, $mdDialog) {
       return;
     }
 
+    console.log(rejection);
+
     $mdDialog.open({
       partial: 'error',
       nested: true,
       data: {
         title: 'Unable to load page',
-        content: 'The location provided could not load'
+        content: 'The location provided could not load\nReason: '+rejection.message
       }
     });
 

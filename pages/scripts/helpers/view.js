@@ -165,7 +165,10 @@ module.exports = function(locals) {
 
     if (page.angular_libs) {
       data.inject = _.map(page.angular_libs, function(value) {
-        data.scripts.push(value.js);
+        data.scripts.push({
+          path:value.js||value.path,
+          priority:10
+        });
         return value.dep;
       });
     }

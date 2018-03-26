@@ -27,7 +27,8 @@ window.require = function(name){
 
 <script src="<%-get_asset('generated/lib.min.js')%>" type="text/javascript"></script>
 <script src="<%-get_asset('generated/app.js')%>" type="text/javascript"></script>
-
-<%if (!site.building) {%>
+<%
+// Do not use for portal since this is for the app being developed.
+if (!site.building && site.portal) {%>
   <script src="<%-get_asset('dev.js')%>" type="text/javascript"></script>
 <%}%>

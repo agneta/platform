@@ -5,7 +5,7 @@
     <md-button aria-label="Search Account" class="md-icon-button" ng-click="search.query()">
       <md-icon md-svg-src="<%-get_icon('material/search')%>"></md-icon>
     </md-button>
-    <md-button ng-show="search.active" class="md-icon-button" ng-click="search.clear()">
+    <md-button aria-label="Clear search" ng-show="search.active" class="md-icon-button" ng-click="search.clear()">
       <md-icon md-svg-src="<%-get_icon('material/close')%>"></md-icon>
     </md-button>
   </div>
