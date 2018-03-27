@@ -109,7 +109,7 @@ module.exports = function(locals) {
   //----------------------------------------------------------------------
 
   project.extend.helper.register('full_path', function(path_request) {
-    console.log(project.site.url_web, path_request);
+    //console.log(project.site.url_web, path_request);
     return urljoin(project.site.url_web, path_request);
   });
 

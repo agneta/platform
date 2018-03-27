@@ -53,7 +53,7 @@
             .then(function(result) {
               vm.activities = result.activities;
             });
-
+          vm.$broadcast('account-loaded',account);
           vm.ssh.load();
           vm.tokens.load();
           vm.ip.load();

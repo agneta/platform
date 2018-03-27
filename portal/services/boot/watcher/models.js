@@ -27,7 +27,6 @@ module.exports = function(watcher) {
 
     switch (params.ext) {
       case '.js':
-        console.log(pathFile);
         return Promise.resolve()
           .then(function() {
             return app.$model.getByFile(pathFile);
@@ -37,8 +36,6 @@ module.exports = function(watcher) {
             if (!model) {
               return;
             }
-
-            console.log('found model', model.definition.name);
 
             delete require.cache[require.resolve(pathFile)];
 

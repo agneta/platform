@@ -165,7 +165,6 @@ module.exports = function(locals) {
 
     var tmpDependencies = [];
     data.dependencies = [];
-    console.log(commonData);
     data.scripts = data.scripts.concat(page.scripts).concat(commonData.scripts);
     data.scripts.map(function(script){
       if(!script){

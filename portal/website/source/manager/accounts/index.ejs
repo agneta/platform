@@ -11,11 +11,9 @@ tabs = tabs.concat(page.sections);
   <md-button class="md-raised" ng-click="activateAccount()">Activate</md-button>
 </div>
 
-<div ng-show="viewAccount">
-  <div layout="column">
+<div class="account-view frame ag-margin md-padding" ng-show="viewAccount" layout="column">
     <%-template('manager/accounts/overview')%>
     <%-template('ui/tabs',{list:tabs})%>
-  </div>
 </div>
 
 <%-template('manager/accounts/empty')%>

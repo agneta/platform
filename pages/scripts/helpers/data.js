@@ -28,7 +28,10 @@ module.exports = function(locals) {
 
     var key = page.pathSource || page.path;
     var data = commonData[key] || (commonData[key] = {});
-
+    _.defaults(data,{
+      scripts: [],
+      styles: []
+    });
     return data;
   });
 
