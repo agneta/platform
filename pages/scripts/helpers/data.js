@@ -22,6 +22,15 @@ var yaml = require('js-yaml');
 module.exports = function(locals) {
 
   var project = locals.project;
+  var commonData = {};
+
+  project.extend.helper.register('commonData', function(page) {
+
+    var key = page.pathSource || page.path;
+    var data = commonData[key] || (commonData[key] = {});
+
+    return data;
+  });
 
   project.extend.helper.register('get_data', function(pathReq) {
 

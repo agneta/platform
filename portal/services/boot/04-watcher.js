@@ -16,7 +16,6 @@
  */
 const chokidar = require('chokidar');
 const Promise = require('bluebird');
-const path = require('path');
 const _ = require('lodash');
 module.exports = function(app) {
 
@@ -64,10 +63,10 @@ module.exports = function(app) {
     });
     watch({
       dirs: _.uniq([
-        path.join(project.paths.portal.services, 'models'),
-        path.join(project.paths.core.services, 'models'),
-        path.join(project.paths.app.models),
-        path.join(project.paths.appPortal.models)
+        project.paths.portal.models,
+        project.paths.core.models,
+        project.paths.app.models,
+        project.paths.appPortal.models
       ]),
       onFile: require('./watcher/models')(options)
     });
@@ -82,7 +81,8 @@ module.exports = function(app) {
     watch({
       dirs: [
         project.paths.app.source,
-        project.paths.theme.source
+        project.paths.theme.source,
+        project.paths.appPortal.source
       ],
       onFile: require('./watcher/source')(options)
     });

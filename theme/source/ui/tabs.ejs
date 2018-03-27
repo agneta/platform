@@ -1,17 +1,35 @@
+<%
+  var templates = locals.list.map(function(section){
+    var templatePath = section.template;
+    if(locals.location && section.name){
+      templatePath = path.join(locals.location,section.name);
+    }
+    if(!templatePath){
+      throw new Error(`Cannot get template path from tab item: ${lng(section.title)}`);
+    }
+    section.path = templatePath;
+    section.name = section.name || path.parse(templatePath).name;
+
+    return section;
+  })
+%>
+
 <div ag-tabs layout="column">
   <div ng-init="activeSection='<%-locals.default||page.defaultSection%>'" class="layout-wrap ui-tabs" layout="row" layout-align="start center">
-    <%for(var section of locals.list){%>
+    <%for(var section of templates){%>
       <md-button class="item" ng-class="{active:activeSection=='<%-section.name%>'}" ng-click="select('<%-section.name%>')">
         <%-lng(section.title)%>
       </md-button>
       <%}%>
   </div>
 
-  <div>
-    <%for(var section of locals.list){%>
+  <div ng-include="'ui-tab-'+activeSection+'.html'">
+  </div>
+
+    <%for(var section of templates){
+      %>
       <script type="text/ng-template" id="ui-tab-<%-section.name%>.html">
-        <%-template(path.join(locals.location,section.name))%>
+        <%-template(section.path)%>
       </script>
       <%}%>
-  </div>
 </div>

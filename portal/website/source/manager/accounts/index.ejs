@@ -1,3 +1,8 @@
+<%
+var tabs = get_data('account/tabs') || [];
+tabs = tabs.concat(page.sections);
+%>
+
 <%-template('manager/accounts/toolbar')%>
 
 <div ng-if="viewAccount.deactivated" class="action-warn" layout="row" layout-align="start center">
@@ -9,7 +14,7 @@
 <div ng-show="viewAccount">
   <div layout="column">
     <%-template('manager/accounts/overview')%>
-    <%-template('ui/tabs',{list:page.sections,location:'manager/accounts'})%>
+    <%-template('ui/tabs',{list:tabs})%>
   </div>
 </div>
 

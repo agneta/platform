@@ -29,55 +29,39 @@ module.exports = function(locals) {
 
   function preInit() {
 
-    var themeConfig;
-    var websiteConfig;
+    var configDirs = [
+      project.paths.theme.base,
+      project.paths.app.website
+    ];
 
-    return fs.readFile(
-      path.join(project.paths.theme.base, 'config.yml'),
-      'utf8'
-    )
-      .then(function(content) {
+    if(locals.web){
+      configDirs.push(locals.web.project.paths.appPortal.website);
+    }
 
-        themeConfig = yaml.safeLoad(content);
 
-        return fs.readFile(
-          path.join(project.paths.app.website, 'config.yml'),
-          'utf8'
-        );
-      })
-      .then(function(content) {
+    return Promise.each(configDirs,function(dir){
 
-        websiteConfig = yaml.safeLoad(content);
+      var configPath = path.join(dir,'config.yml');
 
-        // Get some configurations in the portal from the project
-        if(locals.web){
-          return fs.readFile(
-            path.join(locals.web.project.paths.app.website, 'config.yml'),
-            'utf8'
-          )
+      return fs.exists(configPath)
+        .then(function(exists) {
+          if(!exists){
+            return;
+          }
+          return fs.readFile(configPath)
             .then(function(content) {
-              var projectConfig = yaml.safeLoad(content);
-              projectConfig = _.pick(projectConfig,['languages']);
-              _.extend(websiteConfig, projectConfig);
+              var config = yaml.safeLoad(content);
+              project.config = _.mergeWith(project.config, config,
+                function(objValue, srcValue) {
+                  if (_.isArray(objValue)) {
+                    return _.union(objValue, srcValue);
+                  }
+                });
+
             });
-        }
+        });
 
-      })
-      .then(function() {
-
-        _.extend(project.config, merge(websiteConfig));
-        function merge(config) {
-
-          return _.mergeWith(themeConfig, config,
-            function(objValue, srcValue) {
-              if (_.isArray(objValue)) {
-                return _.union(objValue, srcValue);
-              }
-            });
-
-        }
-
-      });
+    });
 
   }
 

@@ -59,10 +59,9 @@ module.exports = function(locals) {
 
     var data = {};
     page = page || this.page;
-    page = this.get_page(page.pathSource);
 
     data.title = this.get_title(page);
-    data.path = page.path;
+    data.path = page.pathSource;
     data.parentPath = page.parentPath;
     data.scripts = [];
     data.styles = [];
@@ -73,7 +72,7 @@ module.exports = function(locals) {
     //----------------------------------------
 
     data.layoutClass = [
-      'page-' + page.template.split('/')
+      'page-' + page.templateSource.split('/')
         .join('-')
     ];
     if (page.class) {
@@ -83,7 +82,7 @@ module.exports = function(locals) {
 
     //----------------------------------------------------
 
-    var sourceStyle = this.layout_style(page.path);
+    var sourceStyle = this.layout_style(page.pathSource);
 
     if (sourceStyle) {
       data.styles.push(sourceStyle);
@@ -91,7 +90,7 @@ module.exports = function(locals) {
 
     //----------------------------------------
 
-    var sourceScript = this.layout_script(page.path);
+    var sourceScript = this.layout_script(page.pathSource);
 
     if (sourceScript) {
       data.scripts.push(sourceScript);
@@ -124,7 +123,6 @@ module.exports = function(locals) {
 
   });
 
-
   project.extend.helper.register('viewData', function(page) {
 
     page = page || this.page;
@@ -135,10 +133,7 @@ module.exports = function(locals) {
   function getData(page) {
 
     var data = helpers.viewBasicData(page);
-    if(page.pathSource){
-      page = helpers.get_page(page.pathSource);
-    }
-
+    var commonData = helpers.commonData(page);
     var config = helpers.config;
     var self = helpers;
 
@@ -170,8 +165,8 @@ module.exports = function(locals) {
 
     var tmpDependencies = [];
     data.dependencies = [];
-
-    data.scripts = data.scripts.concat(page.__scripts||page.scripts);
+    console.log(commonData);
+    data.scripts = data.scripts.concat(page.scripts).concat(commonData.scripts);
     data.scripts.map(function(script){
       if(!script){
         return;
@@ -181,7 +176,7 @@ module.exports = function(locals) {
       }
     });
 
-    data.styles = data.styles.concat(page.__styles||page.styles);
+    data.styles = data.styles.concat(page.styles).concat(commonData.styles);
 
     setAssets(data.scripts, 'js');
     setAssets(data.styles, 'css');

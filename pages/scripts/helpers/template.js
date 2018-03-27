@@ -47,6 +47,7 @@ module.exports = function(locals) {
 
     var content;
     var memCache = locals.cache.templates;
+    var self = this;
 
     if (cache) {
 
@@ -76,27 +77,29 @@ module.exports = function(locals) {
       //console.log('cache', memCache.length, memCache.itemCount);
     }
 
-    var page = this.page;
-    if(page.pathSource){
-      page = this.get_page(page.pathSource);
-    }
+    (function(){
 
-    if(page){
-      var templateStyle = this.layout_style(path_partial);
+      var page = self.page;
+      if(!page){
+        return;
+      }
 
+      var commonData = self.commonData(page);
+
+      var templateStyle = self.layout_style(path_partial);
       if (templateStyle) {
-        page.__styles.push(templateStyle);
+        commonData.styles.push(templateStyle);
       }
 
-      var templateScript = this.layout_script(path_partial);
-
+      var templateScript = self.layout_script(path_partial);
       if (templateScript) {
-        page.__scripts.push(templateScript);
+        commonData.scripts.push(templateScript);
       }
-      page.__scripts = _.uniq(page.__scripts);
-      page.__styles = _.uniq(page.__styles);
-      page.save();
-    }
+
+      commonData.scripts = _.uniq(commonData.scripts);
+      commonData.styles = _.uniq(commonData.styles);
+    })();
+
 
     return content;
   });

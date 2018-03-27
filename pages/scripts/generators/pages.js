@@ -32,7 +32,8 @@ module.exports = function(locals) {
 
     var pageDirs = [
       project.paths.theme.source,
-      project.paths.app.source
+      project.paths.app.source,
+      project.paths.appPortal.source
     ];
 
     var result = {};
@@ -40,7 +41,7 @@ module.exports = function(locals) {
     return Promise.resolve()
       .then(function() {
         return Promise.map(pageDirs, function(dir) {
-
+          
           var walker = klaw(dir);
           var paths = [];
 

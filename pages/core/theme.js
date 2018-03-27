@@ -37,11 +37,10 @@ module.exports = function(locals) {
   }
 
   filePaths.push(project.paths.theme.base);
-
   //--------------------------------------------------
 
   project.theme = {
-
+    dirs: filePaths,
     readDir: function(base) {
 
       var dirs = filePaths.map(function(dir){
