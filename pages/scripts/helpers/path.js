@@ -54,7 +54,6 @@ module.exports = function(locals) {
     if (parsed.search) {
       page_path += parsed.search;
     }
-
     var data = project.site.pages.findOne({
       path: page_path_search
     });

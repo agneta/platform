@@ -32,16 +32,19 @@ module.exports = function(locals) {
 
     var pageDirs = [
       project.paths.theme.source,
-      project.paths.app.source,
-      project.paths.appPortal.source
+      project.paths.app.source
     ];
+    if(locals.web){
+      pageDirs.push(project.paths.appPortal.source);
+    }
+
 
     var result = {};
 
     return Promise.resolve()
       .then(function() {
         return Promise.map(pageDirs, function(dir) {
-          
+
           var walker = klaw(dir);
           var paths = [];
 
@@ -55,7 +58,6 @@ module.exports = function(locals) {
             if (path_file_parsed.ext != '.yml') {
               return;
             }
-
             paths.push(item.path);
           });
 
@@ -75,6 +77,8 @@ module.exports = function(locals) {
 
                 if(pathParsed.base==='index.yml'){
                   path_url = path.join(filePath,'..');
+                }else{
+                  path_url = path.join(pathParsed.dir,pathParsed.name);
                 }
                 path_url = path_url.split(path.sep).join('/');
 
@@ -160,7 +164,6 @@ module.exports = function(locals) {
 
                     //---------------------------------------
 
-
                     addPage(data);
                   });
 
@@ -173,7 +176,8 @@ module.exports = function(locals) {
         });
       })
       .then(function() {
-        return _.values(result);
+        result =  _.values(result);
+        return result;
       });
 
     function pageExists(dataPath) {

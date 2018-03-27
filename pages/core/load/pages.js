@@ -42,8 +42,9 @@ module.exports = function(locals) {
 
     return require('../generators')(locals)
       .catch(function(err) {
-        console.error(err);
-        console.error(err.stack);
+        console.log('Generator Error (check logs): ',err.message);
+        console.error();
+        return Promise.reject(err);
       })
       .then(function() {
       //console.log('Loaded all pages');

@@ -46,9 +46,8 @@ module.exports = function(locals) {
 
         return generator.call(project, locals)
           .then(function(pages) {
-
             return Promise.map(pages, function(page) {
-
+              
               if (page.template_build && locals.buildOptions) {
                 page.template = page.template_build;
               }
@@ -79,7 +78,6 @@ module.exports = function(locals) {
                       if (!doc) {
                         return;
                       }
-                      //console.log(page.path);
                       return generate(page);
                     });
                 });
