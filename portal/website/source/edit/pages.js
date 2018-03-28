@@ -21,7 +21,8 @@
 
     agneta.extend(vm, 'AgEditMainCtrl');
     vm.init({
-      model: Page
+      model: Page,
+      mediaRoot: '$$template.config.media.storageRoot;'
     });
 
   });

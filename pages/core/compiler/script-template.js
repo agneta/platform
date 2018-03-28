@@ -24,6 +24,7 @@ module.exports = function(source) {
   return _.template(source, {
     interpolate: /\$\$template\.(.+?);/g
   })({
+    config: loaderOptions.locals.project.config,
     configServices: function(name,configPath){
       var result = loaderOptions.locals.services.get(name);
       if(configPath){
