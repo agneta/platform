@@ -64,8 +64,7 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $injector, $routeParams,
 
   vm.onKeyPress = function(event) {
 
-    var languages = $rootScope.viewData.languages;
-
+    var languages = $$template.configGet('languages');
     // CTRL + SHIFT + S : Save Changes
     if (event.ctrlKey && event.shiftKey && event.keyCode == 19) {
       vm.save();
@@ -73,14 +72,14 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $injector, $routeParams,
     // CTRL + SHIFT + L : Change Language
     if (event.ctrlKey && event.shiftKey && event.keyCode == 12) {
       var index = _.findIndex(languages, {
-        code: vm.edit.lang
+        key: vm.edit.lang
       });
       index++;
       if (index == languages.length) {
         index = 0;
       }
       var language = languages[index];
-      vm.edit.lang = language.code;
+      vm.edit.lang = language.key;
     }
   };
 

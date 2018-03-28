@@ -21,7 +21,8 @@ module.exports = {
     angular: true,
     agneta: true,
     module: true,
-    require: true
+    require: true,
+    $$template: true
   },
   "env": {
     "browser": true,

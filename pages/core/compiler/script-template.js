@@ -25,14 +25,27 @@ module.exports = function(source) {
     interpolate: /\$\$template\.(.+?);/g
   })({
     config: loaderOptions.locals.project.config,
+    configGet: function(configPath){
+      return get(loaderOptions.locals.project.config,configPath);
+    },
     configServices: function(name,configPath){
       var result = loaderOptions.locals.services.get(name);
-      if(configPath){
-        result = _.get(result,configPath);
-      }
-      result = JSON.stringify(result);
-      return `JSON.parse('${result}');`;
+      return get(result,configPath);
     }
   });
+
+  function get(obj,objPath) {
+
+    var result;
+
+    if(objPath){
+      result = _.get(obj,objPath);
+    }else{
+      result = obj;
+    }
+
+    result = JSON.stringify(result);
+    return `JSON.parse('${result}');`;
+  }
 
 };

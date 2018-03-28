@@ -94,8 +94,10 @@ module.exports = function(locals, options) {
       });
 
       return Promise.map(sourcePaths, function(sourcePath) {
-
-        return filter(sourcePath)
+        return Promise.resolve()
+          .then(function() {
+            return filter(sourcePath);
+          })
           .then(function() {
             bar.tick({
               title: sourcePath.relative
@@ -136,18 +138,22 @@ module.exports = function(locals, options) {
       return copy();
     }
 
-    let min_parsed, minifyJS, match;
+    if (options.relative.indexOf('generated/') == 0) {
+      return copy();
+    }
+
+    let nameParsed, minifyJS, match;
 
     switch (relativeParsed.ext) {
       case '.js':
 
-        min_parsed = path.parse(relativeParsed.name);
+        nameParsed = path.parse(relativeParsed.name);
 
-        if (min_parsed.ext == '.min') {
+        if (nameParsed.ext == '.min') {
           return copy();
         }
 
-        if (path.parse(min_parsed.name).ext == '.module') {
+        if (path.parse(nameParsed.name).ext == '.module') {
           return;
         }
 
@@ -188,6 +194,13 @@ module.exports = function(locals, options) {
           })
         );
       case '.styl':
+
+        nameParsed = path.parse(relativeParsed.name);
+
+        if (nameParsed.ext == '.module') {
+          return;
+        }
+
         return exportCSS(
           project
             .compiler
@@ -200,23 +213,34 @@ module.exports = function(locals, options) {
 
     function exportCSS(css) {
 
-      let minified = new CleanCSS()
-        .minify(css);
-      let file_path = path.join(outputPath, relativeParsed.name + '.css');
+      return Promise.resolve()
+        .then(function() {
+          return new CleanCSS()
+            .minify(css);
+        })
+        .catch(function(err){
+          logger.error(`An issue occured with file: ${source_file_path}`);
+          return Promise.reject(err);
+        })
+        .then(function(minified) {
 
-      if (minified.errors.length) {
-        logger.error(minified.errors);
-        throw 'CSS Minify Error';
-      }
+          let file_path = path.join(outputPath, relativeParsed.name + '.css');
 
-      if (!minified.styles) {
-        throw new Error('Style has no content: ' + file_path);
-      }
+          if (minified.errors.length) {
+            logger.error(minified.errors);
+            throw 'CSS Minify Error';
+          }
 
-      return exportAsset({
-        path: file_path,
-        data: minified.styles
-      });
+          if (!minified.styles) {
+            throw new Error('Style has no content: ' + file_path);
+          }
+
+          return exportAsset({
+            path: file_path,
+            data: minified.styles
+          });
+        });
+
 
     }
 

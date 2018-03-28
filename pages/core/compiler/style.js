@@ -121,6 +121,15 @@ module.exports = function(locals) {
 
   function compile(source_file_path){
 
+    let pathParsed = path.parse(source_file_path);
+    let nameParsed = path.parse(pathParsed.name);
+
+    if (nameParsed.ext == '.module') {
+      return Promise.reject({
+        message: 'Modules are not supposed to be loaded'
+      });
+    }
+
     var str = fs.readFileSync(source_file_path, {
       encoding: 'utf8'
     });
