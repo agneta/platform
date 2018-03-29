@@ -138,7 +138,10 @@ module.exports = function(locals) {
     var self = helpers;
 
     if(!commonData.templateChecked){
-      locals.renderData(page);
+      let pagePath = path.parse(page.pathSource);
+      pagePath = path.join(page.pathSource,'view');
+      let commonPage = helpers.get_page(pagePath);
+      helpers.template('page',{page:commonPage});
       commonData = helpers.commonData(page);
     }
 
