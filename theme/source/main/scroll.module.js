@@ -24,6 +24,7 @@ app.run(function($rootScope, $mdUtil, $timeout) {
   };
   $rootScope.scrollTo = function(eID) {
     var elm = document.getElementById(eID);
+
     if(!elm){
       return;
     }
@@ -31,7 +32,7 @@ app.run(function($rootScope, $mdUtil, $timeout) {
       var position = elmYPosition(eID);
       //console.log(position);
       $mdUtil.animateScrollTo(scrollParent, position, 500);
-    }, 100);
+    }, 300);
   };
 
 });

@@ -88,15 +88,16 @@ module.exports = function(locals) {
 
     var size = options.size || 'extra_large';
 
-
-    if (page.cover) {
-
-      var cover = page.cover.__value || page.cover;
+    var cover = this.get_value(page.cover);
+    if (cover) {
 
       cover = cover.location || cover;
       size = cover.size || size;
 
-      return this.get_media(cover, size);
+      if(_.isString(cover)){
+        return this.get_media(cover, size);
+      }
+
     }
 
     var name = 'cover';

@@ -37,9 +37,8 @@ app.run(function(Portal, $rootScope, $route, $timeout, $location) {
     }
 
     if ($rootScope.viewData.path == data.path) {
-      $timeout(function() {
-        $route.reload();
-      }, 10);
+      window.location.href = $location.url();
+      return;
     }
   });
 
