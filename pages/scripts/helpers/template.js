@@ -85,7 +85,8 @@ module.exports = function(locals) {
       }
 
       var commonData = self.commonData(page);
-
+      commonData.templateChecked = true;
+      
       var templateStyle = self.layout_style(path_partial);
       if (templateStyle) {
         commonData.styles.push(templateStyle);

@@ -137,6 +137,11 @@ module.exports = function(locals) {
     var config = helpers.config;
     var self = helpers;
 
+    if(!commonData.templateChecked){
+      locals.renderData(page);
+      commonData = helpers.commonData(page);
+    }
+
     data.authorization = page.authorization;
     data.keypress = page.keypress;
     data.controller = page.controller;

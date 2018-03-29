@@ -33,7 +33,10 @@ module.exports = function(locals) {
 
     var target = req.params[0];
     var lang = req.params.lang;
-    locals.app.renderPage(target, lang)
+    Promise.resolve()
+      .then(function() {
+        return locals.app.renderPage(target, lang);
+      })
       .then(function(content) {
 
         if (!content) {

@@ -61,7 +61,10 @@ module.exports = function(locals) {
 
   app.use(function(req,res,next){
 
-    locals.app.renderPage('error/not-found', project.config.language.default.key)
+    Promise.resolve()
+      .then(function() {
+        return locals.app.renderPage('error/not-found', project.config.language.default.key);
+      })
       .then(function(content) {
 
         if (!content) {

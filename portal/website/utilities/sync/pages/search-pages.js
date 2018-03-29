@@ -63,7 +63,11 @@ module.exports = function(options) {
         if (page.searchDisabled) {
           return;
         }
-        return webApp.renderPage(urljoin(page.path, 'view'), web.site.lang)
+
+        Promise.resolve()
+          .then(function() {
+            return webApp.renderPage(urljoin(page.path, 'view'), web.site.lang);
+          })
           .then(function(html) {
             console.log(urljoin(page.path, 'view'),html);
             if (!html) {
