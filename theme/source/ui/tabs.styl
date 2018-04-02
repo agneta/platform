@@ -1,12 +1,19 @@
-  .ui-tabs{
-    box-shadow: 0 2px 4px grey;
-    z-index: 2;
-    .item{
-      &.active{
-        color: #116377;
-        border-radius: 0;
-        font-weight: bold;
-        border-bottom: solid 4px
-      }
+.ui-tabs{
+  box-shadow: 0 2px 4px grey;
+  z-index: 2;
+  .item{
+
+    border-bottom: solid 2px;
+    border-color: transparent;
+    transition: border-color 400ms ease;
+    padding: 6px;
+    margin: 6px;
+
+    &.active{
+      color: #116377;
+      border-radius: 0;
+      font-weight: bold;
+      border-color: color-primary;
     }
   }
+}

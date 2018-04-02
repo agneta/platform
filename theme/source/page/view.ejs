@@ -1,4 +1,11 @@
-<%var tag = viewTag();%>
+<%
+var tag = viewTag();
+var footerHidden = !config.footer || page.hiddenFooter;
+var viewClass = '';
+if(footerHidden){
+	viewClass+='footer-hidden';
+}
+%>
 <div <%-tag%> id="view-content" layout="row" ng-keypress="viewData.keypress && onKeyPress($event)" flex layout-align="start stretch">
 
 	<md-sidenav class="view-wrapper md-sidenav-left md-whiteframe-z2 site-menu" ng-class="{unlocked:!menu.isLocked}" md-is-locked-open="menuLock()" md-component-id="menu" layout="column">
@@ -32,10 +39,10 @@
 			</md-sidenav>
 
 			<md-content flex>
-				<div class="view-container" layout="column">
+				<div class="view-container <%-viewClass%>" layout="column">
 					<%-template(page.template || page.templateSource)%>
-					<%if(!page.hiddenFooter){%>
-						<%-template('layout/footer',null,true) %>
+						<%if(!footerHidden){%>
+						<%-template('layout/footer',null) %>
 						<%}%>
 					</div>
 					<div id="tools" layout="column">

@@ -11,15 +11,20 @@
     section.name = section.name || path.parse(templatePath).name;
 
     return section;
-  })
+  });
+  var align = locals.align || 'start';
 %>
 
 <div ag-tabs layout="column">
-  <div ng-init="activeSection='<%-locals.default||page.defaultSection%>'" class="layout-wrap ui-tabs" layout="row" layout-align="start center">
+  <div
+  ng-init="activeSection='<%-locals.default||page.defaultSection%>'"
+  class="layout-wrap ui-tabs"
+  layout="row"
+  layout-align="<%-align%> center">
     <%for(var section of templates){%>
-      <md-button class="item" ng-class="{active:activeSection=='<%-section.name%>'}" ng-click="select('<%-section.name%>')">
+      <div class="item" ng-class="{active:activeSection=='<%-section.name%>'}" ng-click="select('<%-section.name%>')">
         <%-lng(section.title)%>
-      </md-button>
+      </div>
       <%}%>
   </div>
 
