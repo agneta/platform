@@ -1,8 +1,8 @@
 <%
 var tag = viewTag();
-var footerHidden = !config.footer || page.hiddenFooter;
+var footerShow = !page.hiddenFooter;
 var viewClass = '';
-if(footerHidden){
+if(!footerShow){
 	viewClass+='footer-hidden';
 }
 %>
@@ -38,10 +38,10 @@ if(footerHidden){
 				</div>
 			</md-sidenav>
 
-			<md-content flex>
+			<md-content id="view-scroller" flex>
 				<div class="view-container <%-viewClass%>" layout="column">
 					<%-template(page.template || page.templateSource)%>
-						<%if(!footerHidden){%>
+						<%if(footerShow){%>
 						<%-template('layout/footer',null) %>
 						<%}%>
 					</div>
