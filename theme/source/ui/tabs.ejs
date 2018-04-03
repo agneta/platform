@@ -13,10 +13,15 @@
     return section;
   });
   var align = locals.align || 'start';
+  var attrId;
+  if(locals.id){
+    attrId = `id="${locals.id}"`;
+  }
 %>
 
 <div ag-tabs layout="column">
   <div
+  <%-attrId%>
   ng-init="activeSection='<%-locals.default||page.defaultSection%>'"
   class="layout-wrap ui-tabs"
   layout="row"

@@ -1,3 +1,4 @@
+<%if(field.prop){%>
 <div class="error-messages" ng-messages="<%-field.prop%>.$error" <%-locals.attr%> role="alert">
 <%
 
@@ -34,3 +35,4 @@ for(var name in field.validators){
 }
 %>
 </div>
+<%}%>

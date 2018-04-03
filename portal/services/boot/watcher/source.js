@@ -82,7 +82,7 @@ module.exports = function(watcher) {
         }else{
           emitOptions.global = true;
         }
-        //console.log('emitOptions',emitOptions);
+        console.log('emitOptions',emitOptions);
 
 
         app.portal.socket.emit('page-reload',emitOptions);

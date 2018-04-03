@@ -153,6 +153,9 @@ module.exports = function(Model, app) {
 
         templateData.list.order.map(function(fieldName){
           var field = templateData.field[fieldName];
+          if(!field){
+            return;
+          }
           var title = app.lng(field.title,req);
           orderFields.push({
             title: `${title} - Ascending`,
