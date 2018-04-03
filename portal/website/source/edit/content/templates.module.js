@@ -72,7 +72,8 @@ module.exports = function(shared) {
     vm.sidebar.loading = true;
 
     return helpers.Model.loadMany({
-      template: template.id
+      template: template.id,
+      order: vm.template.order
     })
       .$promise
       .then(function(result) {
@@ -109,6 +110,14 @@ module.exports = function(shared) {
 
   };
 
+  vm.$watch('template.order',function(newValue,oldValue){
+    if(!newValue){
+      return;
+    }
+    if(newValue!=oldValue){
+      vm.selectTemplate();
+    }
+  });
   vm.$watch('template',function(newValue, oldValue){
     if(newValue == oldValue){
       return;
