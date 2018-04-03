@@ -20,11 +20,14 @@ const _ = require('lodash');
 
 module.exports = function(Model, app) {
 
-  Model.loadMany = function(template, req) {
+  Model.loadMany = function(template, order, req) {
 
     var labels;
-    var findFields;
+    var pages;
+    var findFields = {};
     var templateData;
+    var includeFields = [];
+    var orderFields = [];
 
     return Promise.resolve()
       .then(function() {
@@ -36,15 +39,34 @@ module.exports = function(Model, app) {
       })
       .then(function(_templateData) {
         templateData = _templateData;
-        labels = templateData.listItem || {
-          title: 'title',
-          subtitle: 'path',
-          image: 'cover'
-        };
-        findFields = _.zipObject(
-          _.values(labels),
-          _.map(_.keys(labels),function(){return true;})
-        );
+        labels = templateData.list.labels;
+
+        for(let key in labels){
+          checkLabel(key);
+        }
+
+        labels.metadata = labels.metadata || [];
+        for(let label of labels.metadata){
+          checkLabel(label);
+        }
+
+        function checkLabel(label){
+
+          label = labels[label] || label;
+          var field = templateData.field[label] || {};
+
+          if(field.relation){
+            includeFields.push({
+              relation: field.relation.template,
+              scope:{
+                fields: [field.relation.label]
+              }
+            });
+            return;
+          }
+          findFields[label] = true;
+        }
+
         return Model.getTemplateModel(template);
       })
       .then(function(model) {
@@ -52,29 +74,47 @@ module.exports = function(Model, app) {
           id: true
         });
         return model.find({
-          fields: findFields
+          fields: findFields,
+          include: includeFields,
+          order: order
         });
       })
       .then(function(items) {
 
-        return Promise.map(items, function(item) {
-
+        return Promise.mapSeries(items, function(item) {
+          item = item.__data;
           var result = {
-            id: item.id
+            id: item.id,
+            metadata: []
           };
 
-          _.keys(labels).forEach(function(key){
-            var label = labels[key];
-            var value = item[label];
-            var field = templateData.fields[
-              templateData.fieldNames.indexOf(label)
-            ] || {};
+          result.title = getItem('title');
+          result.subtitle = getItem('subtitle');
+          result.image = getItem('image');
+
+          for(let label of labels.metadata){
+            let data = getItem(label);
+            if(data){
+              result.metadata.push(data);
+            }
+          }
+
+          function getItem(label){
+            label = labels[label]||label;
+            var value;
+            var field = templateData.field[label] || {};
+            //console.log(field,item);
+            if(field.relation){
+              value = item[field.relation.template];
+              if(value){
+                value = value[field.relation.label];
+              }
+            }else{
+              value = item[label];
+            }
             var type = field.type;
 
             if(!value){
-              return;
-            }
-            if(!field){
               return;
             }
 
@@ -97,21 +137,38 @@ module.exports = function(Model, app) {
               value = app.lng(value, req);
             }
 
-            result[key] = {
+            return {
               type: type,
               value: value
             };
 
-          });
+          }
 
           return result;
-
         });
       })
-      .then(function(result) {
+      .then(function(_pages) {
+
+        pages = _pages;
+
+        templateData.list.order.map(function(fieldName){
+          var field = templateData.field[fieldName];
+          orderFields.push({
+            title: `${field.title} - Ascending`,
+            value: `${field.name} ASC`
+          });
+          orderFields.push({
+            title: `${field.title} - Descending`,
+            value: `${field.name} DESC`
+          });
+        });
+
+      })
+      .then(function() {
 
         return {
-          pages: result
+          pages: pages,
+          order: orderFields
         };
       });
 
@@ -126,6 +183,10 @@ module.exports = function(Model, app) {
         type: 'string',
         required: true
       }, {
+        arg: 'order',
+        type: 'string',
+        required: false
+      },{
         arg: 'req',
         type: 'object',
         'http': {

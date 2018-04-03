@@ -95,6 +95,7 @@ module.exports = function(shared) {
 
           helpers.checkPages(result.pages);
           vm.itemsLoaded = result.pages;
+          vm.template.orderList = result.order;
           vm.pages = vm.itemsLoaded;
           vm.templates = null;
 

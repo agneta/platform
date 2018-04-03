@@ -52,7 +52,6 @@ module.exports = function(shared) {
         page[key] = value;
       }
       page.title = page.title || 'untitled';
-      page.subtitle = page.subtitle || page.id;
     });
   };
   //---------------------------------------
