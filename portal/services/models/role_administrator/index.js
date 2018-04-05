@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/models/account/remove.js
+ *   Source file: portal/services/models/role_administrator.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,17 +15,13 @@
  *   limitations under the License.
  */
 
-module.exports = function(Model) {
+module.exports = function(Model, app) {
 
-  // Should see how this can be an option from the portal. Perhaps for unverified accounts?
+  Model.validatesUniquenessOf('accountId', {
+    message: 'Account is already an administrator'
+  });
 
-  Model.delete = function(id) {
-
-    return Model.__get(id)
-      .then(function(account) {
-        return account.destroy();
-      });
-
-  };
+  require('./me')(Model,app);
+  require('./new')(Model,app);
 
 };

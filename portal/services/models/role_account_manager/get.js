@@ -23,6 +23,7 @@ module.exports = function(Model, app) {
 
   Model.get = function(req, id) {
 
+    var Account = Model.getModel('Account');
     var Account_Web = webServices.$model.get({
       name: 'Account',
       isProduction: Model.__isProduction
@@ -60,7 +61,7 @@ module.exports = function(Model, app) {
 
       console.log('Not an administrator');
 
-      return Model.findById(id, {
+      return Account.findById(id, {
         fields: {
           id: true,
           name: true,

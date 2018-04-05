@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/models/account/roleGetAdmin.js
+ *   Source file: portal/services/models/account/recent.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,23 +17,39 @@
 
 module.exports = function(Model) {
 
-  Model.roleGetAdmin = function(accountId, roleName) {
+  Model.recent = function(limit) {
 
-    return Model.__roleGet(accountId, roleName);
+    limit = limit || 5;
+    let count;
+    var Account = Model.getModel('Account');
+
+    return Account.count()
+      .then(function(_count){
+
+        count = _count;
+
+        return Account.find({
+          order: 'createdAt DESC',
+          limit: limit
+        });
+      })
+      .then(function(list){
+        return {
+          list: list,
+          count: count
+        };
+      });
 
   };
 
+
   Model.remoteMethod(
-    'roleGetAdmin', {
-      description: '',
+    'recent', {
+      description: 'Get recently created accounts',
       accepts: [{
-        arg: 'accountId',
-        type: 'string',
-        required: true
-      }, {
-        arg: 'roleName',
-        type: 'string',
-        required: true
+        arg: 'limit',
+        type: 'number',
+        required: false
       }],
       returns: {
         arg: 'result',
@@ -41,8 +57,8 @@ module.exports = function(Model) {
         root: true
       },
       http: {
-        verb: 'post',
-        path: '/role-get-admin'
+        verb: 'get',
+        path: '/recent'
       }
     }
   );

@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/models/account/auth/ssh-list.js
+ *   Source file: portal/services/models/account/activateAdmin.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -16,31 +16,51 @@
  */
 module.exports = function(Model) {
 
-  Model.sshList = function(accountId) {
 
-    return Model.__get(accountId)
-      .then(function(account) {
-        if(!account.ssh){
-          return [];
-        }
+  Model.activate = function(id, req) {
 
-        return account.ssh.find();
+    var Account = Model.getModel('Account');
+
+    return Account.__signOutAll(id)
+      .then(function() {
+        return Account.__get(id);
       })
-      .then(function(keys) {
+      .then(function(account) {
+        return account.updateAttributes({
+          deactivated: false
+        });
+      })
+      .then(function() {
+
+        Account.activity({
+          req: req,
+          action: 'activate_account_admin'
+        });
+
         return {
-          keys: keys
+          success: {
+            title: 'Account Activated',
+            content: 'The account can login again.'
+          }
         };
+
       });
 
   };
 
   Model.remoteMethod(
-    'sshList', {
+    'activate', {
       description: 'Activate Account with given ID',
       accepts: [{
-        arg: 'accountId',
+        arg: 'id',
         type: 'string',
         required: true
+      }, {
+        arg: 'req',
+        type: 'object',
+        'http': {
+          source: 'req'
+        }
       }],
       returns: {
         arg: 'result',
@@ -49,9 +69,10 @@ module.exports = function(Model) {
       },
       http: {
         verb: 'post',
-        path: '/ssh-list'
+        path: '/activate'
       }
     }
   );
+
 
 };

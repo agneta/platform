@@ -18,12 +18,13 @@
 module.exports = function(Model, app) {
 
 
-  Model.changePasswordAdmin = function(password, accountId, req) {
+  Model.changePassword = function(password, accountId, req) {
 
     var account;
-    var AccountToken = app.models.AccountToken;
+    var AccountToken = Model.getModel('AccountToken');
+    var Account = Model.getModel('Account');
 
-    return Model.__get(accountId)
+    return Account.__get(accountId)
       .then(function(_account) {
 
         account = _account;
@@ -41,14 +42,14 @@ module.exports = function(Model, app) {
       })
       .then(function() {
 
-        Model.sendVerification({
+        Account.sendVerification({
           account: account,
           req: req,
           template: 'password-change',
           subject: app.lng('account.passwordChangedSubject',req)
         });
 
-        Model.activity({
+        Account.activity({
           req: req,
           action: 'password_change_admin',
           data: {
@@ -65,7 +66,7 @@ module.exports = function(Model, app) {
   };
 
   Model.remoteMethod(
-    'changePasswordAdmin', {
+    'changePassword', {
       description: 'Change password for a user with email.',
       accepts: [{
         arg: 'password',
@@ -89,7 +90,7 @@ module.exports = function(Model, app) {
       },
       http: {
         verb: 'post',
-        path: '/change-password-admin'
+        path: '/change-password'
       },
     }
   );

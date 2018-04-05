@@ -4,13 +4,11 @@
         "principalType": "ROLE",
         "principalId": "administrator",
         "permission": "ALLOW"
-    },
-    {
+    },{
         "accessType": "EXECUTE",
         "principalType": "ROLE",
-        "principalId": "editor",
-        "permission": "ALLOW",
-        "property": "get"
+        "principalId": "account_manager",
+        "permission": "ALLOW"
     }
   ]
 }

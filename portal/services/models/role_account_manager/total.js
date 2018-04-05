@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/models/account/recent.js
+ *   Source file: portal/services/models/account/total.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,39 +17,22 @@
 
 module.exports = function(Model) {
 
-  Model.recent = function(limit) {
-
-    limit = limit || 5;
-    let count;
-
-    return Model.count()
-      .then(function(_count){
-
-        count = _count;
-
-        return Model.find({
-          order: 'createdAt DESC',
-          limit: limit
-        });
-      })
-      .then(function(list){
+  Model.total = function() {
+    var Account = Model.getModel('Account');
+    
+    return Account.count({})
+      .then(function(count) {
         return {
-          list: list,
           count: count
         };
       });
 
   };
 
-
   Model.remoteMethod(
-    'recent', {
-      description: 'Get recently created accounts',
-      accepts: [{
-        arg: 'limit',
-        type: 'number',
-        required: false
-      }],
+    'total', {
+      description: 'Get number of accounts created',
+      accepts: [],
       returns: {
         arg: 'result',
         type: 'object',
@@ -57,8 +40,8 @@ module.exports = function(Model) {
       },
       http: {
         verb: 'get',
-        path: '/recent'
-      }
+        path: '/total'
+      },
     }
   );
 

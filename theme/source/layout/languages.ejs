@@ -2,7 +2,7 @@
   <%if(site.language.icon){
     var buttonClass="md-icon-button"
   }%>
-  <md-button class="ui-language <%-buttonClass%>" ng-click="$mdMenu.open()">
+  <md-button aria-label="language" class="ui-language <%-buttonClass%>" ng-click="$mdMenu.open()">
     <%if(site.language.icon){%>
     <md-icon md-svg-src="<%-get_icon(site.language.icon)%>"></md-icon>
     <%}else{%>

@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/models/account/new.js
+ *   Source file: portal/services/models/account/deactivateAdmin.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,34 +14,52 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-
 module.exports = function(Model) {
 
-  Model.new = function(email, password) {
+  var Account = Model.getModel('Account');
 
-    return Model.create({
-      email: email,
-      password: password
-    })
+  Model.deactivate = function(id, req) {
+
+    return Account.__signOutAll(id)
       .then(function() {
+        return Account.__get(id);
+      })
+      .then(function(account) {
+        return account.updateAttributes({
+          deactivated: true
+        });
+      })
+      .then(function() {
+
+        Account.activity({
+          req: req,
+          action: 'deactivate_account_admin'
+        });
+
         return {
-          success: 'The account is created.'
+          success: {
+            title: 'Deactivation Complete',
+            content: 'The account may be recovered by trying to login again.'
+          }
         };
+
       });
 
   };
 
   Model.remoteMethod(
-    'new', {
-      description: 'Create user with email and password.',
+    'deactivate', {
+      description: 'Deactivate Account with given ID',
       accepts: [{
-        arg: 'email',
-        type: 'string',
-        required: true,
-      }, {
-        arg: 'password',
+        arg: 'id',
         type: 'string',
         required: true
+      }, {
+        arg: 'req',
+        type: 'object',
+        'http': {
+          source: 'req'
+        }
       }],
       returns: {
         arg: 'result',
@@ -50,9 +68,10 @@ module.exports = function(Model) {
       },
       http: {
         verb: 'post',
-        path: '/new'
+        path: '/deactivate'
       }
     }
   );
+
 
 };

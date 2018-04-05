@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/models/account/search.js
+ *   Source file: portal/services/models/account/filter.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,60 +15,61 @@
  *   limitations under the License.
  */
 const Promise = require('bluebird');
+const _ = require('lodash');
 
 module.exports = function(Model) {
 
+  Model.filter = function(options) {
 
-  Model.search = function(query) {
+    var Account = Model.getModel('Account');
 
-    var findWhere = {
-      $text: {
-        $search: query
-      }
-    };
 
-    var findFields = {
-      score: {
-        $meta: 'textScore'
-      },
-      password: false,
-      verificationToken: false
-    };
+    var count;
+    options = _.pick(options, ['emailVerified']);
 
-    return Model.getCollection()
-      .find(findWhere, findFields)
-      .sort({
-        score: {
-          $meta: 'textScore'
-        }
-      })
-      .limit(10)
-      .toArray()
-      .then(function(accounts) {
-
-        return Promise.map(accounts, function(account) {
-
-          account.id = account._id;
-          delete account._id;
-
-          return account;
-
+    if (!_.isUndefined(options.emailVerified)) {
+      if (!_.isBoolean(options.emailVerified)) {
+        return Promise.reject({
+          statusCode: 400,
+          message: 'value is not valid: verified'
         });
+      }
+
+      if(!options.emailVerified){
+        options.emailVerified = {
+          neq: true
+        };
+      }
+    }
+
+
+    return Account.count(options)
+      .then(function(_count) {
+
+        count = _count;
+
+        return Account.find({
+          where: options,
+          limit: 50
+        });
+
       })
-      .then(function(accounts) {
-        return {
-          accounts: accounts
+      .then(function(result) {
+        return{
+          accounts: result,
+          count: count
         };
       });
+
 
   };
 
   Model.remoteMethod(
-    'search', {
-      description: 'Find a user',
+    'filter', {
+      description: 'Filter accounts by given options',
       accepts: [{
-        arg: 'query',
-        type: 'string',
+        arg: 'options',
+        type: 'object',
         required: true
       }],
       returns: {
@@ -78,7 +79,7 @@ module.exports = function(Model) {
       },
       http: {
         verb: 'get',
-        path: '/search'
+        path: '/filter'
       }
     }
   );

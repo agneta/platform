@@ -39,11 +39,12 @@ module.exports = function(Model, app) {
   Model.certAdd = function(req) {
 
     var params = req.body;
-
+    var Account = Model.getModel('Account');
+    
     return Model.certCheck(req)
       .then(function() {
 
-        return Model.__get(params.accountId);
+        return Account.__get(params.accountId);
 
       })
       .then(function(account) {

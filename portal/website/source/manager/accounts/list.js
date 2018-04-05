@@ -16,7 +16,7 @@
  */
 var app = angular.module('MainApp');
 
-app.service('AccountList', function($rootScope, Production_Account, Account, $timeout) {
+app.service('AccountList', function($rootScope, Production_Role_Account_Manager, Role_Account_Manager, $timeout) {
 
   var accounts = {};
   var self = this;
@@ -28,7 +28,7 @@ app.service('AccountList', function($rootScope, Production_Account, Account, $ti
     if(!$rootScope.isProduction){
       return;
     }
-    var AccountModel = $rootScope.isProduction() ? Production_Account : Account;
+    var AccountModel = $rootScope.isProduction() ? Production_Role_Account_Manager : Role_Account_Manager;
     self.model = AccountModel;
   }
 

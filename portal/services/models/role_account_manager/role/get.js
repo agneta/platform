@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/models/account/auth/ip-remove.js
+ *   Source file: portal/services/models/account/roleGetAdmin.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,51 +14,27 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
 module.exports = function(Model) {
 
-  Model.ipRemove = function(accountId,ipId) {
+  Model.roleGet = function(accountId, roleName) {
 
-    return Promise.resolve()
-      .then(function() {
-        return Model.__get(accountId);
-      })
-      .then(function(account) {
-        return account.ip_whitelist.findById(ipId);
-      })
-      .then(function(result) {
-        if(!result){
-          return Promise.reject({
-            message: 'IP not found',
-            statusCode: 401
-          });
-        }
-        return result.destroy();
-      })
-      .then(function(){
-        return {
-          message: 'IP removed from account'
-        };
-      });
+    var Account = Model.getModel('Account');
+    return Account.__roleGet(accountId, roleName);
 
   };
 
   Model.remoteMethod(
-    'ipRemove', {
-      description: 'Remove an IP from the account\'s whitelist',
+    'roleGet', {
+      description: '',
       accepts: [{
         arg: 'accountId',
         type: 'string',
         required: true
-      },{
-        arg: 'ipId',
+      }, {
+        arg: 'roleName',
         type: 'string',
         required: true
-      }, {
-        arg: 'req',
-        type: 'object',
-        'http': {
-          source: 'req'
-        }
       }],
       returns: {
         arg: 'result',
@@ -67,7 +43,7 @@ module.exports = function(Model) {
       },
       http: {
         verb: 'post',
-        path: '/ip-remove'
+        path: '/role-get'
       }
     }
   );

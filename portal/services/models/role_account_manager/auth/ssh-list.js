@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/models/account/auth/ssh-add.js
+ *   Source file: portal/services/models/account/auth/ssh-list.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,57 +14,35 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function(Model,app) {
+module.exports = function(Model) {
 
+  Model.sshList = function(accountId) {
 
-  Model.sshAdd = function(accountId, title, content) {
+    var Account = Model.getModel('Account');
 
-    return Model.__get(accountId)
+    return Account.__get(accountId)
       .then(function(account) {
+        if(!account.ssh){
+          return [];
+        }
 
-        return account.ssh.create({
-          title: title,
-          content: content,
-          createdAt: new Date()
-        });
-
+        return account.ssh.find();
       })
-      .then(function(key) {
+      .then(function(keys) {
         return {
-          message: 'SSH Key added to account',
-          key: key
+          keys: keys
         };
       });
 
   };
 
-  var fields = app.form.fields({
-    form: 'ssh-add-key'
-  });
-
-  Model.beforeRemote('sshAdd',  app.form.check(fields));
-
   Model.remoteMethod(
-    'sshAdd', {
+    'sshList', {
       description: 'Activate Account with given ID',
       accepts: [{
         arg: 'accountId',
         type: 'string',
         required: true
-      },{
-        arg: 'title',
-        type: 'string',
-        required: true
-      }, {
-        arg: 'content',
-        type: 'string',
-        required: true
-      }, {
-        arg: 'req',
-        type: 'object',
-        'http': {
-          source: 'req'
-        }
       }],
       returns: {
         arg: 'result',
@@ -73,10 +51,9 @@ module.exports = function(Model,app) {
       },
       http: {
         verb: 'post',
-        path: '/ssh-add'
+        path: '/ssh-list'
       }
     }
   );
-
 
 };

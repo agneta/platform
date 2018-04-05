@@ -38,6 +38,10 @@ module.exports = function() {
       dataSource: 'db',
       public: true
     },
+    Role_Account_Manager: {
+      dataSource: 'db',
+      public: true
+    },
     Role_Reviewer: {
       dataSource: 'db',
       public: false

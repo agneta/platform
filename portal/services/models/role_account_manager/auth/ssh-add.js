@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/models/account/roleEdit.js
+ *   Source file: portal/services/models/account/auth/ssh-add.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,65 +14,59 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var _ = require('lodash');
+module.exports = function(Model,app) {
 
-module.exports = function(Model, app) {
 
-  var rolesConfig = app.get('roles');
+  Model.sshAdd = function(accountId, title, content) {
 
-  Model.roleEdit = function(accountId, roleName, data) {
+    var Account = Model.getModel('Account');
 
-    var roleConfig = rolesConfig[roleName];
-    if (!roleConfig.form) {
-      return Promise.reject('No form for role is available');
-    }
+    return Account.__get(accountId)
+      .then(function(account) {
 
-    var fieldNames = [];
-
-    for (var field of roleConfig.form.fields) {
-      if (field.name) {
-        fieldNames.push(field.name);
-      }
-    }
-
-    return Model.roleGetAdmin(accountId, roleName)
-      .then(function(role) {
-        console.log(fieldNames, data);
-        data = _.pick(
-          data,
-          fieldNames
-        );
-
-        if (!_.keys(data).length) {
-          return Promise.reject('Nothing to update');
-        }
-
-        return role.updateAttributes(data);
+        return account.ssh.create({
+          title: title,
+          content: content,
+          createdAt: new Date()
+        });
 
       })
-      .then(function() {
+      .then(function(key) {
         return {
-          success: 'The role is updated!'
+          message: 'SSH Key added to account',
+          key: key
         };
       });
 
   };
 
+  var fields = app.form.fields({
+    form: 'ssh-add-key'
+  });
+
+  Model.beforeRemote('sshAdd',  app.form.check(fields));
+
   Model.remoteMethod(
-    'roleEdit', {
-      description: '',
+    'sshAdd', {
+      description: 'Activate Account with given ID',
       accepts: [{
         arg: 'accountId',
         type: 'string',
         required: true
-      }, {
-        arg: 'roleName',
+      },{
+        arg: 'title',
         type: 'string',
         required: true
       }, {
-        arg: 'data',
-        type: 'object',
+        arg: 'content',
+        type: 'string',
         required: true
+      }, {
+        arg: 'req',
+        type: 'object',
+        'http': {
+          source: 'req'
+        }
       }],
       returns: {
         arg: 'result',
@@ -81,9 +75,10 @@ module.exports = function(Model, app) {
       },
       http: {
         verb: 'post',
-        path: '/role-edit'
+        path: '/ssh-add'
       }
     }
   );
+
 
 };

@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/models/account/auth/ssh-remove.js
+ *   Source file: portal/services/models/account/search.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,41 +14,61 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+const Promise = require('bluebird');
+
 module.exports = function(Model) {
 
 
-  Model.sshRemove = function(accountId,keyId) {
+  Model.search = function(query) {
 
-    return Model.__get(accountId)
-      .then(function(account) {
-        return account.ssh.findById(keyId);
-      })
-      .then(function(key) {
-        if(!key){
-          return Promise.reject({
-            message: 'SSH Key not found',
-            statusCode: 401
-          });
+    var findWhere = {
+      $text: {
+        $search: query
+      }
+    };
+
+    var findFields = {
+      score: {
+        $meta: 'textScore'
+      },
+      password: false,
+      verificationToken: false
+    };
+    var Account = Model.getModel('Account');
+
+    return Account.getCollection()
+      .find(findWhere, findFields)
+      .sort({
+        score: {
+          $meta: 'textScore'
         }
-        return key.destroy();
       })
-      .then(function(){
+      .limit(10)
+      .toArray()
+      .then(function(accounts) {
+
+        return Promise.map(accounts, function(account) {
+
+          account.id = account._id;
+          delete account._id;
+
+          return account;
+
+        });
+      })
+      .then(function(accounts) {
         return {
-          message: 'SSH Key removed from account'
+          accounts: accounts
         };
       });
 
   };
 
   Model.remoteMethod(
-    'sshRemove', {
-      description: 'Remove SSH Key from account',
+    'search', {
+      description: 'Find a user',
       accepts: [{
-        arg: 'accountId',
-        type: 'string',
-        required: true
-      },{
-        arg: 'keyId',
+        arg: 'query',
         type: 'string',
         required: true
       }],
@@ -58,8 +78,8 @@ module.exports = function(Model) {
         root: true
       },
       http: {
-        verb: 'post',
-        path: '/ssh-remove'
+        verb: 'get',
+        path: '/search'
       }
     }
   );

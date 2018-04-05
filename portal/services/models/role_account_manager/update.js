@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/models/account/total.js
+ *   Source file: portal/services/models/account/update.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,33 +14,43 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+var _ = require('lodash');
 
 module.exports = function(Model) {
 
-  Model.total = function() {
-
-    return Model.count({})
-      .then(function(count) {
-        return {
-          count: count
-        };
+  Model.update = function(req, data) {
+    var Account = Model.getModel('Account');
+    
+    return Account.findById(data.id)
+      .then(function(account) {
+        data = _.pick(data, ['name', 'username', 'email']);
+        return account.updateAttributes(data);
       });
-
   };
 
   Model.remoteMethod(
-    'total', {
-      description: 'Get number of accounts created',
-      accepts: [],
+    'update', {
+      description: '',
+      accepts: [{
+        arg: 'req',
+        type: 'object',
+        'http': {
+          source: 'req'
+        }
+      }, {
+        arg: 'data',
+        type: 'object',
+        required: true
+      }],
       returns: {
         arg: 'result',
         type: 'object',
         root: true
       },
       http: {
-        verb: 'get',
-        path: '/total'
-      },
+        verb: 'post',
+        path: '/update'
+      }
     }
   );
 

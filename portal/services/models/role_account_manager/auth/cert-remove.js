@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/models/account/activitiesAdmin.js
+ *   Source file: portal/services/models/account/auth/cert-remove.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -16,33 +16,45 @@
  */
 module.exports = function(Model) {
 
+  Model.certRemove = function(accountId,certId) {
+
+    var Account = Model.getModel('Account');
+
+    return Promise.resolve()
+      .then(function() {
+        return Account.__get(accountId);
+      })
+      .then(function(account) {
+        return account.cert.findById(certId);
+      })
+      .then(function(result) {
+        if(!result){
+          return Promise.reject({
+            message: 'Certificate not found',
+            statusCode: 401
+          });
+        }
+        return result.destroy();
+      })
+      .then(function(){
+        return {
+          message: 'Certificate removed from account'
+        };
+      });
+
+  };
+
   Model.remoteMethod(
-    'activitiesAdmin', {
-      description: 'Get latest activities of a specified account.',
+    'certRemove', {
+      description: 'Remove a certificate from a scpecified account',
       accepts: [{
         arg: 'accountId',
         type: 'string',
         required: true
-      }, {
-        arg: 'unit',
+      },{
+        arg: 'certId',
         type: 'string',
         required: true
-      }, {
-        arg: 'value',
-        type: 'number',
-        required: false
-      }, {
-        arg: 'skip',
-        type: 'number',
-        required: false
-      }, {
-        arg: 'year',
-        type: 'number',
-        required: false
-      },{
-        arg: 'aggregate',
-        type: 'string',
-        required: false
       }, {
         arg: 'req',
         type: 'object',
@@ -57,8 +69,8 @@ module.exports = function(Model) {
       },
       http: {
         verb: 'post',
-        path: '/activities-admin'
-      },
+        path: '/cert-remove'
+      }
     }
   );
 

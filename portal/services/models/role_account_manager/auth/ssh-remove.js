@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/models/account/deactivateAdmin.js
+ *   Source file: portal/services/models/account/auth/ssh-remove.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,48 +17,42 @@
 module.exports = function(Model) {
 
 
-  Model.deactivateAdmin = function(id, req) {
+  Model.sshRemove = function(accountId,keyId) {
 
-    return Model.__signOutAll(id)
-      .then(function() {
-        return Model.__get(id);
-      })
+    var Account = Model.getModel('Account');
+
+    return Account.__get(accountId)
       .then(function(account) {
-        return account.updateAttributes({
-          deactivated: true
-        });
+        return account.ssh.findById(keyId);
       })
-      .then(function() {
-
-        Model.activity({
-          req: req,
-          action: 'deactivate_account_admin'
-        });
-
+      .then(function(key) {
+        if(!key){
+          return Promise.reject({
+            message: 'SSH Key not found',
+            statusCode: 401
+          });
+        }
+        return key.destroy();
+      })
+      .then(function(){
         return {
-          success: {
-            title: 'Deactivation Complete',
-            content: 'The account may be recovered by trying to login again.'
-          }
+          message: 'SSH Key removed from account'
         };
-
       });
 
   };
 
   Model.remoteMethod(
-    'deactivateAdmin', {
-      description: 'Deactivate Account with given ID',
+    'sshRemove', {
+      description: 'Remove SSH Key from account',
       accepts: [{
-        arg: 'id',
+        arg: 'accountId',
         type: 'string',
         required: true
-      }, {
-        arg: 'req',
-        type: 'object',
-        'http': {
-          source: 'req'
-        }
+      },{
+        arg: 'keyId',
+        type: 'string',
+        required: true
       }],
       returns: {
         arg: 'result',
@@ -67,10 +61,9 @@ module.exports = function(Model) {
       },
       http: {
         verb: 'post',
-        path: '/deactivate-admin'
+        path: '/ssh-remove'
       }
     }
   );
-
 
 };

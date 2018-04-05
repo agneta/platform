@@ -44,7 +44,7 @@
 
           vm.viewAccount = account;
 
-          AccountList.model.activitiesAdmin({
+          AccountList.model.activities({
             accountId: id,
             unit: 'month',
             aggregate: 'dayOfYear'
@@ -130,7 +130,7 @@
         .cancel('Cancel');
 
       $mdDialog.show(confirm).then(function() {
-        AccountList.model.activateAdmin({
+        AccountList.model.activate({
           id: vm.viewAccount.id
         })
           .$promise
@@ -152,7 +152,7 @@
         .cancel('Cancel');
 
       $mdDialog.show(confirm).then(function() {
-        AccountList.model.deactivateAdmin({
+        AccountList.model.deactivate({
           id: vm.viewAccount.id
         })
           .$promise

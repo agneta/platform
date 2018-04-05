@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/models/account/activateAdmin.js
+ *   Source file: portal/services/models/account/new.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,51 +14,35 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
 module.exports = function(Model) {
 
+  Model.new = function(email, password) {
+    var Account = Model.getModel('Account');
 
-  Model.activateAdmin = function(id, req) {
-
-    return Model.__signOutAll(id)
+    return Account.create({
+      email: email,
+      password: password
+    })
       .then(function() {
-        return Model.__get(id);
-      })
-      .then(function(account) {
-        return account.updateAttributes({
-          deactivated: false
-        });
-      })
-      .then(function() {
-
-        Model.activity({
-          req: req,
-          action: 'activate_account_admin'
-        });
-
         return {
-          success: {
-            title: 'Account Activated',
-            content: 'The account can login again.'
-          }
+          success: 'The account is created.'
         };
-
       });
 
   };
 
   Model.remoteMethod(
-    'activateAdmin', {
-      description: 'Activate Account with given ID',
+    'new', {
+      description: 'Create user with email and password.',
       accepts: [{
-        arg: 'id',
+        arg: 'email',
+        type: 'string',
+        required: true,
+      }, {
+        arg: 'password',
         type: 'string',
         required: true
-      }, {
-        arg: 'req',
-        type: 'object',
-        'http': {
-          source: 'req'
-        }
       }],
       returns: {
         arg: 'result',
@@ -67,10 +51,9 @@ module.exports = function(Model) {
       },
       http: {
         verb: 'post',
-        path: '/activate-admin'
+        path: '/new'
       }
     }
   );
-
 
 };

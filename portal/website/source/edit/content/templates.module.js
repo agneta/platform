@@ -71,10 +71,15 @@ module.exports = function(shared) {
     }
     vm.sidebar.loading = true;
 
-    return helpers.Model.loadMany({
+    var query = {
       template: template.id,
-      order: vm.template.order
-    })
+    };
+
+    if(vm.template){
+      query.order =  vm.template.order;
+    }
+
+    return helpers.Model.loadMany(query)
       .$promise
       .then(function(result) {
 

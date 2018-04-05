@@ -26,6 +26,9 @@ module.exports = {
     administrator: {
       model: 'Role_Administrator'
     },
+    account_manager: {
+      model: 'Role_Account_Manager'
+    },
     reviewer: {
       model: 'Role_Reviewer'
     },
