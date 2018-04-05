@@ -1,10 +1,10 @@
 module.exports = function(Model) {
 
 
-  Model.tokenRemove = function(tokenId) {
+  Model.tokenRemove = function(id) {
 
     return Model.getModel('AccountToken')
-      .findById(tokenId)
+      .findById(id)
       .then(function(token) {
 
         if(!token){
@@ -22,7 +22,7 @@ module.exports = function(Model) {
     'tokenRemove', {
       description: 'Remove a token of the specified account',
       accepts: [{
-        arg: 'tokenId',
+        arg: 'id',
         type: 'string',
         required: true
       }],

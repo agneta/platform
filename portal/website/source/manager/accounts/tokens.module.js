@@ -18,6 +18,7 @@ module.exports = function(options) {
 
   var vm = options.vm;
   var AccountList = options.AccountList;
+  var $mdDialog = options.$mdDialog;
   var tokens = vm.tokens = {};
 
   tokens.load = function() {
@@ -34,6 +35,29 @@ module.exports = function(options) {
       .finally(function() {
         tokens.loading = false;
       });
+
+  };
+
+  tokens.delete = function(token) {
+
+    var confirm = $mdDialog.confirm()
+      .title('Remove Token')
+      .textContent('Are you sure you want to remove this token?')
+      .ok('Yes')
+      .cancel('Cancel');
+
+    $mdDialog.show(confirm).then(function() {
+      tokens.loading = true;
+
+      AccountList.model.tokenRemove({
+        id: token.id
+      })
+        .$promise
+        .finally(function(){
+          return tokens.load();
+        });
+
+    });
 
   };
 
