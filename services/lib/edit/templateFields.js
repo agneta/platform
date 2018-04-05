@@ -22,7 +22,7 @@ module.exports = function(app) {
             message: `Could not find field from template with name: ${name}`
           });
         }
-        field.name = name;
+        field.name = field.name || name;
       }
 
       if (_.isObject(field)) {

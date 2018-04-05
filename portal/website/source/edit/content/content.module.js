@@ -60,7 +60,13 @@ module.exports = function(vm, helpers) {
 
       switch (type) {
         case 'date-time':
-          value = new Date(value);
+          if(value){
+            value = new Date(value);
+          }else{
+            value = Date.now();
+          }
+          console.log(value);
+          
           break;
       }
       key = pushValue(value);
