@@ -55,7 +55,14 @@ module.exports = function(vm, helpers) {
         return console.error('Must provide the right key for the field:', field, key);
       }
 
+      var type = childField.valueType || childField.type;
       var value = helpers.fieldValue(childField);
+
+      switch (type) {
+        case 'date-time':
+          value = new Date(value);
+          break;
+      }
       key = pushValue(value);
 
       helpers.fixValue(

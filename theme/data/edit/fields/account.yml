@@ -1,0 +1,14 @@
+name: 'accountId'
+readonly: true
+title:
+  en: Account
+type: relation-belongsTo
+relation:
+  display:
+    image: avatar
+    title: email
+  name: account
+  model: Account
+  link:
+    path: manager/accounts
+    param: account

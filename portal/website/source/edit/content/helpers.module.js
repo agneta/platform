@@ -101,7 +101,7 @@ module.exports = function(shared) {
 
     switch (type) {
       case 'date-time':
-        return new Date();
+        return null;
       case 'number':
         return 0;
       case 'relation-belongsTo':

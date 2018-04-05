@@ -31,7 +31,6 @@ module.exports = function(app, data) {
     data: data
   })
     .then(function(template) {
-
       for (var field of template.fields) {
 
         var type = field.valueType || field.type;
