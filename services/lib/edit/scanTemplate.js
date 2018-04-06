@@ -13,7 +13,10 @@ module.exports = function(app){
         //-----------------------------------
         // Fix template Fields
 
-        return templateFields(template.fields);
+        return templateFields({
+          fields: template.fields,
+          req: options.req
+        });
 
       })
       .then(function(){
@@ -29,7 +32,6 @@ module.exports = function(app){
         template.field = {};
         template.fieldNames = _.map(template.fields,
           function(field){
-            field.title = app.lng(field.title, options.req);
             if(field.name){
               template.field[field.name] = field;
             }
