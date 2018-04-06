@@ -51,6 +51,7 @@ module.exports = function(options) {
       app.client = options.client;
       app.web = options.web;
       require('./lib/locals')(app, options);
+      require('./lib/language')(app);
 
       require('./lib/socket')({
         appOptions: options,

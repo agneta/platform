@@ -14,23 +14,23 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function(app, data) {
-  var result = {
-    name: data.model,
-    base: 'PersistedModel',
-    idInjection: true,
-    options: {},
-    properties: {},
-    relations: {},
-    validations: [],
-    methods: {},
-    indexes: {}
-  };
+module.exports = function(app, template) {
 
-  return app.edit.loadTemplate({
-    data: data
-  })
-    .then(function(template) {
+  return Promise.resolve()
+    .then(function() {
+
+      var result = {
+        name: template.model,
+        base: 'PersistedModel',
+        idInjection: true,
+        options: {},
+        properties: {},
+        relations: {},
+        validations: [],
+        methods: {},
+        indexes: {}
+      };
+
       for (var field of template.fields) {
 
         var type = field.valueType || field.type;

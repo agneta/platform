@@ -38,6 +38,7 @@ module.exports = function(Model, app) {
       });
 
   };
+  require('./loadTemplate')(Model, app);
   require('./loadCommit')(Model, app);
   require('./loadOne')(Model, app);
   require('./delete')(Model, app);

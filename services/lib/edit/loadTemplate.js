@@ -18,7 +18,13 @@ const fs = require('fs-extra');
 const yaml = require('js-yaml');
 const path = require('path');
 const _ = require('lodash');
+const LRU = require('lru-cache');
+
 module.exports = function(app) {
+
+  var cache = LRU({
+    max: 20
+  });
 
   app.edit.loadTemplate = function(options) {
 
@@ -27,14 +33,28 @@ module.exports = function(app) {
     return Promise.resolve()
       .then(function() {
 
-        if (options.path) {
-          return fs.readFile(options.path)
-            .then(function(content) {
-              var template = yaml.safeLoad(content);
-              template.id = template.id || path.parse(options.path).name;
-              options.data = template;
-            });
+        if(!options.path){
+          return;
         }
+        var template;
+        return Promise.resolve()
+          .then(function() {
+
+            template = cache.get(options.path);
+            if(template){
+              return;
+            }
+            return fs.readFile(options.path)
+              .then(function(content) {
+                template = yaml.safeLoad(content);
+                template.id = template.id || path.parse(options.path).name;
+                cache.set(options.path, template);
+              });
+
+          })
+          .then(function() {
+            options.data = template;
+          });
 
       })
       .then(function() {

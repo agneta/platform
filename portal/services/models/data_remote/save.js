@@ -15,7 +15,6 @@
  *   limitations under the License.
  */
 const _ = require('lodash');
-const path = require('path');
 const diff = require('deep-diff').diff;
 
 module.exports = function(Model, app) {
@@ -30,8 +29,8 @@ module.exports = function(Model, app) {
 
     return Promise.resolve()
       .then(function() {
-        return app.edit.loadTemplate({
-          path: path.join(Model.editConfigDir, template + '.yml'),
+        return Model.loadTemplate({
+          template: template
         });
       })
       .then(function(_templateData) {

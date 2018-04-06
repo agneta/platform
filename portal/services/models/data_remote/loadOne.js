@@ -15,7 +15,6 @@
  *   limitations under the License.
  */
 const Promise = require('bluebird');
-const path = require('path');
 const _ = require('lodash');
 
 module.exports = function(Model, app) {
@@ -28,8 +27,8 @@ module.exports = function(Model, app) {
 
     return Promise.resolve()
       .then(function() {
-        return app.edit.loadTemplate({
-          path: path.join(Model.editConfigDir, template + '.yml'),
+        return Model.loadTemplate({
+          template: template,
           req: req
         });
       }).then(function(_templateData) {

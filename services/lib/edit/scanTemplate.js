@@ -21,9 +21,7 @@ module.exports = function(app){
 
         //-----------------------------------
 
-        if(options.req){
-          template.title = app.lng(template.title, options.req);
-        }
+        template.title = app.lng(template.title, options.req);
 
         //-----------------------------------
         // Field Names and access by name
@@ -31,7 +29,7 @@ module.exports = function(app){
         template.field = {};
         template.fieldNames = _.map(template.fields,
           function(field){
-
+            field.title = app.lng(field.title, options.req);
             if(field.name){
               template.field[field.name] = field;
             }

@@ -17,7 +17,6 @@
 const path = require('path');
 var fs = require('fs-extra');
 var Promise = require('bluebird');
-var yaml = require('js-yaml');
 const dataDefinition = require('./data-definition');
 
 module.exports = function(app, config) {
@@ -25,7 +24,6 @@ module.exports = function(app, config) {
   var dataDir = path.join(
     process.cwd(), 'edit/data-remote'
   );
-  var data;
 
   app.dataRemote = {};
 
@@ -39,22 +37,26 @@ module.exports = function(app, config) {
     .then(function(files) {
       return Promise.map(files, function(filePath) {
 
-        return fs.readFile(
-          path.join(dataDir, filePath)
-        )
-          .then(function(content) {
+        var dataPath = path.join(dataDir, filePath);
+        var template;
 
-            data = yaml.safeLoad(content);
-            data.name = data.name || path.parse(filePath).name;
-
-            return dataDefinition(app,data);
+        return Promise.resolve()
+          .then(function(){
+            return app.edit.loadTemplate({
+              path: dataPath
+            });
+          })
+          .then(function(_template){
+            template = _template;
+            return dataDefinition(app,template);
           })
           .then(function(definition){
-            let fileName = data.model.toLowerCase() + '.json';
+            let fileName = template.model.toLowerCase() + '.json';
 
-            app.dataRemote[data.name] = {
-              title: data.title,
-              modelName: definition.name
+            app.dataRemote[template.id] = {
+              title: template.title,
+              modelName: definition.name,
+              path: dataPath
             };
 
             config._definitions[fileName] = {

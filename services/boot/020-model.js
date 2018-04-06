@@ -45,6 +45,7 @@ module.exports = function(app) {
 
   //--------------------------------------------------------
   var remotes = require('./model/remotes')(shared);
+  require('./model/remote-data')(shared);
 
   remotes(
     _.keys(app.models)
