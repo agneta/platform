@@ -16,7 +16,7 @@
  */
 var Promise = require('bluebird');
 
-module.exports = function(util) {
+module.exports = function(util,options) {
 
   var webProject = util.locals.web.project;
   var servicesWebsite = util.locals.web.services;
@@ -32,8 +32,8 @@ module.exports = function(util) {
   }
   ], function(service) {
 
-
     return service.server.generate.scripts({
+      filter: options.script,
       outputDir: service.dir,
       log: util.log
     });

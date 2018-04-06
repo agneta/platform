@@ -12,13 +12,19 @@ module.exports = function(app) {
     options = options || {};
     var outputDir = options.outputDir || project.paths.app.generated;
     var log = options.log || console.log;
-
+    var filter = options.filter;
     return Promise.resolve()
       .then(function() {
+        if(filter && !filter.services){
+          return;
+        }
         log('Exporting Services...');
         return services();
       })
       .then(function() {
+        if(filter && !filter.bundles){
+          return;
+        }
         log('Exporting Library Bundle...');
         return bundle({
           name: 'lib',
@@ -26,6 +32,9 @@ module.exports = function(app) {
         });
       })
       .then(function() {
+        if(filter && !filter.bundles){
+          return;
+        }
         log('Exporting App Script...');
         return bundle({
           name: 'app'

@@ -31,12 +31,12 @@ module.exports = function(util) {
         })
         .then(function() {
           if (options.type.scripts) {
-            return require('./scripts')(util);
+            return require('./scripts')(util, options);
           }
         });
 
     },
-    parameters: [ {
+    parameters: [{
       name: 'type',
       title: 'What to generate?',
       type: 'checkboxes',
@@ -47,7 +47,27 @@ module.exports = function(util) {
         name: 'scripts',
         title: 'Scripts'
       }]
-    }]
+    },
+    {
+      name: 'script',
+      title: {
+        en: 'Select what scripts to generate:'
+      },
+      if: 'type.scripts',
+      type: 'checkboxes',
+      values: [{
+        name: 'bundles',
+        title: {
+          en: 'Bundles'
+        }
+      }, {
+        name: 'services',
+        title: {
+          en: 'Services'
+        }
+      }]
+    }
+    ]
   };
 
 };

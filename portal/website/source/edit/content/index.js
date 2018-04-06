@@ -87,8 +87,13 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $injector, $routeParams,
     if (!data) {
       return;
     }
+
     if (_.isObject(data)) {
       data = data.__value || data;
+    }
+    if (_.isString(data)) {
+      console.log(data);
+      return data;
     }
     var result = data[vm.edit.lang] || '';
 

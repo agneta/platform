@@ -53,6 +53,7 @@ module.exports = function(app, template) {
             type = field.valueType || 'string';
             break;
           case 'select':
+          case 'text-value':
             type = 'string';
             break;
           case 'text':
