@@ -57,7 +57,8 @@ module.exports = function(app) {
     watch({
       dirs: [
         project.paths.app.data,
-        project.paths.theme.data
+        project.paths.theme.data,
+        project.paths.appPortal.data
       ],
       onFile: require('./watcher/data')(options)
     });

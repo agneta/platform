@@ -32,7 +32,8 @@ module.exports = function(watcher) {
             return app.$model.getByFile(pathFile);
           })
           .then(function(model) {
-
+            //console.log();
+            //console.log(model?'FOUND':'NOT FOUND', model);
             if (!model) {
               return;
             }

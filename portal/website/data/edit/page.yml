@@ -17,6 +17,7 @@ fields:
     - relation-belongsTo
 
 tabs:
+  name: tool
   default: list
   location: edit/content/sidebar
   list:
