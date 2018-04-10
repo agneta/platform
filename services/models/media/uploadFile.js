@@ -15,24 +15,16 @@
  *   limitations under the License.
  */
 const Promise = require('bluebird');
-const multer = require('multer');
 
 module.exports = function(Model) {
-
-  var uploadSingle = multer({
-    dest: Model.__tempUploads
-  })
-    .single('object');
 
 
   Model.uploadFile = function(req) {
 
-    var data = Model.__uploadData(req);
     //console.log('about to prepare file', data);
-    Model.__prepareFile(req.file, {
-      dir: data.dir,
-      name: data.name,
-      location: data.location
+    Model.__uploadFile({
+      req: req,
+      field: 'object'
     })
       .then(function(object){
         Model.io.emit('file:upload:complete',object);
@@ -43,10 +35,6 @@ module.exports = function(Model) {
     });
 
   };
-
-  Model.beforeRemote('uploadFile', function(context, instance, next) {
-    uploadSingle(context.req, context.res, next);
-  });
 
   Model.remoteMethod(
     'uploadFile', {

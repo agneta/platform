@@ -29,6 +29,7 @@ module.exports = function(Model, app, options) {
 
   Model.__tempUploads = path.join('temp/uploads', options.name);
   Model.__bucket = options.bucket;
+  Model.__name = options.name;
 
   //------------------------------------------------------------------
 
@@ -45,6 +46,7 @@ module.exports = function(Model, app, options) {
   require('./helpers/sendFile')(Model, app);
   require('./helpers/checkFolders')(Model, app);
   require('./helpers/uploadData')(Model, app);
+  require('./helpers/uploadFile')(Model, app);
   require('./helpers/uploadLocalFile')(Model, app);
 
   require('./add')(Model, app);

@@ -2,10 +2,7 @@
   <div layout="row" class="md-padding">
     <div layout="row" layout-align="center center">
 
-        <md-button class="md-fab md-primary picture" ng-click="changePicture()" ng-style="{'background-image': 'url(' + viewAccount.picture + ')'}" aria-label="Account">
-          <md-icon ng-if="viewAccount.avatar" md-svg-src="{{get_avatar(viewAccount.avatar)}}">
-      </md-icon>
-        </md-button>
+        <%-template('ui/account-avatar-edit')%>
 
         <div flex class="headline">
             <p class="md-headline">{{viewAccount.name}}</p>

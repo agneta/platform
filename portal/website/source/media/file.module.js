@@ -55,6 +55,9 @@ app.service('EditFile', function(Upload, SocketIO, $timeout, $mdDialog, Portal) 
     }
 
     function onFile() {
+      if(!scope.file){
+        return;
+      }
       var callback = options.onFile || data.onFile;
       if (callback) {
         callback(scope.file);

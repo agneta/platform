@@ -17,10 +17,8 @@
 const Promise = require('bluebird');
 const _ = require('lodash');
 const probe = require('probe-image-size');
-
+const stream = require('stream');
 module.exports = function(Model, app) {
-
-  var helpers  = app.client.app.locals;
 
   Model.__initOperation = function(options) {
 
@@ -28,36 +26,70 @@ module.exports = function(Model, app) {
       steps: {}
     };
     var fileInstance;
-    var fileProps;
+    var fileProps = {};
 
     return Promise.resolve()
       .then(function() {
 
-        return app.storage.upload({
-          Bucket: Model.__bucket,
-          Key: options.location,
-          ContentType: options.mimetype,
-          Body: options.file,
-          onProgress: function(progress) {
+        var promises = [];
+        var fileStreamBase = options.file;
 
-            var percentage = 0;
+        (function() {
 
-            if (options.size) {
-              percentage = progress.loaded / options.size / 2 * 100;
-            }
-
-            _.extend(latestEmit, {
-              uploadedSize: progress.loaded,
-              fileSize: options.size,
-              percentage: percentage,
-              location: options.location
+          if(options.type!='image'){
+            return;
+          }
+          fileStreamBase = fileStreamBase.pipe(
+            new stream.PassThrough()
+          );
+          var promise = probe(fileStreamBase)
+            .then(function(size){
+              console.log(size);
+              fileProps.image = {
+                width: size.width,
+                height: size.height
+              };
             });
 
-            options.onProgress(latestEmit);
+          promises.push(promise);
+        })();
 
-          }
-        });
+        (function() {
 
+          fileStreamBase = fileStreamBase.pipe(
+            new stream.PassThrough()
+          );
+          var promise = app.storage.upload({
+            Bucket: Model.__bucket,
+            Key: options.location,
+            ContentType: options.mimetype,
+            Body: fileStreamBase,
+            onProgress: function(progress) {
+              console.log(progress);
+
+              var percentage = 0;
+
+              if (options.size) {
+                percentage = progress.loaded / options.size / 2 * 100;
+              }
+
+              _.extend(latestEmit, {
+                uploadedSize: progress.loaded,
+                fileSize: options.size,
+                percentage: percentage,
+                location: options.location
+              });
+
+              options.onProgress(latestEmit);
+
+            }
+          });
+
+          promises.push(promise);
+
+        })();
+
+        return Promise.all(promises);
       })
       .then(function() {
 
@@ -78,32 +110,13 @@ module.exports = function(Model, app) {
         latestEmit.steps.searchedDatabase = true;
         options.onProgress(latestEmit);
 
-        fileProps = {
+        _.extend(fileProps,{
           location: options.location,
           isSize: options.isSize,
           size: latestEmit.uploadedSize,
           type: options.type,
           contentType: options.mimetype
-        };
-
-      })
-      .then(function() {
-
-        if(fileProps.type!='image'){
-          return;
-        }
-        
-        if(!fileProps.size){
-          return;
-        }
-
-        return probe(helpers.get_media(fileProps.location))
-          .then(function(size){
-            fileProps.image = {
-              width: size.width,
-              height: size.height
-            };
-          });
+        });
 
       })
       .then(function() {

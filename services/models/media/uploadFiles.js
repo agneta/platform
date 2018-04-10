@@ -15,17 +15,11 @@
  *   limitations under the License.
  */
 const Promise = require('bluebird');
-const multer = require('multer');
 
 module.exports = function(Model) {
 
-  var uploadArray = multer({
-    dest: Model.__tempUploads
-  })
-    .array('objects');
-
   Model.uploadFiles = function(req) {
-
+    //TODO use new stream method
     var data = Model.__uploadData(req);
 
     Promise.map(req.files, function(file) {
@@ -44,10 +38,6 @@ module.exports = function(Model) {
     });
 
   };
-
-  Model.beforeRemote('uploadFiles', function(context, instance, next) {
-    uploadArray(context.req, context.res, next);
-  });
 
   Model.remoteMethod(
     'uploadFiles', {

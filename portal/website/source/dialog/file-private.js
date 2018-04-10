@@ -16,7 +16,7 @@
  */
 /*global Fuse*/
 
-agneta.directive('AgEditFilePrivate', function(data, AgMedia, Account) {
+agneta.directive('AgEditFilePrivate', function(data, AgMedia, Role_Account_Manager) {
 
   var onFile = data.onFile;
   var vm = this;
@@ -33,7 +33,7 @@ agneta.directive('AgEditFilePrivate', function(data, AgMedia, Account) {
   data.media = AgMedia.private;
 
   vm.loading = true;
-  Account.roles()
+  Role_Account_Manager.roles()
     .$promise
     .then(function(result) {
       vm.loading = false;

@@ -45,7 +45,10 @@ module.exports = function(Model, app) {
     //console.log('prepare file', location, dir);
 
     var type = app.helpers.mediaType(file.mimetype);
-    var stream = fs.createReadStream(file.path);
+    var stream = file.stream;
+    if(!stream && file.path){
+      stream = fs.createReadStream(file.path);
+    }
 
     //-----------------------------------------------
 
@@ -57,8 +60,9 @@ module.exports = function(Model, app) {
       stream: stream
     })
       .then(function(result) {
-
-        fs.unlinkAsync(file.path);
+        if(file.path){
+          fs.unlinkAsync(file.path);
+        }
         return Model.__prepareObject(result);
 
       })

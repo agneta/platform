@@ -50,6 +50,7 @@ agneta.directive('AgEditFile', function(data, EditFile,AgMedia) {
     scope: vm,
     onFile: function(file) {
       //console.log('EditFile.init',file);
+
       if (file.location) {
         vm.preview_src = MediaPreview.image(file, 'medium');
       }
