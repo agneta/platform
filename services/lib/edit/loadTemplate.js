@@ -53,7 +53,9 @@ module.exports = function(app) {
 
           })
           .then(function() {
+            template = _.clone(template);
             options.data = template;
+
           });
 
       })

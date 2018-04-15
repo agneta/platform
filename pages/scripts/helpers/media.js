@@ -78,6 +78,12 @@ module.exports = function(locals) {
   });
 
   project.extend.helper.register('get_icon', function(name) {
+    if(_.isObject(name)){
+      name = this.get_value(name);
+    }
+    if(!_.isString(name)){
+      throw new Error(`Cannot get icon with value: ${JSON.stringify(name)}`);
+    }
     return this.get_media(urljoin('icons', name));
   });
 

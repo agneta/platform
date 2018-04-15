@@ -16,10 +16,14 @@
  */
 const _ = require('lodash');
 const diff = require('deep-diff').diff;
+const yaml = require('js-yaml');
+const path = require('path');
+const fs = require('fs-extra');
 
 module.exports = function(Model, app) {
 
   var clientHelpers = app.client.app.locals;
+  var webProject = app.web.project;
 
   Model.save = function(id, template, data, req) {
 
@@ -79,6 +83,7 @@ module.exports = function(Model, app) {
           _.pick(item.__data, templateData.fieldNames),
           data
         );
+
         if(!differences){
           return;
         }
@@ -86,6 +91,7 @@ module.exports = function(Model, app) {
           return;
         }
         //console.log(data);
+
         return item.updateAttributes(data)
           .then(function(item) {
             return app.models.History.add({
@@ -96,7 +102,45 @@ module.exports = function(Model, app) {
               req: req
             });
           });
+      })
+      .then(function() {
 
+        if(!templateData.page){
+          return;
+        }
+        if(!_.isString(data.name)){
+          return;
+        }
+        var fields = ['title','cover','name','description'];
+
+        if(templateData.page.fields){
+          fields = fields.concat(templateData.page.fields);
+        }
+
+        var pageData = _.pick(data,fields);
+        pageData = _.extend({},pageData,templateData.page.data);
+
+        if(pageData.path){
+          pageData.path = _.template(pageData.path)({
+            page: data
+          });
+        }
+
+        if(templateData.page.viewData){
+          pageData.viewData = _.pick(
+            _.extend({
+              id: id
+            },data),
+            templateData.page.viewData);
+        }
+
+        var content = yaml.safeDump(pageData);
+        var outputPath = path.join(
+          webProject.paths.app.source,
+          templateData.page.location,
+          data.name
+        )+'.yml';
+        return fs.outputFile(outputPath, content);
       });
 
   };

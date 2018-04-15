@@ -11,3 +11,4 @@ controller: 'AgEditDataRemote'
 
 editor:
   main: false
+  toolbar: edit/data-remote/toolbar
