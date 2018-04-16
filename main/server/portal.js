@@ -15,12 +15,9 @@
  *   limitations under the License.
  */
 const _ = require('lodash');
-const path = require('path');
 const start = require('../start');
-const config = require('../config');
 const middleware = require('../middleware');
 const paths = require('../paths');
-const Build = require(path.join(paths.pages.base, 'core/build'));
 
 module.exports = function(options) {
 
@@ -33,12 +30,6 @@ module.exports = function(options) {
     worker: options.worker,
     server: server
   };
-
-  const appRoots = {
-    preview: 'services/preview/real-time',
-    local: 'services/preview/local'
-  };
-
   //-----------------------------------------------------
   // Setup the preview components
 
@@ -72,17 +63,17 @@ module.exports = function(options) {
   });
 
   var webServices = setupServer('services',{
-    root: 'services/preview/services',
+    root: paths.url.preview.services,
     id: 'web',
     dir: paths.core.project,
     website: {
-      root: appRoots.preview
+      root: paths.url.preview.dev
     },
     detached: true
   });
 
   var webPages = setupServer('website',{
-    root: appRoots.preview,
+    root: paths.url.preview.dev,
     detached: true
   });
 
@@ -102,65 +93,11 @@ module.exports = function(options) {
 
   webPages.locals.portal = portalServices.locals.app;
   webPages.locals.services = webServices.locals.app;
+  webPages.locals.build = require('./build');
 
   storage.locals.services = webServices.locals;
 
   //----------------------------------------------------------------
-
-  webPages.locals.build = function(options) {
-
-    options = options || {};
-    options.env = options.env || 'local';
-
-    var websiteRoot = null;
-
-    switch (options.env) {
-      case 'local':
-        websiteRoot = appRoots.local;
-        break;
-      default:
-    }
-
-    var buildPages = start.pages({
-      mode: 'default',
-      locals: _.extend({}, config, {
-        root: websiteRoot,
-        buildOptions: {
-          assets: true,
-          pages: true
-        }
-      })
-    });
-
-    var buildServices = start.services({
-      website: {
-        root: websiteRoot
-      },
-      building: true,
-      dir: paths.core.project
-    });
-
-    buildServices.locals.env = options.env;
-    buildPages.locals.env = options.env;
-
-    buildServices.locals.client = buildPages.locals;
-    buildServices.locals.web = buildPages.locals;
-
-    buildPages.locals.services = buildServices.locals.app;
-    buildPages.locals.portal = buildServices.locals.app;
-
-    var build = Build(buildPages.locals);
-
-    return start.init([
-      buildServices,
-      buildPages
-    ])
-      .then(function() {
-        return build(options);
-      });
-
-  };
-
   // Start using apps
 
   return start.init([

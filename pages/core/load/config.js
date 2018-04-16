@@ -131,15 +131,6 @@ module.exports = function(locals) {
         if (project.config.services) {
 
           var viewPath;
-          switch (project.site.env) {
-            case 'local':
-              viewPath = project.config.page.viewBase.local;
-              break;
-            default:
-              viewPath = project.config.page.viewBase.default;
-              break;
-          }
-
           var servicesUrl = locals.services.get('services_url');
 
           if (!servicesUrl) {
@@ -147,6 +138,17 @@ module.exports = function(locals) {
           }
           //console.log('servicesUrl',servicesUrl);
           var servicesParsed = url.parse(servicesUrl);
+
+          switch (project.site.env) {
+            case 'local':
+              viewPath = project.config.page.viewBase.local;
+              console.log('servicesParsed',servicesParsed, servicesUrl);
+              //servicesUrl =
+              break;
+            default:
+              viewPath = project.config.page.viewBase.default;
+              break;
+          }
 
           project.site.services = {
             url: servicesUrl,

@@ -22,6 +22,12 @@ const structure = require('./structure');
 //console.log('Application folder:', appName);
 
 //--------------------------------------------------------------------
+var url = {
+  preview: {}
+};
+url.preview.local = 'services/preview/local';
+url.preview.dev = 'services/preview/real-time';
+url.preview.services = 'services/preview/services';
 
 var core = {};
 core.project = process.cwd();
@@ -83,6 +89,7 @@ function loadApp(options) {
 
   return {
     app: app,
+    url: url,
     appPortal: appPortal,
     core: core,
     pages: pages,

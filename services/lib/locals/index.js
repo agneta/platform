@@ -78,6 +78,7 @@ module.exports = function(app, options) {
     case 'local':
 
       var services_url = urljoin( website.host, options.root||'');
+      console.log(services_url);
       app.set('services_url', services_url);
       break;
   }

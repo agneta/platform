@@ -114,17 +114,31 @@ module.exports = function(locals, options) {
 
     });
 
+  function checkOutputPath(outputPath) {
+    var pathParsed = path.parse(outputPath);
+    switch(pathParsed.ext){
+      case '.css':
+      case '.js':
+        if(pathParsed.base.indexOf('index.')===0){
+          return pathParsed.dir + pathParsed.base.substring(5);
+        }
+        break;
+    }
+    return outputPath;
+  }
   function exportAsset(options) {
     options.container = 'public';
+    options.path = checkOutputPath(options.path);
     return locals.exportFile(options);
   }
 
   function filter(options) {
 
-    var relativeParsed = path.parse(options.relative);
-    var outputPath = relativeParsed.dir;
-    var outputFilePath = options.relative;
-    var source_file_path = options.source;
+    let relativeParsed = path.parse(options.relative);
+    let outputPath = relativeParsed.dir;
+    let outputFilePath = options.relative;
+    let source_file_path = options.source;
+    let nameParsed = path.parse(relativeParsed.name);
 
     function copy() {
 
@@ -138,38 +152,43 @@ module.exports = function(locals, options) {
       return copy();
     }
 
-    if (options.relative.indexOf('generated/') == 0) {
-      return copy();
-    }
-
-    let nameParsed, minifyJS, match;
-
     switch (relativeParsed.ext) {
       case '.js':
-
-        nameParsed = path.parse(relativeParsed.name);
 
         if (nameParsed.ext == '.min') {
           return copy();
         }
 
-        if (path.parse(nameParsed.name).ext == '.module') {
+        if (nameParsed.ext == '.module') {
           return;
         }
 
-        minifyJS = project.config.minify.js;
+        var minifyJS = project.config.minify.js;
         if (minifyJS) {
-          match = micromatch([options.relative], minifyJS.exclude);
+          var match = micromatch([options.relative], minifyJS.exclude);
           if (match && match.length) {
             minifyJS = false;
           }
         }
+
 
         return project
           .compiler
           .script
           .compile(options.relative, {
             minify: minifyJS,
+            onOutputPath: function(output){
+              var outputPath = path.join(
+                output.path,
+                output.filename
+              );
+              outputPath = checkOutputPath(outputPath);
+              var outputParsed = path.parse(outputPath);
+              return {
+                path: outputParsed.dir,
+                filename: outputParsed.base
+              };
+            },
             output: path.join(locals.build_dir, 'public')
           })
           .catch(function(err) {
@@ -194,8 +213,6 @@ module.exports = function(locals, options) {
           })
         );
       case '.styl':
-
-        nameParsed = path.parse(relativeParsed.name);
 
         if (nameParsed.ext == '.module') {
           return;

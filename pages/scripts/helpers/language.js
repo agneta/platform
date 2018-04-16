@@ -50,7 +50,7 @@ module.exports = function(locals) {
       obj = obj.__value || obj;
     }
 
-    if (typeof obj == 'string') {
+    if (_.isString(obj)) {
 
       var objPath = obj.split('.');
       var lngName = objPath[0];
@@ -156,6 +156,12 @@ module.exports = function(locals) {
       for (var key in obj) {
 
         var source = obj[key];
+
+        if(!_.keys(source).length){
+          obj[key] = null;
+          continue;
+        }
+
         var res = self.lng(source,lng);
 
         if (res) {

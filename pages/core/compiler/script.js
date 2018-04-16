@@ -131,6 +131,14 @@ module.exports = function(locals) {
     if (locals.web) {
       modulesResolve.push(project.paths.appPortal.source);
     }
+    let output = {
+      path: path.join(pathOutput, pathRelativeParsed.dir),
+      filename: options.outputName || pathRelativeParsed.base
+    };
+
+    if(options.onOutputPath){
+      output = options.onOutputPath(output);
+    }
 
     let compilerOptions = {
       entry: pathSource,
@@ -139,10 +147,7 @@ module.exports = function(locals) {
       resolve: {
         modules: modulesResolve
       },
-      output: {
-        path: path.join(pathOutput, pathRelativeParsed.dir),
-        filename: options.outputName || pathRelativeParsed.base
-      },
+      output: output,
       module: {
         noParse: function(content) {
           return !canParse(content);

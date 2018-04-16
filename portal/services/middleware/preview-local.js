@@ -20,8 +20,8 @@ const express = require('express');
 module.exports = function(app) {
 
   var projectPaths = app.web.project.paths;
-  let staticMiddleware = express.static(path.join(projectPaths.app.build, 'local'));
-  //console.log(path.join(projectPaths.app.build, 'local'));
+  var pathPublic = path.join(projectPaths.app.build, 'local','public');
+  let staticMiddleware = express.static(pathPublic);
   return function(req, res, next) {
 
     app.auth.middleware({
