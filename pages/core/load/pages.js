@@ -18,28 +18,36 @@ var _ = require('lodash');
 
 module.exports = function(locals) {
 
-  locals.renderData = function(data) {
+  var commonData = {};
+  var page = locals.page = {};
+
+  page.commonData = function(page) {
+
+    var key = page.pathSource || page.path;
+    var data = commonData[key] || (commonData[key] = {});
+    _.defaults(data,{
+      scripts: [],
+      styles: []
+    });
+    return data;
+  };
+
+  page.renderData = function(data) {
 
     let helpers = locals.app.locals;
     let data_render = _.extend({
       page: data
     });
 
-    if(data.isView){
-      let commonData = helpers.commonData(data);
-      commonData.scripts = [];
-      commonData.styles = [];
-    }
-
-
     let body = helpers.template('page', data_render);
     data_render.body = body;
 
     return helpers.template('layout', data_render);
+
   };
 
   return function() {
-
+    commonData = {};
     return require('../generators')(locals)
       .catch(function(err) {
         console.log('Generator Error (check logs): ',err.message);

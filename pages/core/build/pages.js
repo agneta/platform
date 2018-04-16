@@ -134,7 +134,7 @@ module.exports = function(locals, options) {
             title: data.path
           });
 
-          var html_rendered = locals.renderData(data);
+          var html_rendered = locals.page.renderData(data);
 
           //-----------------------------------------------
           // MINIFY HTML

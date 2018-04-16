@@ -96,7 +96,7 @@ module.exports = function(locals) {
         }
 
         //-----------------------------------------------------------
-        return locals.renderData(data);
+        return locals.page.renderData(data);
 
       });
   };

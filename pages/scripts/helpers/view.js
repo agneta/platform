@@ -133,7 +133,7 @@ module.exports = function(locals) {
   function getData(page) {
 
     var data = helpers.viewBasicData(page);
-    var commonData = helpers.commonData(page);
+    var commonData = locals.page.commonData(page);
     var config = helpers.config;
     var self = helpers;
 
@@ -142,7 +142,7 @@ module.exports = function(locals) {
       pagePath = path.join(page.pathSource,'view');
       let commonPage = helpers.get_page(pagePath);
       helpers.template('page',{page:commonPage});
-      commonData = helpers.commonData(page);
+      commonData = locals.page.commonData(page);
     }
 
     data.authorization = page.authorization;

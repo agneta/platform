@@ -21,7 +21,7 @@ module.exports = function(app) {
 
   return function(data) {
     project.site.lang = data.lang;
-    var content = client.renderData(data.page);
+    var content = client.page.renderData(data.page);
     if (content) {
       data.res.send(content);
     }

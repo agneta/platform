@@ -84,9 +84,8 @@ module.exports = function(locals) {
         return;
       }
 
-      var commonData = self.commonData(page);
-      commonData.templateChecked = true;
-      
+      var commonData = self.__commonData || locals.page.commonData(page);
+
       var templateStyle = self.layout_style(path_partial);
       if (templateStyle) {
         commonData.styles.push(templateStyle);
@@ -99,6 +98,11 @@ module.exports = function(locals) {
 
       commonData.scripts = _.uniq(commonData.scripts);
       commonData.styles = _.uniq(commonData.styles);
+
+      if(!self.__commonData){
+        self.__commonData = commonData;
+      }
+
     })();
 
 
