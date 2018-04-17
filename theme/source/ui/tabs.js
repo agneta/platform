@@ -1,10 +1,13 @@
 agneta.directive('AgTabs',function($routeParams,$location,$attrs, $timeout){
 
   var vm = this;
+  var tabs = vm.tabs = vm.tabs || {};
   var queryName = $attrs.name || 'tab';
+  var tab = tabs[queryName] = {};
 
-  vm.select = function(name,noHistory) {
-    vm.activeSection = name;
+  tab.select = function(name,noHistory) {
+    console.log(name);
+    tab.activeSection = name;
     var query = $location.search();
     query[queryName] = name;
     var location = $location.search(query);
@@ -16,12 +19,16 @@ agneta.directive('AgTabs',function($routeParams,$location,$attrs, $timeout){
     },100);
   };
 
-  if($routeParams[queryName]){
-    vm.select($routeParams[queryName],true);
-  }
-  else if(vm.activeSection){
-    vm.select(vm.activeSection,true);
-  }
+  $timeout(function(){
+    if($routeParams[queryName]){
+      tab.select($routeParams[queryName],true);
+    }
+    else if(tab.activeSection){
+      console.log('aaaa');
+      tab.select(tab.activeSection,true);
+    }
+  },300);
+
 
   vm.$on('$routeUpdate', function() {
     var check = $location.search();
@@ -29,11 +36,11 @@ agneta.directive('AgTabs',function($routeParams,$location,$attrs, $timeout){
       return;
     }
     if (
-      check[queryName] == vm.activeSection
+      check[queryName] == tab.activeSection
     ) {
       return;
     }
-    vm.select(check[queryName],true);
+    tab.select(check[queryName],true);
   });
 
 });

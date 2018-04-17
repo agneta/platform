@@ -157,7 +157,9 @@ module.exports = function(locals) {
 
         var source = obj[key];
 
-        if(!_.keys(source).length){
+        if(
+          _.isObject(source) && !_.keys(source).length
+        ){
           obj[key] = null;
           continue;
         }

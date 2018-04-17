@@ -12,7 +12,7 @@ sync: false
 contact: false
 search: false
 cookies: false
-footer: false
+footerHidden: true
 languages_toolbar: false
 languages_sidebar: false
 services: true

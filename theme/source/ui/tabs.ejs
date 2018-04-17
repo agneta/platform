@@ -1,22 +1,25 @@
 <%
   var tabs = uiTabs();
+  if(!tabs.name){
+    throw new Error('Must have a tab name');
+  }
+  var tab = `tabs['${tabs.name}']`;
 %>
 
 <div ag-tabs name="<%-tabs.name%>" layout="column">
   <div
   <%-tabs.attrId%>
-  ng-init="activeSection='<%-locals.default||page.defaultSection%>'"
+  ng-init="<%-tab%>.activeSection='<%-locals.default||page.defaultSection%>'"
   class="layout-wrap ui-tabs"
   layout="row"
   layout-align="<%-tabs.align%> center">
     <%for(var section of tabs.templates){%>
-      <div class="item" ng-class="{active:activeSection=='<%-section.name%>'}" ng-click="select('<%-section.name%>')">
+      <div class="item" ng-class="{active:<%-tab%>.activeSection=='<%-section.name%>'}" ng-click="<%-tab%>.select('<%-section.name%>')">
         <%-lng(section.title)%>
       </div>
       <%}%>
   </div>
-
-  <div ng-include="'ui-<%-tabs.name%>-'+activeSection+'.html'">
+  <div ng-include="'ui-<%-tabs.name%>-'+<%-tab%>.activeSection+'.html'">
   </div>
 
     <%for(var section of tabs.templates){

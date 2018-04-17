@@ -1,6 +1,6 @@
 <%
 var tag = viewTag();
-var footerShow = !page.hiddenFooter;
+var footerShow = !config.footerHidden && !page.hiddenFooter;
 var viewClass = '';
 if(!footerShow){
 	viewClass+='footer-hidden';
