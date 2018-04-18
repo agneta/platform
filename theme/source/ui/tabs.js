@@ -6,7 +6,7 @@ agneta.directive('AgTabs',function($routeParams,$location,$attrs, $timeout){
   var tab = tabs[queryName] = {};
 
   tab.select = function(name,noHistory) {
-    console.log(name);
+    //console.log(name);
     tab.activeSection = name;
     var query = $location.search();
     query[queryName] = name;
@@ -19,15 +19,12 @@ agneta.directive('AgTabs',function($routeParams,$location,$attrs, $timeout){
     },100);
   };
 
-  $timeout(function(){
-    if($routeParams[queryName]){
-      tab.select($routeParams[queryName],true);
-    }
-    else if(tab.activeSection){
-      console.log('aaaa');
-      tab.select(tab.activeSection,true);
-    }
-  },300);
+  if($routeParams[queryName]){
+    tab.select($routeParams[queryName],true);
+  }
+  else if($attrs.default){
+    tab.select($attrs.default,true);
+  }
 
 
   vm.$on('$routeUpdate', function() {

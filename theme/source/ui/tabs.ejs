@@ -6,15 +6,24 @@
   var tab = `tabs['${tabs.name}']`;
 %>
 
-<div ag-tabs name="<%-tabs.name%>" layout="column">
+<div ag-tabs name="<%-tabs.name%>" default="<%-locals.default||page.defaultSection%>" layout="column">
   <div
   <%-tabs.attrId%>
-  ng-init="<%-tab%>.activeSection='<%-locals.default||page.defaultSection%>'"
   class="layout-wrap ui-tabs"
   layout="row"
   layout-align="<%-tabs.align%> center">
-    <%for(var section of tabs.templates){%>
-      <div class="item" ng-class="{active:<%-tab%>.activeSection=='<%-section.name%>'}" ng-click="<%-tab%>.select('<%-section.name%>')">
+    <%for(var section of tabs.templates){
+      var show = null;
+      if(section.show){
+        show=`ng-show="${section.show}"`;
+      }
+      %>
+      <div
+      class="item"
+      ng-class="{active:<%-tab%>.activeSection=='<%-section.name%>'}"
+      ng-click="<%-tab%>.select('<%-section.name%>')"
+      <%-show%>
+      >
         <%-lng(section.title)%>
       </div>
       <%}%>

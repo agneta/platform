@@ -17,7 +17,7 @@
 var app = angular.module('MainApp');
 var scrollParent;
 
-app.run(function($rootScope, $mdUtil, $timeout) {
+app.run(function($rootScope, $mdUtil, $timeout, $location) {
 
   $rootScope.scrollTop = function() {
     $mdUtil.animateScrollTo(scrollParent, 0, 500);
@@ -29,6 +29,7 @@ app.run(function($rootScope, $mdUtil, $timeout) {
       return;
     }
     $timeout(function() {
+      $location.hash(eID);
       var position = elmYPosition(eID);
       //console.log(position);
       $mdUtil.animateScrollTo(scrollParent, position, 500);
