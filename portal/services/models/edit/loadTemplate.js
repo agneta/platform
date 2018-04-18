@@ -52,7 +52,7 @@ module.exports = function(Model, app) {
 
   Model.loadTemplate = function(template,req) {
 
-    return Model.loadTemplate({
+    return Model.__loadTemplate({
       template: template,
       req: req
     });
