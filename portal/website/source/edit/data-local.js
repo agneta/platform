@@ -19,7 +19,6 @@
   agneta.directive('AgEditDataLocal', function(Data_Local) {
     var vm = this;
     agneta.extend(vm, 'AgEditMainCtrl');
-
     vm.init({
       model: Data_Local,
       mediaRoot: 'data'
