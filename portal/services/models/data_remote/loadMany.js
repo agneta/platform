@@ -22,16 +22,14 @@ module.exports = function(Model, app) {
   Model.loadMany = function(template, order, req) {
 
     var labels;
-    var pages;
     var findFields = {};
     var templateData;
     var includeFields = [];
-    var orderFields = [];
 
     return Promise.resolve()
       .then(function() {
 
-        return Model.loadTemplate({
+        return Model.__loadTemplate({
           template: template
         });
 
@@ -146,33 +144,12 @@ module.exports = function(Model, app) {
           return result;
         });
       })
-      .then(function(_pages) {
-
-        pages = _pages;
-
-        templateData.list.order.map(function(fieldName){
-          var field = templateData.field[fieldName];
-          if(!field){
-            return;
-          }
-          var title = app.lng(field.title,req);
-          orderFields.push({
-            title: `${title} - Ascending`,
-            value: `${field.name} ASC`
-          });
-          orderFields.push({
-            title: `${title} - Descending`,
-            value: `${field.name} DESC`
-          });
-        });
-
-      })
-      .then(function() {
+      .then(function(pages) {
 
         return {
-          pages: pages,
-          order: orderFields
+          pages: pages
         };
+
       });
 
   };

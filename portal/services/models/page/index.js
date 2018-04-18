@@ -72,6 +72,7 @@ module.exports = function(Model, app) {
   require('./save')(Model, app);
   require('./new')(Model, app);
   require('./loadMany')(Model, app);
+  require('./loadTemplate')(Model, app);
   require('./loadTemplates')(Model, app);
 
 };

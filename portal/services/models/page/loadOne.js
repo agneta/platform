@@ -16,20 +16,17 @@
  */
 const fs = require('fs-extra');
 const yaml = require('js-yaml');
-const path = require('path');
-const templateBase = require('./templateBase');
+
 
 module.exports = function(Model, app) {
 
   var source;
-  var template;
   var clientHelpers = app.web.app.locals;
 
-  Model.loadOne = function(id, req) {
+  Model.loadOne = function(id) {
 
     var page;
     var log;
-    var templatePath;
 
     return Model.getPage(id)
       .then(function(_page) {
@@ -53,29 +50,6 @@ module.exports = function(Model, app) {
       .then(function(_log) {
 
         log = _log;
-        templatePath = path.join(Model.editConfigDir, page.template + '.yml');
-        return fs.pathExists(templatePath);
-      })
-      .then(function(exists) {
-        if(!exists){
-          return app.edit.loadTemplate({
-            req: req,
-            data: {
-              fields: templateBase
-            }
-          });
-        }
-        return app.edit.loadTemplate({
-          path: templatePath,
-          base: templateBase,
-          req: req
-        });
-
-      })
-      .then(function(_template) {
-
-        template = _template;
-        template.id = page.template;
 
         return fs.readFile(source);
       })
@@ -89,8 +63,7 @@ module.exports = function(Model, app) {
             path: page.path,
             id: id,
             log: log
-          },
-          template: template
+          }
         };
       });
 

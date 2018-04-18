@@ -18,7 +18,7 @@
 /*global _:true*/
 
 require('edit/content/field-menu.module');
-agneta.directive('AgEditMainCtrl', function($rootScope, $injector, $routeParams, $parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, AgMedia, Role_Editor) {
+agneta.directive('AgEditMainCtrl', function($rootScope, $injector,$q, $routeParams, $parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, AgMedia, Role_Editor) {
 
   var vm = this;
   var helpers = {};
@@ -38,6 +38,7 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $injector, $routeParams,
   var shared = {
     vm: vm,
     $rootScope: $rootScope,
+    $q: $q,
     helpers: helpers,
     $location: $location,
     $mdToast: $mdToast,
@@ -128,15 +129,14 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $injector, $routeParams,
     var routeParams = $location.search();
     vm.restart(true)
       .then(function() {
-
-        if (routeParams.id) {
-          vm.getPage(routeParams.id);
-          return;
-        }
         if (routeParams.template) {
-          vm.selectTemplate(routeParams.template);
+          return vm.selectTemplate(routeParams.template);
         }
-
+      })
+      .then(function() {
+        if (routeParams.id) {
+          return vm.getPage(routeParams.id);
+        }
       });
   };
 

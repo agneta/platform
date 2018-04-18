@@ -27,7 +27,7 @@ module.exports = function(Model, app) {
 
     return Promise.resolve()
       .then(function() {
-        return Model.loadTemplate({
+        return Model.__loadTemplate({
           template: template,
           req: req
         });
@@ -83,8 +83,7 @@ module.exports = function(Model, app) {
             data: itemData,
             log: log
           },
-          relations: relations,
-          template: templateData
+          relations: relations
         };
 
       });

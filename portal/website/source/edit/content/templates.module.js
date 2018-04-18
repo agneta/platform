@@ -23,18 +23,18 @@ module.exports = function(shared) {
 
   vm.restart = function(skipClear) {
 
+    if(vm.sidebar.loading){
+      return;
+    }
+
     vm.sidebar.loading = true;
 
-    return helpers.Model.loadTemplates({
-
-    })
+    return helpers.Model.loadTemplates()
       .$promise
       .then(function(result) {
-        if(!skipClear){
+        if (!skipClear) {
           $location.search({});
         }
-
-
         vm.itemsLoaded = result.templates;
         vm.templates = null;
         vm.templates = vm.itemsLoaded;
@@ -56,52 +56,72 @@ module.exports = function(shared) {
   vm.selectTemplate = function(template) {
 
     if (template) {
-      if(!template.id){
+      if (!template.id) {
         template = vm.fuse.search(template)[0];
       }
       var currentId = vm.template;
-      if(currentId){
+      if (currentId) {
         currentId = currentId.id || currentId;
       }
-      if(template.id==currentId){
+      if (template.id == currentId) {
         //return;
       }
     } else {
       template = vm.template;
     }
+    if(!template.id){
+      return;
+    }
+    if(vm.template && (vm.template.id == template.id)){
+      return;
+    }
+
     vm.sidebar.loading = true;
+    return helpers.Model.loadTemplate({
+      template: template.id
+    })
+      .$promise
+      .then(function(template) {
+        vm.template = template;
+        return vm.getTemplateItems();
+      })
+      .then(function() {
+        $location.search({
+          template: vm.template.id,
+          id: $routeParams.id
+        });
+      })
+      .finally(function() {
+        vm.sidebar.loading = false;
+      });
+
+  };
+
+  vm.getTemplateItems = function() {
 
     var query = {
-      template: template.id,
+      template: vm.template.id,
     };
 
-    if(vm.template){
-      query.order =  vm.template.order;
+    if (vm.template) {
+      query.order = vm.template.order;
     }
+
+    vm.sidebar.loading = true;
 
     return helpers.Model.loadMany(query)
       .$promise
       .then(function(result) {
 
         vm.pages = null;
-        if(!vm.template || vm.template.id != template.id){
+        if (!vm.template || vm.template.id != vm.template.id) {
           vm.page = null;
         }
 
         $timeout(function() {
 
-          if(!(vm.template && vm.template.id==template.id)){
-            vm.template = template;
-          }
-
-          $location.search({
-            template: template.id,
-            id: $routeParams.id
-          });
-
           helpers.checkPages(result.pages);
           vm.itemsLoaded = result.pages;
-          vm.template.orderList = result.order;
           vm.pages = vm.itemsLoaded;
           vm.templates = null;
 
@@ -115,23 +135,23 @@ module.exports = function(shared) {
 
   };
 
-  vm.$watch('template.order',function(newValue,oldValue){
-    if(!newValue){
+  vm.$watch('template.order', function(newValue, oldValue) {
+    if (!newValue) {
       return;
     }
-    if(newValue!=oldValue){
-      vm.selectTemplate();
+    if (newValue != oldValue) {
+      vm.getTemplateItems();
     }
   });
-  vm.$watch('template',function(newValue, oldValue){
-    if(newValue == oldValue){
+  vm.$watch('template', function(newValue, oldValue) {
+    if (newValue == oldValue) {
       return;
     }
-    if(!newValue){
+    if (!newValue) {
       return;
     }
-    if(oldValue){
-      if(oldValue.id==newValue.id){
+    if (oldValue) {
+      if (oldValue.id == newValue.id) {
         return;
       }
     }

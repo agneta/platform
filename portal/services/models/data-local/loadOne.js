@@ -22,25 +22,18 @@ var path = require('path');
 
 module.exports = function(Model, app) {
 
-  Model.loadOne = function(id, req) {
+  Model.loadOne = function(id) {
 
-    var template;
     var log;
     var parsedId = Model.parseId(id);
 
-    return app.edit.loadTemplate({
-      path: path.join(Model.editConfigDir, parsedId.templateId + '.yml'),
-      req: req,
-      app: app
-    }).then(function(_template) {
+    return Promise.resolve()
+      .then(function() {
 
-      template = _template;
-      template.id = parsedId.templateId;
-
-      return app.git.log({
-        file: parsedId.source
-      });
-    })
+        return app.git.log({
+          file: parsedId.source
+        });
+      })
       .then(function(_log) {
         log = _log;
         return readFile(parsedId.source);
@@ -55,8 +48,7 @@ module.exports = function(Model, app) {
             data: data,
             log: log,
             path: '/' + path.join(parsedId.templateId,parsedId.fileName)
-          },
-          template: template
+          }
         };
 
       });

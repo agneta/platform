@@ -36,13 +36,14 @@ module.exports = function(Model, app) {
     };
 
   };
-
-  require('./data-local/loadCommit')(Model, app);
-  require('./data-local/loadOne')(Model, app);
-  require('./data-local/delete')(Model, app);
-  require('./data-local/save')(Model, app);
-  require('./data-local/new')(Model, app);
-  require('./data-local/loadMany')(Model, app);
-  require('./edit/loadTemplates')(Model, app);
+  
+  require('./loadCommit')(Model, app);
+  require('./loadOne')(Model, app);
+  require('./delete')(Model, app);
+  require('./save')(Model, app);
+  require('./new')(Model, app);
+  require('./loadMany')(Model, app);
+  require('../edit/loadTemplate')(Model, app);
+  require('../edit/loadTemplates')(Model, app);
 
 };

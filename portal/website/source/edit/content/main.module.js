@@ -58,7 +58,6 @@ module.exports = function(options) {
         }
 
         vm.relations = result.relations;
-        vm.template = result.template;
         vm.pagePath = result.page.path;
         helpers.structureData(vm.template, data);
 

@@ -104,11 +104,11 @@ module.exports = function(shared) {
         return null;
       case 'number':
         return 0;
-      case 'relation-belongsTo':
-        return '';
       case 'relation-hasMany':
         return null;
+      case 'relation-belongsTo':
       case 'value':
+      case 'text-value':
       case 'select':
         return '';
       case 'boolean':

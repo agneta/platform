@@ -38,13 +38,13 @@ module.exports = function(Model, app) {
       });
 
   };
-  require('./loadTemplate')(Model, app);
   require('./loadCommit')(Model, app);
   require('./loadOne')(Model, app);
   require('./delete')(Model, app);
   require('./save')(Model, app);
   require('./new')(Model, app);
   require('./loadMany')(Model, app);
+  require('../edit/loadTemplate')(Model, app);
   require('../edit/loadTemplates')(Model, app);
 
 };
