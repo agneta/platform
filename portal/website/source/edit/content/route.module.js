@@ -28,7 +28,6 @@ module.exports = function(shared) {
         if (!current.id || !current.template) {
           return;
         }
-        console.log(vm.template);
         return vm.getPage(current);
       })
       .then(function(){

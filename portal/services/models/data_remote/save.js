@@ -33,7 +33,7 @@ module.exports = function(Model, app) {
 
     return Promise.resolve()
       .then(function() {
-        return Model.__loadTemplate({
+        return Model.__loadTemplateData({
           template: template
         });
       })

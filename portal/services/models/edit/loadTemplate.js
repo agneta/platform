@@ -1,27 +1,29 @@
 const path = require('path');
-
+const _ = require('lodash');
 module.exports = function(Model, app) {
 
-  Model.__loadTemplate = function(options) {
-    var template = options.template;
-    var req = options.req;
+  Model.__loadTemplateData = function(options) {
 
-    return app.edit.loadTemplate({
-      path: path.join(Model.editConfigDir, template + '.yml'),
-      req: req
+    var templatePath = options.path;
+    if(!options.data){
+      templatePath = path.join(
+        Model.editConfigDir,
+        options.template + '.yml'
+      );
+    }
+    var templateOptions = _.extend(options,{
+      path: templatePath
     });
+
+    return app.edit.loadTemplate(templateOptions);
   };
 
-  Model.loadTemplate = function(template,req) {
-
+  Model.__loadTemplate = function(options) {
     var orderFields = [];
 
     return Promise.resolve()
       .then(function() {
-        return Model.__loadTemplate({
-          template: template,
-          req: req
-        });
+        return Model.__loadTemplateData(options);
       })
       .then(function(templateData){
         templateData.list.order.map(function(fieldName){
@@ -29,7 +31,7 @@ module.exports = function(Model, app) {
           if(!field){
             return;
           }
-          var title = app.lng(field.title,req);
+          var title = app.lng(field.title,options.req);
           orderFields.push({
             title: `${title} - Ascending`,
             value: `${field.name} ASC`
@@ -43,9 +45,17 @@ module.exports = function(Model, app) {
           fields: templateData.fields,
           orderList: orderFields,
           title: templateData.title,
-          id: templateData.id
+          id: templateData.id || options.template
         };
       });
+  };
+
+  Model.loadTemplate = function(template,req) {
+
+    return Model.loadTemplate({
+      template: template,
+      req: req
+    });
 
   };
 

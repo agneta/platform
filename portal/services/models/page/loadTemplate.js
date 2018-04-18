@@ -1,6 +1,7 @@
 const path = require('path');
 const templateBase = require('./templateBase');
 const fs = require('fs-extra');
+const _ = require('lodash');
 
 module.exports = function(Model, app) {
 
@@ -15,25 +16,27 @@ module.exports = function(Model, app) {
         return fs.pathExists(templatePath);
       })
       .then(function(exists) {
-        if(!exists){
-          return app.edit.loadTemplate({
-            req: req,
+        var options;
+
+        if(exists){
+          options = {
+            path: templatePath,
+            base: templateBase
+          };
+        }else{
+          options = {
             data: {
               fields: templateBase
             }
-          });
+          };
         }
-        return app.edit.loadTemplate({
-          path: templatePath,
-          base: templateBase,
+
+        _.extend(options,{
+          template: template,
           req: req
         });
+        return Model.__loadTemplate(options);
 
-      })
-      .then(function(_template) {
-
-        template = _template;
-        template.id = template;
       });
 
   };
