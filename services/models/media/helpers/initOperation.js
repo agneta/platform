@@ -44,7 +44,7 @@ module.exports = function(Model, app) {
           );
           var promise = probe(fileStreamBase)
             .then(function(size){
-              console.log(size);
+              //console.log(size);
               fileProps.image = {
                 width: size.width,
                 height: size.height
@@ -65,7 +65,7 @@ module.exports = function(Model, app) {
             ContentType: options.mimetype,
             Body: fileStreamBase,
             onProgress: function(progress) {
-              console.log(progress);
+              //console.log(progress);
 
               var percentage = 0;
 

@@ -19,15 +19,10 @@ const Promise = require('bluebird');
 module.exports = function(Model) {
 
   Model.uploadFiles = function(req) {
-    //TODO use new stream method
-    var data = Model.__uploadData(req);
 
-    Promise.map(req.files, function(file) {
-      return Model.__prepareFile(file, {
-        dir: data.dir
-      });
-    }, {
-      concurrency: 5
+    Model.__uploadFiles({
+      req: req,
+      field: 'objects'
     })
       .then(function(){
         Model.io.emit('files:upload:complete');

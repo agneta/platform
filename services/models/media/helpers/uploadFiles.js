@@ -3,7 +3,7 @@ const Promise = require('bluebird');
 
 module.exports = function(Model) {
 
-  Model.__uploadFile = function(options) {
+  Model.__uploadFiles = function(options) {
 
     var req = options.req;
     var busboy = new Busboy({
@@ -11,50 +11,48 @@ module.exports = function(Model) {
     });
     var formData = {};
     var promises = [];
-    if(!options.field){
-      throw new Error('Must define the option field before uploading');
-    }
 
-
-    return new Promise(function(resolve, reject) {
-      busboy.on('file', function(fieldname, stream, filename, encoding, mimetype) {
-        console.log(fieldname);
-        if(fieldname!=options.field){
-          return;
+    return Promise.resolve()
+      .then(function(){
+        if(!options.field){
+          throw new Error('Must define the option field before uploading');
         }
-        //console.log(fieldname,formData);
+      })
+      .then(function(){
+        return new Promise(function(resolve, reject) {
+          busboy.on('file', function(fieldname, stream, filename, encoding, mimetype) {
+            if(fieldname!=options.field){
+              return;
+            }
+            var promise = Promise.resolve()
+              .then(function() {
+                return Model.__prepareFile({
+                  mimetype: mimetype,
+                  originalname: filename,
+                  stream: stream
+                }, {
+                  dir: formData.dir
+                });
+              });
 
-        var promise = Promise.resolve()
-          .then(function() {
-            return Model.__prepareFile({
-              mimetype: mimetype,
-              originalname: filename,
-              stream: stream
-            }, {
-              dir: formData.dir
-            });
+            promises.push(promise);
           });
 
-        promises.push(promise);
-      });
+          busboy.on('field', function(fieldname, val) {
+            //console.log('Field [' + fieldname + ']: value: ' + val);
+            formData[fieldname] = val;
+          });
 
-      busboy.on('field', function(fieldname, val) {
-        //console.log('Field [' + fieldname + ']: value: ' + val);
-        formData[fieldname] = val;
-      });
-
-      busboy.on('error', function(err) {
-        reject(err);
-      });
-      req.pipe(busboy);
-
-    })
+          busboy.on('finish', resolve);
+          busboy.on('error', function(err) {
+            reject(err);
+          });
+          req.pipe(busboy);
+        });
+      })
       .then(function(){
-
-
-
+        return Promise.all(promises);
       });
-
   };
 
 };
