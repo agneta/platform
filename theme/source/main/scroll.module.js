@@ -29,7 +29,7 @@ app.run(function($rootScope, $mdUtil, $timeout, $location) {
       return;
     }
     $timeout(function() {
-      $location.hash(eID);
+      $location.hash(eID).replace();
       var position = elmYPosition(eID);
       //console.log(position);
       $mdUtil.animateScrollTo(scrollParent, position, 500);

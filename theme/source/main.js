@@ -294,10 +294,10 @@ app.config(function($mdThemingProvider, $sceDelegateProvider) {
     return $rootScope.account.profile ? 'logged-in' : 'logged-out';
   };
 
-
 });
 
 require('main/socket.module');
+require('main/template-literal.module');
 require('main/search-engine.module');
 require('main/data.module');
 require('main/filters.module');
