@@ -4,6 +4,7 @@ module.exports = function(shared) {
   var AccountList = shared.AccountList;
   var $mdDialog = shared.$mdDialog;
   var overview = vm.overview = {};
+  var reloadAccount = shared.reloadAccount;
 
   overview.resendVerification = function() {
     AccountList.model.resendVerification({
@@ -16,7 +17,11 @@ module.exports = function(shared) {
       partial: 'upload-picture',
       data:{
         account: vm.viewAccount,
-        method: 'role-account-manager/picture-change'
+        method: 'role-account-manager/picture-change',
+        onUploaded: function() {
+          reloadAccount();
+          AccountList.loadAccounts();
+        }
       }
     });
   };

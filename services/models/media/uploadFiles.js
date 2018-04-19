@@ -20,7 +20,7 @@ module.exports = function(Model) {
 
   Model.uploadFiles = function(req) {
 
-    Model.__uploadFiles({
+    Model.__uploadFile({
       req: req,
       field: 'objects'
     })

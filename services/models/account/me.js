@@ -33,6 +33,8 @@ module.exports = function(Model) {
         id: true,
         name: true,
         avatar: true,
+        picturePrivate: true,
+        picture: true,
         username: true,
         email: true
       }

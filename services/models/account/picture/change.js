@@ -12,23 +12,30 @@ module.exports = function(Model, app) {
 
     return Promise.resolve()
       .then(function() {
-      })
-      .then(function() {
 
         uploadOptions = {
           req: req,
           field: 'object',
-          onField: function(fieldname, val){
-            if(fieldname!='accountId'){
-              return;
+          onFile: function(){
+            if(!uploadOptions.location){
+              return Promise.reject({
+                statusCode: 400,
+                message: 'Invalid location to upload image'
+              });
             }
-            accountId = val;
-            uploadOptions.location = getLocation(val);
           }
         };
 
         if(accountId){
           uploadOptions.location = getLocation(accountId);
+        }else{
+          uploadOptions.onField = function(fieldname, val){
+            if(fieldname!='accountId'){
+              return;
+            }
+            accountId = val;
+            uploadOptions.location = getLocation(val);
+          };
         }
 
         return Media_Private.__uploadFile(uploadOptions);
@@ -60,7 +67,7 @@ module.exports = function(Model, app) {
 
     return Model.__pictureChange({
       req: req,
-      accountId: req.accessToken.userId
+      accountId: req.accessToken.userId+''
     });
 
   };

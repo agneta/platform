@@ -10,6 +10,7 @@ module.exports = function(Model) {
       headers: req.headers
     });
     var formData = {};
+    var promises = [];
 
     return Promise.resolve()
       .then(function(){
@@ -20,18 +21,23 @@ module.exports = function(Model) {
       .then(function(){
         return new Promise(function(resolve, reject) {
           busboy.on('file', function(fieldname, stream, filename, encoding, mimetype) {
-            if(fieldname!=options.field){
-              return;
-            }
-
-            var uploadOptions = _.extend(
-              {},
-              formData,
-              _.pick(options,['location','dir','name'])
-            );
-
-            return Promise.resolve()
+            var promise = Promise.resolve()
               .then(function() {
+                if(fieldname!=options.field){
+                  return;
+                }
+
+                if(options.onFile){
+                  return options.onFile(fieldname);
+                }
+
+              })
+              .then(function() {
+                var uploadOptions = _.extend(
+                  {},
+                  formData,
+                  _.pick(options,['location','dir','name'])
+                );
                 return Model.__prepareFile({
                   mimetype: mimetype,
                   originalname: filename,
@@ -40,11 +46,15 @@ module.exports = function(Model) {
               })
               .then(function(result) {
                 resolve(result);
-              });
+              })
+              .catch(reject);
+
+            promises.push(promise);
+
           });
 
           busboy.on('field', function(fieldname, val) {
-            //console.log('Field [' + fieldname + ']: value: ' + val);
+            console.log('Field [' + fieldname + ']: value: ' + val);
             formData[fieldname] = val;
             if(options.onField){
               options.onField(fieldname,val);
@@ -56,6 +66,9 @@ module.exports = function(Model) {
           });
           req.pipe(busboy);
         });
+      })
+      .then(function(){
+        return Promise.all(promises);
       });
 
   };

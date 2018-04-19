@@ -30,6 +30,13 @@ module.exports = function(Model, app) {
     return Promise.resolve()
       .then(function() {
 
+        if(!req.accessToken){
+          return Promise.reject({
+            statusCode: '400',
+            message: 'Not logged in'
+          });
+        }
+
         //return app.storage.headObject(params);
         return Model.findOne({
           where: {
@@ -47,6 +54,17 @@ module.exports = function(Model, app) {
             message: 'Media file could not be found'
           });
         }
+        console.log(location,req.accessToken.userId);
+
+        //----------------------------------------------------
+        // Check if account owner
+
+        if(location.indexOf(`account/${req.accessToken.userId}/`)===0){
+          return;
+        }
+
+        //----------------------------------------------------
+        // Check by role
 
         var roles = ['administrator', 'editor'];
 
@@ -57,17 +75,17 @@ module.exports = function(Model, app) {
         return app.models.Account.hasRoles(
           roles,
           req
-        );
-
-      })
-      .then(function(result) {
-        if (!result.has) {
-          //console.log(result);
-          return Promise.reject({
-            status: '401',
-            message: 'You are not authorized to access this media object'
+        )
+          .then(function(result) {
+            if (!result.has) {
+            //console.log(result);
+              return Promise.reject({
+                status: '401',
+                message: 'You are not authorized to access this media object'
+              });
+            }
           });
-        }
+
       })
       .then(function() {
 

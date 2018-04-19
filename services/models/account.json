@@ -106,6 +106,12 @@
     "principalId": "$authenticated",
     "permission": "ALLOW",
     "property": "recover"
+  },{
+    "accessType": "EXECUTE",
+    "principalType": "ROLE",
+    "principalId": "$authenticated",
+    "permission": "ALLOW",
+    "property": "pictureChange"
   }, {
     "accessType": "EXECUTE",
     "principalType": "ROLE",

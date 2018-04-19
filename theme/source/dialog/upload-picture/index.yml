@@ -2,6 +2,6 @@ title:
   en: Upload Picture
 
 controller: AgUploadPicture
-
+class: upload-picture
 scripts:
   - lib/ng-file-upload.min
