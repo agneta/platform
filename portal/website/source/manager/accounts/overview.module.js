@@ -13,7 +13,11 @@ module.exports = function(shared) {
 
   overview.changePicture = function(){
     $mdDialog.open({
-      partial: 'upload-picture'
+      partial: 'upload-picture',
+      data:{
+        account: vm.viewAccount,
+        method: 'role-account-manager/picture-change'
+      }
     });
   };
 

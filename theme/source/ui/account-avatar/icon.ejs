@@ -1,0 +1,8 @@
+<%
+var model = locals.model;
+%>
+<md-icon
+aria-label="account icon"
+ng-if="!picture && <%-model%>.avatar"
+md-svg-src="{{get_avatar(<%-model%>.avatar)}}">
+</md-icon>

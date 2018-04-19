@@ -1,0 +1,31 @@
+<%
+  var model = locals.model = locals.model || 'account';
+  var ngStyle = `ng-style="{'background-image': 'url(' + picture + ')'}"`
+  var attr = `ag-account-avatar ng-model="${model}"`;
+  var elmClass = 'ag-account-avatar';
+%>
+
+<%if(locals.click){%>
+
+<md-button
+class="md-fab md-primary <%-elmClass%>"
+ng-click="<%-locals.click%>"
+<%-ngStyle%>
+<%-attr%>
+aria-label="Account">
+<%-template('ui/account-avatar/icon',locals)%>
+</md-button>
+
+<%}else{%>
+
+  <div
+  layout="column"
+  layout-align="center center"
+  <%-attr%>
+  <%-ngStyle%>
+  class="<%-elmClass%>"
+  >
+  <%-template('ui/account-avatar/icon',locals)%>
+  </div>
+
+<%}%>

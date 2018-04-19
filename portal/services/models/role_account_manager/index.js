@@ -40,5 +40,7 @@ module.exports = function(Model, app) {
   require('./token/list')(Model,app);
   require('./token/remove')(Model,app);
 
+  require('./picture/change')(Model,app);
+
 
 };

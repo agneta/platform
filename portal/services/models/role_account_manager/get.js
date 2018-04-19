@@ -66,6 +66,7 @@ module.exports = function(Model, app) {
           id: true,
           name: true,
           avatar: true,
+          picture: true,
           username: true
         }
       });

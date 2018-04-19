@@ -18,8 +18,6 @@ module.exports = function(Model, app) {
 
   var tokenName = app.get('token').name;
 
-
-
   //---------------------------------------------------
 
   Model.observe('loaded', function(ctx) {
@@ -51,7 +49,7 @@ module.exports = function(Model, app) {
   //---------------------------------------------------
   // Remove short term token as it should be used only once
 
-  Model.afterRemote('**', function(ctx, account, next) {
+  Model.afterRemote( '**', function(ctx, account, next) {
 
     var accessToken = ctx.req.accessToken;
     if (accessToken && accessToken.ttl < 1000) {
@@ -71,6 +69,7 @@ module.exports = function(Model, app) {
             statusCode: 401
           });
         }
+
         return account;
       });
   };

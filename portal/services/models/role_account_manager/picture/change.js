@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: services/models/media/helpers/getMediaPath.js
+ *   Source file: portal/services/models/account/update.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,14 +14,38 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const path = require('path');
 
 module.exports = function(Model) {
 
-  Model.__getMediaPath = function(dir, name) {
-    dir = dir || '';
-    var result = path.join(dir, name);
+  Model.pictureChange = function(req) {
+    var Account = Model.getModel('Account');
 
-    return result;
+    return Account.__pictureChange({
+      req: req
+    });
+
   };
+
+  Model.remoteMethod(
+    'pictureChange', {
+      description: '',
+      accepts: [{
+        arg: 'req',
+        type: 'object',
+        'http': {
+          source: 'req'
+        }
+      }],
+      returns: {
+        arg: 'result',
+        type: 'object',
+        root: true
+      },
+      http: {
+        verb: 'post',
+        path: '/picture-change'
+      }
+    }
+  );
+
 };

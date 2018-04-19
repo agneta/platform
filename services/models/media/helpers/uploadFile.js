@@ -1,6 +1,6 @@
 const Busboy = require('busboy');
 const Promise = require('bluebird');
-
+const _ = require('lodash');
 module.exports = function(Model) {
 
   Model.__uploadFile = function(options) {
@@ -24,13 +24,19 @@ module.exports = function(Model) {
               return;
             }
 
+            var uploadOptions = _.extend(
+              {},
+              formData,
+              _.pick(options,['location','dir','name'])
+            );
+
             return Promise.resolve()
               .then(function() {
                 return Model.__prepareFile({
                   mimetype: mimetype,
                   originalname: filename,
                   stream: stream
-                }, formData);
+                }, uploadOptions);
               })
               .then(function(result) {
                 resolve(result);
@@ -40,6 +46,9 @@ module.exports = function(Model) {
           busboy.on('field', function(fieldname, val) {
             //console.log('Field [' + fieldname + ']: value: ' + val);
             formData[fieldname] = val;
+            if(options.onField){
+              options.onField(fieldname,val);
+            }
           });
 
           busboy.on('error', function(err) {
