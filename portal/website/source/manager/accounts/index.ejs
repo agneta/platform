@@ -8,7 +8,7 @@ tabs = tabs.concat(page.sections);
 <div ng-if="viewAccount.deactivated" class="action-warn" layout="row" layout-align="start center">
   <span>Account is deactivated</span>
   <span flex="auto"></span>
-  <md-button class="md-raised" ng-click="activateAccount()">Activate</md-button>
+  <md-button class="md-raised" ng-click="edit.activateAccount()">Activate</md-button>
 </div>
 
 <div class="account-view frame ag-margin md-padding" ng-show="viewAccount" layout="column">

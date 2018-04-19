@@ -2,7 +2,7 @@
   <div layout="row" class="md-padding">
     <div layout="row" layout-align="center center">
 
-        <%-template('ui/account-avatar-edit')%>
+        <%-template('ui/account-avatar-edit',{click:'overview.changePicture()'})%>
 
         <div flex class="headline">
             <p class="md-headline">{{viewAccount.name}}</p>
@@ -19,7 +19,7 @@
             <span ng-if="viewAccount.emailVerified">Email verified</span>
             <span ng-if="!viewAccount.emailVerified" class="message red">Email not verified</span>
             <span flex="auto"></span>
-            <md-button ng-click="resendVerification()" class="md-raised" ng-if="!viewAccount.emailVerified">Send Verification</md-button>
+            <md-button ng-click="overview.resendVerification()" class="md-raised" ng-if="!viewAccount.emailVerified">Send Verification</md-button>
         </div>
 
         <md-divider></md-divider>

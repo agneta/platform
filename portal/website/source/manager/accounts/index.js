@@ -71,24 +71,6 @@
       }, 100);
     }
 
-    vm.save = function() {
-      AccountList.model.update({
-        data: vm.viewAccount
-      })
-        .$promise
-        .then(function() {
-
-          reloadAccount();
-          AccountList.loadAccounts();
-
-          $mdToast.show({
-            hideDelay: 5000,
-            position: 'bottom right',
-            templateUrl: 'toast-account.html'
-          });
-        });
-    };
-
     vm.change = function(account) {
       getAccount(account.id);
     };
@@ -99,79 +81,20 @@
       });
     };
 
-    vm.changePassword = function() {
-      $mdDialog.open({
-        partial: 'password-change-admin',
-        data: {
-          onFinally: function() {
-            AccountList.loadAccounts();
-          },
-          account: vm.viewAccount
-        }
-      });
-    };
-
     //------------------------------------------------------------
-
-    vm.resendVerification = function() {
-      AccountList.model.resendVerification({
-        email: vm.viewAccount.email
-      });
-    };
-
-    //------------------------------------------------------------
-
-    vm.activateAccount = function() {
-
-      var confirm = $mdDialog.confirm()
-        .title('Activate Account')
-        .textContent('Are you sure you want to activate this account?')
-        .ok('Yes')
-        .cancel('Cancel');
-
-      $mdDialog.show(confirm).then(function() {
-        AccountList.model.activate({
-          id: vm.viewAccount.id
-        })
-          .$promise
-          .then(function() {
-            reloadAccount();
-          });
-      }, function() {});
-
-    };
-
-    //------------------------------------------------------------
-
-    vm.deactivateAccount = function() {
-
-      var confirm = $mdDialog.confirm()
-        .title('Deactivate Account')
-        .textContent('Are you sure you want to deactivate this account?')
-        .ok('Yes')
-        .cancel('Cancel');
-
-      $mdDialog.show(confirm).then(function() {
-        AccountList.model.deactivate({
-          id: vm.viewAccount.id
-        })
-          .$promise
-          .then(function() {
-            reloadAccount();
-          });
-      }, function() {});
-
-    };
 
     var shared = {
       vm: vm,
       AccountList: AccountList,
       $mdDialog: $mdDialog,
+      $mdToast: $mdToast,
       reloadAccount: reloadAccount
     };
 
     require('manager/accounts/roles.module')(shared);
     require('manager/accounts/tokens.module')(shared);
+    require('manager/accounts/overview.module')(shared);
+    require('manager/accounts/edit.module')(shared);
 
     require('manager/accounts/auth/ssh.module')(shared);
     require('manager/accounts/auth/ip.module')(shared);

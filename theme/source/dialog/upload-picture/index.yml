@@ -1,0 +1,7 @@
+title:
+  en: Upload Picture
+
+controller: AgUploadPicture
+
+scripts:
+  - lib/ng-file-upload.min

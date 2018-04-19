@@ -25,16 +25,16 @@
     <%}%>
 
   <div layout="row">
-    <md-button ng-if="!viewAccount.deactivated" ng-click="deactivateAccount()" class="md-primary md-raised md-warn">
+    <md-button ng-if="!viewAccount.deactivated" ng-click="edit.deactivateAccount()" class="md-primary md-raised md-warn">
         <md-icon md-svg-src="<%-get_icon('material/vpn-key')%>"></md-icon>
         <span>Deactivate</span>
     </md-button>
-    <md-button ng-click="changePassword()" class="md-primary md-raised">
+    <md-button ng-click="edit.changePassword()" class="md-primary md-raised">
         <md-icon md-svg-src="<%-get_icon('material/vpn-key')%>"></md-icon>
         <span>Change Password</span>
     </md-button>
     <span flex="auto"></span>
-    <md-button class="md-raised md-secondary md-primary" ng-click="save()">
+    <md-button class="md-raised md-secondary md-primary" ng-click="edit.save()">
     <md-icon md-svg-src="<%-get_icon('material/save')%>"></md-icon>
     <span>Update</span>
     </md-button>
