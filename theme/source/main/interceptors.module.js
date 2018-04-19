@@ -18,15 +18,12 @@
 
   var agneta = window.agneta;
   var angular = window.angular;
-
   var app = angular.module('MainApp');
 
   app.config(function($httpProvider) {
 
     $httpProvider.defaults.useXDomain = true;
-
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
-
     var errors = agneta.errors;
 
     $httpProvider.interceptors.push(function($q, $rootScope, $injector, LoopBackAuth) {
@@ -137,12 +134,13 @@
 
               rejection.message = message;
               $rootScope.$emit('error');
-              var data = rejection.config.data || rejection.config.params;
-              if (!(data && data.__skipDialog)) {
+              var data = rejection.config.data || rejection.config.params || {};
+              if (!data.__skipDialog) {
                 $mdDialog.open({
-                  partial: 'error',
+                  partial: data.__errorDialog || 'error',
                   nested: true,
                   data: {
+                    error: error,
                     title: error.title || errors.title,
                     content: message
                   }

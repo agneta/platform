@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-agneta.directive('AgAccountLogin', function($rootScope, $mdDialog,$location, Account, LoopBackAuth) {
+agneta.directive('AgAccountLogin', function($rootScope, $window,$mdDialog,$location, Account, LoopBackAuth) {
 
   var vm = this;
 
@@ -51,8 +51,7 @@ agneta.directive('AgAccountLogin', function($rootScope, $mdDialog,$location, Acc
         delete searchData.token;
         delete searchData.action;
         $location.search(searchData);
-
-        window.location.href = $location.url();
+        $window.location.reload();
       })
       .catch(function(err){
         switch (err.code) {

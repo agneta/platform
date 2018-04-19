@@ -24,7 +24,7 @@ app.service('Portal', function(SocketIO) {
 
 });
 
-app.run(function(Portal, $rootScope, $route, $timeout, $location) {
+app.run(function(Portal, $rootScope, $route, $timeout, $window) {
   var socket = Portal.socket;
   socket.on('page-reload', function(data) {
     if (!data) {
@@ -32,12 +32,12 @@ app.run(function(Portal, $rootScope, $route, $timeout, $location) {
     }
     //console.log(data);
     if (data.global || data.type=='style') {
-      window.location.href = $location.url();
+      $window.location.reload();
       return;
     }
 
     if ($rootScope.viewData.path == data.path) {
-      window.location.href = $location.url();
+      $window.location.reload();
       return;
     }
   });

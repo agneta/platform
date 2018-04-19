@@ -16,7 +16,7 @@
  */
 var app = window.angular.module('MainApp');
 
-app.run(function($rootScope, LoopBackAuth, $mdDialog, $route, Account, $location) {
+app.run(function($rootScope, LoopBackAuth, $mdDialog, $route, Account, $window) {
 
   var account = {};
   $rootScope.account = account;
@@ -55,9 +55,6 @@ app.run(function($rootScope, LoopBackAuth, $mdDialog, $route, Account, $location
 
   });
 
-  function reload() {
-    window.location.href = $location.url();
-  }
 
   account.login = function() {
     $mdDialog.open({
@@ -79,7 +76,7 @@ app.run(function($rootScope, LoopBackAuth, $mdDialog, $route, Account, $location
       LoopBackAuth.save();
       account.profile = null;
       $rootScope.$emit('accountCheck', null);
-      reload();
+      $window.location.reload();
       cb();
       $rootScope.loadingMain = false;
     }, cb);

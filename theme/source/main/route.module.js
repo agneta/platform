@@ -71,7 +71,7 @@ app.config(function($routeProvider, $locationProvider) {
 
 });
 
-app.run(function($rootScope, $route, $timeout, $location, Account, $mdDialog) {
+app.run(function($rootScope, $route, $timeout,$window, $location, Account, $mdDialog) {
 
   $rootScope.changeLanguage = function(lang){
     var url = agneta.langPath({
@@ -120,7 +120,7 @@ app.run(function($rootScope, $route, $timeout, $location, Account, $mdDialog) {
 
   $rootScope.$on('$routeChangeSuccess', function(event, current) {
     if (current.redirect) {
-      window.location.href = $location.path();
+      $window.location.reload();
       return;
     }
     if (!current) {
