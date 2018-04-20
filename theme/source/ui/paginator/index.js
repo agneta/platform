@@ -11,26 +11,16 @@ app.directive('agUiPaginator', function() {
       var paginator = vm.paginator = {};
 
       paginator.next = function(){
-
-        paginator.index += paginator.limit;
-        if(paginator.index>=paginator.count){
-          paginator.index = paginator.count - paginator.limit;
-        }
+        paginator.current++;
+        query();
       };
 
       paginator.previous = function(){
-        paginator.index -= paginator.limit;
-
-        if(paginator.index<0){
-          paginator.index = 0;
-        }
-
+        paginator.current--;
+        query();
       };
 
-      vm.$watch('paginator.index',function(newValue){
-        vm.paginator.current = parseInt(newValue / paginator.limit) + 1;
-        vm.paginator.total = parseInt(paginator.count/paginator.limit)+1;
-      });
+      paginator.query = query;
 
       // Make the call
 
@@ -49,6 +39,9 @@ app.directive('agUiPaginator', function() {
       });
 
       function query(){
+
+        calculate();
+
         data.loading = true;
         data.method(angular.extend({
           skip: paginator.index,
@@ -58,10 +51,30 @@ app.directive('agUiPaginator', function() {
           .then(function(result){
             paginator.count = result.count;
             data.list = result.list;
+            calculate();
           })
           .finally(function(){
             data.loading = false;
           });
+      }
+
+      function calculate(){
+
+        paginator.count = paginator.count || 0;
+        paginator.total = parseInt(paginator.count/paginator.limit)+1;
+        console.log(paginator.current, paginator.total);
+        var current = paginator.current || 1;
+        if(current<1){
+          current = 1;
+        }
+        if(current>paginator.total){
+          current = paginator.total;
+        }
+        var index = (current - 1) * paginator.limit;
+
+        paginator.index = index;
+        paginator.current = current;
+
       }
 
     }

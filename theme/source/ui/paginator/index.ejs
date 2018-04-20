@@ -1,31 +1,22 @@
 <div ag-ui-paginator ng-model="<%-locals.model%>" layout="row" layout-align="start center">
 
   <div layout="column">
-    <p>Showing: {{paginator.index}}-{{paginator.index+paginator.limit}}</p>
+    <p>Showing: {{paginator.index+1}}-{{paginator.index+paginator.limit}}</p>
     <p>Total: {{paginator.count}}</p>
   </div>
 
   <span flex="auto"></span>
 
-  <div layout="column">
+  <div class="ag-margin" layout="column" layout-align="end">
 
-    <div layout="row" layout-align="start center">
-      <span>Items per page:</span>
-      <md-select ng-model="paginator.limit">
-        <md-option ng-repeat="limit in paginator.limits" ng-value="limit">
-          {{limit}}
-        </md-option>
-      </md-select>
-    </div>
-
-    <div layout="row" layout-align="start center">
+    <div class="nav" layout="row" layout-align="start center">
 
       <md-button class="md-icon-button" ng-click="paginator.previous()">
         <md-icon md-svg-src="<%-get_icon('material/keyboard-arrow-left')%>"></md-icon>
       </md-button>
 
-      <div layout="row" layout-align="start center">
-        <input ng-model="paginator.current" ng-change="paginator.onPageChange()" type="number"/>
+      <div class="counter" layout="row" layout-align="start center">
+        <input ng-model="paginator.current" ng-change="paginator.query()" type="number"/>
         <span> / {{paginator.total}}</span>
       </div>
 
@@ -33,6 +24,15 @@
         <md-icon md-svg-src="<%-get_icon('material/keyboard-arrow-right')%>"></md-icon>
       </md-button>
 
+    </div>
+
+    <div class="ag-margin" layout="row" layout-align="start center">
+      <span>Items per page:</span>
+      <md-select ng-change="paginator.query()" ng-model="paginator.limit">
+        <md-option ng-repeat="limit in paginator.limits" ng-value="limit">
+          {{limit}}
+        </md-option>
+      </md-select>
     </div>
 
   </div>

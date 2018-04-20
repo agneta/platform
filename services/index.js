@@ -74,6 +74,7 @@ module.exports = function(options) {
       };
 
       require('./lib/form')(app);
+      require('./lib/finder')(app);
       require('./lib/edit')(app);
 
       return Promise.resolve()
