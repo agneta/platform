@@ -16,7 +16,7 @@
  */
 module.exports = function(app, config) {
 
-  var configSearch = app.get('search');
+  var configSearch = app.web.services.get('search');
   var searchModels = [];
 
   for (let name in configSearch) {

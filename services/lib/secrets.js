@@ -89,7 +89,7 @@ module.exports = function(app) {
     get: function(path, keep) {
       var env;
       if (_.isFunction(app.get)) {
-        env = app.get('env');
+        env = app.web.services.get('env');
       }
       env = env || process.env.NODE_ENV;
       var result =  getSecret(env, path, keep);

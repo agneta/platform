@@ -14,7 +14,6 @@ module.exports = function(options){
 
   var extensions = config.agneta.get('extensions') || {};
   var result = {};
-
   appConfig.extensions.map(function(extensionName){
 
     var extPath = getPath(extensionName);

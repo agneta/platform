@@ -23,7 +23,7 @@ module.exports = function(app, options) {
   //console.log('options',options);
   options = options || {};
 
-  var env = options.env || process.env.NODE_ENV || app.get('env');
+  var env = options.env || process.env.NODE_ENV || app.web.services.get('env');
   var baseDir = options.dir || process.env.PROJECT_DIR || process.cwd();
 
   if (options.include && !_.isArray(options.include)) {
@@ -51,7 +51,7 @@ module.exports = function(app, options) {
 
   for (var key in config) {
     var data = config[key];
-    var source = app.get(key);
+    var source = app.web.services.get(key);
     if (source && _.isObject(source)) {
       data = _.extend(source, data);
     }
@@ -63,7 +63,7 @@ module.exports = function(app, options) {
 
   var webOpts = options.website || {};
   var website = {
-    host: webOpts.host || app.get('web_url') || process.env.ENDPOINT,
+    host: webOpts.host || app.web.services.get('web_url') || process.env.ENDPOINT,
     root: webOpts.root
   };
 
@@ -95,7 +95,7 @@ module.exports = function(app, options) {
   //-------------------------------------------
   // Search names
 
-  var configSearch = app.get('search');
+  var configSearch = app.web.services.get('search');
 
   for (let name in configSearch) {
     let options = configSearch[name];

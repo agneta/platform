@@ -19,7 +19,7 @@ const _ = require('lodash');
 
 module.exports = function(app) {
 
-  var config = app.get('storage');
+  var config = app.web.services.get('storage');
 
   if (!config) {
     return;

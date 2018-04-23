@@ -30,10 +30,8 @@ module.exports = function(Model, app, models) {
 
   //-----------------------------------------------------------
 
-  var appOptions = app.get('options');
-  var appPaths = _.get(appOptions, 'web.project.paths') ||
-    _.get(appOptions, 'client.project.paths');
-
+  var locals = app.web || app.client;
+  var appPaths = locals.project.paths;
   var keywordsDir = path.join(
     appPaths.app.services,
     'keywords'

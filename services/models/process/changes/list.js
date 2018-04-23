@@ -18,7 +18,7 @@ const S = require('string');
 
 module.exports = function(Model, app) {
 
-  var config = app.get('git');
+  var config = app.web.services.get('git');
 
   Model.changesList = function() {
 

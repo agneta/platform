@@ -4,14 +4,14 @@ module.exports = function(data) {
 
   var app = data.app;
   var options = data.options;
-  var env = app.get('env');
+  var env = app.web.services.get('env');
 
   var configName = 'storage';
-  var storageConfig = app.get(configName);
+  var storageConfig = app.web.services.get(configName);
 
   if (!storageConfig) {
-    app.set(configName, {});
-    storageConfig = app.get(configName);
+    app.web.services.set(configName, {});
+    storageConfig = app.web.services.get(configName);
   }
   storageConfig.provider = storageConfig.provider || 'local';
   storageConfig.port = _.get(options,'storage.port');

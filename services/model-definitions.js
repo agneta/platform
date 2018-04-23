@@ -25,11 +25,11 @@ module.exports = function(app, generated) {
   app.modelSchemas = {};
 
   var definitions = generated._definitions;
-  var servicesInclude = app.get('services_include');
+  var servicesInclude = app.web.services.get('services_include');
 
   var dirs = [
     path.join(__dirname, 'models'),
-    path.join(app.get('services_dir'), 'models')
+    path.join(app.web.services.get('services_dir'), 'models')
   ];
 
   for (var dir of servicesInclude) {

@@ -20,7 +20,7 @@ const Promise = require('bluebird');
 
 module.exports = function(app) {
 
-  var roles = app.get('roles');
+  var roles = app.web.services.get('roles');
 
   function set(Account, roles) {
 

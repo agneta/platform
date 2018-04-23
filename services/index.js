@@ -28,31 +28,24 @@ module.exports = function(options) {
   app.httpServer = options.server;
   options.app = app;
 
-  //-------------------------------------------------------
-
-  require('./lib/secrets')(app, options);
-  require('./lib/moment');
-  require('./lib/log')(app);
-  require('./lib/gis')(app);
-  require('./lib/require')(app);
-
-  //-------------------------------------------------------
-
   app.set('view engine', 'ejs');
   app.set('json spaces', 2);
   app.set('trust proxy', 1);
   app.set('views', path.resolve(__dirname, 'views'));
 
-  //-------------------------------------------------------
-
   return {
     locals: options,
     init: function() {
       app.client = options.client;
-      app.web = options.web;
+      app.web = options.web || app.client;
+
+      require('./lib/secrets')(app, options);
+      require('./lib/moment');
+      require('./lib/log')(app);
+      require('./lib/gis')(app);
+      require('./lib/require')(app);
       require('./lib/locals')(app, options);
       require('./lib/language')(app);
-
       require('./lib/socket')({
         appOptions: options,
         app: app,

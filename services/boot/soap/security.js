@@ -19,7 +19,7 @@ const Promise = require('bluebird');
 var configSecrets;
 module.exports = function(app) {
 
-  var config = app.get('wsdl');
+  var config = app.web.services.get('wsdl');
 
   if (!configSecrets) {
     configSecrets = app.secrets.get('wsdl');

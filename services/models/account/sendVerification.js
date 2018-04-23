@@ -24,7 +24,7 @@ module.exports = function(Model, app) {
   Model.sendVerification = function(options) {
     var language = app.getLng(options.req);
     var urlPath = options.path;
-    var verifyHref = urljoin(app.get('website').url, language, urlPath);
+    var verifyHref = urljoin(app.web.services.get('website').url, language, urlPath);
 
     // With trailing slash: Fixes an issue where AWS redirects the location without the query string
     verifyHref += '/?action=verify' +

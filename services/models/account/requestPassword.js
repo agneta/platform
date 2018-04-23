@@ -19,7 +19,7 @@ const urljoin = require('url-join');
 
 module.exports = function(Model, app) {
 
-  var callbacks = app.get('account').callbacks;
+  var callbacks = app.web.services.get('account').callbacks;
 
   Model.requestPassword = function(email, callback, req) {
 
@@ -107,7 +107,7 @@ module.exports = function(Model, app) {
       templateName = 'password-reset';
     }
 
-    var url = urljoin(app.get('website').url,
+    var url = urljoin(app.web.services.get('website').url,
       language,
       info.options.path || 'login');
 

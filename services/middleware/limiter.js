@@ -34,7 +34,7 @@ module.exports = function(app, config) {
     }
   };
 
-  var configLimiter = app.get('limiter');
+  var configLimiter = app.web.services.get('limiter');
 
   app.locals.limiters = app.locals.limiters || {};
 

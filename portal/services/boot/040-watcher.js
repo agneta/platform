@@ -19,13 +19,11 @@ const Promise = require('bluebird');
 const _ = require('lodash');
 module.exports = function(app) {
 
-  var options = app.get('options');
-  var locals = options.client;
-  var webLocals = options.web;
+  var locals = app.client;
+  var webLocals = app.web;
 
   init(locals);
   init(webLocals);
-
 
   function reload() {
     //console.log('reload');

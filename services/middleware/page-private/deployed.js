@@ -18,7 +18,7 @@ const urljoin = require('url-join');
 
 module.exports = function(app) {
 
-  var config = app.get('storage');
+  var config = app.web.services.get('storage');
   var bucket = config.buckets.pages.host;
 
   return function(data) {

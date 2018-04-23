@@ -34,7 +34,7 @@ module.exports = function(app) {
   var defaultView = {
     base: '/' + clientProject.config.page.viewBase.default+'/'
   };
-  switch (app.get('env')) {
+  switch (app.web.services.get('env')) {
     case 'development':
       defaultView.method = require('./page-private/preview')(app);
       localView.method = require('./page-private/local')(app);

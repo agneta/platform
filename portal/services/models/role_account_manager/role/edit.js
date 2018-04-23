@@ -18,7 +18,7 @@ var _ = require('lodash');
 
 module.exports = function(Model, app) {
 
-  var rolesConfig = app.get('roles');
+  var rolesConfig = app.web.services.get('roles');
 
   Model.roleEdit = function(accountId, roleName, data) {
 

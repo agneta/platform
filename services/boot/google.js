@@ -19,7 +19,7 @@ var secretConfig;
 
 module.exports = function(app) {
 
-  var config = app.get('google');
+  var config = app.web.services.get('google');
 
   if(!config){
     return;

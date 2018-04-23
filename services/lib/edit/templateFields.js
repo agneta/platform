@@ -1,8 +1,7 @@
 const _ = require('lodash');
 module.exports = function(app) {
 
-  var web = app.get('options');
-  web = web.web || web.client;
+  var web = app.web || app.client;
   var webHelpers = web.app.locals;
 
   return function(options){

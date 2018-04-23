@@ -27,7 +27,7 @@ const SoapResponse = require('./soap/response');
 
 module.exports = function(app) {
 
-  var config = app.get('wsdl');
+  var config = app.web.services.get('wsdl');
   if (!config) {
     return;
   }
@@ -37,7 +37,7 @@ module.exports = function(app) {
 
   app.soapServices = {};
 
-  var dirServices = config.path || path.join(app.get('services_dir'), 'wsdl');
+  var dirServices = config.path || path.join(app.web.services.get('services_dir'), 'wsdl');
 
   readDir(dirServices);
 

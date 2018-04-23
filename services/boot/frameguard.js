@@ -18,7 +18,7 @@ const _ = require('lodash');
 const url = require('url');
 module.exports = function(app){
 
-  var config = app.get('frameguard');
+  var config = app.web.services.get('frameguard');
   var allowOrigin;
   var allowHost;
 

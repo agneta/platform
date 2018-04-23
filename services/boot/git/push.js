@@ -24,7 +24,7 @@ module.exports = function(app) {
     var commit;
 
     var git = app.git.native;
-    var config = app.get('git');
+    var config = app.web.services.get('git');
 
     return git.status()
       .then(function(status) {

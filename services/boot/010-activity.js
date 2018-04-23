@@ -21,7 +21,7 @@ module.exports = function(app) {
   function authCheck(ctx) {
 
     var Activity_Feed = ctx.method.ctor.getModel('Activity_Feed');
-    var auth = _.get(app.get('activity'), 'auth');
+    var auth = _.get(app.web.services.get('activity'), 'auth');
     var req = ctx.req;
 
     var params = req.query || req.body;

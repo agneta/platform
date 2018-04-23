@@ -23,15 +23,12 @@ module.exports = function(Model, app) {
 
   Model.get = function(req, id) {
 
-    var Account = Model.getModel('Account');
-    var Account_Web = webServices.$model.get({
-      name: 'Account',
-      isProduction: Model.__isProduction
-    });
+    var Account = Model.projectModel('Account');
+
     if (req.accessToken.roles.administrator) {
 
-      return Account_Web.__get(id, {
-        include: Account_Web.rolesInclude
+      return Account.__get(id, {
+        include: Account.rolesInclude
       })
         .then(function(account) {
 
@@ -39,8 +36,8 @@ module.exports = function(Model, app) {
 
           //console.log(account);
 
-          var roles = _.pick(account, Account_Web.roleKeys);
-          account = _.omit(account, Account_Web.roleKeys.concat(['password']));
+          var roles = _.pick(account, Account.roleKeys);
+          account = _.omit(account, Account.roleKeys.concat(['password']));
 
           //console.log(roles);
 

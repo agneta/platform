@@ -21,7 +21,7 @@ module.exports = function(app) {
   var client = app.client;
   var project = client.project;
   var helpers = client.app.locals;
-  var config = app.get('language');
+  var config = app.web.services.get('language');
 
   app.getLng = function(req) {
 

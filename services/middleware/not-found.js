@@ -22,7 +22,7 @@ const request = require('request');
 module.exports = function(app) {
 
   var project = app.client.project;
-  var storageConfig = app.get('storage');
+  var storageConfig = app.web.services.get('storage');
 
   return function(req, res) {
 

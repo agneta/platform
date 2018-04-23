@@ -22,8 +22,8 @@ function MailConnector(options) {
   var app = options.app;
   var self = this;
 
-  self.config = app.get('email');
-  self.secrets = app.secrets.get('email');
+  self.config = app.web.services.get('email');
+  self.secrets = app.web.services.secrets.get('email');
 
   if (!self.config) {
     throw new Error('No Email config is present');

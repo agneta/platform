@@ -21,7 +21,7 @@ const gm = require('gm');
 
 module.exports = function(Model, app) {
 
-  var sizes = app.get('media').sizes;
+  var sizes = app.web.services.get('media').sizes;
   var sizeKeys = _.keys(sizes);
 
   Model.__images = {};

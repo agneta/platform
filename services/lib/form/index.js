@@ -18,8 +18,7 @@ module.exports = function(app) {
 
   app.form = {};
 
-  var client = app.get('options');
-  client = client.web || client.client;
+  var client = app.web || app.client;
   var clientHelpers = client.app.locals;
 
   require('./fields')(app, clientHelpers);

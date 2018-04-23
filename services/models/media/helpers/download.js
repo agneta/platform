@@ -18,7 +18,7 @@ const path = require('path');
 
 module.exports = function(Model, app) {
 
-  var bucket = app.get('storage').buckets.media;
+  var bucket = app.web.services.get('storage').buckets.media;
 
   Model.__download = function(location,req) {
 

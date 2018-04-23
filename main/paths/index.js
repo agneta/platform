@@ -63,6 +63,10 @@ var appPortal = structure({
   base: path.join(core.project,'portal')
 });
 
+var common = structure({
+  base: path.join(core.project,'common')
+});
+
 //--------------------------------------------------------------------
 
 module.exports = loadApp();
@@ -94,6 +98,7 @@ function loadApp(options) {
     core: core,
     pages: pages,
     theme: theme,
+    common: common,
     portal: portal,
     loadApp: loadApp
   };

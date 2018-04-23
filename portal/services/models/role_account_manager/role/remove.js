@@ -15,18 +15,13 @@
  *   limitations under the License.
  */
 
-module.exports = function(Model, app) {
-
-  var webServices = app.web.services;
+module.exports = function(Model) {
 
   Model.roleRemove = function(id, name) {
 
-    var Account_Web = webServices.$model.get({
-      name: 'Account',
-      isProduction: Model.__isProduction
-    });
+    var Account = Model.projectModel('Account');
 
-    return Account_Web.__get(id)
+    return Account.__get(id)
       .then(function(account) {
 
         var RoleModel = getRoleModel(account, name);
@@ -58,13 +53,13 @@ module.exports = function(Model, app) {
 
     function getRoleModel(account, name) {
 
-      var role = Account_Web.roleOptions[name];
+      var role = Account.roleOptions[name];
 
       if (!role) {
         throw new Error('No role found: ' + name);
       }
 
-      return Account_Web.getModel(role.model);
+      return Account.getModel(role.model);
 
     }
 

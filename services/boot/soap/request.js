@@ -21,7 +21,7 @@ const _ = require('lodash');
 
 module.exports = function(app) {
 
-  var overrideRules = app.get('wsdl').override || [];
+  var overrideRules = app.web.services.get('wsdl').override || [];
   const soapSecurity = require('./security')(app);
 
   return function(options) {

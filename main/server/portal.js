@@ -50,7 +50,6 @@ module.exports = function(options) {
     root: 'services',
     id: 'portal',
     include: [
-      paths.app.services,
       paths.appPortal.services
     ],
     dir: paths.portal.base,

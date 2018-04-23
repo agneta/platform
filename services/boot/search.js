@@ -17,7 +17,7 @@
 
 module.exports = function(app) {
 
-  var config = app.get('search');
+  var config = app.web.services.get('search');
 
   for (var name in config) {
 

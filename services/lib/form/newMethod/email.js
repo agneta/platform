@@ -13,7 +13,7 @@ module.exports = function(options){
     templateReceiver: 'form-reply'
   });
   console.log(form);
-  var emails = app.get('email').contacts;
+  var emails = app.web.services.get('email').contacts;
   var userEmail;
 
   return function(){

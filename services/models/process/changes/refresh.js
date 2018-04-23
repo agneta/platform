@@ -16,7 +16,7 @@
  */
 module.exports = function(Model, app) {
 
-  var config = app.get('git');
+  var config = app.web.services.get('git');
 
   Model.changesRefresh = function() {
 

@@ -18,8 +18,8 @@
 module.exports = function(app) {
 
   var limiterOptions = [];
-  var configLimiter = app.get('limiter');
-  var apiRoot = app.get('restApiRoot');
+  var configLimiter = app.web.services.get('limiter');
+  var apiRoot = app.web.services.get('restApiRoot');
 
   if (configLimiter.global) {
     limiterOptions.push({
@@ -100,7 +100,7 @@ module.exports = function(app) {
     },
     'routes': {
       './middleware/log-request': {
-        'params': [app.get('token')]
+        'params': [app.web.services.get('token')]
       },
       './middleware/media-private': {
         'params': [app]
@@ -110,7 +110,7 @@ module.exports = function(app) {
       },
       'loopback#rest': {
         'paths': [
-          app.get('restApiRoot')
+          app.web.services.get('restApiRoot')
         ]
       }
     },

@@ -21,7 +21,7 @@ Error.stackTraceLimit = 10;
 
 module.exports = function(app) {
 
-  app.get('remoting').errorHandler = {
+  app.web.services.get('remoting').errorHandler = {
 
     handler: function(error, req, res, next) {
       var errorLog;

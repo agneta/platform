@@ -19,9 +19,8 @@ var randomColor = require('randomcolor');
 
 module.exports = function(Model, app) {
 
-  var activities = app.get('activities');
-  var clientHelpers = app.get('options');
-  clientHelpers = clientHelpers.web || clientHelpers.client;
+  var activities = app.web.services.get('activities');
+  var clientHelpers = app.web || app.client;
   clientHelpers = clientHelpers.app.locals;
 
   var infoMethods = {};

@@ -19,6 +19,9 @@ module.exports = {
   token: {
     name: 'access_app'
   },
+  account:{
+    callbacks: []
+  },
   restApiRoot: '/api',
   host: 'locahost',
   domain: 'locahost',

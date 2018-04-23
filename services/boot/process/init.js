@@ -75,7 +75,7 @@ module.exports = function(app) {
       var endpoint = url.format({
         protocol: process.env.PROTOCOL,
         hostname: process.env.HOST_NAME,
-        pathname: app.get('services_url')
+        pathname: app.web.services.get('services_url')
       });
 
       var createProps = _.extend({}, processProps, {

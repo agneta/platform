@@ -33,11 +33,10 @@ module.exports = function(app) {
     }
   ));
 
-  var options = app.get('options');
-  var project = options.web || options.client;
+  var project = app.web || app.client;
   project = project.project;
 
-  var email = app.get('email');
+  var email = app.web.services.get('email');
 
   if (!email) {
     email = {};

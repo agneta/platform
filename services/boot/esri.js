@@ -21,7 +21,7 @@ var credentials = null;
 
 module.exports = function(app) {
 
-  var config = app.get('esri');
+  var config = app.web.services.get('esri');
 
   if (!config) {
     return;
@@ -43,7 +43,7 @@ module.exports = function(app) {
         username: credentials.username,
         password: credentials.password,
         f: 'json',
-        referer: app.get('host')
+        referer: app.web.services.get('host')
       }
     })
       .then(function(res) {

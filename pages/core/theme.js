@@ -36,6 +36,7 @@ module.exports = function(locals) {
     filePaths.push(locals.web.project.paths.appPortal.website);
   }
 
+  filePaths.push(project.paths.common.website);
   filePaths.push(project.paths.theme.base);
   //--------------------------------------------------
 
