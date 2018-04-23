@@ -19,11 +19,10 @@ var _ = require('lodash');
 
 module.exports = function(app) {
 
-  var paths = app.web.services.get('options').paths;
   //console.log('paths',paths);
 
   var dirs = [
-    paths.appPortal.models,
+    app.paths.appPortal.models,
     path.join(__dirname, '../models'),
     path.join(app.get('services_dir'), 'models')
   ];

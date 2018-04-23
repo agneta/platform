@@ -38,6 +38,7 @@ module.exports = function(options) {
     init: function() {
       app.client = options.client;
       app.web = options.web || app.client;
+      app.paths = options.paths;
       require('./lib')(app,options);
       return Promise.resolve();
 

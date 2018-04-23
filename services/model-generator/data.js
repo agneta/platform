@@ -22,7 +22,7 @@ const dataDefinition = require('./data-definition');
 module.exports = function(app, config) {
 
   var dataDir = path.join(
-    process.cwd(), 'edit/data-remote'
+    app.paths.app.base, 'edit/data-remote'
   );
 
   app.dataRemote = {};

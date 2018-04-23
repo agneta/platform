@@ -18,12 +18,13 @@ const Promise = require('bluebird');
 
 module.exports = function(Model, app) {
 
-  Model.model = function(name) {
+  Model.model = function(name,project) {
 
+    var modelApp = project?app.web.services:app;
     return Promise.resolve()
       .then(function(){
 
-        var remotes = app.remotes();
+        var remotes = modelApp.remotes();
         var sharedClass = remotes._classes[name];
         var adapter = remotes.handler('rest').adapter;
 
@@ -40,7 +41,7 @@ module.exports = function(Model, app) {
       .then(function(list) {
         return {
           list: list,
-          schema: app.modelSchemas[name]
+          schema: modelApp.modelSchemas[name]
         };
       });
 
@@ -109,6 +110,9 @@ module.exports = function(Model, app) {
         arg: 'name',
         type: 'string',
         required: true
+      },{
+        arg: 'project',
+        type: 'boolean'
       }],
       returns: {
         arg: 'result',

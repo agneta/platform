@@ -17,6 +17,6 @@
 
 
 module.exports = function(Model, app) {
-  require('./api/model')(Model,app);
-  require('./api/models')(Model,app);
+  require('./model')(Model,app);
+  require('./models')(Model,app);
 };

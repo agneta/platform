@@ -14,28 +14,39 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+const _ = require('lodash');
 const Promise = require('bluebird');
 
 module.exports = function(Model, app) {
 
-  Model.models = function() {
+  Model.models = function(production,project) {
 
-    var remotes = app.remotes();
+    var modelApp = project?app.web.services:app;
+    var remotes = modelApp.remotes();
+    var list = [];
+
+    production = production?true:false;
 
     return Promise.resolve()
       .then(function() {
 
         return Promise.map(remotes.classes(), function(remoteClass) {
-          return {
+          var isProduction = remoteClass.ctor.__isProduction?true:false;
+          //console.log(production,isProduction);
+          if(production != isProduction){
+            return;
+          }
+          list.push({
             name: remoteClass.name,
             http: remoteClass.http
-          };
+          });
         });
 
       })
-      .then(function(list){
+      .then(function(){
         return {
-          list: list
+          list:  _.sortBy(list,['name'])
         };
       });
 
@@ -44,7 +55,13 @@ module.exports = function(Model, app) {
   Model.remoteMethod(
     'models', {
       description: 'Get API models',
-      accepts: [],
+      accepts: [{
+        arg: 'production',
+        type: 'boolean'
+      },{
+        arg: 'project',
+        type: 'boolean'
+      }],
       returns: {
         arg: 'result',
         type: 'object',

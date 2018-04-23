@@ -14,26 +14,33 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-agneta.directive('AgSystemApi',function(API){
+agneta.directive('AgSystemApi', function(API, $rootScope) {
 
   var vm = this;
   vm.model = {};
   vm.method = {};
+  vm.load = function() {
 
-  API.models({
-  })
-    .$promise
-    .then(function(result) {
-      vm.model.list = result.list;
-    });
+    $rootScope.loadingMain = true;
+    API.models(vm.query)
+      .$promise
+      .then(function(result) {
+        vm.model.list = result.list;
+      })
+      .finally(function(){
+        $rootScope.loadingMain = false;
+      });
 
-  vm.model.select = function(model){
+  };
+
+  vm.model.select = function(model) {
     vm.model.selected = model;
     vm.model.schema = null;
     vm.method.list = null;
 
     API.model({
-      name: model.name
+      name: model.name,
+      project: vm.query.project
     })
       .$promise
       .then(function(result) {
@@ -42,7 +49,9 @@ agneta.directive('AgSystemApi',function(API){
       });
   };
 
-  vm.method.select = function(method){
+  vm.load();
+
+  vm.method.select = function(method) {
     vm.method.selected = method;
   };
 

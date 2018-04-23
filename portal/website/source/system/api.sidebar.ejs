@@ -1,9 +1,23 @@
+<div class=" header md-padding" layout="row" layout-align="start center">
+  <md-switch ng-change="load()" ng-model="query.project" aria-label="Switch">
+     Project
+   </md-switch>
+  <md-switch ng-change="load()" ng-model="query.production" aria-label="Switch">
+     Production
+   </md-switch>
+  <md-button aria-label="Refresh" class="md-icon-button" ng-click="load()">
+    <md-icon md-svg-src="<%-get_icon('material/refresh')%>"></md-icon>
+  </md-button>
+</div>
 <div class="models" layout="column">
   <div
   class="ag-list-item"
   ng-click="model.select(item)"
   ng-class="{active:model.selected == item}"
   ng-repeat="item in model.list">
-    {{item.name}}
+  <div layout="column">
+    <span class="title">{{item.name}}</span>
+    <span>{{item.http.path}}</span>
   </div>
+</div>
 </div>
