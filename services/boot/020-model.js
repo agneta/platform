@@ -25,10 +25,10 @@ module.exports = function(app) {
   var dirs = [
     paths.appPortal.models,
     path.join(__dirname, '../models'),
-    path.join(app.web.services.get('services_dir'), 'models')
+    path.join(app.get('services_dir'), 'models')
   ];
 
-  var servicesInclude = app.web.services.get('services_include');
+  var servicesInclude = app.get('services_include');
 
   for (var dir of servicesInclude) {
     dirs.push(path.join(dir, 'models'));

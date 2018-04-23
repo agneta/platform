@@ -37,7 +37,7 @@ module.exports = function(app) {
 
   app.soapServices = {};
 
-  var dirServices = config.path || path.join(app.web.services.get('services_dir'), 'wsdl');
+  var dirServices = config.path || path.join(app.get('services_dir'), 'wsdl');
 
   readDir(dirServices);
 

@@ -18,7 +18,7 @@ const _ = require('lodash');
 
 module.exports = function(Model, app) {
 
-  var roles = app.web.services.get('roles');
+  var roles = app.get('roles');
   var roleKeys = _.keys(roles);
 
   Model.includeRoles = _.map(roleKeys, function(name) {

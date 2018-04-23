@@ -17,8 +17,6 @@
 
 
 module.exports = function(Model, app) {
-  console.log('!!!!!! models');
   require('./api/model')(Model,app);
   require('./api/models')(Model,app);
-
 };

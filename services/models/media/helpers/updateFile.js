@@ -21,7 +21,7 @@ const _ = require('lodash');
 
 module.exports = function(Model, app) {
 
-  var rolesConfig = app.web.services.get('roles');
+  var rolesConfig = app.get('roles');
 
   Model.__updateFile = function(options) {
     var id = options.id;

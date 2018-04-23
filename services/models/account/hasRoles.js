@@ -19,7 +19,7 @@ const Promise = require('bluebird');
 
 module.exports = function(Model, app) {
 
-  var configRoles = app.web.services.get('roles');
+  var configRoles = app.get('roles');
 
   Model.hasRoles = function(roles, req) {
 

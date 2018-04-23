@@ -51,7 +51,7 @@ module.exports = function(app, options) {
 
   for (var key in config) {
     var data = config[key];
-    var source = app.web.services.get(key);
+    var source = app.get(key);
     if (source && _.isObject(source)) {
       data = _.extend(source, data);
     }

@@ -30,7 +30,7 @@ _.deepMerge = deepMerge;
 
 module.exports = function(app) {
 
-  var servicesDir = app.web.services.get('services_dir');
+  var servicesDir = app.get('services_dir');
   var locals = app.web.services.get('options');
 
   if (process.env.SERVICES_ENV) {
@@ -82,10 +82,9 @@ module.exports = function(app) {
 
     var loadDirs = dirs.concat();
     if(!dontInclude){
-      loadDirs = loadDirs.concat(app.web.services.get('services_include'));
+      loadDirs = loadDirs.concat(app.get('services_include'));
     }
     loadDirs = loadDirs.concat(servicesDir);
-
     var result = {};
 
     for (var dir of loadDirs) {

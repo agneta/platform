@@ -38,19 +38,7 @@ module.exports = function(options) {
     init: function() {
       app.client = options.client;
       app.web = options.web || app.client;
-
-      require('./lib/secrets')(app, options);
-      require('./lib/moment');
-      require('./lib/log')(app);
-      require('./lib/gis')(app);
-      require('./lib/require')(app);
-      require('./lib/locals')(app, options);
-      require('./lib/language')(app);
-      require('./lib/socket')({
-        appOptions: options,
-        app: app,
-      });
-
+      require('./lib')(app,options);
       return Promise.resolve();
 
     },

@@ -84,7 +84,7 @@ module.exports = function(app) {
   //--------------------------------------------------
   // Roles
 
-  var rolesOriginal = app.web.services.get('roles');
+  var rolesOriginal = app.get('roles');
   var roles = {};
 
 

@@ -20,12 +20,12 @@ const Promise = require('bluebird');
 
 module.exports = function(app) {
 
-  var roles = app.web.services.get('roles');
+  var roles = app.get('roles');
+  //console.log(roles);
 
   function set(Account, roles) {
 
     var Role = app.models.Role;
-    //console.log(roles);
     for (var name in roles) {
       var role = roles[name];
       var model = app.models[role.model];

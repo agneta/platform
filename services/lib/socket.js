@@ -17,10 +17,9 @@
 const _ = require('lodash');
 const Promise = require('bluebird');
 
-module.exports = function(options) {
+module.exports = function(app,options) {
 
-  var worker = options.appOptions.worker;
-  var app = options.app;
+  var worker = options.worker;
   if(!worker){
     app.socket = {
       namespace: function(){

@@ -161,7 +161,7 @@ module.exports = function(locals) {
 
         //---------------------
 
-        var storageConfig = locals.services.get('storage');
+        var storageConfig = locals.services.web.services.get('storage');
         var servers = storageConfig.buckets;
         project.site.servers = {};
         for (let key in servers) {
