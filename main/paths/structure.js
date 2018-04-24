@@ -20,6 +20,8 @@ module.exports = function(obj){
   obj.models = path.join(obj.services, 'models');
   // email
   obj.email = path.join(obj.base, 'email');
+  // editor
+  obj.editDataRemote = path.join(obj.base, 'edit/data-remote');
 
 
   return obj;

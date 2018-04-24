@@ -2,7 +2,7 @@ const _ = require('lodash');
 const string = require('string');
 module.exports = function(Model, app) {
 
-  var loadTemplates = require('../edit/loadTemplates')(Model,app);
+  var loadTemplates = require('../data/loadTemplates')(Model,app);
   var project = app.web.project;
 
   Model.loadTemplates = function(req){

@@ -14,19 +14,17 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var path = require('path');
-
 module.exports = function(Model, app) {
 
-  var webPrj = app.web.project;
-
-  Model.editConfigDir = path.join(webPrj.paths.core.project, 'edit', 'data-remote');
+  Model.editConfigDir = 'data-remote';
 
   Model.getTemplateModel = function(template){
 
+    var webServices = app.web.services;
+    
     return Promise.resolve()
       .then(function() {
-        var templateConfig = app.dataRemote[template];
+        var templateConfig = webServices.dataRemote[template];
 
         if(!templateConfig){
           return Promise.reject({
@@ -34,7 +32,7 @@ module.exports = function(Model, app) {
             message: `Template config not found with name ${template}`
           });
         }
-        return app.models[templateConfig.modelName];
+        return webServices.models[templateConfig.modelName];
       });
 
   };
@@ -44,7 +42,6 @@ module.exports = function(Model, app) {
   require('./save')(Model, app);
   require('./new')(Model, app);
   require('./loadMany')(Model, app);
-  require('../edit/loadTemplate')(Model, app);
-  require('../edit/loadTemplates')(Model, app);
+  require('../data')(Model, app);
 
 };

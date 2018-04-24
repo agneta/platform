@@ -19,40 +19,47 @@ var path = require('path');
 var Promise = require('bluebird');
 var yaml = require('js-yaml');
 var klaw = require('klaw');
+const _ = require('lodash');
 
 module.exports = function(Model, app) {
 
   Model.loadTemplates = function(req) {
 
-    var items = [];
+    var items = {};
 
-    return Promise.resolve()
-      .then(function() {
-        return fs.ensureDir(Model.editConfigDir);
-      })
-      .then(function() {
+    return Promise.map(Model.__dataDirs,function(dataDir){
+      return Promise.resolve()
+        .then(function() {
+          return fs.ensureDir(dataDir);
+        })
+        .then(function() {
 
-        return new Promise(function(resolve, reject) {
+          return new Promise(function(resolve, reject) {
 
-          klaw(Model.editConfigDir)
-            .on('data', function(item) {
-              if (!item.stats.isFile()) {
-                return;
-              }
-              items.push(item);
-            })
-            .on('error', reject)
-            .on('end', resolve);
+            klaw(dataDir)
+              .on('data', function(item) {
+                if (!item.stats.isFile()) {
+                  return;
+                }
+                var id = path.relative(dataDir, item.path).slice(0, -4);
+                items[id] = {
+                  path: item.path,
+                  id: id
+                };
+              })
+              .on('error', reject)
+              .on('end', resolve);
 
+          });
         });
-      })
+    })
       .then(function() {
 
-        return Promise.map(items, function(item) {
+        return Promise.map(_.values(items), function(item) {
           return fs.readFile(item.path)
             .then(function(content) {
               var data = yaml.safeLoad(content);
-              var id = path.relative(Model.editConfigDir, item.path).slice(0, -4);
+              var id = item.id;
               return {
                 id: id,
                 title: app.lng(data.title, req),

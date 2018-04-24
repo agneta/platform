@@ -14,6 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+const _ = require('lodash');
+
 module.exports = function(app, template) {
 
   return Promise.resolve()
@@ -113,6 +116,8 @@ module.exports = function(app, template) {
       }
 
       result.acls = template.acls;
+
+      _.extend(result.indexes,template.indexes);
 
       return result;
     });

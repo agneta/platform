@@ -5,7 +5,7 @@ const _ = require('lodash');
 
 module.exports = function(Model, app) {
 
-  require('../edit/loadTemplate')(Model,app);
+  require('../data/loadTemplate')(Model,app);
 
   Model.loadTemplate = function(template,req) {
 

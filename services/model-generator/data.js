@@ -21,56 +21,63 @@ const dataDefinition = require('./data-definition');
 
 module.exports = function(app, config) {
 
-  var dataDir = path.join(
-    app.paths.app.base, 'edit/data-remote'
-  );
+  var dataDirs = [];
+
+  for(var name in app.paths.app.extensions){
+    var extPaths = app.paths.app.extensions[name];
+    dataDirs.push(extPaths.editDataRemote);
+  }
+
+  dataDirs.push(app.paths.app.editDataRemote);
 
   app.dataRemote = {};
 
-  return Promise.resolve()
-    .then(function() {
-      return fs.ensureDir(dataDir);
-    })
-    .then(function() {
-      return fs.readdir(dataDir);
-    })
-    .then(function(files) {
-      return Promise.map(files, function(filePath) {
+  return Promise.map(dataDirs,function(dataDir){
+    return Promise.resolve()
+      .then(function() {
+        return fs.ensureDir(dataDir);
+      })
+      .then(function() {
+        return fs.readdir(dataDir);
+      })
+      .then(function(files) {
+        return Promise.map(files, function(filePath) {
 
-        var dataPath = path.join(dataDir, filePath);
-        var template;
+          var dataPath = path.join(dataDir, filePath);
+          var template;
 
-        return Promise.resolve()
-          .then(function(){
-            return app.edit.loadTemplate({
-              path: dataPath
+          return Promise.resolve()
+            .then(function(){
+              return app.edit.loadTemplate({
+                path: dataPath
+              });
+            })
+            .then(function(_template){
+              template = _template;
+              return dataDefinition(app,template);
+            })
+            .then(function(definition){
+              let fileName = template.model.toLowerCase() + '.json';
+
+              app.dataRemote[template.id] = {
+                title: template.title,
+                modelName: definition.name,
+                path: dataPath
+              };
+
+              config._definitions[fileName] = {
+                definition: definition
+              };
+
+              config.models[definition.name] = {
+                dataSource: 'db',
+                public: true
+              };
+
             });
-          })
-          .then(function(_template){
-            template = _template;
-            return dataDefinition(app,template);
-          })
-          .then(function(definition){
-            let fileName = template.model.toLowerCase() + '.json';
 
-            app.dataRemote[template.id] = {
-              title: template.title,
-              modelName: definition.name,
-              path: dataPath
-            };
-
-            config._definitions[fileName] = {
-              definition: definition
-            };
-
-            config.models[definition.name] = {
-              dataSource: 'db',
-              public: true
-            };
-
-          });
-
+        });
       });
-    });
+  });
 
 };

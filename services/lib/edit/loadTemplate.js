@@ -65,6 +65,12 @@ module.exports = function(app) {
           options.data.fields = options.base.concat(options.data.fields);
         }
 
+        if(!options.data){
+          return Promise.reject({
+            statusCode: 400,
+            message: `No template data found for path: ${options.path}`
+          });
+        }
         return app.edit.scanTemplate(options);
 
       });

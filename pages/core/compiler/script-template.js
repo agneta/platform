@@ -29,7 +29,7 @@ module.exports = function(source) {
       return get(loaderOptions.locals.project.config,configPath);
     },
     configServices: function(name,configPath){
-      var result = loaderOptions.locals.services.get(name);
+      var result = loaderOptions.locals.services.web.services.get(name);
       return get(result,configPath);
     }
   });

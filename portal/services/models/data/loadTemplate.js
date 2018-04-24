@@ -1,21 +1,29 @@
-const path = require('path');
 const _ = require('lodash');
+
 module.exports = function(Model, app) {
 
   Model.__loadTemplateData = function(options) {
 
-    var templatePath = options.path;
-    if(!options.data){
-      templatePath = path.join(
-        Model.editConfigDir,
-        options.template + '.yml'
-      );
-    }
-    var templateOptions = _.extend(options,{
-      path: templatePath
-    });
+    return Promise.resolve()
+      .then(function() {
 
-    return app.edit.loadTemplate(templateOptions);
+        if(!options.data){
+          return Model.__getTemplatePath(options.template);
+        }
+
+        return options.path;
+
+      })
+      .then(function(templatePath) {
+
+        var templateOptions = _.extend(options,{
+          path: templatePath
+        });
+
+        return app.edit.loadTemplate(templateOptions);
+
+      });
+
   };
 
   Model.__loadTemplate = function(options) {
