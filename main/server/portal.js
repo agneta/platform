@@ -49,10 +49,8 @@ module.exports = function(options) {
   var portalServices = setupServer('services',{
     root: 'services',
     id: 'portal',
-    include: [
-      paths.appPortal.services
-    ],
     dir: paths.portal.base,
+    isPortal: true,
     website: {}
   });
 

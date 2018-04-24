@@ -15,6 +15,7 @@
  *   limitations under the License.
  */
 const Promise = require('bluebird');
+const _ = require('lodash');
 
 module.exports = function(Model, app) {
 
@@ -40,7 +41,7 @@ module.exports = function(Model, app) {
       })
       .then(function(list) {
         return {
-          list: list,
+          list: _.sortBy(list,['path']),
           schema: modelApp.modelSchemas[name]
         };
       });

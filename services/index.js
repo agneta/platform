@@ -80,7 +80,7 @@ module.exports = function(options) {
             ];
 
             bootDirs = bootDirs.concat(
-              options.include.map(function(dir){
+              app.get('services_include').map(function(dir){
                 return path.join(dir,'boot');
               })
             );

@@ -16,7 +16,6 @@
  */
 var projectPaths = require('../paths');
 var start = require('../start');
-var path = require('path');
 var _ = require('lodash');
 
 module.exports = function() {
@@ -32,8 +31,7 @@ module.exports = function() {
   var commonOptions = {};
 
   var servicesPortal = start.services(_.extend({
-    dir: projectPaths.portal.base,
-    include: path.join(projectPaths.core.project, 'services')
+    dir: projectPaths.portal.base
   }, commonOptions));
 
   var servicesWebsite = start.services(_.extend({

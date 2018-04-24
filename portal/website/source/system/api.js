@@ -19,6 +19,7 @@ agneta.directive('AgSystemApi', function(API, $rootScope) {
   var vm = this;
   vm.model = {};
   vm.method = {};
+  vm.query = {};
   vm.load = function() {
 
     $rootScope.loadingMain = true;

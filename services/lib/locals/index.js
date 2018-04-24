@@ -26,21 +26,30 @@ module.exports = function(app, options) {
   var env = options.env || process.env.NODE_ENV || app.web.services.get('env');
   var baseDir = options.dir || process.env.PROJECT_DIR || process.cwd();
 
-  if (options.include && !_.isArray(options.include)) {
-    options.include = [options.include];
-  }
-  options.include = options.include || [];
+  var include = [];
 
   for(var name in options.paths.app.extensions){
     var extPaths = options.paths.app.extensions[name];
-    options.include.push(extPaths.services);
+    include.push(extPaths.services);
+  }
+
+  if(options.isPortal){
+    let webPaths = app.web.project.paths;
+    var webExtensions = webPaths.app.extensions;
+    include.push(webPaths.appPortal.services);
+    for(let name in webExtensions){
+      let extPaths = webExtensions[name];
+      include.push(
+        path.join(extPaths.base,'portal','services')
+      );
+    }
   }
 
   app.set('env', env);
   app.set('website_dir', path.join(baseDir, 'website'));
   app.set('services_dir', path.join(baseDir, 'services'));
   app.set('options', options);
-  app.set('services_include', options.include);
+  app.set('services_include', include);
   app.set('root', options.root);
 
   //---------------------------------------------
