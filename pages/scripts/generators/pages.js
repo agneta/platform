@@ -30,13 +30,9 @@ module.exports = function(locals) {
 
   project.extend.generator.register('pages', function() {
 
-    var pageDirs = [
-      project.paths.theme.source,
-      project.paths.app.source
-    ];
-    if(locals.web){
-      pageDirs.push(project.paths.appPortal.source);
-    }
+    var pageDirs = project.theme.dirs.map(function(pathDir){
+      return path.join(pathDir,'source');
+    });
 
 
     var result = {};

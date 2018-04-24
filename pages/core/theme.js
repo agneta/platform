@@ -27,17 +27,29 @@ module.exports = function(locals) {
   var filePaths = [
     project.paths.app.website
   ];
+  var extensions = project.paths.app.extensions;
 
-  for(var name in project.paths.app.extensions){
-    var extPaths = project.paths.app.extensions[name];
+  for(let name in extensions){
+    let extPaths = extensions[name];
     filePaths.push(extPaths.website);
   }
+
+  // Add portal paths
   if(locals.web){
-    filePaths.push(locals.web.project.paths.appPortal.website);
+    let webPaths = locals.web.project.paths;
+    var webExtensions = webPaths.app.extensions;
+    filePaths.push(webPaths.appPortal.website);
+    for(let name in webExtensions){
+      let extPaths = webExtensions[name];
+      filePaths.push(
+        path.join(extPaths.base,'portal/website')
+      );
+    }
   }
 
   filePaths.push(project.paths.common.website);
   filePaths.push(project.paths.theme.base);
+
   //--------------------------------------------------
 
   project.theme = {
