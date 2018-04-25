@@ -31,10 +31,14 @@
   <div ng-include="'ui-<%-tabs.name%>-'+<%-tab%>.activeSection+'.html'">
   </div>
 
-    <%for(var section of tabs.templates){
+    <%
+    page.__templates = page.__templates || [];
+    for(var section of tabs.templates){
+      page.__templates.push({
+        id: `ui-${tabs.name}-${section.name}.html`,
+        path: section.path,
+        data: section.data
+      });
       %>
-      <script type="text/ng-template" id="ui-<%-tabs.name%>-<%-section.name%>.html">
-        <%-template(section.path,{data:section.data})%>
-      </script>
-      <%}%>
+    <%}%>
 </div>

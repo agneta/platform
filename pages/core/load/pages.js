@@ -15,6 +15,7 @@
 *   limitations under the License.
 */
 var _ = require('lodash');
+var beautify_html = require('js-beautify').html;
 
 module.exports = function(locals) {
 
@@ -42,7 +43,12 @@ module.exports = function(locals) {
     let body = helpers.template('page', data_render);
     data_render.body = body;
 
-    return helpers.template('layout', data_render);
+    let content = helpers.template('layout', data_render);
+    return beautify_html(content,{
+      indent_size: 2,
+      max_preserve_newlines: 0,
+      wrap_attributes: 'force'
+    });
 
   };
 

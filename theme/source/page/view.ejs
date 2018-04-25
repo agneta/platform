@@ -41,7 +41,7 @@ if(!footerShow){
 			<md-content id="view-scroller" flex>
 				<div class="view-container <%-viewClass%>" layout="column">
 					<%-template(page.template || page.templateSource)%>
-						<%if(footerShow){%>
+					<%if(footerShow){%>
 						<%-template('layout/footer',null) %>
 						<%}%>
 					</div>
@@ -52,3 +52,12 @@ if(!footerShow){
 				</md-content>
 
 			</div>
+
+			<%
+			if(page.__templates){
+				for(var tmpl of page.__templates){
+					%>
+					<script type="text/ng-template" id="<%-tmpl.id%>">
+					<%-template(tmpl.path,{data:tmpl.data})%>
+					</script>
+					<%}}%>

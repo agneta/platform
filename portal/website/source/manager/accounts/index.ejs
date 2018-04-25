@@ -1,6 +1,7 @@
 <%
-var tabs = get_data('account/tabs') || [];
-tabs = tabs.concat(page.sections);
+var roleTabs = get_data('account/menu') || {};
+console.log(roleTabs);
+roleTabs = _.values(roleTabs);
 %>
 
 <%-template('manager/accounts/toolbar')%>
@@ -13,7 +14,8 @@ tabs = tabs.concat(page.sections);
 
 <div class="account-view frame ag-margin md-padding" ng-show="viewAccount" layout="column">
     <%-template('manager/accounts/overview')%>
-    <%-template('ui/tabs',{name:'tool',list:tabs})%>
+    <%-template('ui/tabs',{name:'role',list:roleTabs})%>
+    <%-template('ui/tabs',{name:'tool',list:page.sections})%>
 </div>
 
 <%-template('manager/accounts/empty')%>
