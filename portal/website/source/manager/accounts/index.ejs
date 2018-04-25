@@ -1,6 +1,5 @@
 <%
 var roleTabs = get_data('account/menu') || {};
-console.log(roleTabs);
 roleTabs = _.values(roleTabs);
 %>
 
@@ -14,8 +13,8 @@ roleTabs = _.values(roleTabs);
 
 <div class="account-view frame ag-margin md-padding" ng-show="viewAccount" layout="column">
     <%-template('manager/accounts/overview')%>
-    <%-template('ui/tabs',{name:'role',list:roleTabs})%>
-    <%-template('ui/tabs',{name:'tool',list:page.sections})%>
+    <%-template('manager/accounts/expander',{title:'Role',name:'role',list:roleTabs})%>
+    <%-template('manager/accounts/expander',{title:'Settings',name:'tool',list:page.sections})%>
 </div>
 
 <%-template('manager/accounts/empty')%>

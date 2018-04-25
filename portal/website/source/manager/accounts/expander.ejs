@@ -1,0 +1,13 @@
+<%
+var model = `expander.${locals.name}`;
+%>
+
+<div class="expander" ng-class="{expanded:<%-model%>}" ng-init="<%-model%>=true" ng-click="<%-model%>=!<%-model%>" layout="row" layout-align="start center">
+  <h3><%-locals.title%></h3>
+  <span flex="auto"></span>
+  <md-icon md-svg-src="<%-get_icon('material/keyboard-arrow-down')%>">
+  </md-icon>
+</div>
+<div ng-show="<%-model%>" class="content">
+<%-template('ui/tabs',{name:locals.name,list:locals.list})%>
+</div>
