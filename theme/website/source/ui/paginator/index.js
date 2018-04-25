@@ -6,7 +6,7 @@ app.directive('agUiPaginator', function() {
     require: 'ngModel',
     link: function(vm, element, attrs, ngModel) {
       if (!ngModel) return;
-      console.log(attrs);
+      //console.log(attrs);
 
       var paginator = vm.paginator = {};
 
@@ -62,7 +62,7 @@ app.directive('agUiPaginator', function() {
 
         paginator.count = paginator.count || 0;
         paginator.total = parseInt(paginator.count/paginator.limit)+1;
-        console.log(paginator.current, paginator.total);
+        //console.log(paginator.current, paginator.total);
         var current = paginator.current || 1;
         if(current<1){
           current = 1;
