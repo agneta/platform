@@ -25,9 +25,13 @@ module.exports = function(options) {
   var load = Loader(locals);
   var project = locals.project;
 
-  require('./compiler')(locals);
+  var compiler = require('./compiler')(locals);
+  var mode = require(`../main/${options.mode}`)(locals);
 
   function init() {
+
+    require('./theme')(locals);
+    compiler.script.init();
 
     return Promise.resolve()
       .then(function() {
@@ -60,7 +64,7 @@ module.exports = function(options) {
 
   locals.main = {
     init: init,
-    mode: require(`../main/${options.mode}`)(locals),
+    mode: mode,
     start: start,
     load: load,
     preInit: load.preInit

@@ -31,7 +31,10 @@ module.exports = function(locals) {
 
   for(let name in extensions){
     let extPaths = extensions[name];
-    filePaths.push(extPaths.website);
+    filePaths.push(
+      extPaths.website,
+      path.join(extPaths.base,'common','website')
+    );
   }
 
   // Add portal paths
@@ -48,7 +51,7 @@ module.exports = function(locals) {
   }
 
   filePaths.push(project.paths.common.website);
-  filePaths.push(project.paths.theme.base);
+  filePaths.push(project.paths.theme.website);
 
   //--------------------------------------------------
 

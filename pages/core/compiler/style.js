@@ -33,7 +33,7 @@ module.exports = function(locals) {
       .set('include css', true)
       .use(nib())
       .import('nib')
-      .import(path.join(project.paths.theme.base, 'variables.styl'));
+      .import(path.join(project.paths.theme.website, 'variables.styl'));
 
     var pathProjectVariables = path.join(project.paths.app.source, '_variables.styl');
 

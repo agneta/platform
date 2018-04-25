@@ -6,8 +6,6 @@ module.exports = function(locals) {
   var listeners = {};
   var project = locals.project;
 
-  require('./theme')(locals);
-
   project.call_listeners = function(listener) {
     // body...
     var list = listeners[listener] || [];

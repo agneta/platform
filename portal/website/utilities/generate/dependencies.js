@@ -26,7 +26,7 @@ module.exports = function(util) {
 
       return extract(util, {
         name: 'theme',
-        base: projectPaths.theme.base,
+        base: projectPaths.theme.website,
         root: projectPaths.core.platform
       });
 

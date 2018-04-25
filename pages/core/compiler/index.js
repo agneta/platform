@@ -1,5 +1,5 @@
 module.exports = function(locals){
-  locals.project.compiler = {
+  return locals.project.compiler = {
     script: require('./script')(locals),
     style: require('./style')(locals)
   };

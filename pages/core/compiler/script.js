@@ -17,10 +17,11 @@
 const path = require('path');
 const webpack = require('webpack');
 const util = require('util');
-
+const _ = require('lodash');
 module.exports = function(locals) {
 
   var project = locals.project;
+  var modulesResolve;
 
   function middleware(req, res, next) {
     var parsedPath = path.parse(req.path);
@@ -117,20 +118,10 @@ module.exports = function(locals) {
         return;
       }
 
-      //console.log('testPath == true',testPath);
-
       return true;
 
     }
 
-    var modulesResolve = [
-      project.paths.app.source,
-      project.paths.theme.source
-    ];
-
-    if (locals.web) {
-      modulesResolve.push(project.paths.appPortal.source);
-    }
     let output = {
       path: path.join(pathOutput, pathRelativeParsed.dir),
       filename: options.outputName || pathRelativeParsed.base
@@ -196,6 +187,11 @@ module.exports = function(locals) {
   }
 
   return {
+    init: function(){
+      modulesResolve = _.map(project.theme.dirs,function(dir){
+        return path.join(dir,'source');
+      });
+    },
     middleware: middleware,
     compile: compile
   };

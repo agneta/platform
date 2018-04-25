@@ -33,7 +33,7 @@ module.exports = {
     "node/no-missing-require": ["error", {
       "allowModules": [],
       "resolvePaths": [
-        path.join(__dirname,'../../../theme/source'),
+        path.join(__dirname,'../../../theme/website/source'),
         __dirname
       ],
       "tryExtensions": [".js", ".json", ".node"]

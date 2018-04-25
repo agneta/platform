@@ -24,7 +24,7 @@ module.exports = function(locals) {
 
   var project = locals.project;
 
-  var dataPathTheme = path.join(project.paths.theme.base, 'rules.yml');
+  var dataPathTheme = path.join(project.paths.theme.website, 'rules.yml');
   var dataPath = path.join(project.paths.app.website, 'rules.yml');
 
   fs.ensureFileSync(dataPathTheme);

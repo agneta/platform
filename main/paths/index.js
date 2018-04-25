@@ -42,15 +42,9 @@ pages.base = path.join(core.platform, 'pages');
 pages.scripts = path.join(pages.base, 'scripts');
 
 // Theme
-var themeBase = path.join(core.platform, 'theme');
-var theme = {
-  base: themeBase,
-  data: path.join(themeBase, 'data'),
-  scripts: path.join(themeBase, 'scripts'),
-  source: path.join(themeBase, 'source'),
-  config: path.join(themeBase, 'config.yml'),
-  email: path.join(themeBase, 'email')
-};
+var theme = structure({
+  base: path.join(core.platform, 'theme')
+});
 
 // Storage
 core.storage = path.join(core.project, '.agneta', 'storage');
