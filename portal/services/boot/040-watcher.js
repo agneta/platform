@@ -1,22 +1,24 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
- *
- *   Source file: portal/services/boot/04-watcher.js
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- */
+*
+*   Source file: portal/services/boot/04-watcher.js
+*
+*   Licensed under the Apache License, Version 2.0 (the "License");
+*   you may not use this file except in compliance with the License.
+*   You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+*   Unless required by applicable law or agreed to in writing, software
+*   distributed under the License is distributed on an "AS IS" BASIS,
+*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*   See the License for the specific language governing permissions and
+*   limitations under the License.
+*/
 const chokidar = require('chokidar');
 const Promise = require('bluebird');
 const _ = require('lodash');
+const path = require('path');
+
 module.exports = function(app) {
 
   var locals = app.client;
@@ -44,45 +46,37 @@ module.exports = function(app) {
 
     //----------------------------------------------------------
 
+    var servicePaths = locals.services.get('services_include');
+    var websitePaths = locals.project.theme.dirs;
 
     watch({
-      dirs: [
-        project.paths.app.config,
-        project.paths.theme.config,
-      ],
+      dirs: _.map(websitePaths,function(dir){
+        return path.join(dir,'config.yml');
+      }),
       onFile: require('./watcher/config')(options)
     });
     watch({
-      dirs: [
-        project.paths.app.data,
-        project.paths.theme.data,
-        project.paths.appPortal.data
-      ],
+      dirs: _.map(websitePaths,function(dir){
+        return path.join(dir,'data');
+      }),
       onFile: require('./watcher/data')(options)
     });
     watch({
-      dirs: _.uniq([
-        project.paths.portal.models,
-        project.paths.core.models,
-        project.paths.app.models,
-        project.paths.appPortal.models
-      ]),
+      dirs: _.map(servicePaths,function(dir){
+        return path.join(dir,'models');
+      }),
       onFile: require('./watcher/models')(options)
     });
     watch({
-      dirs: [
-        project.paths.theme.scripts,
-        project.paths.pages.scripts,
-        project.paths.app.scripts
-      ],
+      dirs: _.map(websitePaths,function(dir){
+        return path.join(dir,'scripts');
+      }),
       onFile: require('./watcher/scripts')(options)
     });
     watch({
-      dirs: [
-        project.paths.app.source,
-        project.paths.theme.source,
-        project.paths.appPortal.source
-      ],
+      dirs: _.map(websitePaths,function(dir){
+        return path.join(dir,'source');
+      }),
       onFile: require('./watcher/source')(options)
     });
 

@@ -45,7 +45,8 @@ module.exports = function(locals) {
     for(let name in webExtensions){
       let extPaths = webExtensions[name];
       filePaths.push(
-        path.join(extPaths.base,'portal/website')
+        path.join(extPaths.base,'portal/website'),
+        path.join(extPaths.base,'common','website')
       );
     }
   }
