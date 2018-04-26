@@ -126,7 +126,7 @@ module.exports = function(locals) {
   project.extend.helper.register('viewData', function(page) {
 
     page = page || this.page;
-    return JSON.stringify(getData(page));
+    return JSON.stringify(getData(page),null,2);
 
   });
 

@@ -70,7 +70,9 @@ module.exports = function(app) {
     watch({
       dirs: _.map(websitePaths,function(dir){
         return path.join(dir,'scripts');
-      }),
+      }).concat([
+        project.paths.pages.scripts
+      ]),
       onFile: require('./watcher/scripts')(options)
     });
     watch({

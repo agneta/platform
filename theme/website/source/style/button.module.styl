@@ -18,6 +18,7 @@
   display: flex;
   cursor: pointer;
   padding: 4px;
+  transition: background 400ms ease;
 
   -webkit-box-orient: horizontal;
   -webkit-flex-direction: row;
@@ -35,13 +36,13 @@
   }
 
   &:hover{
-    background: rgba(0, 0, 0, 0.16);
+    background: rgba(0, 0, 0, 0.12) !important;
   }
   md-icon{
     width: 34px;
     height: 34px;
   }
-  
+
   &.active{
     background: color-primary;
     color: white;

@@ -44,11 +44,18 @@ module.exports = function(locals) {
     data_render.body = body;
 
     let content = helpers.template('layout', data_render);
-    return beautify_html(content,{
-      indent_size: 2,
-      max_preserve_newlines: 0,
-      wrap_attributes: 'force'
-    });
+
+    if(!data.barebones || data.isView){
+      content = beautify_html(content,{
+        indent_size: 2,
+        max_preserve_newlines: 0,
+        wrap_attributes: 'force'
+      });
+    }
+
+
+    return content;
+
 
   };
 
