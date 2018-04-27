@@ -102,7 +102,7 @@ module.exports = function(app) {
     function services() {
 
       var script = generator.services(app, {});
-      var token = app.web.services.get('token');
+      var token = app.get('token');
 
       script = script.replace('$LoopBack$', `$${token.name}$`);
 

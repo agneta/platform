@@ -100,7 +100,7 @@ module.exports = function(app) {
     },
     'routes': {
       './middleware/log-request': {
-        'params': [app.web.services.get('token')]
+        'params': [app.get('token')]
       },
       './middleware/media-private': {
         'params': [app]

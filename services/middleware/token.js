@@ -35,8 +35,8 @@ module.exports = function(app) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
-  var name = app.web.services.get('token').name;
-
+  var name = app.get('token').name;
+  console.log(name);
   var options = {
     searchDefaultTokenKeys: false,
     cookies: [name],
@@ -60,7 +60,7 @@ module.exports = function(app) {
     if (req.accessToken === undefined) {
       Object.defineProperty(req, 'accessToken', {
         get: function() {
-          var key = req.app.web.services.get('token').name;
+          var key = req.app.get('token').name;
           return req.accessTokens[key] || null;
         }
       });

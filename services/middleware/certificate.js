@@ -115,14 +115,14 @@ module.exports = function(app) {
                   res: res
                 });
 
-                req.headers[app.web.services.get('token').name] = token.id;
+                req.headers[app.get('token').name] = token.id;
 
               });
           })
           .catch(function(err){
             console.log(err,req.path,apiRoot);
             if(err.statusCode==400 && req.path.indexOf(apiRoot)!==0){
-              req.headers[app.web.services.get('token').name] = '';
+              req.headers[app.get('token').name] = '';
               return;
             }
             return Promise.reject(err);

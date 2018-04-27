@@ -16,7 +16,7 @@
  */
 module.exports = function(Model, app) {
 
-  var tokenName = app.web.services.get('token').name;
+  var tokenName = app.get('token').name;
 
   //---------------------------------------------------
 
