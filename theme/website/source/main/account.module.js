@@ -26,21 +26,31 @@
 
   });
 
-  app.directive('agAccountAvatar', function() {
+  app.directive('agAccountPicture', function() {
     return {
       restrict: 'A',
       require: 'ngModel',
       link: function(scope, element, attrs, ngModel) {
         if (!ngModel) return;
         scope.$watch(attrs.ngModel, function(account) {
+
           if(!account){
             return;
           }
-          var picture = account.picture;
-          if(account.picturePrivate){
-            picture = agneta.prv_media(account.picturePrivate,'small');
+
+          scope.background = null;
+          scope.icon = null;
+
+          var picture = account.picture || {};
+
+          if(picture.media){
+            scope.background = agneta.prv_media(picture.media,'small');
           }
-          scope.picture = picture;
+
+          if(picture.icon){
+            scope.icon = agneta.get_media('avatars',picture.icon);
+          }
+
         });
 
       }

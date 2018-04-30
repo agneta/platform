@@ -14,33 +14,27 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var _ = require('lodash');
-
 module.exports = function(Model) {
 
-  Model.update = function(req, data) {
+  Model.update = function(data) {
     var Account = Model.getModel('Account');
-    
-    return Account.findById(data.id)
-      .then(function(account) {
-        data = _.pick(data, ['name', 'username', 'email']);
-        return account.updateAttributes(data);
-      });
+
+    return Account.__update(data.id, data);
   };
 
   Model.remoteMethod(
     'update', {
       description: '',
-      accepts: [{
+      accepts: [ {
+        arg: 'data',
+        type: 'object',
+        required: true
+      }, {
         arg: 'req',
         type: 'object',
         'http': {
           source: 'req'
         }
-      }, {
-        arg: 'data',
-        type: 'object',
-        required: true
       }],
       returns: {
         arg: 'result',

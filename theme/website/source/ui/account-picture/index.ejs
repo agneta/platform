@@ -1,8 +1,8 @@
 <%
   var model = locals.model = locals.model || 'account';
-  var ngStyle = `ng-style="{'background-image': 'url(' + picture + ')'}"`
-  var attr = `ag-account-avatar ng-model="${model}"`;
-  var elmClass = 'ag-account-avatar';
+  var ngStyle = `ng-style="{'background-image': background?'url(' + background + ')':null}"`
+  var attr = `ag-account-picture ng-model="${model}"`;
+  var elmClass = 'ag-account-picture';
 %>
 
 <%if(locals.click){%>
@@ -13,7 +13,7 @@ ng-click="<%-locals.click%>"
 <%-ngStyle%>
 <%-attr%>
 aria-label="Account">
-<%-template('ui/account-avatar/icon',locals)%>
+<%-template('ui/account-picture/icon',locals)%>
 </md-button>
 
 <%}else{%>
@@ -25,7 +25,7 @@ aria-label="Account">
   <%-ngStyle%>
   class="<%-elmClass%>"
   >
-  <%-template('ui/account-avatar/icon',locals)%>
+  <%-template('ui/account-picture/icon',locals)%>
   </div>
 
 <%}%>

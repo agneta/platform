@@ -55,10 +55,6 @@ agneta.prv_media = function() {
   });
 };
 
-agneta.get_avatar = function(name) {
-  return agneta.get_media(agneta.urljoin('avatars', name));
-};
-
 agneta.get_lib = function() {
   var args = Array.prototype.slice.call(arguments);
   args.unshift(agneta.server.lib);

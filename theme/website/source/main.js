@@ -281,7 +281,6 @@ app.config(function($mdThemingProvider, $sceDelegateProvider) {
   };
 
   $rootScope.get_media = agneta.get_media;
-  $rootScope.get_avatar = agneta.get_avatar;
   $rootScope.get_asset = agneta.get_asset;
   $rootScope.get_icon = agneta.get_icon;
   $rootScope.get_path = agneta.langPath;

@@ -18,7 +18,18 @@ module.exports = function(Model,app) {
 
   Model.details = function(id, location) {
 
+    return Model.__details({
+      id: id,
+      location: location
+    });
+
+  };
+
+  Model.__details = function(options) {
+
     var promise;
+    var id = options.id;
+    var location = options.location;
 
     if (id) {
       promise = Model.findById(id);

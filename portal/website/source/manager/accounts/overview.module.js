@@ -14,10 +14,10 @@ module.exports = function(shared) {
 
   overview.changePicture = function(){
     $mdDialog.open({
-      partial: 'upload-picture',
+      partial: 'account-file',
       data:{
         account: vm.viewAccount,
-        method: 'role-account-manager/picture-change',
+        method: 'role-account-manager/media-upload',
         onUploaded: function() {
           reloadAccount();
           AccountList.loadAccounts();

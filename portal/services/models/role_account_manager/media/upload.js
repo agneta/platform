@@ -17,17 +17,17 @@
 
 module.exports = function(Model) {
 
-  Model.pictureChange = function(req) {
+  Model.mediaUpload = function(req) {
     var Account = Model.getModel('Account');
 
-    return Account.__pictureChange({
+    return Account.__mediaUpload({
       req: req
     });
 
   };
 
   Model.remoteMethod(
-    'pictureChange', {
+    'mediaUpload', {
       description: '',
       accepts: [{
         arg: 'req',
@@ -43,7 +43,7 @@ module.exports = function(Model) {
       },
       http: {
         verb: 'post',
-        path: '/picture-change'
+        path: '/media-upload'
       }
     }
   );

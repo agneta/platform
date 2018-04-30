@@ -30,9 +30,7 @@
   <md-content flex="100" class="accounts">
     <div class="items">
       <md-list-item ng-repeat="account in accounts.list" class="account md-long-text md-2-line" md-no-ink ng-click="select(account)">
-        <div layout="column" layout-align="center center" ng-style="{'background-image': 'url(' + account.picture + ')'}" class="md-avatar">
-          <md-icon ng-if="account.avatar" md-svg-src="{{get_avatar(account.avatar)}}"></md-icon>
-        </div>
+        <%-template('ui/account-picture')%>
         <div class="md-list-item-text">
           <h3>{{account.name}}
           </h3>

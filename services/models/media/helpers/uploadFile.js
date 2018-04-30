@@ -21,6 +21,7 @@ module.exports = function(Model) {
       .then(function(){
         return new Promise(function(resolve, reject) {
           busboy.on('file', function(fieldname, stream, filename, encoding, mimetype) {
+
             var promise = Promise.resolve()
               .then(function() {
                 if(fieldname!=options.field){
@@ -28,7 +29,10 @@ module.exports = function(Model) {
                 }
 
                 if(options.onFile){
-                  return options.onFile(fieldname);
+                  return options.onFile({
+                    fieldname: fieldname,
+                    formData: formData
+                  });
                 }
 
               })
@@ -54,7 +58,7 @@ module.exports = function(Model) {
           });
 
           busboy.on('field', function(fieldname, val) {
-            console.log('Field [' + fieldname + ']: value: ' + val);
+            //console.log('Field [' + fieldname + ']: value: ' + val);
             formData[fieldname] = val;
             if(options.onField){
               options.onField(fieldname,val);

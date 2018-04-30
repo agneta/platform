@@ -14,63 +14,16 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var _ = require('lodash');
 
-module.exports = function(Model, app) {
-
-  var webServices = app.web.services;
-  var rolesConfig = webServices.get('roles');
+module.exports = function(Model) {
 
   Model.get = function(req, id) {
 
     var Account = Model.projectModel('Account');
 
-    if (req.accessToken.roles.administrator) {
-
-      return Account.__get(id, {
-        include: Account.rolesInclude
-      })
-        .then(function(account) {
-
-          account = account.__data;
-
-          //console.log(account);
-
-          var roles = _.pick(account, Account.roleKeys);
-          account = _.omit(account, Account.roleKeys.concat(['password']));
-
-          //console.log(roles);
-
-          for (var roleKey in roles) {
-            var role = roles[roleKey];
-            var config = rolesConfig[roleKey];
-            if (config.form) {
-              role.editable = true;
-            }
-          }
-
-          account.roles = roles;
-
-          return account;
-        });
-
-    } else {
-
-      console.log('Not an administrator');
-
-      return Account.findById(id, {
-        fields: {
-          id: true,
-          name: true,
-          avatar: true,
-          picture: true,
-          username: true
-        }
-      });
-
-    }
-
-
+    return Account.__me({
+      id: id
+    });
 
   };
 

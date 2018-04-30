@@ -6,9 +6,6 @@
       "type": "String",
       "required": false
     },
-    "picture": {
-      "type": "String"
-    },
     "avatar": {
       "type": "String"
     },

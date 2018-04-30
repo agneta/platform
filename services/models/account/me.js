@@ -15,32 +15,82 @@
  *   limitations under the License.
  */
 
-module.exports = function(Model) {
+const _ = require('lodash');
+
+module.exports = function(Model, app) {
+
+  var webServices = app.web.services;
+  var rolesConfig = webServices.get('roles');
 
   Model.me = function(req) {
 
-    if (!req.accessToken) {
-      return Promise.resolve()
-        .then(function() {
+    return Promise.resolve()
+      .then(function() {
+
+        if (!req.accessToken) {
           return {
             message: 'Not logged in'
           };
+        }
+
+        return Model.__me({
+          id: req.accessToken.userId,
+          fields: {
+            id: true,
+            name: true,
+            icon: true,
+            picture: true,
+            username: true,
+            email: true
+          }
         });
-    }
-    return Model.findById(req.accessToken.userId, {
-      include: Model.includeRoles,
-      fields:{
-        id: true,
-        name: true,
-        avatar: true,
-        picturePrivate: true,
-        picture: true,
-        username: true,
-        email: true
-      }
-    });
+
+      });
 
   };
+
+  Model.__me = function(options) {
+
+    var id = options.id;
+    var fields = options.fields;
+
+    return Model.findById(id, {
+      include: Model.includeRoles,
+      fields: fields
+    })
+      .then(function(account) {
+        if (!account) {
+          return Promise.reject({
+            message: 'Account not found',
+            statusCode: 401
+          });
+        }
+
+        account = account.__data;
+
+        //console.log(account);
+
+        var roles = _.pick(account, Model.roleKeys);
+        account = _.omit(account, Model.roleKeys.concat(['password']));
+
+        //console.log(roles);
+
+        for (var roleKey in roles) {
+          var role = roles[roleKey];
+          var config = rolesConfig[roleKey];
+          if (config.form) {
+            role.editable = true;
+          }
+        }
+
+        account.role = roles;
+
+        return account;
+
+      });
+
+  };
+
 
   Model.remoteMethod(
     'me', {

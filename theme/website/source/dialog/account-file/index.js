@@ -1,5 +1,8 @@
 agneta.directive('AgUploadPicture',function(data, Upload){
+
   var vm = this;
+  var method = data.method || 'account/media-upload';
+
   agneta.extend(vm, 'AgDialogCtrl');
 
   vm.account = data.account;
@@ -9,6 +12,7 @@ agneta.directive('AgUploadPicture',function(data, Upload){
 
   var media = vm.media = {};
   var mediaBase = `account/${data.account.id}/profile`;
+
   media.file = {};
   media.source = agneta.prv_media(mediaBase,'medium');
   media.url = agneta.prv_media(mediaBase);
@@ -24,7 +28,7 @@ agneta.directive('AgUploadPicture',function(data, Upload){
     vm.loading = true;
 
     var options = {
-      url: agneta.url_api(data.method),
+      url: agneta.url_api(method),
       data: {}
     };
 

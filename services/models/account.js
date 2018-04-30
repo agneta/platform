@@ -17,18 +17,7 @@
 module.exports = function(Model, app) {
 
   var tokenName = app.get('token').name;
-
   //---------------------------------------------------
-
-  Model.observe('loaded', function(ctx) {
-    var instance = ctx.instance || ctx.data;
-
-    if (!instance.picture && !instance.avatar) {
-      instance.avatar = 'default';
-    }
-
-    return Promise.resolve();
-  });
 
   Model.validatesLengthOf('password', {
     min: 7,
@@ -97,8 +86,7 @@ module.exports = function(Model, app) {
   require('./account/roleGet')(Model, app);
   require('./account/verifyEmail')(Model, app);
   require('./account/media')(Model, app);
-
-  require('./account/picture/change')(Model, app);
+  require('./account/picture')(Model, app);
 
 
 
