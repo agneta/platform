@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: services/models/media/details.js
+ *   Source file: portal/services/models/account/update.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,45 +14,41 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
 module.exports = function(Model) {
 
-  Model.details = function(id, location) {
+  Model.mediaUpdate = function(accountId, location, privacy) {
+    var Account = Model.projectModel('Account');
 
-    return Model.__details({
-      id: id,
-      location: location
+    return Account.__mediaUpdate({
+      location: location,
+      accountId: accountId,
+      privacy: privacy,
     });
 
   };
 
-  Model.__details = function(options) {
-
-    return Model.__get(options)
-      .then(function(object) {
-
-        if (!object) {
-          return {
-            notfound: 'Not found on database',
-            location: options.location
-          };
-        }
-
-        return Model.__prepareObject(object);
-      });
-
-  };
-
   Model.remoteMethod(
-    'details', {
-      description: 'Get a file details',
+    'mediaUpdate', {
+      description: '',
       accepts: [{
-        arg: 'id',
+        arg: 'accountId',
         type: 'string',
-        required: false
-      }, {
+        required: true
+      },{
         arg: 'location',
         type: 'string',
+        required: true
+      },{
+        arg: 'privacy',
+        type: 'object',
         required: false
+      },{
+        arg: 'req',
+        type: 'object',
+        'http': {
+          source: 'req'
+        }
       }],
       returns: {
         arg: 'result',
@@ -60,9 +56,10 @@ module.exports = function(Model) {
         root: true
       },
       http: {
-        verb: 'get',
-        path: '/details'
+        verb: 'post',
+        path: '/media-update'
       }
     }
   );
+
 };

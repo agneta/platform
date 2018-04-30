@@ -17,14 +17,14 @@
 
 module.exports = function(Model) {
 
-  Model.updateFile = function(location, dir, name, contentType, roles) {
+  Model.updateFile = function(location, dir, name, contentType, privacy) {
 
     return Model.__updateFile({
       location: location,
       dir: dir,
       name: name,
       contentType: contentType,
-      roles: roles
+      privacy: privacy
     });
 
   };
@@ -49,8 +49,8 @@ module.exports = function(Model) {
         type: 'string',
         required: false
       }, {
-        arg: 'roles',
-        type: 'array',
+        arg: 'privacy',
+        type: 'object',
         required: false
       }],
       returns: {

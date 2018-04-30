@@ -1,32 +1,38 @@
 
 module.exports = function(Model) {
 
-  Model.__mediaGet = function(options) {
+  Model.__mediaUpdate = function(options) {
     return Model.getModel('Media_Private')
-      .__details({
+      .__updateFile({
         location: Model.__mediaLocation({
-          path: options.location,
+          location: options.location,
           accountId: options.accountId
-        })
+        }),
+        privacy: options.privacy
       });
   };
 
-  Model.mediaGet = function(location,req) {
+  Model.mediaUpdate = function(location,privacy,req) {
 
-    return Model.__mediaGet({
+    return Model.__mediaUpdate({
       location: location,
-      accountId: req.accessToken.userId
+      accountId: req.accessToken.userId,
+      privacy: privacy,
     });
   };
 
   Model.remoteMethod(
-    'mediaGet', {
-      description: 'Get a media file from an account',
+    'mediaUpdate', {
+      description: 'Set privacy for account media file',
       accepts: [{
         arg: 'location',
         type: 'string',
         required: true
       },{
+        arg: 'privacy',
+        type: 'object',
+        required: false
+      }, {
         arg: 'req',
         type: 'object',
         'http': {
@@ -40,7 +46,7 @@ module.exports = function(Model) {
       },
       http: {
         verb: 'post',
-        path: '/media-get'
+        path: '/media-privacy'
       }
     });
 

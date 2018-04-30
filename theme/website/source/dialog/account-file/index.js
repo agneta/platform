@@ -1,24 +1,47 @@
-agneta.directive('AgUploadPicture',function(data, Upload){
+agneta.directive('AgUploadPicture',function($rootScope, data, Upload, Account){
 
   var vm = this;
+  var model = data.model || Account;
   var method = data.method || 'account/media-upload';
+  var query = data.query || {};
+  var accountId = query.accountId = query.accountId || $rootScope.account.profile.id;
 
   agneta.extend(vm, 'AgDialogCtrl');
 
-  vm.account = data.account;
+  function load() {
+    vm.loading = true;
+    model.mediaGet(query)
+      .$promise
+      .then(function(result) {
+        media.file = result;
+      })
+      .finally(function(){
+        vm.loading = false;
+      });
+  }
+
+  load();
 
   //-----------------------------------
   // Media
 
   var media = vm.media = {};
-  var mediaBase = `account/${data.account.id}/profile`;
+  var mediaBase = `account/${accountId}/profile`;
 
-  media.file = {};
   media.source = agneta.prv_media(mediaBase,'medium');
   media.url = agneta.prv_media(mediaBase);
 
-  media.sharing = function(value){
-    media.file.sharing = value;
+  media.privacyType = function(value){
+    var privacy = media.file.privacy || {};
+    privacy.type = value;
+    vm.loading = true;
+    model.mediaUpdate(angular.extend({
+      privacy: privacy
+    },query))
+      .$promise
+      .then(function() {
+        return load();
+      });
   };
 
   media.upload = function(object){
@@ -33,7 +56,7 @@ agneta.directive('AgUploadPicture',function(data, Upload){
     };
 
     if(data.account){
-      options.data.accountId = data.account.id;
+      options.data.accountId = accountId;
     }
 
     options.data.object = object;

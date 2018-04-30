@@ -49,6 +49,7 @@ module.exports = function(Model, app, options) {
   require('./helpers/uploadFile')(Model, app);
   require('./helpers/uploadLocalFile')(Model, app);
 
+  require('./get')(Model, app);
   require('./add')(Model, app);
   //require('./beforeSave')(Model, app);
   require('./deleteObject')(Model, app);

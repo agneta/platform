@@ -16,7 +16,11 @@ module.exports = function(shared) {
     $mdDialog.open({
       partial: 'account-file',
       data:{
-        account: vm.viewAccount,
+        model: AccountList.model,
+        query: {
+          accountId: vm.viewAccount.id,
+          location: 'profile'
+        },
         method: 'role-account-manager/media-upload',
         onUploaded: function() {
           reloadAccount();

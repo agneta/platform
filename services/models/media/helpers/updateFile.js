@@ -22,14 +22,19 @@ const _ = require('lodash');
 module.exports = function(Model, app) {
 
   var rolesConfig = app.get('roles');
+  var types = {
+    public: true,
+    private: true
+  };
 
   Model.__updateFile = function(options) {
+
     var id = options.id;
     var location = options.location;
     var dir = options.dir || path.parse(location).dir;
-    var name = options.name;
+    var name = options.name || path.parse(location).name;
     var contentType = options.contentType;
-    var roles = options.roles;
+    var privacy = options.privacy = options.privacy || {};
 
     var operations;
     var file;
@@ -38,13 +43,8 @@ module.exports = function(Model, app) {
     return Promise.resolve()
       .then(function() {
 
-        if (!roles) {
-          return;
-        }
-
-        roles = _.uniq(roles);
-
-        return Promise.map(roles, function(roleName) {
+        privacy.roles = _.uniq(privacy.roles || []);
+        privacy.roles.map(function(roleName) {
           var role = rolesConfig[roleName];
           if (!role) {
             return Promise.reject({
@@ -53,6 +53,16 @@ module.exports = function(Model, app) {
             });
           }
         });
+
+        privacy.type = privacy.type || 'private';
+
+        if(!types[privacy.type]){
+          return Promise.reject({
+            statusCode: 400,
+            message: `Incorrect type: ${privacy.type}`
+          });
+        }
+
       })
       .then(function() {
         if (id) {
@@ -174,11 +184,7 @@ module.exports = function(Model, app) {
                 });
               }
 
-              var attrs = {};
-
-              if (options.roles) {
-                attrs.roles = options.roles;
-              }
+              var attrs = _.pick(options,['privacy']);
 
               if (_.size(attrs)) {
                 return object.patchAttributes(attrs);

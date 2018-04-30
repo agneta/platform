@@ -6,7 +6,10 @@
   "scripts": {
     "audit": "nsp check",
     "license": "node tools/license",
-    "lint": "node node_modules/eslint/bin/eslint --ignore-path .gitignore ./ --ext .js"
+    "lint": "node node_modules/eslint/bin/eslint --ignore-path .gitignore ./ --ext .js",
+    "build": "babel src/ -d lib/",
+    "prepublish": "npm run build",
+    "flow": "flow"
   },
   "engines": {
     "node": ">=6.0.0"
@@ -148,10 +151,13 @@
     "zxcvbn": "4.4.2"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-flow": "^6.23.0",
     "eslint": "4.19.1",
     "eslint-config-loopback": "10.0.0",
     "eslint-plugin-json": "1.2.0",
     "eslint-plugin-node": "6.0.1",
+    "flow-bin": "^0.71.0",
     "jsonlint": "1.6.3",
     "pre-commit": "1.2.2"
   }

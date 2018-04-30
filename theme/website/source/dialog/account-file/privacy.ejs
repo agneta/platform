@@ -1,12 +1,12 @@
 <div class="md-padding ag-margin sharing" layout="column">
 
-<p class="title">Sharing:</p>
+<p class="title">Privacy:</p>
 
 <div class="ag-margin" layout="row">
   <%for(var item of page.sharing){%>
     <md-button
-    ng-click="media.sharing('<%-item.name%>')"
-    ng-class="{selected:media.file.sharing=='<%-item.name%>'}"
+    ng-click="media.privacyType('<%-item.name%>')"
+    ng-class="{selected:media.file.privacy.type=='<%-item.name%>'}"
     >
     <md-icon
     md-svg-src="<%-get_icon(item.icon)%>"
@@ -18,7 +18,7 @@
   </div>
 
   <%for(var item of page.sharing){%>
-  <span class="message" ng-show="media.file.sharing=='<%-item.name%>'">
+  <span class="message" ng-show="media.file.privacy.type=='<%-item.name%>'">
     <%-lng(item.message)%>
   </span>
   <%}%>

@@ -1,9 +1,10 @@
 const path = require('path');
 
-module.exports = function(Model) {
+module.exports = function(Model,app) {
 
-  require('./upload');
-  require('./get');
+  require('./update')(Model,app);
+  require('./upload')(Model,app);
+  require('./get')(Model,app);
 
   Model.__mediaLocation = function(options){
     var accountId = options.accountId;
