@@ -36,7 +36,6 @@ module.exports = function(app) {
   }
 
   var name = app.get('token').name;
-  console.log(name);
   var options = {
     searchDefaultTokenKeys: false,
     cookies: [name],

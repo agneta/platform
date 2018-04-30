@@ -1,0 +1,13 @@
+subject:
+  en: Message
+
+header:
+  en: Hi Tom,
+
+body:
+  en: We would like to inform you of our great news.
+
+account:
+  name: Raphael Varonos
+  role: Application Developer
+  picture: https://en.gravatar.com/userimage/23745052/87656f81320fe3801a94a6eaedcc5245.jpg?size=200

@@ -8,12 +8,18 @@
 <%if(locals.click){%>
 
 <md-button
-class="md-fab md-primary <%-elmClass%>"
+class="editable md-fab <%-elmClass%>"
 ng-click="<%-locals.click%>"
 <%-ngStyle%>
 <%-attr%>
 aria-label="Account">
 <%-template('ui/account-picture/icon',locals)%>
+<div class="action" layout-align="center center" layout="column">
+<md-icon
+aria-label="edit account picture"
+md-svg-src="<%-get_icon('material/edit')%>">
+</md-icon>
+</div>
 </md-button>
 
 <%}else{%>
@@ -26,6 +32,7 @@ aria-label="Account">
   class="<%-elmClass%>"
   >
   <%-template('ui/account-picture/icon',locals)%>
+
   </div>
 
 <%}%>

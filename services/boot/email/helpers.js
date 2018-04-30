@@ -61,7 +61,7 @@ module.exports = function(options){
         }
       }
 
-      console.warn(`Could not find path for: ${path_partial}`);
+      //console.warn(`Could not find path for: ${path_partial}`);
 
     }
   });
