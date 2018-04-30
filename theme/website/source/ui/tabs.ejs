@@ -20,15 +20,15 @@
       %>
       <div
       class="item"
-      ng-class="{active:<%-tab%>.activeSection=='<%-section.name%>'}"
-      ng-click="<%-tab%>.select('<%-section.name%>')"
+      ng-class="{active:activeSection=='<%-section.name%>'}"
+      ng-click="select('<%-section.name%>')"
       <%-show%>
       >
         <%-lng(section.title)%>
       </div>
       <%}%>
   </div>
-  <div ng-include="'ui-<%-tabs.name%>-'+<%-tab%>.activeSection+'.html'">
+  <div ng-include="'ui-<%-tabs.name%>-'+activeSection+'.html'">
   </div>
 
     <%
