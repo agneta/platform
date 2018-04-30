@@ -1,0 +1,26 @@
+<div class="md-padding ag-margin sharing" layout="column">
+
+<p class="title">Sharing:</p>
+
+<div class="ag-margin" layout="row">
+  <%for(var item of page.sharing){%>
+    <md-button
+    ng-click="media.sharing('<%-item.name%>')"
+    ng-class="{selected:media.file.sharing=='<%-item.name%>'}"
+    >
+    <md-icon
+    md-svg-src="<%-get_icon(item.icon)%>"
+    aria-label="<%-item.name%>">
+    </md-icon>
+    <span><%-lng(item.title)%></span>
+    </md-button>
+    <%}%>
+  </div>
+
+  <%for(var item of page.sharing){%>
+  <span class="message" ng-show="media.file.sharing=='<%-item.name%>'">
+    <%-lng(item.message)%>
+  </span>
+  <%}%>
+
+</div>

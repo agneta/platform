@@ -1,7 +1,23 @@
 agneta.directive('AgUploadPicture',function(data, Upload){
   var vm = this;
   agneta.extend(vm, 'AgDialogCtrl');
-  vm.upload = function(object){
+
+  vm.account = data.account;
+
+  //-----------------------------------
+  // Media
+
+  var media = vm.media = {};
+  var mediaBase = `account/${data.account.id}/profile`;
+  media.file = {};
+  media.source = agneta.prv_media(mediaBase,'medium');
+  media.url = agneta.prv_media(mediaBase);
+
+  media.sharing = function(value){
+    media.file.sharing = value;
+  };
+
+  media.upload = function(object){
     if (!object) {
       return;
     }
@@ -18,8 +34,6 @@ agneta.directive('AgUploadPicture',function(data, Upload){
 
     options.data.object = object;
 
-    console.log(options);
-
     Upload.upload(options)
       .then(function() {
         if(data.onUploaded){
@@ -31,4 +45,6 @@ agneta.directive('AgUploadPicture',function(data, Upload){
         vm.loading = false;
       });
   };
+
+
 });

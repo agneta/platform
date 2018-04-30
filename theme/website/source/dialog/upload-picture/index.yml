@@ -5,3 +5,19 @@ controller: AgUploadPicture
 class: upload-picture
 scripts:
   - lib/ng-file-upload.min
+
+sharing:
+  -
+    name: public
+    icon: material/public
+    title:
+      en: Public
+    message:
+      en: Everyone will be able to see this.
+  -
+    name: private
+    icon: material/lock
+    title:
+      en: Private
+    message:
+      en: Only you can view this file.

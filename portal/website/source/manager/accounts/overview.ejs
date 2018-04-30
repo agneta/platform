@@ -1,4 +1,4 @@
-<div class="content summary layout-padding" layout="column">
+<div class="content overview layout-padding" layout="column">
   <div layout="row" class="md-padding">
     <div layout="row" layout-align="center center">
 
@@ -6,7 +6,22 @@
 
         <div flex class="headline">
             <p class="md-headline">{{viewAccount.name}}</p>
-            <p class="subhead">{{viewAccount.email}}</p>
+
+            <div class="email ag-margin" layout="column">
+              <div class="ag-margin" layout-align="start center" layout="row">
+                <p class="title">Email</p>
+                <span flex="auto"></span>
+                <span ng-if="viewAccount.emailVerified" class="message green">Verified</span>
+                <span ng-if="!viewAccount.emailVerified" class="message red">Not verified</span>
+              </div>
+              <div class="ag-margin" layout-align="start center" layout="row">
+                <p>{{viewAccount.email}}</p>
+                <span flex="auto"></span>
+                <md-button ng-click="email.send()">Contact</md-button>
+                <md-button ng-click="overview.resendVerification()" class="md-raised" ng-if="!viewAccount.emailVerified">Verify</md-button>
+              </div>
+          </div>
+
         </div>
     </div>
     <span flex></span>
@@ -14,15 +29,6 @@
   </div>
 
     <div layout="column" class="details">
-
-        <div layout="row" layout-align="start center">
-            <span ng-if="viewAccount.emailVerified">Email verified</span>
-            <span ng-if="!viewAccount.emailVerified" class="message red">Email not verified</span>
-            <span flex="auto"></span>
-            <md-button ng-click="overview.resendVerification()" class="md-raised" ng-if="!viewAccount.emailVerified">Send Verification</md-button>
-        </div>
-
-        <md-divider></md-divider>
 
         <div ng-if="viewAccount.veriSentAt">
         <p class="subhead">Verification Sent

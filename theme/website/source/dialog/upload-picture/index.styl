@@ -1,6 +1,41 @@
 md-dialog.upload-picture{
   .container{
     position: relative;
+  }
+  .sharing{
+    .title{
+      font-size: 1.2em;
+    }
+    .message{
+      color: #5a5a5a;
+    }
+    .md-button{
+      background: whitesmoke;
+
+      &.selected{
+        background: color-primary;
+        color: white;
+        md-icon{
+          color: white;
+        }
+      }
+    }
+  }
+  .preview{
+    background: whitesmoke;
+  }
+  .image{
     text-align: center;
+  }
+  .url{
+    text-align: left;
+    font-size: 0.9em;
+    label{
+      font-weight: bold;
+    }
+    .link{
+      word-wrap: break-word;
+      color: grey;
+    }
   }
 }
