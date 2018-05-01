@@ -14,14 +14,18 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function(options) {
+agneta.directive('AgAccountTokens',function(AccountList, $mdDialog) {
 
-  var vm = options.vm;
-  var AccountList = options.AccountList;
-  var $mdDialog = options.$mdDialog;
+  var vm = this;
   var tokens = vm.tokens = {};
 
-  tokens.load = function() {
+  vm.$on('account-loaded',load);
+
+  if(vm.viewAccount){
+    load();
+  }
+
+  function load() {
 
     tokens.loading = true;
 
@@ -36,7 +40,7 @@ module.exports = function(options) {
         tokens.loading = false;
       });
 
-  };
+  }
 
   tokens.delete = function(token) {
 
@@ -61,4 +65,4 @@ module.exports = function(options) {
 
   };
 
-};
+});

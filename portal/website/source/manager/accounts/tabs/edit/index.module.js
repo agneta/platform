@@ -1,11 +1,6 @@
-module.exports = function(shared) {
+agneta.directive('AgAccountEdit',function(AccountList, $mdDialog, $mdToast) {
 
-  var vm = shared.vm;
-  var AccountList = shared.AccountList;
-  var $mdDialog = shared.$mdDialog;
-  var reloadAccount = shared.reloadAccount;
-  var $mdToast = shared.$mdToast;
-
+  var vm = this;
   var edit = vm.edit = {};
 
   edit.save = function() {
@@ -15,7 +10,7 @@ module.exports = function(shared) {
       .$promise
       .then(function() {
 
-        reloadAccount();
+        vm.reloadAccount();
         AccountList.loadAccounts();
 
         $mdToast.show({
@@ -54,7 +49,7 @@ module.exports = function(shared) {
       })
         .$promise
         .then(function() {
-          reloadAccount();
+          vm.reloadAccount();
         });
     }, function() {});
 
@@ -76,10 +71,10 @@ module.exports = function(shared) {
       })
         .$promise
         .then(function() {
-          reloadAccount();
+          vm.reloadAccount();
         });
     }, function() {});
 
   };
 
-};
+});

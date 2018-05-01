@@ -1,10 +1,7 @@
-module.exports = function(shared) {
+agneta.directive('AgAccountOverview',function(AccountList, $mdDialog) {
 
-  var vm = shared.vm;
-  var AccountList = shared.AccountList;
-  var $mdDialog = shared.$mdDialog;
+  var vm = this;
   var overview = vm.overview = {};
-  var reloadAccount = shared.reloadAccount;
 
   overview.resendVerification = function() {
     AccountList.model.resendVerification({
@@ -23,11 +20,11 @@ module.exports = function(shared) {
         },
         method: 'role-account-manager/media-upload',
         onUploaded: function() {
-          reloadAccount();
+          vm.reloadAccount();
           AccountList.loadAccounts();
         }
       }
     });
   };
 
-};
+});

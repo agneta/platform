@@ -14,12 +14,10 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function(options) {
+agneta.directive('AgAccountIp',function(AccountList, $mdDialog) {
 
   var ip = {};
-  var vm = options.vm;
-  var AccountList = options.AccountList;
-  var $mdDialog = options.$mdDialog;
+  var vm = this;
 
   vm.ip = ip;
 
@@ -39,6 +37,12 @@ module.exports = function(options) {
       });
 
   };
+
+  vm.$on('account-loaded',ip.load);
+
+  if(vm.viewAccount){
+    ip.load();
+  }
 
   ip.open = function(fields) {
 
@@ -104,4 +108,4 @@ module.exports = function(options) {
 
     });
   }
-};
+});

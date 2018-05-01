@@ -1,18 +1,16 @@
 agneta.directive('AgAccountActivities',function(AccountList){
 
   var vm = this;
-  console.log('haahha');
-  vm.$on('account-loaded',function(event, account){
-    onAccount(account);
-  });
+
+  vm.$on('account-loaded',load);
 
   if(vm.viewAccount){
-    onAccount(vm.viewAccount);
+    load();
   }
 
-  function onAccount(account){
+  function load(){
     AccountList.model.activities({
-      accountId: account.id,
+      accountId: vm.viewAccount.id,
       aggregate: 'dayOfYear'
     })
       .$promise

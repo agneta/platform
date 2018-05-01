@@ -14,12 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function(options){
+agneta.directive('AgAccountRoles',function(AccountList, $mdDialog){
 
-  var vm = options.vm;
-  var AccountList = options.AccountList;
-  var $mdDialog = options.$mdDialog;
-  var reloadAccount = options.reloadAccount;
+  var vm = this;
 
   //---------------------------------------------------------
 
@@ -30,7 +27,7 @@ module.exports = function(options){
       data: {
         accountId: vm.viewAccount.id,
         roleName: roleName,
-        reloadAccount: reloadAccount
+        reloadAccount: vm.reloadAccount
       }
     });
 
@@ -54,7 +51,7 @@ module.exports = function(options){
         .$promise
         .then(function() {
 
-          reloadAccount();
+          vm.reloadAccount();
 
         });
     }, function() {});
@@ -74,7 +71,7 @@ module.exports = function(options){
           data: {
             roles: roles,
             account: vm.viewAccount,
-            reloadAccount: reloadAccount
+            reloadAccount: vm.reloadAccount
           }
         });
 
@@ -83,4 +80,4 @@ module.exports = function(options){
   };
 
 
-};
+});

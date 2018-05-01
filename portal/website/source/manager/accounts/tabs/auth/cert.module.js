@@ -14,12 +14,10 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function(options) {
+agneta.directive('AgAccountCert',function(AccountList, $mdDialog) {
 
   var cert = {};
-  var vm = options.vm;
-  var AccountList = options.AccountList;
-  var $mdDialog = options.$mdDialog;
+  var vm = this;
 
   vm.cert = cert;
 
@@ -39,6 +37,12 @@ module.exports = function(options) {
       });
 
   };
+
+  vm.$on('account-loaded',cert.load);
+
+  if(vm.viewAccount){
+    cert.load();
+  }
 
   cert.open = function(fields) {
 
@@ -98,4 +102,4 @@ module.exports = function(options) {
 
     });
   }
-};
+});

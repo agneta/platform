@@ -30,15 +30,13 @@ agneta.directive('AgAccountCtrl', function($rootScope, AccountList, $routeParams
   var vm = this;
   AccountList.useScope(vm);
 
-  function reloadAccount() {
+  vm.reloadAccount = function() {
     if (!vm.viewAccount) {
       return;
     }
     getAccount(vm.viewAccount.id);
 
-  }
-
-  vm.reloadAccount = reloadAccount;
+  };
 
   function getAccount(id) {
 
