@@ -1,0 +1,17 @@
+<%
+var data = get_data('account/menu/team_member');
+%>
+<div ng-show="viewAccount.role.team_member" ag-team-member class="md-padding ag-margin" layout="column">
+  <%-template('manager/accounts/fields',{
+    fields: data.fields,
+    model: 'viewAccount.role.team_member'
+  })%>
+  <div layout="row" layout-align="end center">
+    <md-button ng-click="teamMember.save()">Save</md-button>
+  </div>
+  <p>TODO: Add payments done for this team member...</p>
+</div>
+
+<div class="md-padding" layout="column" layout-align="center center" ng-hide="viewAccount.role.team_member">
+  This account is not a team member
+</div>

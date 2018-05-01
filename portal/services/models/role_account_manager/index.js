@@ -21,5 +21,6 @@ module.exports = function(Model, app) {
   require('./auth')(Model,app);
   require('./role')(Model,app);
   require('./media')(Model,app);
+  require('./team_member')(Model,app);
 
 };

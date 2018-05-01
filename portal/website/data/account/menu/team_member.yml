@@ -1,0 +1,9 @@
+title:
+  en: Team Member
+template: manager/accounts/team_member
+fields:
+  -
+    title:
+      en: Position
+    prop: position
+    type: input

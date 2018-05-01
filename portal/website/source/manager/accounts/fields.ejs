@@ -1,0 +1,25 @@
+<div class="fields ag-margin" layout="column">
+
+<%for(var field of locals.fields){%>
+
+  <%if(field.type=='input'){%>
+    <div class="field" layout="row" layout-align="start center">
+    <%if(field.icon){%>
+    <md-icon md-svg-src="<%-get_icon(field.icon)%>" class="name"></md-icon>
+    <%}%>
+    <label><%-lng(field.title)%></label>
+    <input flex="grow" ng-model="<%-locals.model%>.<%-field.prop%>" type="text">
+    </div>
+    <%}%>
+
+    <%if(field.type=='switch'){%>
+      <div class="inset">
+      <md-switch ng-model="<%-locals.model%>.<%-field.prop%>">
+      <%-lng(field.title)%>
+      </md-switch>
+      </div>
+      <%}%>
+
+      <%}%>
+
+      </div>
