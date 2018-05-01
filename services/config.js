@@ -32,6 +32,9 @@ module.exports = {
     account_manager: {
       model: 'Role_Account_Manager'
     },
+    team_member: {
+      model: 'Role_Team_Member'
+    },
     reviewer: {
       model: 'Role_Reviewer'
     },

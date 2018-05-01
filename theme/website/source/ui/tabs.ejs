@@ -4,9 +4,10 @@
     throw new Error('Must have a tab name');
   }
   var tab = `tabs['${tabs.name}']`;
+  var defaultSection = locals.default||tabs.templates[0].name;
 %>
 
-<div ag-tabs name="<%-tabs.name%>" default="<%-locals.default||page.defaultSection%>" layout="column">
+<div ag-tabs name="<%-tabs.name%>" ng-init="activeSection='<%-defaultSection%>'" layout="column">
   <div
   <%-tabs.attrId%>
   class="layout-wrap ui-tabs"

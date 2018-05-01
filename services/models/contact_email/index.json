@@ -1,0 +1,44 @@
+{
+    "name": "Contact_Email",
+    "base": "PersistedModel",
+    "properties": {
+      "accountFromId": {
+          "type": "string",
+          "required": false
+      },
+      "accountToId": {
+          "type": "string",
+          "required": false
+      },
+      "emailFrom": {
+          "type": "string",
+          "required": true
+      },
+      "emailTo": {
+          "type": "string",
+          "required": true
+      },
+      "html": {
+          "type": "string",
+          "required": true
+      },
+      "subject": {
+          "type": "string",
+          "required": true
+      },
+      "status": {
+          "type": "string",
+          "required": false
+      }
+    },
+    "validations": [],
+    "mixins": {},
+    "relations": {},
+    "acls": [{
+        "accessType": "*",
+        "principalType": "ROLE",
+        "principalId": "$everyone",
+        "permission": "DENY"
+    }],
+    "methods": {}
+}

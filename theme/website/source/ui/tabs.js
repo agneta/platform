@@ -8,7 +8,7 @@ app.directive('agTabs', function($routeParams,$location, $timeout) {
       var queryName = attrs.name || 'tab';
 
       vm.select = function(name,noHistory) {
-        //console.log(name);
+        console.log(name);
         vm.activeSection = name;
         var query = $location.search();
         query[queryName] = name;
@@ -24,10 +24,6 @@ app.directive('agTabs', function($routeParams,$location, $timeout) {
       if($routeParams[queryName]){
         vm.select($routeParams[queryName],true);
       }
-      else if(attrs.default){
-        vm.select(attrs.default,true);
-      }
-
 
       vm.$on('$routeUpdate', function() {
         var check = $location.search();

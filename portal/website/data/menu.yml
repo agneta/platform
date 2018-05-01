@@ -19,7 +19,6 @@
       authorization:
         - administrator
         - editor
-
     -
       title:
         en: Local Build
@@ -45,8 +44,22 @@
       authorization:
         - administrator
         - editor
+-
+  title:
+    en: 'Email'
+  icon: material/email
+  description:
+    en: Send, receive, and edit email templates
+  menu:
     -
-      page: 'preview/email'
+      title:
+        en: Compose
+      icon: material/edit
+      click: dialog({partial:'email-compose'})
+    -
+      title:
+        en: Templates
+      page: 'email/templates'
 -
   page: 'edit'
   menu:

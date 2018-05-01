@@ -6,8 +6,8 @@
       "type": "String",
       "required": false
     },
-    "avatar": {
-      "type": "String"
+    "picture": {
+      "type": "object"
     },
     "deactivated": {
       "type": "boolean"

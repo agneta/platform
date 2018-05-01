@@ -42,6 +42,10 @@ module.exports = function() {
       dataSource: 'db',
       public: true
     },
+    Role_Team_Member: {
+      dataSource: 'db',
+      public: true
+    },
     Role_Reviewer: {
       dataSource: 'db',
       public: false
@@ -61,6 +65,10 @@ module.exports = function() {
     Role: {
       dataSource: 'db',
       public: false
+    },
+    Contact_Email: {
+      dataSource: 'db',
+      public: true
     },
     //-----------------------------------------
     // Account

@@ -1,0 +1,65 @@
+<%
+  var onContentChanged = null;
+  var onMouseDown = null;
+  var onInit = null;
+  var model = null;
+  var toolbarShow = null;
+
+  if(locals.onContentChanged){
+    onContentChanged = `on-content-changed="${locals.onContentChanged}"`;
+  }
+  if(locals.onMouseDown){
+    onMouseDown = `ng-mousedown="${locals.onMouseDown}"`
+  }
+  if(locals.onInit){
+    onInit = `ng-init="${locals.onInit}"`;
+  }
+  if(locals.model){
+    model = `ng-model="${locals.model}"`;
+  }
+
+  if(locals.toolbarShow){
+    toolbarShow = `ng-show="${locals.toolbarShow}"`;
+  }
+%>
+<ng-quill-editor
+<%-onContentChanged%>
+<%-onMouseDown%>
+<%-onInit%>
+<%-model%>
+>
+    <ng-quill-toolbar <%-toolbarShow%>>
+        <div id="ng-quill-toolbar">
+          <select class="ql-size">
+            <option value="small"></option>
+            <option selected></option>
+            <option value="large"></option>
+            <option value="huge"></option>
+          </select>
+          <select class="ql-header">
+            <option value="1">H1</option>
+            <option value="2">H2</option>
+            <option value="3">H3</option>
+            <option selected>Normal</option>
+          </select>
+            <span class="ql-formats">
+                <button class="ql-bold" ng-attr-title="{{'Bold'}}"></button>
+                <button class="ql-italic" ng-attr-title="{{'Italic'}}"></button>
+                <button class="ql-underline" ng-attr-title="{{'Underline'}}"></button>
+                <button class="ql-link" ng-attr-title="{{'Link'}}"></button>
+            </span>
+            <span class="ql-formats">
+                <button class="ql-list" value="ordered"></button>
+                <button class="ql-list" value="bullet"></button>
+            </span>
+            <span class="ql-formats">
+                <select class="ql-align" ng-attr-title="{{'Aligment'}}">
+                    <option selected></option>
+                    <option value="center"></option>
+                    <option value="right"></option>
+                    <option value="justify"></option>
+                </select>
+            </span>
+        </div>
+    </ng-quill-toolbar>
+</ng-quill-editor>

@@ -1,0 +1,12 @@
+title:
+  en: Compose Email
+
+controller: AgEmailCompose
+
+scripts:
+  -
+    path: 'lib/quill.min'
+    priority: 0
+  - lib/ng-quill
+styles:
+  - 'lib/quill.snow'

@@ -16,17 +16,14 @@
  */
 module.exports = function(Model) {
 
-  Model.activities = function(accountId, unit, value, skip, year, aggregate) {
+  Model.activities = function(accountId, skip, aggregate) {
 
     return Model.getModel('Account')
-      .activitiesAdmin(
-        accountId,
-        unit,
-        value,
-        skip,
-        year,
-        aggregate
-      );
+      .activitiesAdmin({
+        accountId: accountId,
+        skip: skip,
+        aggregate: aggregate
+      });
 
   };
 
@@ -38,19 +35,7 @@ module.exports = function(Model) {
         type: 'string',
         required: true
       }, {
-        arg: 'unit',
-        type: 'string',
-        required: true
-      }, {
-        arg: 'value',
-        type: 'number',
-        required: false
-      }, {
         arg: 'skip',
-        type: 'number',
-        required: false
-      }, {
-        arg: 'year',
         type: 'number',
         required: false
       },{

@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/model-config.js
+ *   Source file: services/models/activity_item.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,37 +14,16 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = {
-  Media: {
-    dataSource: 'db',
-    public: true
-  },
-  Media_Private: {
-    dataSource: 'db',
-    public: true
-  },
-  API: {
-    dataSource: false,
-    public: true
-  },
-  Data_Local: {
-    dataSource: false,
-    public: true
-  },
-  Data_Remote: {
-    dataSource: false,
-    public: true
-  },
-  Utility: {
-    dataSource: false,
-    public: true
-  },
-  GIT: {
-    dataSource: false,
-    public: true
-  },
-  History: {
-    dataSource: 'db',
-    public: false
-  }
+
+
+module.exports = function(Model, app) {
+
+  require('./getInfo')(Model, app);
+  require('./new')(Model, app);
+  require('./latest')(Model, app);
+
+  Model.details = function(id) {
+    return Model.findById(id);
+  };
+
 };

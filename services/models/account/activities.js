@@ -16,21 +16,25 @@
  */
 module.exports = function(Model, app) {
 
-  Model.activities = function(unit, value, skip, year,aggregate, req) {
+  Model.activities = function(skip,aggregate, req) {
 
     var accountId = req.accessToken.userId;
-    return Model.activitiesAdmin(accountId, unit, value, skip, year,aggregate, req);
-
+    return Model
+      .activitiesAdmin({
+        accountId: accountId,
+        skip: skip,
+        aggregate: aggregate
+      });
   };
 
-  Model.activitiesAdmin = function(accountId, unit, value, skip, year, aggregate) {
+  Model.activitiesAdmin = function(options) {
 
     return app.models.Activity_Feed.findOne({
       where: {
         and: [{
           type: 'account'
         }, {
-          value: '_' + accountId
+          value: '_' + options.accountId
         }]
       }
     })
@@ -44,7 +48,7 @@ module.exports = function(Model, app) {
 
         return app.models.Activity_Item.latest(
           feed.id,
-          unit, value, skip, year, aggregate
+          null, null, options.skip, null, options.aggregate
         );
       });
 
@@ -55,19 +59,7 @@ module.exports = function(Model, app) {
     'activities', {
       description: 'Get latest activities of authenticated user.',
       accepts: [{
-        arg: 'unit',
-        type: 'string',
-        required: true
-      }, {
-        arg: 'value',
-        type: 'number',
-        required: false
-      }, {
         arg: 'skip',
-        type: 'number',
-        required: false
-      }, {
-        arg: 'year',
         type: 'number',
         required: false
       },

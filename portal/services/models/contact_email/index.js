@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: services/models/email_template/getAll.js
+ *   Source file: services/models/email_template.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,35 +14,22 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const _ = require('lodash');
+module.exports = function(Model, app) {
 
-module.exports = function(Model) {
-
-  Model.getAll = function() {
-
-    return Promise.resolve()
-      .then(function() {
-        return {
-          list: _.keys(Model.__email.templates)
-        };
-      });
-
-  };
-
-  Model.remoteMethod(
-    'getAll', {
-      description: 'Return all email templates',
-      accepts: [],
-      returns: {
-        arg: 'result',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'get',
-        path: '/get-all'
-      }
+  Model.io = app.socket.namespace({
+    name: 'email',
+    auth: {
+      allow: [
+        'administrator',
+        'editor'
+      ]
     }
-  );
+  });
 
+  Model.__email = app.web.services.get('email');
+
+  require('./template/list')(Model,app);
+  require('./template/render')(Model,app);
+  require('./template/onEdit')(Model,app);
+  require('./send')(Model,app);
 };

@@ -15,92 +15,65 @@
  *   limitations under the License.
  */
 
-(function() {
+require('./overview/index.module');
 
-  agneta.directive('AgAccountCtrl', function($rootScope, AccountList, $routeParams, $mdToast, $mdDialog, Production_Account, $timeout, Account, $location) {
-    var vm = this;
-    AccountList.useScope(vm);
+require('./tabs/roles/index.module');
+require('./tabs/tokens/index.module');
+require('./tabs/activities/index.module');
+require('./tabs/edit/index.module');
 
-    function reloadAccount() {
-      if (!vm.viewAccount) {
-        return;
-      }
-      getAccount(vm.viewAccount.id);
+require('./tabs/auth/ssh.module');
+require('./tabs/auth/ip.module');
+require('./tabs/auth/cert.module');
 
+agneta.directive('AgAccountCtrl', function($rootScope, AccountList, $routeParams, $mdToast, $mdDialog, Production_Account, $timeout, Account, $location) {
+  var vm = this;
+  AccountList.useScope(vm);
+
+  function reloadAccount() {
+    if (!vm.viewAccount) {
+      return;
     }
+    getAccount(vm.viewAccount.id);
 
-    vm.reloadAccount = reloadAccount;
+  }
 
-    function getAccount(id) {
+  vm.reloadAccount = reloadAccount;
 
-      $location.search('account', id);
-      $rootScope.loadingMain = true;
+  function getAccount(id) {
 
-      return AccountList.model.get({
-        id: id
+    $location.search('account', id);
+    $rootScope.loadingMain = true;
+
+    return AccountList.model.get({
+      id: id
+    })
+      .$promise
+      .then(function(account) {
+
+        vm.viewAccount = account;
+        vm.$broadcast('account-loaded',account);
+
       })
-        .$promise
-        .then(function(account) {
-
-          vm.viewAccount = account;
-
-          AccountList.model.activities({
-            accountId: id,
-            unit: 'month',
-            aggregate: 'dayOfYear'
-          })
-            .$promise
-            .then(function(result) {
-              vm.activities = result.activities;
-            });
-          vm.$broadcast('account-loaded',account);
-          vm.ssh.load();
-          vm.tokens.load();
-          vm.ip.load();
-          vm.cert.load();
-
-        })
-        .finally(function() {
-          $rootScope.loadingMain = false;
-        });
-    }
-
-    if ($routeParams.account) {
-      $timeout(function() {
-        getAccount($routeParams.account);
-      }, 100);
-    }
-
-    vm.change = function(account) {
-      getAccount(account.id);
-    };
-
-    vm.createAccount = function() {
-      $mdDialog.open({
-        partial: 'account-create'
+      .finally(function() {
+        $rootScope.loadingMain = false;
       });
-    };
+  }
 
-    //------------------------------------------------------------
+  if ($routeParams.account) {
+    $timeout(function() {
+      getAccount($routeParams.account);
+    }, 100);
+  }
 
-    var shared = {
-      vm: vm,
-      AccountList: AccountList,
-      $mdDialog: $mdDialog,
-      $mdToast: $mdToast,
-      reloadAccount: reloadAccount
-    };
+  vm.change = function(account) {
+    getAccount(account.id);
+  };
 
-    require('manager/accounts/roles.module')(shared);
-    require('manager/accounts/tokens.module')(shared);
-    require('manager/accounts/overview.module')(shared);
-    require('manager/accounts/edit.module')(shared);
+  vm.createAccount = function() {
+    $mdDialog.open({
+      partial: 'account-create'
+    });
+  };
 
-    require('manager/accounts/auth/ssh.module')(shared);
-    require('manager/accounts/auth/ip.module')(shared);
-    require('manager/accounts/auth/cert.module')(shared);
-
-
-  });
-
-})();
+});

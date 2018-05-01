@@ -1,8 +1,3 @@
-<%
-var roleTabs = get_data('account/menu') || {};
-roleTabs = _.values(roleTabs);
-%>
-
 <%-template('manager/accounts/toolbar')%>
 
 <div ng-if="viewAccount.deactivated" class="action-warn" layout="row" layout-align="start center">
@@ -13,8 +8,9 @@ roleTabs = _.values(roleTabs);
 
 <div class="account-view frame ag-margin md-padding" ng-show="viewAccount" layout="column">
     <%-template('manager/accounts/overview')%>
-    <%-template('manager/accounts/expander',{title:'Role',name:'role',list:roleTabs})%>
-    <%-template('manager/accounts/expander',{title:'Settings',name:'tool',list:page.sections})%>
+    <div class="content" layout="column">
+    <%-template('ui/tabs',{name:'tool',list:page.sections})%>
+  </div>
 </div>
 
 <%-template('manager/accounts/empty')%>

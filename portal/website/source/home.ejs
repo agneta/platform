@@ -1,30 +1,16 @@
 <div class="frame">
 
-  <div class="md-padding" layout="row" layout-sm="column">
+  <div class="md-padding" layout="row" layout-wrap layout-sm="column">
     <%
     var menu = get_data('menu');
-    var half = menu.length/2;
     %>
-    <div layout="column" flex="100">
-      <%
-      for(var i=0;i<half;i++){
-        var item = menu[i];
-        %>
-        <%-template('ui/page-card',{data:item})%>
-        <%
-      }
+    <%
+    for(var item of menu){
       %>
+      <div layout="column" flex="100" flex-gt-sm="50">
+      <%-template('ui/page-card',{data:item})%>
+      </div>
+      <%}%>
     </div>
-    <div layout="column" flex="100">
-      <%
-      for(var i=half;i<menu.length;i++){
-        var item = menu[i];
-        %>
-        <%-template('ui/page-card',{data:item})%>
-        <%
-      }
-      %>
-    </div>
-  </div>
 
-</div>
+  </div>

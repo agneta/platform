@@ -16,7 +16,7 @@
  */
 (function() {
 
-  agneta.directive('AgPreviewEmailCtrl', function($sce,SocketIO, $rootScope, Email_Template) {
+  agneta.directive('AgPreviewEmailCtrl', function($sce,SocketIO, $rootScope, Contact_Email) {
 
     var vm = this;
     var email = {};
@@ -28,7 +28,7 @@
       }
     });
 
-    Email_Template.getAll()
+    Contact_Email.templateList()
       .$promise
       .then(function(result) {
         email.templates = result.list;
@@ -41,7 +41,7 @@
       item = item || email.template.name;
       $rootScope.loadingMain = true;
 
-      Email_Template.render({
+      Contact_Email.templateRender({
         name: item,
         lng: email.lang
       })

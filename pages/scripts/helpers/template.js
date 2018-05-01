@@ -59,6 +59,11 @@ module.exports = function(locals) {
       }
     }
 
+    if(path_partial[0]=='.'&&self.__path){
+      path_partial = path.join(self.__path,path_partial);
+    }
+    self.__path = path_partial;
+
     var file_path = project.theme.getSourceFile(path_partial + '.ejs');
 
     if (!file_path) {

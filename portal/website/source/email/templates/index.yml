@@ -1,6 +1,6 @@
 title:
   en: Email templates
-icon: material/email
+icon: material/insert-drive-file
 controller: 'AgPreviewEmailCtrl'
 menuLock: true
 

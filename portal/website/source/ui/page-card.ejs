@@ -1,10 +1,9 @@
 <%
-
+var data = locals.data;
 var item = _.extend({},data);
 var hasRole;
-
-if(data.page){
-  item = _.extend(data,get_page(data.page));
+if(item.page){
+  item = _.extend({},get_page(item.page),item);
 }
 var url = item.href_full;
 var itemAttr = '';
@@ -20,9 +19,9 @@ if(!url && item.path){
 %>
 
 
-<div class="page-card" class="page-card" layout="column">
+<div flex="100" class="page-card" class="page-card" layout="column">
   <%-template('ui/has-role',{authorization:item.authorization})%>
-  <div class="container">
+  <div flex="100" class="container" layout="column">
 
     <div class="header" layout="row">
       <%if(item.icon){%>
@@ -43,16 +42,17 @@ if(!url && item.path){
       <div layout="column">
 
         <%
-        if(data.menu){
+        if(item.menu){
 
-          for(var menuItem of data.menu){
+          for(var menuItem of item.menu){
 
             var option = menuItem;
             var optionURL = null;
             var optionAttr = '';
+            var optionClick = null;
 
             if(menuItem.page){
-              option = get_page(menuItem.page);
+              option = _.extend({},get_page(menuItem.page),option);
             }
 
             if(option.href_full){
@@ -61,15 +61,26 @@ if(!url && item.path){
               optionAttr = 'target="_blank"';
             }
 
+            if(option.click){
+              optionClick = `ng-click="${option.click}"`;
+            }
+
             if(!optionURL){
               optionURL = option.path && get_path(option);
             }
 
             %>
             <div class="menu">
-            <%if(optionURL){%>
 
-              <a layout="row" layout-align="start center" layout-margin class="ag-list-item" <%-optionAttr%> ng-href="<%-optionURL%>" >
+              <a
+              layout="row"
+              layout-align="start center"
+              layout-margin
+              class="ag-list-item"
+              <%-optionAttr%>
+              <%-optionClick%>
+              ng-href="<%-optionURL%>"
+              >
 
               <%-template('ui/has-role',{authorization:option.authorization})%>
 
@@ -88,10 +99,6 @@ if(!url && item.path){
                 <%}%>
 
                 </a>
-
-                <%}else{%>
-                  <span><%-lng(option.title)%></span>
-                  <%}%>
 
                   </div>
 

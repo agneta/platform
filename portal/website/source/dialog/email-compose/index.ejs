@@ -1,0 +1,13 @@
+<div layout="column" class="md-padding">
+
+<%-template('ui/text-editor',{
+  model: 'message'
+})%>
+
+<div layout="row" layout-align="end center">
+  <md-button ng-click="send()">
+    Send
+  </md-button>
+</div>
+
+</div>

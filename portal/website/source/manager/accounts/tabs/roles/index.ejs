@@ -1,6 +1,10 @@
+<%
+var roleTabs = get_data('account/menu') || {};
+roleTabs = _.values(roleTabs);
+%>
 <div class=" roles section" layout="column">
         <div class="header md-padding" layout-align="left center" layout="row">
-            <h3 class="title">Roles</h3>
+            <h3 class="title">List</h3>
             <span flex></span>
             <md-button ng-click="addRole()" class="md-fab md-mini md-white" aria-label="Add">
                 <md-icon md-svg-icon="<%-get_icon('material/add')%>"></md-icon>
@@ -19,4 +23,8 @@
             <md-divider></md-divider>
         </div>
     </md-list>
+    <div class="details">
+    <h3 class="md-padding title">Details</h3>
+    <%-template('ui/tabs',{name:'role',list:roleTabs})%>
+    </div>
 </div>

@@ -19,7 +19,7 @@ const _ = require('lodash');
 
 module.exports = function(Model,app) {
 
-  Model.render = function(name, lng) {
+  Model.templateRender = function(name, lng) {
     var template;
     var html;
     return Promise.resolve()
@@ -74,7 +74,7 @@ module.exports = function(Model,app) {
   }
 
   Model.remoteMethod(
-    'render', {
+    'templateRender', {
       description: 'Render an email template',
       accepts: [{
         arg: 'name',
@@ -92,7 +92,7 @@ module.exports = function(Model,app) {
       },
       http: {
         verb: 'post',
-        path: '/render'
+        path: '/template-render'
       }
     }
   );

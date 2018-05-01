@@ -18,23 +18,23 @@ sections:
   -
     title:
       en: Activities
-    template: manager/accounts/activities
+    template: manager/accounts/tabs/activities
   -
     title:
       en: Edit
-    template: manager/accounts/edit
+    template: manager/accounts/tabs/edit
   -
     title:
       en: Roles
-    template: manager/accounts/roles
+    template: manager/accounts/tabs/roles
   -
     title:
       en: Authentication
-    template: manager/accounts/auth
+    template: manager/accounts/tabs/auth
   -
     title:
       en: Tokens
-    template: manager/accounts/tokens
+    template: manager/accounts/tabs/tokens
 
 fields:
   -

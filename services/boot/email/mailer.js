@@ -18,57 +18,8 @@ const _ = require('lodash');
 const Promise = require('bluebird');
 const assert = require('assert');
 
-function MailConnector(options) {
-  var app = options.app;
-  var self = this;
-
-  self.config = app.web.services.get('email');
-  self.secrets = app.web.services.secrets.get('email');
-
-  if (!self.config) {
-    throw new Error('No Email config is present');
-  }
-
-  //--------------------------------------------------------------
-
-  self.subjectPrefix = _.get(self.config,'subject.prefix');
-  //--------------------------------------------------------------
-
-  var provider;
-
-  switch(self.secrets.provider){
-    case 'sendgrid':
-      provider = require('./sendgrid');
-      break;
-    case 'nodemailer':
-      provider = require('./nodemailer');
-      break;
-    default:
-      throw new Error(`Uknown email provider: ${self.secrets.provider}`);
-  }
-
-  self.provider = provider({
-    secrets: self.secrets
-  });
-}
-
-MailConnector.name = 'email';
-
 function Mailer() {
 }
-
-MailConnector.prototype.DataAccessObject = Mailer;
-
-MailConnector.initialize = function(dataSource,cb){
-
-  dataSource.connector = new MailConnector(dataSource.settings);
-
-  return Promise.resolve()
-    .then(function(){
-      return dataSource.connector.provider.init();
-    })
-    .asCallback(cb);
-};
 
 Mailer.send = function(options,cb) {
 
@@ -105,7 +56,9 @@ Mailer.send = function(options,cb) {
 
       function checkContact(contact){
         if(_.isString(contact)){
-          return contact;
+          return {
+            email: contact
+          };
         }
         if(contact.name && _.isObject(contact.name)){
           contact.name = settings.app.lng(contact.name,options.req);
@@ -141,9 +94,49 @@ Mailer.send = function(options,cb) {
 
       //--------------------------------------------------
 
-      console.log('email options',emailOptions);
+      //console.log('email options',emailOptions);
 
-      return connector.provider.send(emailOptions);
+      var contactEmail;
+      return Promise.resolve()
+        .then(function(){
+          if(emailOptions.to.id){
+            return emailOptions.to;
+          }
+          return settings.app.models.Account.findOne({
+            where:{
+              email: emailOptions.to.email
+            },
+            fields:{
+              id: true
+            }
+          });
+        })
+        .then(function(accountTo){
+          accountTo = accountTo || {};
+          return settings.app.models.Contact_Email.create({
+            accountFromId: emailOptions.from.id || _.get(options.req,'accessToken.userId'),
+            accountToId: accountTo.id,
+            emailTo: emailOptions.to,
+            emailFrom: emailOptions.from,
+            subject: subject,
+            html: emailOptions.html
+          });
+        })
+        .then(function(_contactEmail){
+          contactEmail = _contactEmail;
+          return connector.provider.send(emailOptions);
+        })
+        .then(function(){
+          return contactEmail.updateAttributes({
+            status: 'success'
+          });
+        })
+        .catch(function(err){
+          return contactEmail.updateAttributes({
+            status: 'error',
+            error: err
+          });
+        });
 
     })
     .asCallback(cb);
@@ -154,4 +147,4 @@ Mailer.prototype.send = function(fn) {
   this.constructor.send(this, fn);
 };
 
-module.exports = MailConnector;
+module.exports = Mailer;
