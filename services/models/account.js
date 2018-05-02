@@ -87,6 +87,7 @@ module.exports = function(Model, app) {
   require('./account/verifyEmail')(Model, app);
   require('./account/media')(Model, app);
   require('./account/picture')(Model, app);
+  require('./account/update')(Model, app);
 
 
 

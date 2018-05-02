@@ -80,7 +80,7 @@
             if (!(response.config.data && response.config.data.__skipDialog)) {
               $mdDialog.open({
                 partial: 'success',
-                //nested: true,
+                nested: true,
                 data: {
                   title: success.title,
                   content: success.message || success.content || success

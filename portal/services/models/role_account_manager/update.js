@@ -17,7 +17,7 @@
 module.exports = function(Model) {
 
   Model.update = function(data) {
-    var Account = Model.getModel('Account');
+    var Account = Model.projectModel('Account');
 
     return Account.__update(data.id, data);
   };

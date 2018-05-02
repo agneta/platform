@@ -9,8 +9,9 @@ module.exports = function(Model, app) {
 
     var accountFrom;
     var accountFromId = req.accessToken.userId;
+    var Account = Model.projectModel('Account');
 
-    return Model.findById(accountFromId, {
+    return Account.findById(accountFromId, {
       include: ['team_member'],
       fields: {
         id: true,
@@ -20,19 +21,23 @@ module.exports = function(Model, app) {
     })
       .then(function(_accountFrom) {
 
-        accountFrom = _accountFrom;
-
-        return Model.findOne({
+        accountFrom = _accountFrom.__data;
+        return Account.findOne({
           where:{
             email: to
           },
           fields: {
             id: true,
-            name: true
+            name: true,
+            email: true
           }
         });
       })
       .then(function(accountTo) {
+
+        if(accountTo){
+          to = accountTo;
+        }
 
         var from = _.extend(
           config.contacts.support || config.contacts.default,
@@ -44,12 +49,12 @@ module.exports = function(Model, app) {
         var picture;
 
         if(accountFrom.picture.media){
-          picture = clientHelpers.prv_media(accountFrom.picture.media);
+          picture = clientHelpers.prv_media(accountFrom.picture.media,'small');
         }
 
-        return app.loopback.Email.send({
+        var emailOptions = {
           from: from,
-          to: accountTo,
+          to: to,
           req: req,
           subject: subject,
           templateName: 'message',
@@ -61,8 +66,14 @@ module.exports = function(Model, app) {
               position: accountFrom.team_member.position
             }
           }
-        });
+        };
+        return app.loopback.Email.send(emailOptions);
 
+      })
+      .then(function(){
+        return {
+          success: 'Email sent!'
+        };
       });
 
   };
@@ -82,6 +93,12 @@ module.exports = function(Model, app) {
         arg: 'message',
         type: 'string',
         required: true
+      }, {
+        arg: 'req',
+        type: 'object',
+        'http': {
+          source: 'req'
+        }
       }
       ],
       returns: {

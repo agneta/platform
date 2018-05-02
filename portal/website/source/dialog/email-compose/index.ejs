@@ -1,13 +1,25 @@
-<div layout="column" class="md-padding">
+<div layout="column" class="ag-margin md-padding">
 
-<%-template('ui/text-editor',{
-  model: 'message'
-})%>
+  <div class="fields ag-margin" layout="column">
 
-<div layout="row" layout-align="end center">
-  <md-button ng-click="send()">
-    Send
-  </md-button>
+    <%-template('dialog/email-compose/field',page.field.to)%>
+    <%-template('dialog/email-compose/field',page.field.subject)%>
+
+    <div class="field">
+      <%-template('ui/text-editor',{
+        model: 'message'
+      })%>
+    </div>
+
+  </div>
+
+
+  <div layout="row" layout-align="end center">
+    <md-button ng-click="send()">
+      Send
+    </md-button>
+  </div>
+
 </div>
 
-</div>
+<%-template('ui/loader')%>

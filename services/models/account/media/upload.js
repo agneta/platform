@@ -7,7 +7,7 @@ module.exports = function(Model, app) {
     var Media_Private = app.models.Media_Private;
     var req = options.req;
     var accountId = options.accountId;
-    var accountPath = options.accountPath;
+    var location = options.location;
     var uploadOptions;
     //console.log('about to prepare file', data);
 
@@ -20,7 +20,7 @@ module.exports = function(Model, app) {
           onFile: function(data){
 
             accountId = data.formData.accountId || accountId;
-            accountPath = data.formData.accountPath || accountPath;
+            location = data.formData.location || location;
 
             uploadOptions.location = getLocation();
 
@@ -37,13 +37,13 @@ module.exports = function(Model, app) {
 
         function getLocation() {
 
-          if(!accountId || !accountPath){
+          if(!accountId || !location){
             return;
           }
 
           return Model.__mediaLocation({
             accountId: accountId,
-            path: accountPath
+            path: location
           });
 
         }

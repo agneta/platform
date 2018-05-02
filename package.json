@@ -145,6 +145,7 @@
     "urljoin": "0.1.5",
     "uuid": "3.2.1",
     "uws": "^9.148.0",
+    "validator": "^9.4.1",
     "warehouse": "2.2.0",
     "webpack": "4.6.0",
     "winston": "2.4.2",

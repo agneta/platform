@@ -26,7 +26,10 @@ module.exports = function(app, options) {
   var env = options.env || process.env.NODE_ENV || app.web.services.get('env');
   var baseDir = options.dir || process.env.PROJECT_DIR || process.cwd();
 
-  var include = [];
+  var include = [
+    options.paths.core.services,
+    options.paths.app.services
+  ];
 
   for(var name in options.paths.app.extensions){
     var extPaths = options.paths.app.extensions[name];

@@ -19,22 +19,10 @@ var _ = require('lodash');
 
 module.exports = function(app) {
 
-  //console.log('paths',paths);
-
-  var dirs = [
-    app.paths.appPortal.models,
-    path.join(__dirname, '../models'),
-    path.join(app.get('services_dir'), 'models')
-  ];
-
-  var servicesInclude = app.get('services_include');
-
-  for (var dir of servicesInclude) {
-    dirs.push(path.join(dir, 'models'));
-  }
-
-  dirs = _.uniq(dirs);
-  //console.log('dirs',dirs);
+  var dirs = app.get('services_include')
+    .map(function(dir) {
+      return path.join(dir, 'models');
+    });
 
   var shared = {
     dirs: dirs,

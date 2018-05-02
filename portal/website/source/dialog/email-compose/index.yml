@@ -2,7 +2,7 @@ title:
   en: Compose Email
 
 controller: AgEmailCompose
-
+class: ag-email-compose
 scripts:
   -
     path: 'lib/quill.min'
@@ -10,3 +10,13 @@ scripts:
   - lib/ng-quill
 styles:
   - 'lib/quill.snow'
+
+field:
+  to:
+    title:
+      en: To
+    model: to
+  subject:
+    title:
+      en: Subject
+    model: subject

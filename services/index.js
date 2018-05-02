@@ -74,16 +74,10 @@ module.exports = function(options) {
             //console.log(middleware);
             //console.log(modelConfig.modelDefinitions);
 
-            var bootDirs = [
-              path.join(__dirname, 'boot'),
-              path.join(app.get('services_dir'), 'boot')
-            ];
-
-            bootDirs = bootDirs.concat(
-              app.get('services_include').map(function(dir){
+            var bootDirs = app.get('services_include')
+              .map(function(dir){
                 return path.join(dir,'boot');
-              })
-            );
+              });
 
             var bootOptions = {
               appRootDir: __dirname,

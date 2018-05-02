@@ -17,6 +17,7 @@
 const _ = require('lodash');
 const Promise = require('bluebird');
 const assert = require('assert');
+const validator = require('validator');
 
 function Mailer() {
 }
@@ -47,21 +48,27 @@ Mailer.send = function(options,cb) {
         info: connector.config.info,
         language: language
       });
+      options.from = options.from || _.get(connector.config,'contacts.default.email');
       var emailOptions = {
-        to: checkContact(options.to),
-        from: checkContact(
-          options.from || _.get(connector.config,'contacts.default.email')
-        )
+        to: checkContact('to'),
+        from: checkContact('from')
       };
 
-      function checkContact(contact){
+      function checkContact(key){
+        var contact = options[key];
         if(_.isString(contact)){
-          return {
+          contact = {
             email: contact
           };
         }
+        if(!_.isObject(contact)){
+          throw new Error(`Invalid type for contact: ${contact}`);
+        }
         if(contact.name && _.isObject(contact.name)){
           contact.name = settings.app.lng(contact.name,options.req);
+        }
+        if(!_.isString(contact.email) || !validator.isEmail(contact.email)){
+          throw new Error(`Email for contact (${key}) is not valid: ${contact.email}`);
         }
         return contact;
       }
@@ -135,9 +142,16 @@ Mailer.send = function(options,cb) {
           return contactEmail.updateAttributes({
             status: 'error',
             error: err
-          });
+          })
+            .then(function(){
+              return Promise.reject(err);
+            });
         });
 
+    })
+    .catch(function(err){
+      err.statusCode = 400;
+      return Promise.reject(err);
     })
     .asCallback(cb);
 

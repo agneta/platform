@@ -6,6 +6,10 @@ agneta.directive('AgUploadPicture',function($rootScope, data, Upload, Account){
   var query = data.query || {};
   var accountId = query.accountId = query.accountId || $rootScope.account.profile.id;
 
+  if(query.location){
+    console.error('location in query is required');
+  }
+
   agneta.extend(vm, 'AgDialogCtrl');
 
   function load() {
@@ -52,7 +56,7 @@ agneta.directive('AgUploadPicture',function($rootScope, data, Upload, Account){
 
     var options = {
       url: agneta.url_api(method),
-      data: {}
+      data: angular.extend({},query)
     };
 
     if(data.account){

@@ -25,16 +25,11 @@ module.exports = function(app, generated) {
   app.modelSchemas = {};
 
   var definitions = generated._definitions;
-  var servicesInclude = app.get('services_include');
 
-  var dirs = [
-    path.join(__dirname, 'models'),
-    path.join(app.get('services_dir'), 'models')
-  ];
-
-  for (var dir of servicesInclude) {
-    dirs.push(path.join(dir, 'models'));
-  }
+  var dirs = app.get('services_include')
+    .map(function(dir) {
+      return path.join(dir, 'models');
+    });
 
   function mergeFn(objValue, srcValue) {
     if (_.isArray(objValue) || _.isArray(srcValue)) {
