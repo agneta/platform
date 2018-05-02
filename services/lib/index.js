@@ -1,5 +1,6 @@
 module.exports = function(app,options){
   require('./secrets')(app, options);
+  require('./providers')(app, options);
   require('./moment')();
   require('./log')(app);
   require('./gis')(app);

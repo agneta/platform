@@ -25,6 +25,9 @@ module.exports = {
   restApiRoot: '/api',
   host: 'locahost',
   domain: 'locahost',
+  email:{
+    provider: 'nodemailer'
+  },
   roles: {
     administrator: {
       model: 'Role_Administrator'

@@ -19,7 +19,10 @@ function MailConnector(options) {
 
   var provider;
 
-  switch(self.secrets.provider){
+  switch(self.config.provider){
+    case 'aws':
+      provider = require('./provider/aws');
+      break;
     case 'sendgrid':
       provider = require('./provider/sendgrid');
       break;

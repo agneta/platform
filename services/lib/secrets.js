@@ -86,13 +86,13 @@ module.exports = function(app) {
   }
 
   var secrets = {
-    get: function(path, keep) {
+    get: function(path) {
       var env;
       if (_.isFunction(app.get)) {
         env = app.web.services.get('env');
       }
       env = env || process.env.NODE_ENV;
-      var result =  getSecret(env, path, keep);
+      var result =  getSecret(env, path);
       if(path == 'db'){
         if(result.host=='mongoDB' && (process.env.MODE == 'terminal')){
           result.host='localhost';

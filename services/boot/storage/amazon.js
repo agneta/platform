@@ -15,23 +15,8 @@
  *   limitations under the License.
  */
 var AWS = require('aws-sdk');
-var config;
 
-module.exports = function(app) {
-
-  if (!config) {
-    config = app.secrets.get('aws');
-  }
-
-  if (!config) {
-    return;
-  }
-
-  AWS.config.update({
-    accessKeyId: config.id,
-    secretAccessKey: config.secret,
-    region: config.region
-  });
+module.exports = function() {
 
   var s3 = new AWS.S3();
 

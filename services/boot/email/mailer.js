@@ -41,6 +41,17 @@ Mailer.send = function(options,cb) {
         throw new Error('Must provide an email to send to');
       }
 
+      if(!_.isArray(options.to)){
+        options.to = [options.to];
+      }
+
+      options.to = options.to.map(function(contact){
+        return checkContact(contact);
+      });
+
+      options.from = options.from || _.get(connector.config,'contacts.default.email');
+      options.from = checkContact(options.from);
+
       //--------------------------------------------------
 
       var language = settings.app.getLng(options.req);
@@ -48,14 +59,12 @@ Mailer.send = function(options,cb) {
         info: connector.config.info,
         language: language
       });
-      options.from = options.from || _.get(connector.config,'contacts.default.email');
       var emailOptions = {
-        to: checkContact('to'),
-        from: checkContact('from')
+        to: options.to,
+        from: options.from
       };
 
-      function checkContact(key){
-        var contact = options[key];
+      function checkContact(contact){
         if(_.isString(contact)){
           contact = {
             email: contact
@@ -68,7 +77,7 @@ Mailer.send = function(options,cb) {
           contact.name = settings.app.lng(contact.name,options.req);
         }
         if(!_.isString(contact.email) || !validator.isEmail(contact.email)){
-          throw new Error(`Email for contact (${key}) is not valid: ${contact.email}`);
+          throw new Error(`Email contact is not valid: ${contact.email}`);
         }
         return contact;
       }
