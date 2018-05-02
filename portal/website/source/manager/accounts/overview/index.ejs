@@ -17,7 +17,7 @@
               <div class="ag-margin" layout-align="start center" layout="row">
                 <p>{{viewAccount.email}}</p>
                 <span flex="auto"></span>
-                <md-button ng-click="email.send()">Contact</md-button>
+                <md-button ng-click="dialog({partial:'email-compose',data:{to:viewAccount.email}})">Contact</md-button>
                 <md-button ng-click="overview.resendVerification()" class="md-raised" ng-if="!viewAccount.emailVerified">Verify</md-button>
               </div>
           </div>
