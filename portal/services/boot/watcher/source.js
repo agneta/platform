@@ -20,7 +20,6 @@ module.exports = function(watcher) {
 
   var locals = watcher.locals;
   var project = watcher.project;
-  var app = watcher.app;
 
   return function(pathFile) {
     var params = path.parse(pathFile);
@@ -83,9 +82,7 @@ module.exports = function(watcher) {
           emitOptions.global = true;
         }
         //console.log('emitOptions',emitOptions);
-
-
-        app.portal.socket.emit('page-reload',emitOptions);
+        //app.portal.socket.emit('page-reload',emitOptions);
       });
   };
 };
