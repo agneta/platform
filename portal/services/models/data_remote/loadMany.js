@@ -54,7 +54,7 @@ module.exports = function(Model, app) {
 
           if(field.relation){
             includeFields.push({
-              relation: field.relation.template,
+              relation: field.relation.name,
               scope:{
                 fields: [field.relation.label]
               }
@@ -102,7 +102,7 @@ module.exports = function(Model, app) {
             var field = templateData.field[label] || {};
             //console.log(field,item);
             if(field.relation){
-              value = item[field.relation.template];
+              value = item[field.relation.name];
               if(value){
                 value = value[field.relation.label];
               }

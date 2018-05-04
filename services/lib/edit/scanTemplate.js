@@ -44,14 +44,24 @@ module.exports = function(app){
         //-----------------------------------
         // Relations
 
-        var relations = [];
+        var relations = template.relations = [];
         return Promise.map(template.fields,function(field){
-          var relation = field.relation;
-          if(relation){
-            relation.name = relation.name || relation.template;
-            relation.label = relation.label || 'title';
 
-            if(relation.template && options.basePath){
+          var relation = field.relation;
+          if(!relation){
+            return;
+          }
+
+          relation.name = relation.name || field.name || relation.template;
+          relation.label = relation.label || 'title';
+
+          return Promise.resolve()
+            .then(function(){
+
+              if(!relation.template || !options.basePath){
+                return;
+              }
+
               return app.edit.loadTemplate({
                 path: path.join(options.basePath,relation.template)+'.yml',
                 skipScan: true
@@ -60,14 +70,12 @@ module.exports = function(app){
                   relation.name = relationTemplate.name || relation.name;
                   relation.model = relationTemplate.model || relation.model;
                 });
-            }
 
-            relations.push(relation);
-          }
-        })
-          .then(function(){
-            template.relations = relations;
-          });
+            })
+            .then(function(){
+              relations.push(relation);
+            });
+        });
       })
       .then(function() {
 
