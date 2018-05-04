@@ -16,25 +16,26 @@
  */
 
 const _ = require('lodash');
+const Promise = require('bluebird');
 
 module.exports = function(app, template) {
+
+  var result = {
+    name: template.model,
+    base: 'PersistedModel',
+    idInjection: true,
+    options: {},
+    properties: {},
+    relations: {},
+    validations: [],
+    methods: {},
+    indexes: {}
+  };
 
   return Promise.resolve()
     .then(function() {
 
-      var result = {
-        name: template.model,
-        base: 'PersistedModel',
-        idInjection: true,
-        options: {},
-        properties: {},
-        relations: {},
-        validations: [],
-        methods: {},
-        indexes: {}
-      };
-
-      for (var field of template.fields) {
+      return Promise.map(template.fields,function(field) {
 
         var type = field.valueType || field.type;
         var relation = field.relation;
@@ -69,7 +70,7 @@ module.exports = function(app, template) {
           case 'relation-hasMany':
           case 'relation-belongsTo':
 
-            var relationName = relation.template || relation.name;
+            var relationName = relation.name || relation.template;
             if (!relation) {
               throw new Error(`Field (${field.name}) needs to have a relation object defined`);
             }
@@ -101,7 +102,7 @@ module.exports = function(app, template) {
             }
 
             result.relations[relationName] = options;
-            continue;
+            return;
         }
 
         var property = {
@@ -113,13 +114,14 @@ module.exports = function(app, template) {
         }
 
         result.properties[field.name] = property;
-      }
+      });
+    })
+    .then(function(){
 
       result.acls = template.acls;
-
       _.extend(result.indexes,template.indexes);
-
       return result;
+
     });
 
 };

@@ -1,4 +1,6 @@
 const _ = require('lodash');
+const Promise = require('bluebird');
+const path = require('path');
 
 module.exports = function(app){
 
@@ -43,15 +45,31 @@ module.exports = function(app){
         // Relations
 
         var relations = [];
-        template.fields.forEach(function(field){
+        return Promise.map(template.fields,function(field){
           var relation = field.relation;
           if(relation){
             relation.name = relation.name || relation.template;
             relation.label = relation.label || 'title';
+
+            if(relation.template && options.basePath){
+              return app.edit.loadTemplate({
+                path: path.join(options.basePath,relation.template)+'.yml',
+                skipScan: true
+              })
+                .then(function(relationTemplate){
+                  relation.name = relationTemplate.name || relation.name;
+                  relation.model = relationTemplate.model || relation.model;
+                });
+            }
+
             relations.push(relation);
           }
-        });
-        template.relations = relations;
+        })
+          .then(function(){
+            template.relations = relations;
+          });
+      })
+      .then(function() {
 
         //-----------------------------------
         // List Options

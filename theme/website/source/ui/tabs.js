@@ -8,7 +8,7 @@ app.directive('agTabs', function($routeParams,$location, $timeout) {
       var queryName = attrs.name || 'tab';
 
       vm.select = function(name,noHistory) {
-        console.log(name);
+        //console.log(name);
         vm.activeSection = name;
         var query = $location.search();
         query[queryName] = name;

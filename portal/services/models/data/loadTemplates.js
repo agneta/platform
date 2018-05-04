@@ -70,6 +70,7 @@ module.exports = function(Model, app) {
         });
       })
       .then(function(templates) {
+        templates = _.orderBy(templates,['title']);
         return {
           templates: templates
         };

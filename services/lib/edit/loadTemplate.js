@@ -29,6 +29,7 @@ module.exports = function(app) {
   app.edit.loadTemplate = function(options) {
 
     options = _.cloneDeep(options);
+    var template;
 
     return Promise.resolve()
       .then(function() {
@@ -36,7 +37,6 @@ module.exports = function(app) {
         if(!options.path){
           return;
         }
-        var template;
         return Promise.resolve()
           .then(function() {
 
@@ -44,9 +44,18 @@ module.exports = function(app) {
             if(template){
               return;
             }
-            return fs.readFile(options.path)
+            return fs.exists(options.path)
+              .then(function(exists){
+                if(!exists){
+                  throw new Error(`Could not find template with path: ${options.path}`);
+                }
+                return fs.readFile(options.path);
+              })
               .then(function(content) {
                 template = yaml.safeLoad(content);
+                if(!_.isObject(template)){
+                  throw new Error(`Invalid template at: ${options.path}`);
+                }
                 template.id = template.id || path.parse(options.path).name;
                 cache.set(options.path, template);
               });
@@ -71,8 +80,20 @@ module.exports = function(app) {
             message: `No template data found for path: ${options.path}`
           });
         }
-        return app.edit.scanTemplate(options);
 
+        if(options.path){
+          options.basePath = path.parse(options.path).dir;
+        }
+
+        if(options.skipScan){
+          return;
+        }
+
+        template = app.edit.scanTemplate(options);
+
+      })
+      .then(function() {
+        return template;
       });
 
 
