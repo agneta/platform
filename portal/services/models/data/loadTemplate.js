@@ -49,8 +49,23 @@ module.exports = function(Model, app) {
             value: `${field.name} DESC`
           });
         });
+
+        var fields = templateData.fields.map(function(field) {
+          field = _.cloneDeep(field);
+          if(field.relation){
+            for(var key in field.relation.display){
+              let displayItem = field.relation.display[key];
+              if(_.isObject(displayItem)){
+                displayItem = displayItem.name;
+              }
+              field.relation.display[key] = displayItem;
+            }
+          }
+          return field;
+        });
+
         return {
-          fields: templateData.fields,
+          fields: fields,
           orderList: orderFields,
           title: templateData.title,
           id: templateData.id || options.template

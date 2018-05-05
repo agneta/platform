@@ -57,6 +57,10 @@ module.exports = function(options) {
           }
         }
 
+        for(var name in result.relations){
+          result.relations[name] = helpers.checkPage(result.relations[name]);
+        }
+
         vm.relations = result.relations;
         vm.pagePath = result.page.path;
         helpers.structureData(vm.template, data);

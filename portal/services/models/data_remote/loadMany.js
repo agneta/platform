@@ -14,143 +14,17 @@
 *   See the License for the specific language governing permissions and
 *   limitations under the License.
 */
-const Promise = require('bluebird');
-const _ = require('lodash');
 
-module.exports = function(Model, app) {
+
+module.exports = function(Model) {
 
   Model.loadMany = function(template, order, req) {
 
-    var labels;
-    var findFields = {};
-    var templateData;
-    var includeFields = [];
-
-    return Promise.resolve()
-      .then(function() {
-
-        return Model.__loadTemplateData({
-          template: template
-        });
-
-      })
-      .then(function(_templateData) {
-        templateData = _templateData;
-        labels = templateData.list.labels;
-
-        for(let key in labels){
-          checkLabel(key);
-        }
-
-        labels.metadata = labels.metadata || [];
-        for(let label of labels.metadata){
-          checkLabel(label);
-        }
-
-        function checkLabel(label){
-
-          label = labels[label] || label;
-          var field = templateData.field[label] || {};
-
-          if(field.relation){
-            includeFields.push({
-              relation: field.relation.name,
-              scope:{
-                fields: [field.relation.label]
-              }
-            });
-            return;
-          }
-          findFields[label] = true;
-        }
-
-        return Model.getTemplateModel(template);
-      })
-      .then(function(model) {
-        _.extend(findFields,{
-          id: true
-        });
-        return model.find({
-          fields: findFields,
-          include: includeFields,
-          order: order
-        });
-      })
-      .then(function(items) {
-
-        return Promise.mapSeries(items, function(item) {
-          item = item.__data;
-          var result = {
-            id: item.id,
-            metadata: []
-          };
-
-          result.title = getItem('title');
-          result.subtitle = getItem('subtitle');
-          result.image = getItem('image');
-
-          for(let label of labels.metadata){
-            let data = getItem(label);
-            if(data){
-              result.metadata.push(data);
-            }
-          }
-
-          function getItem(label){
-            label = labels[label]||label;
-            var value;
-            var field = templateData.field[label] || {};
-            //console.log(field,item);
-            if(field.relation){
-              value = item[field.relation.name];
-              if(value){
-                value = value[field.relation.label];
-              }
-            }else{
-              value = item[label];
-            }
-            var type = field.type;
-
-            if(!value){
-              return;
-            }
-
-            switch(field.type){
-              case 'date-time':
-                type = 'date';
-                value = value+'';
-                break;
-              case 'media':
-                value = value.location;
-                break;
-              case 'select':
-                value = _.get(
-                  _.find(field.options,{value:value}),'title'
-                ) || value;
-                break;
-            }
-
-            if(_.isObject(value)){
-              value = app.lng(value, req);
-            }
-
-            return {
-              type: type,
-              value: value
-            };
-
-          }
-
-          return result;
-        });
-      })
-      .then(function(pages) {
-
-        return {
-          pages: pages
-        };
-
-      });
+    return Model.__display({
+      template: template,
+      order: order,
+      req: req
+    });
 
   };
 

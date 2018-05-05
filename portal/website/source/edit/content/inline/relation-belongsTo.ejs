@@ -1,8 +1,15 @@
 <div layout="row" layout-align="start center">
 <md-input-container class="select">
-  <md-select md-on-open="relation.belongsTo(field)" placeholder="Relation" class="md-no-underline md-raised" <%-template('edit/content/validators')%> ng-model="data.__value">
-    <md-option ng-value="option.id" ng-repeat="option in field.options">
-      {{option[field.relation.display.title||'title']||option.id}}
+  <md-select
+  md-on-open="relation.belongsTo(field)"
+  placeholder="Relation"
+  md-container-class="edit-relation-items"
+  class="md-no-underline md-raised"
+  <%-template('edit/content/validators')%>
+  ng-model="data.__value"
+  >
+    <md-option ng-value="item.id" ng-repeat="item in field.options">
+      <%-template('edit/content/display')%>
     </md-option>
   </md-select>
   <div ng-include="'data-messages.html'"></div>

@@ -4,9 +4,10 @@ title:
   en: Account
 type: relation-belongsTo
 relation:
-  display:
-    image: avatar
-    title: email
+  labels:
+    image: picture
+    title: name
+    subtitle: email
   name: account
   model: Account
   link:

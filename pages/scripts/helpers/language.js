@@ -160,7 +160,11 @@ module.exports = function(locals) {
         if(
           _.isObject(source) && !_.keys(source).length
         ){
-          obj[key] = null;
+          continue;
+        }
+        if(
+          _.isArray(source) && !source.length
+        ){
           continue;
         }
 

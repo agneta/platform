@@ -21,7 +21,7 @@ module.exports = function(Model, app) {
   Model.getTemplateModel = function(template){
 
     var webServices = app.web.services;
-    
+
     return Promise.resolve()
       .then(function() {
         var templateConfig = webServices.dataRemote[template];
@@ -42,6 +42,7 @@ module.exports = function(Model, app) {
   require('./save')(Model, app);
   require('./new')(Model, app);
   require('./loadMany')(Model, app);
+  require('./display')(Model, app);
   require('../data')(Model, app);
 
 };

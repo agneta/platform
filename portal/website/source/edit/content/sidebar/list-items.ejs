@@ -1,15 +1,5 @@
 <div ng-if="<%-name%>" layout="column">
-  <div class="ag-list-item" layout="row" layout-align="start center" ng-repeat="item in <%-name%>" ng-click="<%-click%>(item)" ng-class="pageActive(item.id)">
-    <div ng-if="item.image" class="image" style="background-image:url({{item.image}})">
-    </div>
-    <div flex="auto" layout="column">
-      <h3 ng-bind-html="item.title | highlight:pageSearch"></h3>
-      <p ng-if="item.subtitle" ng-bind-html="item.subtitle | highlight:pageSearch"></p>
-    <div ng-if="item.metadata" layout="row" layout-wrap>
-      <div ng-repeat="data in item.metadata">
-        {{data.value}}
-      </div>
-    </div>
-    </div>
+  <div class="ag-list-item" ng-repeat="item in <%-name%>" ng-click="<%-click%>(item)" ng-class="pageActive(item.id)">
+    <%-template('edit/content/display')%>
   </div>
 </div>

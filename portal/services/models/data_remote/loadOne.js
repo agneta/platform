@@ -15,7 +15,6 @@
  *   limitations under the License.
  */
 const Promise = require('bluebird');
-const _ = require('lodash');
 
 module.exports = function(Model, app) {
 
@@ -24,6 +23,8 @@ module.exports = function(Model, app) {
     var templateData;
     var item;
     var model;
+    var log;
+    var relations = {};
 
     return Promise.resolve()
       .then(function() {
@@ -39,18 +40,7 @@ module.exports = function(Model, app) {
       })
       .then(function(_model) {
         model = _model;
-        var include = _.map(templateData.relations,function(relation){
-          return {
-            relation: relation.name,
-            scope: {
-              fields: ['id'].concat(
-                relation.display?_.values(relation.display):['title']
-              )
-            }};
-        });
-        return model.findById(id,{
-          include:include
-        });
+        return model.findById(id,templateData.display);
       })
       .then(function(_item) {
 
@@ -69,18 +59,41 @@ module.exports = function(Model, app) {
         });
 
       })
-      .then(function(log) {
-        var relationNames = _.map(templateData.relations, 'name');
-        var itemData = _.omit(item.__data, relationNames);
-        var relations = _.pick(item.__data, relationNames);
-        //console.log('relations',relations);
-        relations = app.lngScan(relations,req);
-        //console.log('relations.scanned',relations);
+      .then(function(_log) {
+        log = _log;
+        return Promise.map(templateData.relations,function(relation){
+          var templateData = null;
+          var model = null;
+          if(!relation.template){
+            model = Model.getModel(relation.model);
+            templateData = {
+              field: {},
+              list: {
+                labels: relation.labels || {
+                  title: 'title'
+                }
+              }
+            };
+          }
+          return Model.__display({
+            template: relation.template,
+            templateData: templateData,
+            model: model,
+            req: req,
+            id: item[relation.key]
+          })
+            .then(function(result){
+              relations[relation.name] = result;
+            });
+
+        });
+      })
+      .then(function() {
 
         return {
           page: {
             id: item.id,
-            data: itemData,
+            data: item.__data,
             log: log
           },
           relations: relations

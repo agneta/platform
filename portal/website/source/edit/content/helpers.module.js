@@ -27,32 +27,35 @@ module.exports = function(shared) {
   var helpers = shared.helpers;
 
   //---------------------------------------
-  helpers.checkPages = function(pages){
-    pages.forEach(function(page){
-      checkField('title');
-      checkField('subtitle');
-      checkField('image');
-      function checkField(key){
-        var field = page[key] || {};
-        var value = field.value || field;
-        if(!value){
-          return;
-        }
-        if(field.type=='date'){
-          value = new Date(value);
-          value = moment(value).format('LLLL');
-        }
-        if(field.type=='media'){
-          value = agneta.get_media(value,'thumbnail');
-        }
-        value = value.value || value;
-        if(angular.isObject(value)){
-          value = '';
-        }
-        page[key] = value;
+  helpers.checkPage = function(page){
+    checkField('title');
+    checkField('subtitle');
+    checkField('image');
+    function checkField(key){
+      var field = page[key] || {};
+      var value = field.value || field;
+      if(!value){
+        return;
       }
-      page.title = page.title || 'untitled';
-    });
+      if(field.type=='date'){
+        value = new Date(value);
+        value = moment(value).format('LLLL');
+      }
+      if(field.type=='media'){
+        value = agneta.get_media(value,'thumbnail');
+      }
+      value = value.value || value;
+      if(angular.isObject(value)){
+        value = '';
+      }
+      page[key] = value;
+    }
+    page.title = page.title || 'untitled';
+    return page;
+  };
+
+  helpers.checkPages = function(pages){
+    pages.forEach(helpers.checkPage);
   };
   //---------------------------------------
   helpers.setFilePath = function(file, location) {
