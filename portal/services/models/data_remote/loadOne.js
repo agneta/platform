@@ -40,7 +40,7 @@ module.exports = function(Model, app) {
       })
       .then(function(_model) {
         model = _model;
-        return model.findById(id,templateData.display);
+        return model.findById(id);
       })
       .then(function(_item) {
 
@@ -53,6 +53,8 @@ module.exports = function(Model, app) {
           });
         }
 
+        console.log(require('util').inspect(item, { depth: null }));
+
         return app.models.History.load({
           id: item.id,
           model: model
@@ -64,23 +66,20 @@ module.exports = function(Model, app) {
         return Promise.map(templateData.relations,function(relation){
           var templateData = null;
           var model = null;
-          if(!relation.template){
+          if(relation.templateData){
             model = Model.getModel(relation.model);
-            templateData = {
-              field: {},
-              list: {
-                labels: relation.labels || {
-                  title: 'title'
-                }
-              }
-            };
+            templateData = relation.templateData;
+          }
+          let itemId = item[relation.key];
+          if(!itemId){
+            throw new Error(`Relation needs to have an ID at field: ${relation.key}`);
           }
           return Model.__display({
             template: relation.template,
             templateData: templateData,
             model: model,
             req: req,
-            id: item[relation.key]
+            id: itemId
           })
             .then(function(result){
               relations[relation.name] = result;

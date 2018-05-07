@@ -7,10 +7,9 @@ module.exports = function(Model, app) {
 
     var template =  options.template;
     var order =  options.order;
-    var req =  options.re1;
+    var req =  options.req;
 
     var templateData;
-    var displayData;
 
     return Promise.resolve()
       .then(function() {
@@ -24,33 +23,31 @@ module.exports = function(Model, app) {
       })
       .then(function(_templateData) {
         templateData = _templateData;
-        displayData = getDisplayData({
-          templateData: templateData
-        });
         if(options.model){
+          if(_.isString(options.model)){
+            return Model.projectModel(options.model);
+          }
           return options.model;
         }
         return Model.getTemplateModel(template);
       })
       .then(function(model) {
-        _.extend(displayData.findFields,{
-          id: true
+
+        var displayOptions = templateData.display;
+        displayOptions = _.cloneDeep(displayOptions);
+
+        _.extend(displayOptions,{
+          order: order
         });
 
+        //console.log(require('util').inspect(displayOptions, { depth: null }));
+
         if(options.id){
-          return model.findById(options.id,{
-            fields: displayData.findFields,
-            include: displayData.includeFields,
-            order: order
-          })
+          return model.findById(options.id,displayOptions)
             .then(onItem);
         }
 
-        return model.find({
-          fields: displayData.findFields,
-          include: displayData.includeFields,
-          order: order
-        })
+        return model.find(displayOptions)
           .then(function(items) {
             return Promise.mapSeries(items, onItem);
           })
@@ -64,63 +61,20 @@ module.exports = function(Model, app) {
           return getValues({
             item: item,
             req: req,
-            templateData: templateData,
-            labels: displayData.labels
+            templateData: templateData
           });
         }
       });
 
   };
 
-  function getDisplayData(options){
-
-    var templateData = options.templateData;
-
-    var labels = templateData.list.labels;
-    var findFields = {};
-    var includeFields = [];
-
-    for(let key in labels){
-      checkLabel(key);
-    }
-
-    labels.metadata = labels.metadata || [];
-    for(let label of labels.metadata){
-      checkLabel(label);
-    }
-
-    return {
-      labels: labels,
-      findFields: findFields,
-      includeFields: includeFields
-    };
-
-
-    function checkLabel(label){
-
-      label = labels[label] || label;
-      var field = templateData.field[label] || {};
-
-      if(field.relation){
-        includeFields.push({
-          relation: field.relation.name,
-          scope:{
-            fields: [field.relation.label]
-          }
-        });
-        return;
-      }
-      findFields[label] = true;
-    }
-
-  }
-
   function getValues(options) {
 
     var item = options.item;
     var req = options.req;
-    var labels = options.labels;
     var templateData = options.templateData;
+    var labels = templateData.list.labels;
+    labels.metadata = labels.metadata || [];
 
     item = item.__data || item;
     var result = {
@@ -128,63 +82,106 @@ module.exports = function(Model, app) {
       metadata: []
     };
 
-    result.title = getItem('title');
-    result.subtitle = getItem('subtitle');
-    result.image = getItem('image');
+    //console.log(item, labels);
 
-    for(let label of labels.metadata){
-      let data = getItem(label);
-      if(data){
-        result.metadata.push(data);
-      }
-    }
+    return Promise.all([
+      Promise.map(['title','subtitle','image'],function(name){
+        return getItem(name)
+          .then(function(item){
+            result[name] = item;
+          });
+      }),
+      Promise.map(labels.metadata,function(label){
+        return getItem(label)
+          .then(function(item){
+            result.metadata.push(item);
+          });
+      })
+    ])
+      .then(function(){
+        return result;
+      });
 
-    function getItem(label){
-      label = labels[label]||label;
+    function getItem(labelOriginal){
+
       var value;
+      var label = labels[labelOriginal]||labelOriginal;
       var field = templateData.field[label] || {};
-      //console.log(field,item);
-      if(field.relation){
-        value = item[field.relation.name];
-        if(value){
-          value = value[field.relation.label];
-        }
-      }else{
-        value = item[label];
-      }
-      var type = field.type;
 
-      if(!value){
-        return;
-      }
+      return Promise.resolve()
+        .then(function() {
 
-      switch(field.type){
-        case 'date-time':
-          type = 'date';
-          value = value+'';
-          break;
-        case 'media':
-          value = value.location;
-          break;
-        case 'select':
-          value = _.get(
-            _.find(field.options,{value:value}),'title'
-          ) || value;
-          break;
-      }
+          if(!field.relation){
+            return;
+          }
 
-      if(_.isObject(value)){
-        value = app.lng(value, req);
-      }
+          if (field.type != 'relation-belongsTo') {
+            return;
+          }
 
-      return {
-        type: type,
-        value: value
-      };
+          value = item[field.relation.name];
+          if(!value){
+            return;
+          }
+
+          return getValues({
+            item: value,
+            req: req,
+            templateData: field.relation.templateData
+          })
+            .then(function(display) {
+              value = display;
+            });
+        })
+        .then(function() {
+
+          if(!value){
+            value = item[label];
+          }
+          var type = field.type;
+
+          if(!value){
+            return;
+          }
+
+          switch(field.type){
+            case 'date-time':
+              type = 'date';
+              value = value+'';
+              break;
+            case 'media':
+              value = value.location;
+              break;
+            case 'select':
+              value = _.get(
+                _.find(field.options,{value:value}),'title'
+              ) || value;
+              value = app.lng(value, req);
+              break;
+            case 'relation-belongsTo':
+              value = value[labelOriginal];
+              if(value && value.value){
+                value = value.value;
+              }
+              break;
+            default:
+              if(_.isObject(value)){
+                value = app.lng(value, req);
+              }
+              break;
+          }
+
+
+
+          return {
+            type: type,
+            value: value
+          };
+
+        });
+
 
     }
-
-    return result;
 
   }
 };

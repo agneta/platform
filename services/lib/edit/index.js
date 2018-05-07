@@ -18,8 +18,7 @@ module.exports = function(app) {
 
   app.edit = {};
 
-  require('./loadTemplate')(app);
-  require('./scanTemplate')(app);
+  require('./template')(app);
   require('./saveYaml')(app);
 
 };
