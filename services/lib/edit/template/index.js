@@ -26,7 +26,7 @@ module.exports = function(app) {
   const relations = require('./relations')(app);
 
   let cache = LRU({
-    max: 20
+    max: 100
   });
 
   app.edit.loadTemplate = function(options) {
@@ -36,11 +36,14 @@ module.exports = function(app) {
     return Promise.resolve()
       .then(function() {
 
-        let template = cache.get(options.path);
+        if(options.path){
+          let template = cache.get(options.path);
 
-        if(template){
-          options.data = template;
-          return;
+          if(template){
+            //console.log('loaded from cache',options.path);
+            options.data = template;
+            return;
+          }
         }
 
         return Promise.resolve()
@@ -101,6 +104,7 @@ module.exports = function(app) {
 
             return relations(options)
               .then(function(template){
+                options.data = template;
                 if(options.path){
                   cache.set(options.path, template);
                 }
@@ -108,12 +112,10 @@ module.exports = function(app) {
           });
       })
       .then(function() {
-        let template = options.data;
-
-        if(options.req){
-          template = app.lngScan(template);
+        if(!options.data){
+          throw new Error(`Cannot ${options.path}`);
         }
-        return template;
+        return options.data;
       });
 
 

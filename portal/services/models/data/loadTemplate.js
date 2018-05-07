@@ -51,14 +51,16 @@ module.exports = function(Model, app) {
         });
 
         var fields = templateData.fields.map(function(field) {
+          field = _.cloneDeep(field);
           field.relation = _.omit(field.relation,['templateData']);
+          field = app.lngScan(field);
           return field;
         });
 
         return {
           fields: fields,
           orderList: orderFields,
-          title: templateData.title,
+          title: app.lng(templateData.title,options.req),
           id: templateData.id || options.template
         };
       });
