@@ -19,7 +19,7 @@
 module.exports = function(Model) {
 
   Model.loadMany = function(template, order, req) {
-
+    order = order ||'createdAt DESC';
     return Model.__display({
       template: template,
       order: order,

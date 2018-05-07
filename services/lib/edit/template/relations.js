@@ -26,7 +26,7 @@ module.exports = function(app) {
             return;
           }
 
-          relation.name = relation.name || relation.template;
+          relation.name = relation.name || field.name || relation.template;
           relation.label = relation.label || 'title';
           relation.key = field.name;
           relation.type = field.type;

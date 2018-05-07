@@ -68,16 +68,19 @@ module.exports = function(Model, app) {
               return;
             }
 
+            let itemId = item[relation.key];
+            if(!itemId){
+              return;
+              //throw new Error(`Relation needs to have an ID at field: ${relation.key}`);
+            }
+
             var templateData = null;
             var model = null;
             if(relation.templateData){
               model = Model.getModel(relation.model);
               templateData = relation.templateData;
             }
-            let itemId = item[relation.key];
-            if(!itemId){
-              throw new Error(`Relation needs to have an ID at field: ${relation.key}`);
-            }
+
             return Model.__display({
               template: relation.template,
               templateData: templateData,
