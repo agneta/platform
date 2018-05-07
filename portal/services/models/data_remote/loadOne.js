@@ -53,39 +53,45 @@ module.exports = function(Model, app) {
           });
         }
 
-        console.log(require('util').inspect(item, { depth: null }));
+        //console.log(require('util').inspect(item, { depth: null }));
 
-        return app.models.History.load({
-          id: item.id,
-          model: model
-        });
-
-      })
-      .then(function(_log) {
-        log = _log;
-        return Promise.map(templateData.relations,function(relation){
-          var templateData = null;
-          var model = null;
-          if(relation.templateData){
-            model = Model.getModel(relation.model);
-            templateData = relation.templateData;
-          }
-          let itemId = item[relation.key];
-          if(!itemId){
-            throw new Error(`Relation needs to have an ID at field: ${relation.key}`);
-          }
-          return Model.__display({
-            template: relation.template,
-            templateData: templateData,
-            model: model,
-            req: req,
-            id: itemId
+        return Promise.all([
+          app.models.History.load({
+            id: item.id,
+            model: model
           })
-            .then(function(result){
-              relations[relation.name] = result;
-            });
+            .then(function(_log) {
+              log = _log;
+            }),
+          Promise.map(templateData.relations,function(relation){
 
-        });
+            if (relation.type != 'relation-belongsTo') {
+              return;
+            }
+
+            var templateData = null;
+            var model = null;
+            if(relation.templateData){
+              model = Model.getModel(relation.model);
+              templateData = relation.templateData;
+            }
+            let itemId = item[relation.key];
+            if(!itemId){
+              throw new Error(`Relation needs to have an ID at field: ${relation.key}`);
+            }
+            return Model.__display({
+              template: relation.template,
+              templateData: templateData,
+              model: model,
+              req: req,
+              id: itemId
+            })
+              .then(function(result){
+                relations[relation.name] = result;
+              });
+
+          })
+        ]);
       })
       .then(function() {
 

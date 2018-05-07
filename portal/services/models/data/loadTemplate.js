@@ -51,16 +51,7 @@ module.exports = function(Model, app) {
         });
 
         var fields = templateData.fields.map(function(field) {
-          field = _.cloneDeep(field);
-          if(field.relation){
-            for(var key in field.relation.display){
-              let displayItem = field.relation.display[key];
-              if(_.isObject(displayItem)){
-                displayItem = displayItem.name;
-              }
-              field.relation.display[key] = displayItem;
-            }
-          }
+          field.relation = _.omit(field.relation,['templateData']);
           return field;
         });
 

@@ -100,9 +100,9 @@ module.exports = function(app) {
             }
 
             return relations(options)
-              .then(function(){
+              .then(function(template){
                 if(options.path){
-                  cache.set(options.path, options.data);
+                  cache.set(options.path, template);
                 }
               });
           });

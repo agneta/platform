@@ -106,6 +106,11 @@ module.exports = function(Model, app) {
 
       var value;
       var label = labels[labelOriginal]||labelOriginal;
+      var labelName = labelOriginal;
+      if(_.isObject(label)){
+        labelName = label.label || labelName;
+        label = label.field || labelOriginal;
+      }
       var field = templateData.field[label] || {};
 
       return Promise.resolve()
@@ -120,6 +125,7 @@ module.exports = function(Model, app) {
           }
 
           value = item[field.relation.name];
+
           if(!value){
             return;
           }
@@ -144,6 +150,8 @@ module.exports = function(Model, app) {
             return;
           }
 
+
+
           switch(field.type){
             case 'date-time':
               type = 'date';
@@ -159,7 +167,9 @@ module.exports = function(Model, app) {
               value = app.lng(value, req);
               break;
             case 'relation-belongsTo':
-              value = value[labelOriginal];
+              //console.log('--------------');
+              //console.log(value,labelName);
+              value = value[labelName];
               if(value && value.value){
                 value = value.value;
               }

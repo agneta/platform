@@ -29,6 +29,7 @@ module.exports = function(app) {
           relation.name = relation.name || relation.template;
           relation.label = relation.label || 'title';
           relation.key = field.name;
+          relation.type = field.type;
 
           var templatePath = path.join(options.basePath, relation.template || '') + '.yml';
 
