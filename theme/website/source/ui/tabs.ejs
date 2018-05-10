@@ -5,6 +5,7 @@
   }
   var tab = `tabs['${tabs.name}']`;
   var defaultSection = locals.default||tabs.templates[0].name;
+  page.__templates = page.__templates || [];
 %>
 
 <div ag-tabs name="<%-tabs.name%>" ng-init="activeSection='<%-defaultSection%>'" layout="column">
@@ -15,9 +16,19 @@
   layout-align="<%-tabs.align%> center">
     <%for(var section of tabs.templates){
       var show = null;
+      if(section.skip){
+        continue;
+      }
       if(section.show){
         show=`ng-show="${section.show}"`;
       }
+
+      page.__templates.push({
+        id: `ui-${tabs.name}-${section.name}.html`,
+        path: section.path,
+        data: section.data
+      });
+
       %>
       <div
       class="item"
@@ -31,15 +42,4 @@
   </div>
   <div ng-include="'ui-<%-tabs.name%>-'+activeSection+'.html'">
   </div>
-
-    <%
-    page.__templates = page.__templates || [];
-    for(var section of tabs.templates){
-      page.__templates.push({
-        id: `ui-${tabs.name}-${section.name}.html`,
-        path: section.path,
-        data: section.data
-      });
-      %>
-    <%}%>
 </div>
