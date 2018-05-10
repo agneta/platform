@@ -1,0 +1,8 @@
+<%
+if(page.__templates){
+  for(var tmpl of page.__templates){
+    %>
+    <script type="text/ng-template" id="<%-tmpl.id%>">
+    <%-template(tmpl.path,{data:tmpl.data})%>
+    </script>
+    <%}}%>

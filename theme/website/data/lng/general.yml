@@ -70,6 +70,9 @@ edit:
 delete:
   en: 'Delete'
   gr: 'Διαγραφή'
+back:
+  en: 'Back'
+  gr: 'Πίσω'
 next:
   en: 'Next'
   gr: 'Συνέχεια'

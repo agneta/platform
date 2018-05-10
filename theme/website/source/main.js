@@ -146,7 +146,9 @@ app.factory('$exceptionHandler', function() {
 //---------------------------------------------------------------
 
 
-app.config(function($mdThemingProvider, $sceDelegateProvider) {
+app.config(function($mdThemingProvider, $sceDelegateProvider, $mdAriaProvider) {
+
+  $mdAriaProvider.disableWarnings();
 
   // Not using this because it does not display errors in promise chains
   //$qProvider.errorOnUnhandledRejections(false);
