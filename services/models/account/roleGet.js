@@ -47,7 +47,10 @@ module.exports = function(Model) {
 
         return RoleModel.findOne({
           where: {
-            accountId: id
+            accountId: id,
+            status: {
+              neq: 'inactive'
+            }
           },
           include: roleService.include
         })

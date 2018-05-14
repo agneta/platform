@@ -42,7 +42,9 @@ module.exports = function(Model) {
           });
         }
 
-        return result.destroy();
+        return result.updateAttributes({
+          status: 'inactive'
+        });
 
       })
       .then(function() {

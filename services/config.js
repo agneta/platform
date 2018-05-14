@@ -30,19 +30,39 @@ module.exports = {
   },
   roles: {
     administrator: {
-      model: 'Role_Administrator'
+      model: 'Role_Administrator',
+      title:{
+        en: 'System Administrator',
+        gr: 'Διαχειριστής Συστημάτων'
+      }
     },
     account_manager: {
-      model: 'Role_Account_Manager'
+      model: 'Role_Account_Manager',
+      title:{
+        en: 'Account Manager',
+        gr: 'Διαχειριστής Λογαριασμών'
+      }
     },
     team_member: {
-      model: 'Role_Team_Member'
+      model: 'Role_Team_Member',
+      title:{
+        en: 'Team Member',
+        gr: 'Μέλος της ομάδας'
+      }
     },
     reviewer: {
-      model: 'Role_Reviewer'
+      model: 'Role_Reviewer',
+      title:{
+        en: 'Reviewer',
+        gr: 'Αναθεωρητής'
+      }
     },
     editor: {
-      model: 'Role_Editor'
+      model: 'Role_Editor',
+      title:{
+        en: 'Editor',
+        gr: 'Συντάκτης'
+      }
     }
   },
   limiter: {

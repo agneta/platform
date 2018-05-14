@@ -1,0 +1,66 @@
+<%
+var tabs = uiTabs();
+if(!tabs.name){
+  throw new Error('Must have a tab name');
+}
+var tab = `tabs['${tabs.name}']`;
+var defaultSection = locals.default;
+var defaultTemplate;
+
+if(defaultSection){
+  defaultTemplate = _.find(tabs,{
+    name: defaultSection
+  })
+}
+if(!defaultTemplate){
+  defaultTemplate = tabs.templates[0];
+}
+defaultSection = defaultTemplate.name;
+page.__templates = page.__templates || [];
+%>
+
+<div ag-tabs
+class="ui-tabs <%-locals.class%>"
+name="<%-tabs.name%>"
+ng-init="activeSection='<%-defaultSection%>'"
+layout="column"
+>
+  <div
+  <%-tabs.attrId%>
+  class="layout-wrap header"
+  layout="row"
+  layout-align="<%-tabs.align%> center">
+  <%for(var section of tabs.templates){
+    var show = null;
+    if(section.skip){
+      continue;
+    }
+    if(section.show){
+      show=`ng-show="${section.show}"`;
+    }
+
+    page.__templates.push({
+      id: `ui-${tabs.name}-${section.name}.html`,
+      path: section.path,
+      data: section.data
+    });
+
+    %>
+    <div
+    class="item"
+    ng-class="{active:activeSection=='<%-section.name%>'}"
+    ng-click="select('<%-section.name%>')"
+    layout="column"
+    layout-align="center center"
+    <%-show%>
+    >
+    <%if(section.icon){%>
+    <md-icon md-svg-src="<%-get_icon(section.icon)%>"></md-icon>
+    <%}%>
+    <span><%-lng(section.title)%></span>
+    </div>
+    <%}%>
+  </div>
+  <div class="tab-content" ng-include="'ui-<%-tabs.name%>-'+activeSection+'.html'">
+  </div>
+</div>

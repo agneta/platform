@@ -26,7 +26,13 @@ module.exports = function(Model, app) {
     return {
       relation: name,
       scope: {
-        include: role.include
+        fields: ['id'],
+        include: role.include,
+        where:{
+          status: {
+            neq: 'inactive'
+          }
+        }
       }
     };
   });

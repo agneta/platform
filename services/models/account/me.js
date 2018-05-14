@@ -76,11 +76,12 @@ module.exports = function(Model, app) {
         //console.log(roles);
 
         for (var roleKey in roles) {
-          var role = roles[roleKey];
+          var role = {};
           var config = rolesConfig[roleKey];
           if (config.form) {
             role.editable = true;
           }
+          roles[roleKey] = role;
         }
 
         account.role = roles;

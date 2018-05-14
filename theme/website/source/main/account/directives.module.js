@@ -46,7 +46,7 @@ app.directive('hasRole', function($rootScope) {
 
           var role = roles[index];
           var hasRole = account.role[role];
-          hasRole = hasRole && hasRole.id;
+          //hasRole = hasRole && hasRole.id;
 
           if (hasRole) {
             hasRoles.push(role);

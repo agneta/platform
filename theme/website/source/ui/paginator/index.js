@@ -51,6 +51,9 @@ app.directive('agUiPaginator', function() {
           .then(function(result){
             paginator.count = result.count;
             data.list = result.list;
+            if(data.onList){
+              data.onList(result.list);
+            }
             calculate();
           })
           .finally(function(){

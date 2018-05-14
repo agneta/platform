@@ -4,7 +4,7 @@ var data = get_data('account/menu/team_member');
 <div ng-show="viewAccount.role.team_member" ag-team-member class="md-padding ag-margin" layout="column">
   <%-template('manager/accounts/fields',{
     fields: data.fields,
-    model: 'viewAccount.role.team_member'
+    model: 'teamMember.data'
   })%>
   <div layout="row" layout-align="end center">
     <md-button ng-click="teamMember.save()">Save</md-button>
