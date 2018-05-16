@@ -98,7 +98,7 @@ module.exports = function(shared) {
   };
 
   vm.getTemplateItems = function() {
-
+    console.log(vm.template);
     var query = {
       template: vm.template.id,
     };

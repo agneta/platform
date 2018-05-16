@@ -151,6 +151,12 @@
     "principalId": "$everyone",
     "permission": "ALLOW",
     "property": "hasRoles"
+  },{
+    "accessType": "EXECUTE",
+    "principalType": "ROLE",
+    "principalId": "$everyone",
+    "permission": "ALLOW",
+    "property": "roleList"
   }],
   "methods": {},
   "indexes": {

@@ -1,17 +1,21 @@
 const _ = require('lodash');
 const string = require('string');
+var Promise = require('bluebird');
+
 module.exports = function(Model, app) {
 
-  var loadTemplates = require('../data/loadTemplates')(Model,app);
+  var loadTemplates = Model.loadTemplates;
   var project = app.web.project;
-
   Model.loadTemplates = function(req){
-    return loadTemplates(req)
+    return Promise.resolve()
+      .then(function(){
+        return loadTemplates(req);
+      })
       .then(function(result){
-        var omitKeys = _.map(result.templates,function(item){
+        var omitKeys = _.map(result.templates||[],function(item){
           return item.id;
         });
-        var templates = _.keys(_.omit(project.site.templates,omitKeys));
+        var templates = _.keys(_.omit(project.site.templates,omitKeys))||[];
         templates = _.map(templates,function(id){
           return {
             id: id,

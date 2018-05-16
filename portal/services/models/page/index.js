@@ -15,7 +15,6 @@
  *   limitations under the License.
  */
 var path = require('path');
-var fs = require('fs-extra');
 var Promise = require('bluebird');
 
 module.exports = function(Model, app) {
@@ -42,8 +41,7 @@ module.exports = function(Model, app) {
 
   var webPrj = app.web.project;
 
-  Model.editConfigDir = path.join(webPrj.paths.core.project, 'edit', 'pages');
-  fs.ensureDirSync(Model.editConfigDir);
+  Model.editConfigDir = 'pages';
 
   Model.getPage = function(path) {
 
@@ -66,6 +64,7 @@ module.exports = function(Model, app) {
     return path.join(webPrj.paths.app.website, page.full_source);
   };
 
+  require('../data/index')(Model, app);
   require('./loadCommit')(Model, app);
   require('./loadOne')(Model, app);
   require('./delete')(Model, app);

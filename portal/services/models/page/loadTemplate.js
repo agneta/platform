@@ -1,6 +1,4 @@
-const path = require('path');
 const templateBase = require('./templateBase');
-const fs = require('fs-extra');
 const _ = require('lodash');
 
 module.exports = function(Model, app) {
@@ -9,18 +7,19 @@ module.exports = function(Model, app) {
 
   Model.loadTemplate = function(template,req) {
 
-    var templatePath = path.join(Model.editConfigDir, template + '.yml');
-
     return Promise.resolve()
       .then(function() {
-        return fs.pathExists(templatePath);
+        return Model.__getTemplatePath(template)
+          .catch(function() {
+            return;
+          });
       })
-      .then(function(exists) {
+      .then(function(templatePath) {
         var options;
 
-        if(exists){
+        if(templatePath){
           options = {
-            path: templatePath,
+            template: template,
             base: templateBase
           };
         }else{

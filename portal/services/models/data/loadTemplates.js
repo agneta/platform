@@ -26,7 +26,7 @@ module.exports = function(Model, app) {
   Model.loadTemplates = function(req) {
 
     var items = {};
-
+    console.log(Model.__dataDirs);
     return Promise.map(Model.__dataDirs,function(dataDir){
       return Promise.resolve()
         .then(function() {
@@ -54,7 +54,7 @@ module.exports = function(Model, app) {
         });
     })
       .then(function() {
-
+        console.log('items',items);
         return Promise.map(_.values(items), function(item) {
           return fs.readFile(item.path)
             .then(function(content) {

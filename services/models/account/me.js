@@ -54,8 +54,19 @@ module.exports = function(Model, app) {
     var id = options.id;
     var fields = options.fields;
 
+    var roleFields = _.get(options,'roles.fields');
+    var include = _.map(Model.includeRoles,function(roleRelation) {
+      roleRelation = _.cloneDeep(roleRelation);
+      var scope = roleRelation.scope;
+      if(roleFields){
+        scope.fields = scope.fields.concat(roleFields);
+        scope.fields = _.uniq(scope.fields);
+      }
+      console.log(roleFields,scope);
+      return roleRelation;
+    });
     return Model.findById(id, {
-      include: Model.includeRoles,
+      include: include,
       fields: fields
     })
       .then(function(account) {
@@ -77,6 +88,9 @@ module.exports = function(Model, app) {
 
         for (var roleKey in roles) {
           var role = {};
+          if(roleFields){
+            role =_.pick(roles[roleKey],roleFields);
+          }
           var config = rolesConfig[roleKey];
           if (config.form) {
             role.editable = true;

@@ -61,7 +61,7 @@ module.exports = function(Model, app) {
           fields: fields,
           orderList: orderFields,
           title: app.lng(templateData.title,options.req),
-          id: templateData.id || options.template
+          id: options.template
         };
       });
   };
