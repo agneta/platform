@@ -29,6 +29,15 @@ module.exports = function(app) {
     max: 100
   });
 
+  app.edit.clearCache = function(options){
+    options = options || {};
+
+    if(options.path){
+      return cache.del(options.path);
+    }
+    cache.clear();
+  };
+
   app.edit.loadTemplate = function(options) {
 
     options = _.cloneDeep(options);

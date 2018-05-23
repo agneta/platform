@@ -59,6 +59,7 @@ module.exports = function(Model, app) {
 
         return {
           fields: fields,
+          eval: templateData.eval || {},
           orderList: orderFields,
           title: app.lng(templateData.title,options.req),
           id: options.template

@@ -147,7 +147,8 @@ module.exports = function(shared) {
     var childValue = angular.copy(helpers.dataValue(child));
 
     child = {
-      __id: id
+      __id: id,
+      __class: child.__class
     };
 
     if (_.isArray(parentValue)) {

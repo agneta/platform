@@ -62,7 +62,7 @@ module.exports = function(Model, app) {
         scope.fields = scope.fields.concat(roleFields);
         scope.fields = _.uniq(scope.fields);
       }
-      console.log(roleFields,scope);
+      //console.log(roleFields,scope);
       return roleRelation;
     });
     return Model.findById(id, {

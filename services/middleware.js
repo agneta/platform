@@ -72,8 +72,7 @@ module.exports = function(app) {
       },
       './middleware/frameguard': {
         params: [app]
-      },
-      './middleware/limiter': limiterOptions,
+      }
     },
     'initial:after': {},
     'session': {
@@ -96,7 +95,8 @@ module.exports = function(app) {
       },
       './middleware/token': {
         params: [app]
-      }
+      },
+      './middleware/limiter': limiterOptions
     },
     'routes': {
       './middleware/log-request': {

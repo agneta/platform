@@ -51,6 +51,12 @@ module.exports = function(app) {
 
     watch({
       dirs: _.map(websitePaths,function(dir){
+        return path.join(dir,'../edit');
+      }),
+      onFile: require('./watcher/templates')(options)
+    });
+    watch({
+      dirs: _.map(websitePaths,function(dir){
         return path.join(dir,'config.yml');
       }),
       onFile: require('./watcher/config')(options)

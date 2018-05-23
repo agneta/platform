@@ -22,7 +22,9 @@ module.exports = function(Model, app) {
             title: string(id).humanize().s
           };
         });
-        result.templates = result.templates.concat(templates);
+        templates = result.templates.concat(templates);
+        templates = _.orderBy(templates,['title']);
+        result.templates = templates;
         return result;
       });
   };

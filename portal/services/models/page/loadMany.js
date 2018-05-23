@@ -14,8 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var Promise = require('bluebird');
-
+const Promise = require('bluebird');
+const _ = require('lodash');
 module.exports = function(Model, app) {
 
   var webPrj = app.web.project;
@@ -37,6 +37,7 @@ module.exports = function(Model, app) {
 
     })
       .then(function(result) {
+        result = _.orderBy(result,['title']);
         return {
           pages: result
         };

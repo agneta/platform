@@ -14,6 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+/*global _*/
 module.exports = function(vm, $rootScope, Account, Portal, $timeout, Role_Editor) {
 
   vm.contributors = {};
@@ -50,7 +52,19 @@ module.exports = function(vm, $rootScope, Account, Portal, $timeout, Role_Editor
 
   var lastEdit = {};
 
-  vm.onFieldChange = function(child) {
+  vm.onFieldChange = function(child,field) {
+    field = field || {};
+
+    if(field.eval){
+      var _eval = vm.template.eval[field.eval];
+      var data = getValues(vm.page.data);
+
+      console.log(_eval, data);
+      if(_eval){
+        var result = $rootScope.$eval(_eval.formula,data);
+        console.log('result',result);
+      }
+    }
 
     $timeout(function() {
       var value = child.__value;
@@ -74,6 +88,17 @@ module.exports = function(vm, $rootScope, Account, Portal, $timeout, Role_Editor
 
 
   };
+
+  function getValues(data) {
+    return _.mapValues(data,function(value) {
+      value = value || {};
+      value = value.__value;
+      if(_.isObject(value)){
+        getValues(value);
+      }
+      return value;
+    });
+  }
 
   vm.registerInput = function(child) {
 

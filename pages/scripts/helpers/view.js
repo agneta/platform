@@ -72,7 +72,9 @@ module.exports = function(locals) {
     //----------------------------------------
 
     data.layoutClass = [
-      'page-' + page.templateSource.split('/')
+      'template-' + page.templateSource.split('/')
+        .join('-'),
+      'page'+page.pathSource.split('/')
         .join('-')
     ];
     if (page.class) {
@@ -83,7 +85,7 @@ module.exports = function(locals) {
     //----------------------------------------------------
 
     var sourceStyle = this.layout_style(page.pathSource);
-
+    console.log(page.pathSource,sourceStyle);
     if (sourceStyle) {
       data.styles.push(sourceStyle);
     }

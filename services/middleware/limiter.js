@@ -77,9 +77,11 @@ module.exports = function(app, config) {
   }
 
   return function(req, res, next) {
+    if(_.get(req,'accessToken.roles.administrator')){
+      return next();
+    }
     if (!config.isGlobal && configLimiter.whitelist.indexOf(req.ip) >= 0) {
-      next();
-      return;
+      return next();
     }
     limiter.prevent(req, res, next);
   };

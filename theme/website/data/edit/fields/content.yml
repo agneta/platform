@@ -3,12 +3,9 @@ title:
   gr: 'Περιεχόμενο'
 type: 'array'
 fields:
-  - 'title'
   - 'paragraph'
   - 'image'
-  - 'paragraphs'
-  - 'bullets'
-  - 'numbers'
+  - 'list'
   - 'attachment'
   - 'table'
   - 'template'

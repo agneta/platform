@@ -1,0 +1,40 @@
+icon: material/format-list-bulleted
+title:
+  en: 'List'
+type: object
+fields:
+  -
+    title:
+      en: Layout
+    type: 'select'
+    name: layout
+    validators:
+      required: true
+    options:
+      row:
+        title:
+          en: Row
+      column:
+        default: true
+        title:
+          en: Column
+  -
+    name: 'items'
+    type: 'array'
+    validators:
+      required: true
+    fields:
+      -
+        name: 'item'
+        type: object
+        fields:
+          -
+            name: icon
+            type: value
+          -
+            name: 'text'
+            title:
+              en: 'Text'
+            extend: 'text-rich'
+            validators:
+              required: true

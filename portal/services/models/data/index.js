@@ -17,6 +17,7 @@ module.exports = function(Model,app) {
 
   Model.__dataDirs = dataDirs;
 
+  require('./display')(Model, app);
   require('./getTemplatePath')(Model, app);
   require('./loadTemplate')(Model, app);
   require('./loadTemplates')(Model, app);

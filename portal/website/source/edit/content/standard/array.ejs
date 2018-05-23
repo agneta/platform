@@ -1,6 +1,8 @@
 <div class="field array ag-margin" data-as-sortable="dragControlListeners" data-ng-model="data.__value">
 
-  <div ng-repeat="(key,child) in data.__value" ng-init="childField=getField(field,child);" data-as-sortable-item>
+  <div ng-repeat="(key,child) in data.__value"
+  ng-init="childField=getField(field,child);"
+  data-as-sortable-item>
     <div edit-item-menu data-as-sortable-item-handle class="header highlight md-padding" layout="row" layout-align="start center">
       <%-template('edit/content/label',{model:'childField.title',prefix:'{{$index+1}}.'})%>
       <%-template('edit/content/fields-inline')%>

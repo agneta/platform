@@ -2,11 +2,6 @@
 
 <%if(locals.prefix){%><span><%-locals.prefix%></span><%}%>
 
-<md-icon
-class="label-icon"
-ng-if="field.icon"
-md-svg-icon="{{get_icon(field.icon)}}">
-</md-icon>
 <div layout="column">
 <label>{{<%-locals.model%>}}</label>
 <span ng-if="field.readonly">readonly</span>

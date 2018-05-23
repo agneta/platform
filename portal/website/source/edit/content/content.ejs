@@ -11,8 +11,16 @@
 
     </div>
     <div layout="row">
-        <md-button class="property" ng-click="addValue({type:'object',fields:template.fields},page.data,key)" ng-init="key=field.name" ng-repeat="(index,field) in template.fields" ng-if="!page.data[field.name]">
-          <span>{{field.title||key}}</span>
+        <md-button class="property"
+        ng-click="addValue(field,page.data,key)"
+        ng-init="
+        field={type:'object',fields:template.fields};
+        key=value.name;
+        objectField(value,field,page.data,key);
+        "
+        ng-repeat="(index,value) in template.fields"
+        ng-if="!page.data[value.name]">
+          <span>{{value.title||key}}</span>
         </md-button>
     </div>
 </div>

@@ -66,7 +66,7 @@ module.exports = function(vm, helpers) {
             value = Date.now();
           }
           console.log(value);
-          
+
           break;
       }
       key = pushValue(value);
@@ -105,8 +105,8 @@ module.exports = function(vm, helpers) {
 
     var parentValue = parent.__value;
     var validators = childField.validators;
-    var required = validators && validators.required;
-
+    var required = (validators && validators.required) || childField.required;
+    console.log(childField.name, required, parentValue[key]);
     if (required && !parentValue[key]) {
       vm.addValue(parentField, parent, key);
     }

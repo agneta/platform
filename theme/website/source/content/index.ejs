@@ -4,7 +4,7 @@
 		var value = page.content.__value || page.content;
 		for(var partial of value){
 			var partialKey = partial.__key || partial.key;
-			var partialValue = partial.__value || partial.value;
+			var partialValue = get_values(partial);
 			%>
         <div class="partial <%-partial.__class%>">
             <%-template('content/'+partialKey,{data:partialValue,partial:partial})%>
