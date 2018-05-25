@@ -6,10 +6,7 @@
   "scripts": {
     "audit": "nsp check",
     "license": "node tools/license",
-    "lint": "node node_modules/eslint/bin/eslint --ignore-path .gitignore ./ --ext .js",
-    "build": "babel src/ -d lib/",
-    "prepublish": "npm run build",
-    "flow": "flow"
+    "lint": "node node_modules/eslint/bin/eslint --ignore-path .gitignore ./ --ext .js"
   },
   "engines": {
     "node": ">=6.0.0"
