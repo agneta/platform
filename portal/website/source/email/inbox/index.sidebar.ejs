@@ -1,5 +1,8 @@
 <md-list ng-hide="email.list">
-  <md-list-item ng-repeat="item in accounts.list" ng-click="accounts.open(item)" ng-class="{active:item==template.name}">
+  <md-list-item
+  ng-repeat="item in accounts.list"
+  ng-click="accounts.open(item)"
+  >
     {{item.email}}
   </md-list-item>
 </md-list>
@@ -21,7 +24,7 @@ class="ag-margin list-email"
   class="ag-list-item"
   ng-repeat="item in email.list"
   ng-click="email.open(item)"
-  ng-class="{active:item==template.name}"
+  ng-class="{active:item==email.selected}"
   >
   <div class="item" layout="column">
     <div

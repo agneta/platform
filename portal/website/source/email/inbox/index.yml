@@ -9,3 +9,17 @@ menuLock: true
 
 authorization:
   - administrator
+
+address:
+  from:
+    title:
+      en: From
+    prop: from
+  to:
+    title:
+      en: To
+    prop: to
+  cc:
+    title:
+      en: Cc
+    prop: cc

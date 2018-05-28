@@ -1,0 +1,24 @@
+<div class="ag-margin address" layout="row">
+  <span><%-lng(locals.title)%>:</span>
+  <div
+  class="ag-margin"
+  flex="auto"
+  layout="row"
+  layout-wrap
+  >
+  <div
+  class="item ag-margin"
+  ng-repeat="item in email.data.<%-locals.prop%>"
+  layout="row"
+  layout-align="start center"
+  >
+  <div
+  layout="row"
+  layout-align="start center"
+  >
+  <span class="name">{{item.name}}</span>
+  <span class="address">{{item.address}}</span>
+</div>
+</div>
+</div>
+</div>

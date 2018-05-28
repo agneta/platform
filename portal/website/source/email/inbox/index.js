@@ -31,7 +31,14 @@ agneta.directive('AgEmailInbox',function(Contact_Email) {
   };
 
   email.open = function(item){
-    console.log(item);
+    email.selected = item;
+    Contact_Email.inboxLoad({
+      emailId: item.id
+    })
+      .$promise
+      .then(function(result){
+        email.data = result;
+      });
   };
 
   accounts.load();
