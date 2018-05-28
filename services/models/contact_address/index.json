@@ -21,5 +21,15 @@
       "through": "Contact_Email_Address"
     }
   },
+  "indexes": {
+    "email": {
+      "keys": {
+        "email": 1
+      },
+      "options": {
+        "unique": true
+      }
+    }
+  },
   "methods": {}
 }

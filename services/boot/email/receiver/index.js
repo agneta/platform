@@ -32,23 +32,24 @@ module.exports = function(app) {
             return Promise.map(result.Contents,function(item) {
 
               var KeyParsed = path.parse(item.Key);
-              //var KeyNew = urljoin('processed',KeyParsed.name);
-              var email;
-              var emailParsed;
-              var emailProps;
+              var storageKey = KeyParsed.name;
+              var KeyNew = urljoin('processed',storageKey);
+              var email = null;
+              var emailParsed = null;
+              var emailProps = null;
 
               return Promise.resolve()
-              /*  return app.storage.moveObject({
-                Bucket: config.buckets.email,
-                From: item.Key,
-                To: KeyNew
-              });
-            })*/
+                .then(function() {
+                  return app.storage.moveObject({
+                    Bucket: config.buckets.email,
+                    From: item.Key,
+                    To: KeyNew
+                  });
+                })
                 .then(function() {
                   return app.storage.getObjectStream({
                     Bucket: config.buckets.email,
-                    Key: item.Key
-                    //Key: KeyNew
+                    Key: KeyNew
                   });
                 })
                 .then(function(stream) {
@@ -58,11 +59,14 @@ module.exports = function(app) {
                   emailParsed = _emailParsed;
 
                   emailProps = {
-                    storageKey: KeyParsed.name,
+                    storageKey: storageKey,
+                    headers: emailParsed.headers,
                     spam: emailParsed.headers['x-ses-spam-verdict']=='PASS',
                     infected: emailParsed.headers['x-ses-virus-verdict']=='PASS',
                     subject: emailParsed.subject,
                     date: emailParsed.date,
+                    html: emailParsed.html || emailParsed.textAsHtml,
+                    text: emailParsed.text,
                     type: 'received',
                     attachments: _.map(emailParsed.attachments,function(attachment){
                       return _.pick(attachment,['filename','contentType','size']);
@@ -70,7 +74,9 @@ module.exports = function(app) {
                   };
 
                   return app.models.Contact_Email.findOrCreate({
-                    storageKey: KeyParsed.name
+                    where:{
+                      storageKey: storageKey
+                    }
                   },emailProps);
                 })
                 .then(function(result){
@@ -93,7 +99,7 @@ module.exports = function(app) {
                     bufferStream.end(attachment.content);
 
                     return app.models.Media_Private.__sendFile({
-                      location: urljoin('email','attachments',KeyParsed.name,attachment.filename),
+                      location: urljoin('email','attachments',email.id+'',attachment.filename),
                       mimetype: attachment.contentType,
                       stream: bufferStream
                     });
@@ -102,11 +108,11 @@ module.exports = function(app) {
                 })
                 .then(function() {
 
-                  return Promise.all([
-                    checkContacts('to'),
-                    checkContacts('from'),
-                    checkContacts('cc')
-                  ]);
+                  return Promise.map(['to','from','cc'],function(type){
+                    return checkContacts(type);
+                  },{
+                    concurrency: 1
+                  });
 
                   function checkContacts(type) {
                     var contacts = emailParsed[type];
@@ -124,18 +130,28 @@ module.exports = function(app) {
                             contactName = contact.name;
                           }
                           return app.models.Contact_Address.findOrCreate({
-                            email: contact.address,
+                            where:{
+                              email: contact.address
+                            }
                           },{
                             email: contact.address,
                             name: contactName
                           })
-                            .then(function(address){
-                              return app.models.Contact_Email_Address.create({
+                            .then(function(result){
+                              let address = result[0];
+                              let props = {
                                 addressId: address.id,
                                 emailId: email.id,
                                 type: type
-                              });
+                              };
+                              return app.models.Contact_Email_Address.findOrCreate(
+                                {
+                                  where:props
+                                },
+                                props);
                             });
+                        },{
+                          concurrency: 1
                         });
                       });
                   }
@@ -143,18 +159,8 @@ module.exports = function(app) {
                 });
 
             },{
-              concurrency: 5
+              concurrency: 4
             });
-            /*
-                return settings.app.models.Contact_Email.create({
-                  accountFromId:
-                  accountToId:
-                  emailTo:
-                  emailFrom:
-                  type: 'sent',
-                  subject: subject,
-                  html: emailOptions.html
-                });*/
 
           })
           .then(function() {

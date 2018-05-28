@@ -4,6 +4,14 @@
   "properties": {
     "type": {
       "type": "string"
+    },
+    "emailId": {
+      "type": "string",
+      "required": true
+    },
+    "addressId": {
+      "type": "string",
+      "required": true
     }
   },
   "validations": [],
@@ -17,6 +25,18 @@
       "type": "belongsTo",
       "model": "Contact_Address",
       "foreignKey": "addressId"
+    }
+  },
+  "indexes": {
+    "email": {
+      "keys": {
+        "addressId": 1,
+        "emailId": 1,
+        "type": 1
+      },
+      "options": {
+        "unique": true
+      }
     }
   }
 }
