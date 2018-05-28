@@ -15,6 +15,8 @@
  *   limitations under the License.
  */
 
+const _ = require('lodash');
+
 module.exports = function(Model, app) {
 
   Model.inboxList = function(addressId) {
@@ -24,16 +26,19 @@ module.exports = function(Model, app) {
         type: 'to',
         addressId: addressId
       },
+      order: 'date DESC',
       include:{
         relation: 'email',
         scope: {
-          fields: ['subject','date']
+          fields: ['subject','date','from']
         }
       }
     })
       .then(function(result) {
         return {
-          list: result
+          list: _.map(result,function(item){
+            return item.__data.email;
+          })
         };
       });
 
@@ -42,7 +47,11 @@ module.exports = function(Model, app) {
   Model.remoteMethod(
     'inboxList', {
       description: 'Return inbox',
-      accepts: [],
+      accepts: [{
+        arg: 'addressId',
+        type: 'string',
+        required: true
+      }],
       returns: {
         arg: 'result',
         type: 'object',

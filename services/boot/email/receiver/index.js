@@ -170,6 +170,7 @@ module.exports = function(app) {
                               let props = {
                                 addressId: address.id,
                                 emailId: email.id,
+                                date: email.date,
                                 type: type
                               };
                               return app.models.Contact_Email_Address.findOrCreate(

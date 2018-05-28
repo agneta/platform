@@ -1,16 +1,39 @@
 agneta.directive('AgEmailInbox',function(Contact_Email) {
 
   var vm = this;
+  var accounts = vm.accounts = {};
+  var email = vm.email = {};
 
-  Contact_Email.inboxAccounts()
-    .$promise
-    .then(function(result) {
-      console.log(result);
-      vm.accounts = result;
-    });
-
-  vm.onAccount = function(account){
-    console.log(account);
+  accounts.load = function(){
+    Contact_Email.inboxAccounts()
+      .$promise
+      .then(function(result) {
+        console.log(result);
+        accounts.list = result.list;
+      });
   };
+
+  accounts.open = function(account){
+    accounts.selected = account;
+    Contact_Email.inboxList({
+      addressId: account._id
+    })
+      .$promise
+      .then(function(result){
+        email.list = result.list;
+        console.log(result);
+      });
+  };
+
+  accounts.close = function() {
+    email.list = null;
+    accounts.load();
+  };
+
+  email.open = function(item){
+    console.log(item);
+  };
+
+  accounts.load();
 
 });
