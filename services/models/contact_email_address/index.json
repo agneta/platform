@@ -1,0 +1,22 @@
+{
+  "name": "Contact_Email_Address",
+  "base": "PersistedModel",
+  "properties": {
+    "type": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "email": {
+      "type": "belongsTo",
+      "model": "Contact_Email",
+      "foreignKey": "emailId"
+    },
+    "address": {
+      "type": "belongsTo",
+      "model": "Contact_Address",
+      "foreignKey": "addressId"
+    }
+  }
+}

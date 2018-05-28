@@ -66,9 +66,18 @@ module.exports = function() {
       dataSource: 'db',
       public: false
     },
+    //-----------------------------------------
+    Contact_Address: {
+      dataSource: 'db',
+      public: false
+    },
     Contact_Email: {
       dataSource: 'db',
       public: true
+    },
+    Contact_Email_Address: {
+      dataSource: 'db',
+      public: false
     },
     //-----------------------------------------
     // Account

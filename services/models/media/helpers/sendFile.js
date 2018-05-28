@@ -20,7 +20,7 @@ const stream = require('stream');
 const path = require('path');
 const mime = require('mime-types');
 
-module.exports = function(Model) {
+module.exports = function(Model, app) {
 
   function emit(name, data) {
     if (!Model.io) {
@@ -41,11 +41,12 @@ module.exports = function(Model) {
 
     var totalProgress = {};
     var operations = [];
+    var type = file.type || app.helpers.mediaType(file.mimetype);
     var options = {
       file: file.stream,
       filename: filename,
       location: file.location,
-      type: file.type,
+      type: type,
       mimetype: file.mimetype,
       size: file.size,
       onProgress: function(progress){

@@ -134,6 +134,7 @@ Mailer.send = function(options,cb) {
             accountToId: accountTo.id,
             emailTo: emailOptions.to,
             emailFrom: emailOptions.from,
+            type: 'sent',
             subject: subject,
             html: emailOptions.html
           });

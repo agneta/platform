@@ -57,6 +57,8 @@
       icon: material/edit
       click: dialog({partial:'email-compose'})
     -
+      page: 'email/inbox'
+    -
       title:
         en: Templates
       page: 'email/templates'

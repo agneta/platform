@@ -56,5 +56,7 @@ module.exports = function(data) {
       break;
   }
 
+  buckets.email = `email.${domain}`;
+
   storageConfig.buckets = buckets;
 };

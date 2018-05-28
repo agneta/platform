@@ -1,0 +1,4 @@
+agneta.directive('AgEmailInbox',function() {
+
+
+});

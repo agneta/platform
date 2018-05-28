@@ -22,7 +22,7 @@ module.exports = function() {
 
   return {
     listObjects: function() {
-      return s3.listObjects.apply(s3, arguments)
+      return s3.listObjectsV2.apply(s3, arguments)
         .promise();
     },
     headObject: function() {

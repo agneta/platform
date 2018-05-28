@@ -1,0 +1,11 @@
+title:
+  en: Inbox
+
+controller: AgEmailInbox
+
+icon: material/inbox
+
+menuLock: true
+
+authorization:
+  - administrator

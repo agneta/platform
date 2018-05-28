@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: services/models/email_template.js
+ *   Source file: services/models/email_template/getAll.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,25 +14,36 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function(Model, app) {
 
-  Model.io = app.socket.namespace({
-    name: 'email',
-    auth: {
-      allow: [
-        'administrator',
-        'editor'
-      ]
+module.exports = function(Model) {
+
+  Model.inboxList = function() {
+
+    return Model.find({
+      type: 'received'
+    })
+      .then(function(result) {
+        return {
+          list: result
+        };
+      });
+
+  };
+
+  Model.remoteMethod(
+    'inboxList', {
+      description: 'Return inbox',
+      accepts: [],
+      returns: {
+        arg: 'result',
+        type: 'object',
+        root: true
+      },
+      http: {
+        verb: 'get',
+        path: '/inbox-list'
+      }
     }
-  });
+  );
 
-  Model.__email = app.web.services.get('email');
-
-  require('./inbox/list')(Model,app);
-
-  require('./template/list')(Model,app);
-  require('./template/render')(Model,app);
-  require('./template/onEdit')(Model,app);
-
-  require('./send')(Model,app);
 };

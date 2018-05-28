@@ -31,7 +31,6 @@ module.exports = function(session, app) {
       parsed.ext
     );
 
-    var type = app.helpers.mediaType(contentType);
     location = session.helpers.location(location);
 
     //console.log('writefile:location',location);
@@ -40,7 +39,6 @@ module.exports = function(session, app) {
 
     app.models.Media_Private.__sendFile({
       location: location,
-      type: type,
       mimetype: contentType,
       stream: readable_stream
     })
