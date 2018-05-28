@@ -50,6 +50,9 @@ module.exports = function(watcher) {
       .then(function() {
         var page = null;
         var pathSource = project.theme.getSourcePath(pathFile);
+        if(!pathSource){
+          return;
+        }
         var pathParams = path.parse(pathSource);
         var pathPage = path.join(
           pathParams.dir,

@@ -2,6 +2,15 @@
   "name": "Contact_Email",
   "base": "PersistedModel",
   "properties": {
+    "from": {
+      "type": "array"
+    },
+    "to": {
+      "type": "array"
+    },
+    "cc": {
+      "type": "array"
+    },
     "storageKey": {
       "type": "string"
     },

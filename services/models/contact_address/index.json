@@ -22,6 +22,11 @@
     }
   },
   "indexes": {
+    "search": {
+      "keys": {
+        "email": "text"
+      }
+    },
     "email": {
       "keys": {
         "email": 1

@@ -15,12 +15,21 @@
  *   limitations under the License.
  */
 
-module.exports = function(Model) {
+module.exports = function(Model, app) {
 
-  Model.inboxList = function() {
+  Model.inboxList = function(addressId) {
 
-    return Model.find({
-      type: 'received'
+    return app.models.Contact_Email_Address.find({
+      where:{
+        type: 'to',
+        addressId: addressId
+      },
+      include:{
+        relation: 'email',
+        scope: {
+          fields: ['subject','date']
+        }
+      }
     })
       .then(function(result) {
         return {

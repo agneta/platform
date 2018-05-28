@@ -29,6 +29,7 @@ module.exports = function(Model, app) {
   Model.__email = app.web.services.get('email');
 
   require('./inbox/list')(Model,app);
+  require('./inbox/accounts')(Model,app);
 
   require('./template/list')(Model,app);
   require('./template/render')(Model,app);

@@ -58,9 +58,25 @@ module.exports = function(app) {
                 .then(function(_emailParsed) {
                   emailParsed = _emailParsed;
 
+                  let from = emailParsed.from || {};
+                  let to = emailParsed.to || {};
+                  let cc = emailParsed.cc || {};
+                  let replyTo = emailParsed['reply-to'] || {};
+
                   emailProps = {
+                    from: from.value,
+                    to: to.value,
+                    cc: cc.value,
+                    replyTo: replyTo.value,
                     storageKey: storageKey,
-                    headers: emailParsed.headers,
+                    headers: _.omit(emailParsed.headers,[
+                      'from',
+                      'to',
+                      'cc',
+                      'reply-to',
+                      'return-path',
+                      'subject'
+                    ]),
                     spam: emailParsed.headers['x-ses-spam-verdict']=='PASS',
                     infected: emailParsed.headers['x-ses-virus-verdict']=='PASS',
                     subject: emailParsed.subject,
@@ -108,7 +124,7 @@ module.exports = function(app) {
                 })
                 .then(function() {
 
-                  return Promise.map(['to','from','cc'],function(type){
+                  return Promise.map(['to','from','cc','reply-to'],function(type){
                     return checkContacts(type);
                   },{
                     concurrency: 1
@@ -138,7 +154,19 @@ module.exports = function(app) {
                             name: contactName
                           })
                             .then(function(result){
-                              let address = result[0];
+                              if(
+                                result[1]&&
+                                result[0].name&&
+                                !contactName
+                              ){
+                                return result[0];
+                              }
+                              return result[0].updateAttributes({
+                                name: contactName
+                              });
+                            })
+                            .then(function(address){
+
                               let props = {
                                 addressId: address.id,
                                 emailId: email.id,
