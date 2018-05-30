@@ -62,6 +62,7 @@
     - "manager/accounts"
     - "manager/history"
     - "system/server"
+    - "email/inbox"
 -
   data:
     angular_libs:

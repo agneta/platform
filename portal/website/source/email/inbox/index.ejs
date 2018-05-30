@@ -1,4 +1,9 @@
 <div class="frame ag-margin md-padding" layout="column">
+  <div layout="row" layout-align="start center">
+    <span>{{email.data.date | amDateFormat:'LLLL'}}</span>
+    <span flex="auto"></span>
+    <span am-time-ago="email.data.date | amUtc | amLocal"></span>
+  </div>
   <div class="box ag-margin" layout="column">
     <%-template('./address',page.address.from)%>
     <%-template('./address',page.address.to)%>

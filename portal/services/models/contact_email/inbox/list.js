@@ -23,7 +23,9 @@ module.exports = function(Model, app) {
 
     return app.models.Contact_Email_Address.find({
       where:{
-        type: 'to',
+        type: {
+          inq: ['to','cc']
+        },
         addressId: addressId
       },
       order: 'date DESC',

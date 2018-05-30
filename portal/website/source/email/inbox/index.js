@@ -1,4 +1,4 @@
-agneta.directive('AgEmailInbox',function(Contact_Email) {
+agneta.directive('AgEmailInbox',function(Contact_Email, $sce) {
 
   var vm = this;
   var accounts = vm.accounts = {};
@@ -37,6 +37,7 @@ agneta.directive('AgEmailInbox',function(Contact_Email) {
     })
       .$promise
       .then(function(result){
+        $sce.trustAsHtml(result.html);
         email.data = result;
       });
   };
