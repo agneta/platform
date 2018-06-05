@@ -4,7 +4,4 @@ node_modules
 bower_components
 *.sublime-workspace
 *.log
-
-/theme/website/icons
-/portal/website/cache
-/theme/website/source/lib
+/lib

@@ -4,6 +4,8 @@
   "description": "Agneta Platform - Integrate and customize business applications",
   "main": "main",
   "scripts": {
+    "build": "babel src/ -d lib/",
+    "prepublish": "npm run build",
     "audit": "nsp check",
     "license": "node tools/license",
     "lint": "node node_modules/eslint/bin/eslint --ignore-path .gitignore ./ --ext .js"
