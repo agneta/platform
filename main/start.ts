@@ -14,19 +14,46 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
 const _ = require('lodash');
 const paths = require('./paths');
 const config = require('./config');
-const Promise = require('bluebird');
+import * as Promise from 'bluebird';
+import {Application} from 'express';
+
+interface OptionsServer{
+  id?: string,
+  paths?: object,
+  mode?: string,
+  dir?: string,
+  sync?: boolean,
+  locals?: Locals
+}
+interface Source{
+  name: string,
+  path: string
+}
+interface Locals{
+  id?: string,
+  includeSources: Array<Source>,
+  app: Application
+}
+interface Component{
+  locals: Locals,
+  start(): void,
+  preInit(): void,
+  init(): void,
+  preInit(): void,
+}
 
 _.mixin(require('lodash-deep'));
-_.omitDeep = function(collection, excludeKeys) {
+_.omitDeep = function(collection:Array<any>, excludeKeys:Array<string>) {
 
-  function omitFn(value) {
+  function omitFn(value:any) {
 
     if (value && typeof value === 'object') {
       excludeKeys.forEach((key) => {
-        delete value[key];
+            delete value[key];
       });
     }
   }
@@ -37,16 +64,16 @@ _.omitDeep = function(collection, excludeKeys) {
 
 
 var start = {
-  init: function(subApps) {
+  init: function(subApps: Array<Component>) {
 
-    return Promise.each(subApps, function(component) {
+    return Promise.each(subApps, function(component: Component) {
       if (component.preInit) {
         return component.preInit();
       }
     })
       .then(function() {
-        return Promise.each(subApps, function(component) {
-          console.log('Initiating: ' + component.locals.app.get('name'));
+        return Promise.each(subApps, function(component: Component) {
+          console.log('Initissating: ' + component.locals.app.get('name'));
 
           if (component.init) {
             return component.init();
@@ -54,7 +81,7 @@ var start = {
         });
       })
       .then(function() {
-        return Promise.each(subApps, function(component) {
+        return Promise.each(subApps, function(component: Component) {
           console.log('Starting: ' + component.locals.app.get('name'));
           if (component.start) {
             return component.start();
@@ -63,7 +90,7 @@ var start = {
         });
       });
   },
-  default: function(options) {
+  default: function(options: OptionsServer) {
 
     var component = start.pages(
       _.extend({
@@ -73,7 +100,7 @@ var start = {
     return component;
 
   },
-  portal: function(options) {
+  portal: function(options: Locals) {
 
     options.includeSources = [{
       name: 'portal',
@@ -89,7 +116,7 @@ var start = {
     setName(component, 'pages_portal', options);
     return component;
   },
-  website: function(options) {
+  website: function(options: Locals) {
 
     var component = start.pages({
       mode: 'preview',
@@ -100,22 +127,22 @@ var start = {
     setName(component, 'pages_website', options);
     return component;
   },
-  pages: function(options) {
+  pages: function(options: OptionsServer) {
     options.paths = paths.loadApp(options);
     return getComponent('pages', '../pages', options);
   },
-  services: function(options) {
+  services: function(options: OptionsServer) {
 
     options.paths = paths.loadApp(options);
     return getComponent('services', paths.core.services, options);
 
   },
-  storage: function(options) {
+  storage: function(options: OptionsServer) {
     return getComponent('storage', './server/storage', options);
   }
 };
 
-function getComponent(name, componentPath, options) {
+function getComponent(name: string, componentPath: string, options: OptionsServer):Component {
 
   _.extend(options, config);
 
@@ -127,7 +154,7 @@ function getComponent(name, componentPath, options) {
 
 }
 
-function setName(component, name, options) {
+function setName(component: Component, name: string, options:Locals|OptionsServer) {
   options = options || {};
   if (options.id) {
     name += '_' + options.id;

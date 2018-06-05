@@ -20,12 +20,14 @@ module.exports = {
     "node": true
   },
   "plugins": ["node"],
-  "extends": ["eslint:recommended","plugin:node/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:node/recommended"
+  ],
   "parserOptions": {
     "sourceType": "module"
   },
   "rules": {
-    "node/exports-style": ["error", "module.exports"],
     "no-console": ["error", {
       allow: ["warn", "error", "log"]
     }],
