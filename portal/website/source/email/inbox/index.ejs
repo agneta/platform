@@ -1,17 +1,39 @@
-<div flex="100" class="frame ag-margin md-padding" layout="column">
-  <div ng-hide="accounts.selected" flex="100" layout="column" layout-align="center center">
+<div flex="100"
+  class="frame ag-margin md-padding"
+  layout="column">
+  <div ng-hide="accounts.selected"
+    flex="100"
+    layout="column"
+    layout-align="center center">
     <p>Select an email account</p>
   </div>
-  <div ng-show="accounts.selected && !email.selected" flex="100" layout="column" layout-align="center center">
+  <div ng-show="accounts.selected && !email.selected"
+    flex="100"
+    layout="column"
+    layout-align="center center">
     <p>Select an email</p>
   </div>
-  <div class="ag-margin" layout="column" ng-show="email.selected&&accounts.selected">
-    <div layout="row" layout-align="start center">
+  <div class="ag-margin"
+    layout="column"
+    ng-show="email.selected&&accounts.selected">
+    <div layout="row"
+      layout-align="start center">
       <span>{{email.data.date | amDateFormat:'LLLL'}}</span>
       <span flex="auto"></span>
       <span am-time-ago="email.data.date | amUtc | amLocal"></span>
     </div>
-    <div class="box ag-margin" layout="column">
+
+    <div layout="row"
+      layout-align="end center">
+      <md-button ng-click="email.reply()">
+        <md-icon md-svg-src="<%-get_icon('material/reply')%>">
+        </md-icon>
+        <span>Reply</span>
+      </md-button>
+    </div>
+
+    <div class="box ag-margin"
+      layout="column">
       <%-template('./address',page.address.from)%>
         <%-template('./address',page.address.to)%>
           <%-template('./address',page.address.cc)%>
