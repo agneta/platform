@@ -16,34 +16,35 @@
  */
 
 module.exports = function(Model) {
-
   Model.inboxLoad = function(emailId) {
-
     return Model.findById(emailId)
+      .then(function(result) {
+        return result.updateAttributes({
+          read: true
+        });
+      })
       .then(function(result) {
         return result;
       });
-
   };
 
-  Model.remoteMethod(
-    'inboxLoad', {
-      description: 'Load email from inbox',
-      accepts: [{
+  Model.remoteMethod('inboxLoad', {
+    description: 'Load email from inbox',
+    accepts: [
+      {
         arg: 'emailId',
         type: 'string',
         required: true
-      }],
-      returns: {
-        arg: 'result',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'get',
-        path: '/inbox-load'
       }
+    ],
+    returns: {
+      arg: 'result',
+      type: 'object',
+      root: true
+    },
+    http: {
+      verb: 'get',
+      path: '/inbox-load'
     }
-  );
-
+  });
 };

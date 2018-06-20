@@ -1,4 +1,4 @@
-const INTERVAL = 1000*30;
+const INTERVAL = 1000*6;
 const Promise = require('bluebird');
 const urljoin = require('url-join');
 const path = require('path');

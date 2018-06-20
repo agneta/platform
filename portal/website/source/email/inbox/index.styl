@@ -1,45 +1,78 @@
-.template-email-inbox{
-  .box{
+.template-email-inbox {
+  .box {
     padding: 10px;
     background: white;
   }
-  .view-container{
+
+  .view-container {
     background: whitesmoke;
   }
-  .address{
-    .name{
+
+  .address {
+    .name {
       font-weight: bold;
       margin-right: 4px;
     }
-    .item{
+
+    .item {
       margin: 4px;
       background: whitesmoke;
       padding: 3px 6px;
       font-size: 0.8em;
     }
   }
-  .list-email{
-    .header{
+
+  .email-content {
+    a {
+      color: #0088b5;
+      text-decoration: underline;
+    }
+  }
+
+  .list-email {
+    .header {
       padding: 10px;
       background: whitesmoke;
       border-bottom: solid 2px color-primary;
     }
-    .ag-list-item{
+
+    .ag-list-item {
       padding: 10px;
+
+      md-icon {
+        width: 16px;
+        height: 16px;
+        color: white;
+        background: #b3b3b3;
+        border-radius: 100%;
+        padding: 3px;
+
+        &.read {
+          background: #0ec138;
+        }
+
+        &.unread {
+          background: #ff6300;
+        }
+      }
     }
-    .item{
+
+    .item {
       width: 100%;
-      margin: 0;
-      .title{
+
+      .title {
         font-weight: bold;
       }
-      .name{
+
+      .name {
         font-size: 0.8em;
       }
-      .address{
+
+      .address {
         text-align: right;
       }
-      span{
+
+      span {
         font-size: 0.7em;
         white-space: nowrap;
         overflow: hidden;

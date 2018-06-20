@@ -18,52 +18,47 @@
 const _ = require('lodash');
 
 module.exports = function(Model, app) {
-
   Model.inboxList = function(addressId) {
-
     return app.models.Contact_Email_Address.find({
-      where:{
+      where: {
         type: {
-          inq: ['to','cc']
+          inq: ['to', 'cc']
         },
         addressId: addressId
       },
       order: 'date DESC',
-      include:{
+      include: {
         relation: 'email',
         scope: {
-          fields: ['subject','date','from']
+          fields: ['subject', 'date', 'from', 'read']
         }
       }
-    })
-      .then(function(result) {
-        return {
-          list: _.map(result,function(item){
-            return item.__data.email;
-          })
-        };
-      });
-
+    }).then(function(result) {
+      return {
+        list: _.map(result, function(item) {
+          return item.__data.email;
+        })
+      };
+    });
   };
 
-  Model.remoteMethod(
-    'inboxList', {
-      description: 'Return inbox',
-      accepts: [{
+  Model.remoteMethod('inboxList', {
+    description: 'Return inbox',
+    accepts: [
+      {
         arg: 'addressId',
         type: 'string',
         required: true
-      }],
-      returns: {
-        arg: 'result',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'get',
-        path: '/inbox-list'
       }
+    ],
+    returns: {
+      arg: 'result',
+      type: 'object',
+      root: true
+    },
+    http: {
+      verb: 'get',
+      path: '/inbox-list'
     }
-  );
-
+  });
 };
