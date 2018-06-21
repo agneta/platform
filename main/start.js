@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
  *   Source file: main/start.js
@@ -15,106 +15,101 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-Object.defineProperty(exports, '__esModule', { value: true });
+Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require('lodash');
 var paths = require('./paths');
 var config = require('./config');
-var Promise = require('bluebird');
+var Promise = require("bluebird");
 _.mixin(require('lodash-deep'));
-_.omitDeep = function(collection, excludeKeys) {
-  function omitFn(value) {
-    if (value && typeof value === 'object') {
-      excludeKeys.forEach(function(key) {
-        delete value[key];
-      });
+_.omitDeep = function (collection, excludeKeys) {
+    function omitFn(value) {
+        if (value && typeof value === 'object') {
+            excludeKeys.forEach(function (key) {
+                delete value[key];
+            });
+        }
     }
-  }
-  return _.cloneDeepWith(collection, omitFn);
+    return _.cloneDeepWith(collection, omitFn);
 };
 var start = {
-  init: function(subApps) {
-    return Promise.each(subApps, function(component) {
-      if (component.preInit) {
-        return component.preInit();
-      }
-    })
-      .then(function() {
-        return Promise.each(subApps, function(component) {
-          console.log('Initiating: ' + component.locals.app.get('name'));
-          if (component.init) {
-            return component.init();
-          }
+    init: function (subApps) {
+        return Promise.each(subApps, function (component) {
+            if (component.preInit) {
+                return component.preInit();
+            }
+        })
+            .then(function () {
+            return Promise.each(subApps, function (component) {
+                console.log('Initiating: ' + component.locals.app.get('name'));
+                if (component.init) {
+                    return component.init();
+                }
+            });
+        })
+            .then(function () {
+            return Promise.each(subApps, function (component) {
+                console.log('Starting: ' + component.locals.app.get('name'));
+                if (component.start) {
+                    return component.start();
+                }
+                return null;
+            });
         });
-      })
-      .then(function() {
-        return Promise.each(subApps, function(component) {
-          console.log('Starting: ' + component.locals.app.get('name'));
-          if (component.start) {
-            return component.start();
-          }
-          return null;
+    },
+    default: function (options) {
+        var component = start.pages(_.extend({
+            mode: 'default'
+        }, options));
+        return component;
+    },
+    portal: function (options) {
+        options.includeSources = [
+            {
+                name: 'portal',
+                path: paths.appPortal.source
+            }
+        ];
+        var component = start.pages({
+            mode: 'preview',
+            dir: paths.portal.base,
+            locals: options
         });
-      });
-  },
-  default: function(options) {
-    var component = start.pages(
-      _.extend(
-        {
-          mode: 'default'
-        },
-        options
-      )
-    );
-    return component;
-  },
-  portal: function(options) {
-    options.includeSources = [
-      {
-        name: 'portal',
-        path: paths.appPortal.source
-      }
-    ];
-    var component = start.pages({
-      mode: 'preview',
-      dir: paths.portal.base,
-      locals: options
-    });
-    setName(component, 'pages_portal', options);
-    return component;
-  },
-  website: function(options) {
-    var component = start.pages({
-      mode: 'preview',
-      sync: true,
-      locals: options
-    });
-    setName(component, 'pages_website', options);
-    return component;
-  },
-  pages: function(options) {
-    options.paths = paths.loadApp(options);
-    return getComponent('pages', '../pages', options);
-  },
-  services: function(options) {
-    options.paths = paths.loadApp(options);
-    return getComponent('services', paths.core.services, options);
-  },
-  storage: function(options) {
-    return getComponent('storage', './server/storage', options);
-  }
+        setName(component, 'pages_portal', options);
+        return component;
+    },
+    website: function (options) {
+        var component = start.pages({
+            mode: 'preview',
+            sync: true,
+            locals: options
+        });
+        setName(component, 'pages_website', options);
+        return component;
+    },
+    pages: function (options) {
+        options.paths = paths.loadApp(options);
+        return getComponent('pages', '../pages', options);
+    },
+    services: function (options) {
+        options.paths = paths.loadApp(options);
+        return getComponent('services', paths.core.services, options);
+    },
+    storage: function (options) {
+        return getComponent('storage', './server/storage', options);
+    }
 };
 function getComponent(name, componentPath, options) {
-  _.extend(options, config);
-  var component = require(componentPath)(options);
-  setName(component, name, options);
-  return component;
+    _.extend(options, config);
+    var component = require(componentPath)(options);
+    setName(component, name, options);
+    return component;
 }
 function setName(component, name, options) {
-  options = options || {};
-  if (options.id) {
-    name += '_' + options.id;
-  }
-  component.locals.app.set('name', name);
+    options = options || {};
+    if (options.id) {
+        name += '_' + options.id;
+    }
+    component.locals.app.set('name', name);
 }
 module.exports = start;
 //# sourceMappingURL=start.js.map

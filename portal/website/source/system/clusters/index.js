@@ -15,25 +15,26 @@
  *   limitations under the License.
  */
 (function() {
-
-  agneta.directive('AgSystemServerCtrl', function($rootScope, Process, System, SocketIO, $mdDialog) {
-
+  agneta.directive('AgSystemServerCtrl', function(
+    $rootScope,
+    Process,
+    System,
+    SocketIO,
+    $mdDialog
+  ) {
     var socket = SocketIO.connect('system');
     var vm = this;
 
     (function() {
-
-      var git = vm.git = {};
+      var git = (vm.git = {});
 
       function check() {
         Process.changesList({
           __endpoint: 'aaaaaa'
-        })
-          .$promise
-          .then(function(result) {
-            console.log(result);
-            vm.graph = result;
-          });
+        }).$promise.then(function(result) {
+          console.log(result);
+          vm.graph = result;
+        });
       }
       //check();
 
@@ -42,8 +43,7 @@
         Process.changesRefresh({
           __endpoint: 'aaaaaa'
         })
-          .$promise
-          .then(function() {
+          .$promise.then(function() {
             check();
           })
           .finally(function() {
@@ -52,52 +52,39 @@
       };
 
       git.update = function() {
-
         git.updating = true;
-        Process.restart({
+        Process.restart({}).$promise.then(function() {
+          SocketIO.socket.once('connect', function() {
+            git.updating = false;
 
-        })
-          .$promise
-          .then(function() {
-
-            SocketIO.socket.once('connect', function() {
-
-              git.updating = false;
-
-              $mdDialog.open({
-                partial: 'success',
-                //nested: true,
-                data: {
-                  content: 'System is now updated'
-                }
-              });
-
+            $mdDialog.open({
+              partial: 'success',
+              //nested: true,
+              data: {
+                content: 'System is now updated'
+              }
             });
-
           });
+        });
       };
-
     })();
-
 
     //------------------------------------------------
 
     (function() {
-
-      var logs = vm.logs = {
+      var logs = (vm.logs = {
         action: {
           onClick: selectAction
         },
         output: {
           entries: []
         }
-      };
+      });
 
       var entryLimit = 1000;
       var channel;
 
       function selectAction(action) {
-
         logs.actionSelected = action;
         logs.load(action);
 
@@ -111,7 +98,6 @@
             logs.output.entries.unshift(entry);
           }
         });
-
       }
 
       logs.load = function() {
@@ -120,8 +106,7 @@
         Process.logs({
           name: action.name
         })
-          .$promise
-          .then(function(data) {
+          .$promise.then(function(data) {
             data.entries.reverse();
             logs.output = data;
           })
@@ -138,31 +123,12 @@
       };
 
       //selectAction($rootScope.viewData.extra.logs.actions[0]);
-
     })();
-
 
     (function() {
-
-      System.clusters()
-        .$promise
-        .then(function(result) {
-          console.log(result);
-        });
-
-      System.servers()
-        .$promise
-        .then(function(result) {
-          vm.servers = result.list;
-          console.log(vm.servers);
-        });
-
-
+      System.clusters().$promise.then(function(result) {
+        console.log(result);
+      });
     })();
-
-
-
   });
-
-
 })();

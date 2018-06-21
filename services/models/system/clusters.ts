@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: services/models/process/servers.js
+ *   Source file: services/models/process/clusters.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,36 +14,40 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function(Model, app) {
+import k8s = require('@kubernetes/client-node');
 
-  Model.servers = function() {
+interface AgnetaServices {
+  models: any;
+  k8s: {
+    config: k8s.KubeConfig;
+    core: k8s.Core_v1Api;
+    apps: k8s.Apps_v1beta1Api;
+  };
+}
 
+module.exports = function(Model: any, app: AgnetaServices) {
+  Model.clusters = function() {
     return app.models.Process_Server.find({
       include: 'processes'
-    })
-      .then(function(result) {
-        console.log(result);
-        return {
-          list: result
-        };
-      });
-
+    }).then(function(result: any) {
+      console.log(result);
+      return {
+        list: app.k8s.config.getClusters()
+      };
+    });
   };
 
-  Model.remoteMethod(
-    'servers', {
-      description: 'Get process servers',
-      accepts: [],
-      returns: {
-        arg: 'result',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'post',
-        path: '/servers'
-      }
+  Model.remoteMethod('clusters', {
+    description: 'Get clusters',
+    accepts: [],
+    returns: {
+      arg: 'result',
+      type: 'object',
+      root: true
+    },
+    http: {
+      verb: 'post',
+      path: '/clusters'
     }
-  );
-
+  });
 };

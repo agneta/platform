@@ -17,6 +17,7 @@
 const express = require('express');
 const loopback = require('loopback');
 const chalk = require('chalk');
+const path = require('path');
 const Promise = require('bluebird');
 const EventEmitter = require('events').EventEmitter;
 var SCWorker = require('socketcluster/scworker');
@@ -27,6 +28,9 @@ Promise.config({
     wForgottenReturn: false
   }
 });
+
+const dirAbsolute = path.join(process.env.HOME, '.agneta');
+process.env.XDG_CONFIG_HOME = dirAbsolute;
 
 class Worker extends SCWorker {
   run() {
@@ -74,7 +78,6 @@ class Worker extends SCWorker {
 
     Promise.resolve()
       .then(function() {
-
         return server({
           worker: worker,
           server: httpServer,
@@ -89,9 +92,7 @@ class Worker extends SCWorker {
           started: true,
           result: result
         });
-
       });
-
   }
 }
 

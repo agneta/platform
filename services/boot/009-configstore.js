@@ -24,5 +24,11 @@ module.exports = function(app) {
   var name = pkg.name || path.parse(process.cwd()).name;
   name = _.snakeCase(name);
 
-  app.configstore = new configstore(path.join('agneta', name), {});
+  app.configstore = new configstore(
+    path.join('project', name),
+    {},
+    {
+      globalConfigPath: true
+    }
+  );
 };

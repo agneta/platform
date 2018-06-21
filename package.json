@@ -16,9 +16,6 @@
     "type": "git",
     "url": "https://github.com/agneta/platform.git"
   },
-  "pre-commit": [
-    "lint"
-  ],
   "author": "Agneta Network Applications",
   "license": "Apache-2.0",
   "dependencies": {

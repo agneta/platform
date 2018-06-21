@@ -37,9 +37,11 @@ var result = {
   hostName: hostName,
   socket: {
     path: '/socket'
-  },
+  }
 };
 
-result.agneta = new configstore('agneta');
+result.agneta = new configstore('global', null, {
+  globalConfigPath: true
+});
 
 module.exports = result;
