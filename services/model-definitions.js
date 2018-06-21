@@ -18,18 +18,15 @@ const path = require('path');
 const fs = require('fs-extra');
 const Promise = require('bluebird');
 const _ = require('lodash');
-const S = require('string');
 
 module.exports = function(app, generated) {
-
   app.modelSchemas = {};
 
   var definitions = generated._definitions;
 
-  var dirs = app.get('services_include')
-    .map(function(dir) {
-      return path.join(dir, 'models');
-    });
+  var dirs = app.get('services_include').map(function(dir) {
+    return path.join(dir, 'models');
+  });
 
   function mergeFn(objValue, srcValue) {
     if (_.isArray(objValue) || _.isArray(srcValue)) {
@@ -41,74 +38,71 @@ module.exports = function(app, generated) {
 
   //-------------------------------------------
 
-  return Promise.map(dirs, function(dir) {
+  return Promise.map(
+    dirs,
+    function(dir) {
+      return fs
+        .ensureDir(dir)
+        .then(function() {
+          return fs.readdir(dir);
+        })
+        .then(function(files) {
+          return Promise.map(files, function(file) {
+            var filePath = path.join(dir, file);
+            var name = path.parse(filePath).name;
 
-    return fs.ensureDir(dir)
-      .then(function() {
-        return fs.readdir(dir);
-      })
-      .then(function(files) {
+            return fs
+              .stat(filePath)
+              .then(function(stat) {
+                if (stat.isDirectory()) {
+                  filePath = path.join(filePath, 'index.json');
+                  return fs.pathExists(filePath);
+                }
 
-        return Promise.map(files, function(file) {
+                if (path.parse(file).ext === '.json') {
+                  return true;
+                }
+              })
+              .then(function(exists) {
+                if (!exists) {
+                  return;
+                }
 
-          var filePath = path.join(dir, file);
-          var name = path.parse(filePath).name;
+                var data = require(filePath);
 
-          return fs.stat(filePath)
-            .then(function(stat){
-
-              if(stat.isDirectory()){
-                filePath = path.join(filePath,'index.json');
-                return fs.pathExists(filePath);
-              }
-
-              if(path.parse(file).ext === '.json'){
-                return true;
-              }
-
-            })
-            .then(function(exists) {
-
-              if(!exists){
-                return;
-              }
-
-              var data = require(filePath);
-
-              if (definitions[name]) {
-                _.mergeWith(definitions[name].definition, data, mergeFn);
-              } else {
-                definitions[name] = {
-                  definition: data
-                };
-              }
-            });
+                if (definitions[name]) {
+                  _.mergeWith(definitions[name].definition, data, mergeFn);
+                } else {
+                  definitions[name] = {
+                    definition: data
+                  };
+                }
+              });
+          });
         });
+    },
+    {
+      concurrency: 1
+    }
+  ).then(function() {
+    var values = _.values(definitions);
+    values.forEach(function(value) {
+      var definition = value.definition;
+      //console.log(_.kebabCase(definition.name), definition.name);
+
+      definition.http = definition.http || {};
+      _.extend(definition.http, {
+        path: _.kebabCase(definition.name)
       });
-  }, {
-    concurrency: 1
-  })
-    .then(function() {
-      var values = _.values(definitions);
-      values.forEach(function(value) {
 
-        var definition = value.definition;
-
-        definition.http = definition.http || {};
-        _.extend(definition.http,{
-          path: S(definition.name).slugify().s
-        });
-
-        definition.mixins = definition.mixins || {};
-        _.extend(definition.mixins,{
-          'TimeStamp': true
-        });
-
-        app.modelSchemas[definition.name] = definition;
-        //console.log(definition.name,definition.http.path);
+      definition.mixins = definition.mixins || {};
+      _.extend(definition.mixins, {
+        TimeStamp: true
       });
-      generated.modelDefinitions = values;
+
+      app.modelSchemas[definition.name] = definition;
+      //console.log(definition.name,definition.http.path);
     });
-
-
+    generated.modelDefinitions = values;
+  });
 };

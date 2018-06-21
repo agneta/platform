@@ -16,10 +16,8 @@
  */
 const path = require('path');
 const _ = require('lodash');
-const S = require('string');
 
 module.exports = function(app) {
-
   var instructions = [];
   var appOptions = app.get('options');
 
@@ -40,22 +38,27 @@ module.exports = function(app) {
     env: 'production'
   });
 
-  require(
-    path.join(appOptions.web.project.paths.core.services, 'lib', 'locals')
-  )(appPrd, appOptionsPrd);
+  require(path.join(
+    appOptions.web.project.paths.core.services,
+    'lib',
+    'locals'
+  ))(appPrd, appOptionsPrd);
 
-  require(
-    path.join(appOptions.web.project.paths.core.services, 'lib', 'secrets')
-  )(appPrd, appOptionsPrd);
-
+  require(path.join(
+    appOptions.web.project.paths.core.services,
+    'lib',
+    'secrets'
+  ))(appPrd, appOptionsPrd);
 
   //--------------------------------------------------
   // Create the Production data source
 
-  var db_prd =  _.extend({
-    connector: 'loopback-connector-mongodb'
-  },
-  appPrd.secrets.get('db'));
+  var db_prd = _.extend(
+    {
+      connector: 'loopback-connector-mongodb'
+    },
+    appPrd.secrets.get('db')
+  );
   app.dataSource('db_prd', db_prd);
   app.dataSource('transient_prd', {
     connector: 'transient'
@@ -63,11 +66,9 @@ module.exports = function(app) {
 
   //--------------------------------------------------
 
-
-  app.models().forEach(function (model) {
-
+  app.models().forEach(function(model) {
     var definition = app.modelSchemas[model.modelName];
-    if(!definition){
+    if (!definition) {
       //console.warn(`Definition not found for model ${model.modelName}`);
       return;
     }
@@ -78,7 +79,6 @@ module.exports = function(app) {
       definition: definition,
       sourceName: model.modelName
     });
-
   });
 
   //--------------------------------------------------
@@ -86,7 +86,6 @@ module.exports = function(app) {
 
   var rolesOriginal = app.get('roles');
   var roles = {};
-
 
   for (var key in rolesOriginal) {
     var role = _.extend({}, rolesOriginal[key]);
@@ -105,17 +104,15 @@ module.exports = function(app) {
 
   app.$model.remotes(instructions);
   instructions.forEach(function(data) {
+    var modelOptions = _.extend({}, app.modelConfig[data.sourceName]);
 
-    var modelOptions = _.extend({},app.modelConfig[data.sourceName]);
-
-    if(modelOptions.dataSource){
+    if (modelOptions.dataSource) {
       modelOptions.dataSource += '_prd';
-    }else{
+    } else {
       modelOptions.dataSource = false;
     }
 
-    app.model(data.model,modelOptions);
-
+    app.model(data.model, modelOptions);
   });
 
   app.roles.set(app.models.Production_Account, roles);
@@ -127,7 +124,6 @@ module.exports = function(app) {
   }
 
   function productionModel(data) {
-
     let name = data.name;
     let newName = productionName(name);
     let definition = data.definition;
@@ -137,7 +133,7 @@ module.exports = function(app) {
     if (definition.relations) {
       for (var key in definition.relations) {
         var relation = definition.relations[key];
-        if(relation.model){
+        if (relation.model) {
           relation.model = productionName(relation.model);
         }
       }
@@ -151,7 +147,7 @@ module.exports = function(app) {
     });
 
     _.extend(definition.http, {
-      path: S(newName).slugify().s
+      path: _.kebabCase(newName)
     });
 
     // create a model
@@ -161,7 +157,5 @@ module.exports = function(app) {
     data.model.app = appPrd;
 
     data.newName = newName;
-
   }
-
 };

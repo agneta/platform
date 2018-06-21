@@ -19,53 +19,48 @@ const _ = require('lodash');
 const paths = require('./paths');
 const config = require('./config');
 import * as Promise from 'bluebird';
-import {Application} from 'express';
+import { Application } from 'express';
 
-interface OptionsServer{
-  id?: string,
-  paths?: object,
-  mode?: string,
-  dir?: string,
-  sync?: boolean,
-  locals?: Locals
+interface OptionsServer {
+  id?: string;
+  paths?: object;
+  mode?: string;
+  dir?: string;
+  sync?: boolean;
+  locals?: Locals;
 }
-interface Source{
-  name: string,
-  path: string
+interface Source {
+  name: string;
+  path: string;
 }
-interface Locals{
-  id?: string,
-  includeSources: Array<Source>,
-  app: Application
+interface Locals {
+  id?: string;
+  includeSources: Array<Source>;
+  app: Application;
 }
-interface Component{
-  locals: Locals,
-  start(): void,
-  preInit(): void,
-  init(): void,
-  preInit(): void,
+interface Component {
+  locals: Locals;
+  start(): void;
+  preInit(): void;
+  init(): void;
+  preInit(): void;
 }
 
 _.mixin(require('lodash-deep'));
-_.omitDeep = function(collection:Array<any>, excludeKeys:Array<string>) {
-
-  function omitFn(value:any) {
-
+_.omitDeep = function(collection: Array<any>, excludeKeys: Array<string>) {
+  function omitFn(value: any) {
     if (value && typeof value === 'object') {
-      excludeKeys.forEach((key) => {
-            delete value[key];
+      excludeKeys.forEach(key => {
+        delete value[key];
       });
     }
   }
 
   return _.cloneDeepWith(collection, omitFn);
-
 };
-
 
 var start = {
   init: function(subApps: Array<Component>) {
-
     return Promise.each(subApps, function(component: Component) {
       if (component.preInit) {
         return component.preInit();
@@ -73,7 +68,7 @@ var start = {
     })
       .then(function() {
         return Promise.each(subApps, function(component: Component) {
-          console.log('Initissating: ' + component.locals.app.get('name'));
+          console.log('Initiating: ' + component.locals.app.get('name'));
 
           if (component.init) {
             return component.init();
@@ -91,21 +86,24 @@ var start = {
       });
   },
   default: function(options: OptionsServer) {
-
     var component = start.pages(
-      _.extend({
-        mode: 'default'
-      },options));
+      _.extend(
+        {
+          mode: 'default'
+        },
+        options
+      )
+    );
 
     return component;
-
   },
   portal: function(options: Locals) {
-
-    options.includeSources = [{
-      name: 'portal',
-      path: paths.appPortal.source
-    }];
+    options.includeSources = [
+      {
+        name: 'portal',
+        path: paths.appPortal.source
+      }
+    ];
 
     var component = start.pages({
       mode: 'preview',
@@ -117,7 +115,6 @@ var start = {
     return component;
   },
   website: function(options: Locals) {
-
     var component = start.pages({
       mode: 'preview',
       sync: true,
@@ -132,18 +129,19 @@ var start = {
     return getComponent('pages', '../pages', options);
   },
   services: function(options: OptionsServer) {
-
     options.paths = paths.loadApp(options);
     return getComponent('services', paths.core.services, options);
-
   },
   storage: function(options: OptionsServer) {
     return getComponent('storage', './server/storage', options);
   }
 };
 
-function getComponent(name: string, componentPath: string, options: OptionsServer):Component {
-
+function getComponent(
+  name: string,
+  componentPath: string,
+  options: OptionsServer
+): Component {
   _.extend(options, config);
 
   var component = require(componentPath)(options);
@@ -151,16 +149,18 @@ function getComponent(name: string, componentPath: string, options: OptionsServe
   setName(component, name, options);
 
   return component;
-
 }
 
-function setName(component: Component, name: string, options:Locals|OptionsServer) {
+function setName(
+  component: Component,
+  name: string,
+  options: Locals | OptionsServer
+) {
   options = options || {};
   if (options.id) {
     name += '_' + options.id;
   }
   component.locals.app.set('name', name);
-
 }
 
 module.exports = start;

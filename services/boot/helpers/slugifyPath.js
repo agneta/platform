@@ -14,11 +14,10 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const S = require('string');
 const path = require('path');
+const _ = require('lodash');
 
 module.exports = function(pagePath) {
-
   pagePath = path.normalize(pagePath);
   pagePath = pagePath.split('/');
 
@@ -31,7 +30,7 @@ module.exports = function(pagePath) {
   }
 
   for (var i in pagePath) {
-    pagePath[i] = S(pagePath[i]).slugify().s;
+    pagePath[i] = _.kebabCase(pagePath[i]);
   }
 
   return pagePath.join('/');

@@ -14,14 +14,16 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const S = require('string');
+
 const GreekUtils = require('greek-utils');
+const striptags = require('striptags');
+const _ = require('lodash');
+const humanizeString = require('humanize-string');
 
 module.exports = function(util, options) {
-
   options.models = util.locals.services.get('search')[options.name].models;
 
-  if(!options.models){
+  if (!options.models) {
     throw new Error(`Could not find search models with name: ${options.name}`);
   }
 
@@ -31,16 +33,12 @@ module.exports = function(util, options) {
   var keywordsLng = {};
 
   function scan(original, type) {
-
     if (!original) {
       return;
     }
 
-    original = S(original)
-      .collapseWhitespace()
-      .stripTags()
-      .trim()
-      .s;
+    original = striptags(original);
+    original = _.trim(original);
 
     //-------------------------------------------------------
 
@@ -52,8 +50,9 @@ module.exports = function(util, options) {
 
     if (
       type != 'title' &&
-            // Need Sentences here instead of short phrases
-            words.length < 4) {
+      // Need Sentences here instead of short phrases
+      words.length < 4
+    ) {
       return;
     }
 
@@ -71,7 +70,6 @@ module.exports = function(util, options) {
     var position = 0;
 
     for (var word of words) {
-
       processWord(word);
 
       position += word.length;
@@ -79,7 +77,6 @@ module.exports = function(util, options) {
     }
 
     function processWord(word) {
-
       if (!word) {
         return;
       }
@@ -88,21 +85,14 @@ module.exports = function(util, options) {
 
       var keyword = GreekUtils.toGreeklish(word);
 
-      keyword = S(keyword)
-        .humanize()
-        .latinise()
-        .collapseWhitespace()
-        .trim()
-        .s
-        .toLowerCase();
+      keyword = humanizeString(keyword);
+      keyword = _.trim(keyword);
+      keyword = keyword.toLowerCase();
 
       //-------------------------------------
 
-      if (!keyword ||
-                keyword.length <= 2
-      ) {
+      if (!keyword || keyword.length <= 2) {
         return;
-
       }
 
       //-------------------------------------
@@ -120,16 +110,13 @@ module.exports = function(util, options) {
       //-------------------------------------
 
       keywordsLng[keyword] = keywordsLng[keyword] || true;
-
     }
-
 
     if (!field.positions.length) {
       return;
     }
 
     return field;
-
   }
 
   //-----------------------------------
@@ -140,15 +127,13 @@ module.exports = function(util, options) {
     deploy: deploy,
     json: json,
     clear: function() {
-      return Keyword.clear()
-        .then(function() {
-          util.success('Keywords cleared');
-        });
+      return Keyword.clear().then(function() {
+        util.success('Keywords cleared');
+      });
     }
   };
 
   util.keywords = keywords;
 
   return keywords;
-
 };

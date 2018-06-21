@@ -15,15 +15,13 @@
  *   limitations under the License.
  */
 var util = require('util'),
-  Transport = require('winston/lib/winston/transports/transport').Transport;
+  Transport = require('winston-transport');
 
 var StackTraceParser = require('stacktrace-parser');
 var _ = require('lodash');
 
 module.exports = function(app) {
-
   var Logger = function(options) {
-
     Transport.call(this, options);
     options = options || {};
 
@@ -33,27 +31,30 @@ module.exports = function(app) {
     this.json = options.json || false;
     this.colorize = options.colorize || false;
     this.prettyPrint = options.prettyPrint || false;
-    this.timestamp = typeof options.timestamp !== 'undefined' ? options.timestamp : false;
+    this.timestamp =
+      typeof options.timestamp !== 'undefined' ? options.timestamp : false;
     this.showLevel = options.showLevel === undefined ? true : options.showLevel;
     this.label = options.label || null;
     this.depth = options.depth || null;
 
     if (this.json) {
-      this.stringify = options.stringify || function(obj) {
-        return JSON.stringify(obj, null, 2);
-      };
+      this.stringify =
+        options.stringify ||
+        function(obj) {
+          return JSON.stringify(obj, null, 2);
+        };
     }
   };
 
-    //
-    // Inherit from `winston.Transport`.
-    //
+  //
+  // Inherit from `winston.Transport`.
+  //
   util.inherits(Logger, Transport);
 
   //
   // Expose the name of this Transport on the prototype
   //
-  Logger.prototype.name = 'memory';
+  Logger.prototype.name = 'agneta-activities';
 
   //
   // ### function log (level, msg, [meta], callback)
@@ -64,7 +65,6 @@ module.exports = function(app) {
   // Core logging method exposed to Winston. Metadata is optional.
   //
   Logger.prototype.log = function(level, msg, data, callback) {
-
     var action;
 
     if (data instanceof Error) {
@@ -90,7 +90,7 @@ module.exports = function(app) {
     delete dataShow.req;
 
     if (!this.silent) {
-      console.error(util.inspect(dataShow,{colors:true,depth:3}));
+      console.error(util.inspect(dataShow, { colors: true, depth: 3 }));
     }
 
     if (!action) {
@@ -104,12 +104,12 @@ module.exports = function(app) {
 
     var feeds = [];
 
-    if(data.req){
+    if (data.req) {
       feeds.push({
         value: data.req.dataParsed.path,
         type: `${level}_request`
       });
-    }else{
+    } else {
       feeds.push({
         value: action,
         type: `${level}_system`

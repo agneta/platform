@@ -15,12 +15,10 @@
  *   limitations under the License.
  */
 const path = require('path');
-const S = require('string');
+const _ = require('lodash');
 
 module.exports = function(Model) {
-
   Model.__fixParams = function(file, params) {
-
     var name = params.name;
     var dir = params.dir;
     var location = params.location;
@@ -30,12 +28,11 @@ module.exports = function(Model) {
       dir = parsedLocation.dir;
       name = parsedLocation.name;
     } else {
-
       if (!name) {
         name = path.parse(file.originalname).name;
       }
 
-      name = S(name).slugify().s;
+      name = _.kebabCase(name);
       location = Model.__getMediaPath(dir, name);
     }
 
@@ -44,7 +41,5 @@ module.exports = function(Model) {
       dir: dir,
       location: location
     };
-
   };
-
 };

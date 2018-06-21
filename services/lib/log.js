@@ -18,7 +18,6 @@ var winston = require('winston');
 var processListening = false;
 
 module.exports = function(app) {
-
   var TransportLogger = require('./transport-logger')(app);
 
   var logOptions = {
@@ -27,19 +26,16 @@ module.exports = function(app) {
     json: false
   };
 
-  var logger = new(winston.Logger)({
-    transports: [
-      new TransportLogger(logOptions)
-    ],
+  var logger = winston.createLogger({
+    transports: [new TransportLogger(logOptions)],
     exitOnError: false
   });
 
-    //------------------------------------------------
+  //------------------------------------------------
 
-    //------------------------------------------------
+  //------------------------------------------------
 
   if (!processListening) {
-
     processListening = true;
 
     process.on('exit', function(code) {
@@ -53,10 +49,8 @@ module.exports = function(app) {
     process.on('unhandledRejection', function(reason, p) {
       logger.error('Unhandled Rejection at: Promise ', p, ' reason: ', reason);
     });
-
   }
 
   app.logger = logger;
   return logger;
-
 };

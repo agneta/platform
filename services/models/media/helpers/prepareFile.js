@@ -14,14 +14,12 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const S = require('string');
 const path = require('path');
+const _ = require('lodash');
 const fs = require('fs-extra');
 
 module.exports = function(Model, app) {
-
   Model.__prepareFile = function(file, options) {
-
     var params = Model.__fixParams(file, options);
 
     var name = params.name;
@@ -33,12 +31,11 @@ module.exports = function(Model, app) {
       dir = parsedLocation.dir;
       name = parsedLocation.name;
     } else {
-
       if (!name) {
         name = path.parse(file.originalname).name;
       }
 
-      name = S(name).slugify().s;
+      name = _.kebabCase(name);
       location = Model.__getMediaPath(dir, name);
     }
 
@@ -46,7 +43,7 @@ module.exports = function(Model, app) {
 
     var type = app.helpers.mediaType(file.mimetype);
     var stream = file.stream;
-    if(!stream && file.path){
+    if (!stream && file.path) {
       stream = fs.createReadStream(file.path);
     }
 
@@ -60,11 +57,10 @@ module.exports = function(Model, app) {
       stream: stream
     })
       .then(function(result) {
-        if(file.path){
+        if (file.path) {
           fs.unlinkAsync(file.path);
         }
         return Model.__prepareObject(result);
-
       })
       .catch(function(error) {
         console.error(error);

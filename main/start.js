@@ -21,10 +21,10 @@ var paths = require('./paths');
 var config = require('./config');
 var Promise = require('bluebird');
 _.mixin(require('lodash-deep'));
-_.omitDeep = function (collection, excludeKeys) {
+_.omitDeep = function(collection, excludeKeys) {
   function omitFn(value) {
     if (value && typeof value === 'object') {
-      excludeKeys.forEach(function (key) {
+      excludeKeys.forEach(function(key) {
         delete value[key];
       });
     }
@@ -32,22 +32,22 @@ _.omitDeep = function (collection, excludeKeys) {
   return _.cloneDeepWith(collection, omitFn);
 };
 var start = {
-  init: function (subApps) {
-    return Promise.each(subApps, function (component) {
+  init: function(subApps) {
+    return Promise.each(subApps, function(component) {
       if (component.preInit) {
         return component.preInit();
       }
     })
-      .then(function () {
-        return Promise.each(subApps, function (component) {
-          console.log('Initissating: ' + component.locals.app.get('name'));
+      .then(function() {
+        return Promise.each(subApps, function(component) {
+          console.log('Initiating: ' + component.locals.app.get('name'));
           if (component.init) {
             return component.init();
           }
         });
       })
-      .then(function () {
-        return Promise.each(subApps, function (component) {
+      .then(function() {
+        return Promise.each(subApps, function(component) {
           console.log('Starting: ' + component.locals.app.get('name'));
           if (component.start) {
             return component.start();
@@ -56,17 +56,24 @@ var start = {
         });
       });
   },
-  default: function (options) {
-    var component = start.pages(_.extend({
-      mode: 'default'
-    }, options));
+  default: function(options) {
+    var component = start.pages(
+      _.extend(
+        {
+          mode: 'default'
+        },
+        options
+      )
+    );
     return component;
   },
-  portal: function (options) {
-    options.includeSources = [{
-      name: 'portal',
-      path: paths.appPortal.source
-    }];
+  portal: function(options) {
+    options.includeSources = [
+      {
+        name: 'portal',
+        path: paths.appPortal.source
+      }
+    ];
     var component = start.pages({
       mode: 'preview',
       dir: paths.portal.base,
@@ -75,7 +82,7 @@ var start = {
     setName(component, 'pages_portal', options);
     return component;
   },
-  website: function (options) {
+  website: function(options) {
     var component = start.pages({
       mode: 'preview',
       sync: true,
@@ -84,15 +91,15 @@ var start = {
     setName(component, 'pages_website', options);
     return component;
   },
-  pages: function (options) {
+  pages: function(options) {
     options.paths = paths.loadApp(options);
     return getComponent('pages', '../pages', options);
   },
-  services: function (options) {
+  services: function(options) {
     options.paths = paths.loadApp(options);
     return getComponent('services', paths.core.services, options);
   },
-  storage: function (options) {
+  storage: function(options) {
     return getComponent('storage', './server/storage', options);
   }
 };

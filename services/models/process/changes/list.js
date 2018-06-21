@@ -14,14 +14,13 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const S = require('string');
+
+const _ = require('lodash');
 
 module.exports = function(Model, app) {
-
   var config = app.web.services.get('git');
 
   Model.changesList = function() {
-
     var branchName = app.git.branch.current;
     var remoteBranch = `${config.remote.name}/${branchName}`;
     var behind;
@@ -30,13 +29,24 @@ module.exports = function(Model, app) {
 
     return Promise.resolve()
       .then(function() {
-        return app.git.native.raw(['rev-list', '--left-right', '--count', `${remoteBranch}...${branchName}`]);
+        return app.git.native.raw([
+          'rev-list',
+          '--left-right',
+          '--count',
+          `${remoteBranch}...${branchName}`
+        ]);
       })
       .then(function(commitCount) {
-        commitCount = S(commitCount).strip('\n').s.split('\t');
+        commitCount = _.replace(commitCount, new RegExp('\\n', 'g'), '');
+        commitCount = commitCount.split('\t');
         behind = parseFloat(commitCount[0]);
         ahead = parseFloat(commitCount[1]);
-        return app.git.native.log(['--max-count', '3', '--remotes', remoteBranch]);
+        return app.git.native.log([
+          '--max-count',
+          '3',
+          '--remotes',
+          remoteBranch
+        ]);
       })
       .then(function(_remoteLog) {
         remoteLog = _remoteLog;
@@ -48,7 +58,6 @@ module.exports = function(Model, app) {
         return app.git.native.log(['-1']);
       })
       .then(function(localLog) {
-
         commitFix(localLog.latest);
 
         return {
@@ -73,22 +82,17 @@ module.exports = function(Model, app) {
     }
   };
 
-
-
-  Model.remoteMethod(
-    'changesList', {
-      description: '',
-      accepts: [],
-      returns: {
-        arg: 'result',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'post',
-        path: '/changes-list'
-      }
+  Model.remoteMethod('changesList', {
+    description: '',
+    accepts: [],
+    returns: {
+      arg: 'result',
+      type: 'object',
+      root: true
+    },
+    http: {
+      verb: 'post',
+      path: '/changes-list'
     }
-  );
-
+  });
 };
