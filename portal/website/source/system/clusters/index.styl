@@ -1,54 +1,66 @@
-.template-system-server{
-
-  .details{
+.template-system-clusters {
+  .view-container {
     background: whitesmoke;
-    .box{
+  }
+
+  .tab-content {
+    padding: 16px;
+  }
+
+  .ui-tabs {
+    >.header {
+      background: white;
+      padding: 9px 4px;
+    }
+  }
+
+  .details {
+    background: whitesmoke;
+
+    .box {
       margin: 10px;
       background: white;
       position: relative;
       overflow: hidden;
       border-radius: 2px;
 
-      >.header{
+      >.header {
         padding: 10px;
         background: white;
         z-index: 12;
-        .title{
+
+        .title {
           color: color-primary;
           font-size: 1.4em;
         }
       }
 
-      >.content{
+      >.content {
         padding: 14px;
       }
 
-      @import './git.module'
-      @import './logs.module'
-
+      @import './repository/index.module';
+      @import './logs/index.module';
     }
   }
 
-  .servers{
-    border-bottom: solid 3px color-primary;
-    margin-bottom: 10px;
-    padding: 10px;
-    .server{
-      background: whitesmoke;
-      border-radius: 2px;
+  .servers {
+    .server {
+      border-bottom: solid 1px grey;
       padding: 14px;
-      margin-right: 10px;
       cursor: pointer;
-      &:last-child{
+
+      &:last-child {
         margin-right: 0;
       }
-      &:hover{
+
+      &:hover {
         background: #e3e3e3;
       }
-      .title{
+
+      .title {
         font-weight: bold;
       }
     }
   }
-
 }

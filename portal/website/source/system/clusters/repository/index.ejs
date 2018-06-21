@@ -1,0 +1,60 @@
+<div>
+  <p>Local branch: {{graph.branch.local}}
+  </p>
+  <p>Remote branch: {{graph.branch.remote}}
+  </p>
+</div>
+
+<div class="warn"
+  ng-if="graph.behind"
+  layout="row"
+  layout-align="start center">
+  <span class="message">Your branch is behind by {{graph.behind}} commits.
+    <br>You will need to update before pushing changes.</span>
+  <span flex="auto"></span>
+  <md-button class="md-raised"
+    ng-click="git.update()">Update</md-button>
+</div>
+
+<div layout="column"
+  class="log">
+  <div class="commit"
+    ng-repeat="commit in graph.shortLog"
+    ng-class="{current:graph.current.hash==commit.hash}"
+    layout="row"
+    layout-margin
+    layout-align="start center">
+    <%-template('./commit')%>
+  </div>
+  <span ng-if="graph.behind>graph.shortLog.length+1"
+    class="rest">...</span>
+  <div ng-if="graph.behind>graph.shortLog.length"
+    ng-init="commit=graph.current"
+    class="commit current"
+    layout="row"
+    layout-margin
+    layout-align="start center">
+    <%-template('./commit')%>
+  </div>
+</div>
+
+<md-divider></md-divider>
+
+<div layout="row">
+  <span flex="auto"></span>
+  <md-button class="md-primary"
+    ng-click="git.check()">Check for new updates</md-button>
+</div>
+
+<div ng-if="git.updating"
+  class="updating"
+  layout="column"
+  layout-align="center center">
+  <div layout="column">
+    <md-icon class="md-primary"
+      md-svg-src="<%-get_icon('material/update')%>"></md-icon>
+    <p class="title">System is updating</p>
+    <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+    <p>This may take a while</p>
+  </div>
+</div>
