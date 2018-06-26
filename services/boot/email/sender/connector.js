@@ -14,12 +14,12 @@ function MailConnector(options) {
 
   //--------------------------------------------------------------
 
-  self.subjectPrefix = _.get(self.config,'subject.prefix');
+  self.subjectPrefix = _.get(self.config, 'subject.prefix');
   //--------------------------------------------------------------
 
   var provider;
 
-  switch(self.config.provider){
+  switch (self.config.provider) {
     case 'aws':
       provider = require('./provider/aws');
       break;
@@ -42,13 +42,12 @@ MailConnector.name = 'email';
 
 MailConnector.prototype.DataAccessObject = require('./mailer');
 
-MailConnector.initialize = function(dataSource,cb){
-
+MailConnector.initialize = function(dataSource, cb) {
   dataSource.connector = new MailConnector(dataSource.settings);
 
   return Promise.resolve()
-    .then(function(){
-      return dataSource.connector.provider.init();
+    .then(function() {
+      return dataSource.connector.provider.init(dataSource.settings.app);
     })
     .asCallback(cb);
 };

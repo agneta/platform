@@ -4,7 +4,7 @@ module.exports = function(Model, app) {
   var config = app.web.services.get('email');
   var clientHelpers = app.web.app.locals;
 
-  Model.send = function(to, subject, message, req) {
+  Model.send = function(to, subject, message, attachments, req) {
     var accountFrom;
     var accountFromId = req.accessToken.userId;
     var Account = Model.projectModel('Account');
@@ -37,6 +37,7 @@ module.exports = function(Model, app) {
           from: from,
           to: to,
           req: req,
+          attachments: attachments,
           subject: subject,
           templateName: 'message',
           data: {
@@ -74,6 +75,11 @@ module.exports = function(Model, app) {
         arg: 'message',
         type: 'string',
         required: true
+      },
+      {
+        arg: 'attachments',
+        type: 'array',
+        required: false
       },
       {
         arg: 'req',

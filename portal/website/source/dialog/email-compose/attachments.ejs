@@ -1,0 +1,19 @@
+<div layout="column"
+    layout-align="start start"
+    class="box ag-margin md-padding">
+    <div layout="row"
+        flex="100"
+        class="attachment"
+        ng-repeat="item in attachments"
+        layout-align="start center">
+        <div layout="column">
+            <span>{{item.filename}}</span>
+            <span class="location">{{item.location}}</span>
+        </div>
+        <span flex="auto"></span>
+        <span>{{item.size}}</span>
+    </div>
+    <md-button ng-click="attachment()">
+        Add Attachment
+    </md-button>
+</div>
