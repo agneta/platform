@@ -16,36 +16,33 @@
  */
 
 module.exports = function(Model) {
-
   Model.mediaUpload = function(req) {
     var Account = Model.getModel('Account');
 
     return Account.__mediaUpload({
       req: req
     });
-
   };
 
-  Model.remoteMethod(
-    'mediaUpload', {
-      description: '',
-      accepts: [{
+  Model.remoteMethod('mediaUpload', {
+    description: '',
+    accepts: [
+      {
         arg: 'req',
         type: 'object',
-        'http': {
+        http: {
           source: 'req'
         }
-      }],
-      returns: {
-        arg: 'result',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'post',
-        path: '/media-upload'
       }
+    ],
+    returns: {
+      arg: 'result',
+      type: 'object',
+      root: true
+    },
+    http: {
+      verb: 'post',
+      path: '/media-upload'
     }
-  );
-
+  });
 };

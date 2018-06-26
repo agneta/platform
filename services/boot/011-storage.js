@@ -15,27 +15,49 @@
 *   limitations under the License.
 */
 
-
 module.exports = function(app) {
-
   var config = app.web.services.get('storage');
 
   if (!config) {
     return;
   }
 
-  switch(config.provider){
+  switch (config.provider) {
     case 'aws':
-      app.storage = require('./storage/amazon')(app,config);
+      app.storage = require('./storage/amazon')(app, config);
       break;
     case 'local':
       app.storage = require('./storage/local')(app);
       break;
     default:
-      throw new Error(`Uknown provider "${config.provider}" for storage service`);
+      throw new Error(
+        `Uknown provider "${config.provider}" for storage service`
+      );
   }
+
+  app.storage.getModel = function(type, Model) {
+    var modelName;
+    switch (type) {
+      case 'public':
+        modelName = 'Media';
+        break;
+      case 'private':
+        modelName = 'Media_Private';
+        break;
+    }
+
+    if (modelName) {
+      if (Model) {
+        return Model.getModel(modelName);
+      }
+      return app.models[modelName];
+    }
+
+    var err = new Error('Invalid type for image');
+    err.statusCode = 400;
+    throw err;
+  };
 
   require('./storage/helpers/listAllKeys')(app);
   require('./storage/helpers/moveObject')(app);
-
 };

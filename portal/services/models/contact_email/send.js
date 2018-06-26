@@ -30,7 +30,7 @@ module.exports = function(Model, app) {
         var picture;
 
         if (accountFrom.picture.media) {
-          picture = clientHelpers.prv_media(accountFrom.picture.media, 'small');
+          picture = clientHelpers.get_media(accountFrom.picture.media, 'small');
         }
 
         var emailOptions = {

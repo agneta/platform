@@ -1,7 +1,6 @@
-agneta.directive('AgAccountOverview',function(AccountList, $mdDialog) {
-
+agneta.directive('AgAccountOverview', function(AccountList, $mdDialog) {
   var vm = this;
-  var overview = vm.overview = {};
+  var overview = (vm.overview = {});
 
   overview.resendVerification = function() {
     AccountList.model.resendVerification({
@@ -9,13 +8,12 @@ agneta.directive('AgAccountOverview',function(AccountList, $mdDialog) {
     });
   };
 
-  overview.changePicture = function(){
+  overview.changePicture = function() {
     $mdDialog.open({
       partial: 'account-file',
-      data:{
+      data: {
         model: AccountList.model,
         query: {
-          accountId: vm.viewAccount.id,
           location: 'profile'
         },
         method: 'role-account-manager/media-upload',
@@ -26,5 +24,4 @@ agneta.directive('AgAccountOverview',function(AccountList, $mdDialog) {
       }
     });
   };
-
 });

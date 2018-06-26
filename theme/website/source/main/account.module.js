@@ -16,14 +16,12 @@
  */
 
 (function() {
-
   var app = window.angular.module('MainApp');
 
   app.config(function(LoopBackResourceProvider) {
     LoopBackResourceProvider.setAuthHeader(agneta.services.token);
     var url = agneta.urljoin(agneta.services.url, 'api');
     LoopBackResourceProvider.setUrlBase(url);
-
   });
 
   app.directive('agAccountPicture', function() {
@@ -33,8 +31,7 @@
       link: function(scope, element, attrs, ngModel) {
         if (!ngModel) return;
         scope.$watch(attrs.ngModel, function(account) {
-
-          if(!account){
+          if (!account) {
             return;
           }
 
@@ -43,23 +40,19 @@
 
           var picture = account.picture || {};
 
-          if(picture.media){
-            scope.background = agneta.prv_media(picture.media,'small');
+          if (picture.media) {
+            scope.background = agneta.get_media(picture.media, 'small');
           }
 
-          if(picture.icon){
-            scope.icon = agneta.get_media('avatars',picture.icon);
+          if (picture.icon) {
+            scope.icon = agneta.get_media('avatars', picture.icon);
           }
-
         });
-
       }
     };
   });
 
-
   require('main/account/params.module');
   require('main/account/methods.module');
   require('main/account/directives.module');
-
 })();

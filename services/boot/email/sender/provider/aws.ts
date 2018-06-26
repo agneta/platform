@@ -36,7 +36,7 @@ module.exports = function() {
         text: options.text,
         attachments: options.attachments
       };
-      console.log(mailOptions);
+      //console.log(mailOptions);
 
       var mailComposer = new MailComposer(mailOptions);
 

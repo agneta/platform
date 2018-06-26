@@ -1,47 +1,52 @@
-
-module.exports = function(Model) {
-
+module.exports = function(Model, app) {
   Model.__mediaGet = function(options) {
-    return Model.getModel('Media_Private')
-      .__details({
-        location: Model.__mediaLocation({
-          path: options.location,
-          accountId: options.accountId
-        })
-      });
+    var MediaModel = app.storage.getModel(options.type, Model);
+
+    return MediaModel.__details({
+      location: Model.__mediaLocation({
+        path: options.location,
+        accountId: options.accountId
+      })
+    });
   };
 
-  Model.mediaGet = function(location,req) {
-
+  Model.mediaGet = function(location, type, req) {
     return Model.__mediaGet({
       location: location,
+      type: type,
       accountId: req.accessToken.userId
     });
   };
 
-  Model.remoteMethod(
-    'mediaGet', {
-      description: 'Get a media file from an account',
-      accepts: [{
+  Model.remoteMethod('mediaGet', {
+    description: 'Get a media file from an account',
+    accepts: [
+      {
         arg: 'location',
         type: 'string',
         required: true
-      },{
+      },
+      {
+        arg: 'type',
+        type: 'string',
+        required: true
+      },
+      {
         arg: 'req',
         type: 'object',
-        'http': {
+        http: {
           source: 'req'
         }
-      }],
-      returns: {
-        arg: 'result',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'post',
-        path: '/media-get'
       }
-    });
-
+    ],
+    returns: {
+      arg: 'result',
+      type: 'object',
+      root: true
+    },
+    http: {
+      verb: 'post',
+      path: '/media-get'
+    }
+  });
 };

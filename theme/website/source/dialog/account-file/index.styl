@@ -1,39 +1,67 @@
-md-dialog.account-file{
-  .container{
+md-dialog.account-file {
+  width: 500px;
+
+  .container {
     position: relative;
   }
-  .sharing{
-    .title{
-      font-size: 1.2em;
-    }
-    .message{
-      color: #5a5a5a;
-    }
-    .md-button{
-      background: whitesmoke;
 
-      &.selected{
+  .selection {
+    .message {
+      color: color-primary;
+      font-size: 0.8em;
+    }
+
+    .title {
+      width: 100px;
+    }
+
+    .md-button {
+      background: #d6d4d4;
+      opacity: 0.5;
+
+      &.selected {
+        opacity: 1;
         background: color-primary;
         color: white;
-        md-icon{
+
+        md-icon {
           color: white;
         }
       }
     }
   }
-  .preview{
+
+  .preview {
     background: whitesmoke;
   }
-  .image{
-    text-align: center;
+
+  .details {
+    >* {
+      border-top: solid 1px #d2d2d2;
+      padding-top: 10px;
+    }
   }
-  .url{
+
+  .image {
+    margin: 10px auto;
+    text-align: center;
+    width: 250px;
+    height: 250px;
+    background-position: center;
+    background-size: cover;
+    border-radius: 100%;
+  }
+
+  .url {
+    word-wrap: break-word;
     text-align: left;
     font-size: 0.9em;
-    label{
+
+    label {
       font-weight: bold;
     }
-    .link{
+
+    .link {
       word-wrap: break-word;
       color: grey;
     }

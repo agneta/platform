@@ -16,45 +16,50 @@
  */
 
 module.exports = function(Model) {
-
-  Model.mediaGet = function(accountId, location) {
+  Model.mediaGet = function(accountId, location, type) {
     var Account = Model.projectModel('Account');
 
     return Account.__mediaGet({
       location: location,
-      accountId: accountId
+      accountId: accountId,
+      type: type
     });
-
   };
 
-  Model.remoteMethod(
-    'mediaGet', {
-      description: '',
-      accepts: [{
+  Model.remoteMethod('mediaGet', {
+    description: '',
+    accepts: [
+      {
         arg: 'accountId',
         type: 'string',
         required: true
-      },{
+      },
+      {
         arg: 'location',
         type: 'string',
         required: true
-      },{
+      },
+      {
+        arg: 'type',
+        type: 'string',
+        required: true
+      },
+      {
         arg: 'req',
         type: 'object',
-        'http': {
+        http: {
           source: 'req'
         }
-      }],
-      returns: {
-        arg: 'result',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'post',
-        path: '/media-get'
       }
+    ],
+    returns: {
+      arg: 'result',
+      type: 'object',
+      root: true
+    },
+    http: {
+      verb: 'post',
+      path: '/media-get'
     }
-  );
-
+  });
 };
