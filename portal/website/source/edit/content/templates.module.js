@@ -1,7 +1,6 @@
 /*global Fuse:true*/
 
 module.exports = function(shared) {
-
   var vm = shared.vm;
   var helpers = shared.helpers;
   var $routeParams = shared.$routeParams;
@@ -15,23 +14,18 @@ module.exports = function(shared) {
     distance: 100,
     maxPatternLength: 32,
     minMatchCharLength: 1,
-    keys: [
-      'title',
-      'path'
-    ]
+    keys: ['title', 'path']
   };
 
   vm.restart = function(skipClear) {
-
-    if(vm.sidebar.loading){
+    if (vm.sidebar.loading) {
       return;
     }
 
     vm.sidebar.loading = true;
 
     return helpers.Model.loadTemplates()
-      .$promise
-      .then(function(result) {
+      .$promise.then(function(result) {
         if (!skipClear) {
           $location.search({});
         }
@@ -44,17 +38,14 @@ module.exports = function(shared) {
         vm.fuse = new Fuse(vm.itemsLoaded, fuseOptions);
 
         $timeout();
-
       })
       .finally(function() {
         vm.sidebar.loading = false;
       })
       .catch(console.error);
-
   };
 
   vm.selectTemplate = function(template) {
-
     if (template) {
       if (!template.id) {
         template = vm.fuse.search(template)[0];
@@ -69,10 +60,10 @@ module.exports = function(shared) {
     } else {
       template = vm.template;
     }
-    if(!template.id){
+    if (!template.id) {
       return;
     }
-    if(vm.template && (vm.template.id == template.id)){
+    if (vm.template && vm.template.id == template.id) {
       return;
     }
 
@@ -80,8 +71,7 @@ module.exports = function(shared) {
     return helpers.Model.loadTemplate({
       template: template.id
     })
-      .$promise
-      .then(function(template) {
+      .$promise.then(function(template) {
         vm.template = template;
         return vm.getTemplateItems();
       })
@@ -94,13 +84,12 @@ module.exports = function(shared) {
       .finally(function() {
         vm.sidebar.loading = false;
       });
-
   };
 
   vm.getTemplateItems = function() {
-    console.log(vm.template);
+    //console.log(vm.template);
     var query = {
-      template: vm.template.id,
+      template: vm.template.id
     };
 
     if (vm.template) {
@@ -110,16 +99,13 @@ module.exports = function(shared) {
     vm.sidebar.loading = true;
 
     return helpers.Model.loadMany(query)
-      .$promise
-      .then(function(result) {
-
+      .$promise.then(function(result) {
         vm.pages = null;
         if (!vm.template || vm.template.id != vm.template.id) {
           vm.page = null;
         }
 
         $timeout(function() {
-
           helpers.checkPages(result.pages);
           vm.itemsLoaded = result.pages;
           vm.pages = vm.itemsLoaded;
@@ -132,7 +118,6 @@ module.exports = function(shared) {
         vm.sidebar.loading = false;
       })
       .catch(console.error);
-
   };
 
   vm.$watch('template.order', function(newValue, oldValue) {
@@ -158,5 +143,4 @@ module.exports = function(shared) {
 
     vm.selectTemplate(newValue);
   });
-
 };

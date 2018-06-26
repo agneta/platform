@@ -1,78 +1,77 @@
-.page-editor{
+.template-edit-content {
+	@import ('./sortable.module');
+	@import ('./field.module');
+	@import ('./sidebar.module');
+	@import ('./data.module');
+	@import ('./heading.module');
+	@import ('./quill.module');
+	@import ('./code.module');
+	@import ('./contributor.module');
+	@import ('./push-changes.module');
 
-	@import('./sortable.module')
-	@import('./field.module')
-	@import('./sidebar.module')
-	@import('./data.module')
-	@import('./heading.module')
-	@import('./quill.module')
-	@import('./code.module')
-	@import('./contributor.module')
-	@import('./push-changes.module')
-
-	.top-bar{
-		.settings{
-			.md-icon-button{
+	.top-bar {
+		.settings {
+			.md-icon-button {
 				height: 100%;
 			}
 		}
-		md-select{
+
+		md-select {
 			margin: 0;
 		}
 	}
 
-	.edit-relation-items{
-		md-option{
+	.edit-relation-items {
+		md-option {
 			height: auto;
 			padding-bottom: 10px;
 			border-bottom: solid 1px grey;
 		}
 	}
-	.edit-item-menu{
 
-		.md-button{
+	.edit-item-menu {
+		.md-button {
 			text-align: left;
 		}
-		.delete{
+
+		.delete {
 			color: color-red;
-			md-icon{
+
+			md-icon {
 				color: color-red;
 			}
 		}
-
 	}
 
-	.page-main{
-
+	.page-main {
 		opacity: 0;
 		transition: opacity 400ms;
 		background: rgb(236, 236, 236);
 
-		&.active{
+		&.active {
 			opacity: 1;
 		}
 
-		>.path{
+		>.path {
 			text-align: center;
 			color: grey;
 			margin: 0;
 		}
 	}
 
-	.page-select{
+	.template-select {
 		text-align: center;
 
-		md-icon{
+		md-icon {
 			width: 160px;
 			height: 160px;
 			margin-bottom: 16px;
-			color: alpha(color-primary,0.4);
+			color: alpha(color-primary, 0.4);
 		}
 	}
 
-	.md-button.property{
+	.md-button.property {
 		text-transform: capitalize;
 		background: #e6e6e6;
 	}
-
 }

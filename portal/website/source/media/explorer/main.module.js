@@ -16,7 +16,7 @@
  */
 var app = angular.module('MainApp');
 
-app.service('AgMedia', function(
+app.service('AgMediaExplorer', function(
   $rootScope,
   Media,
   Media_Private,
@@ -32,25 +32,7 @@ app.service('AgMedia', function(
   Search_Engine,
   Portal
 ) {
-
-  this.public = {
-    keywordFileName: 'keywords_media_public',
-    api: 'services/api/media/',
-    partial: 'file',
-    model: Media,
-    preview: MediaPreview.public
-  };
-
-  this.private = {
-    keywordFileName: 'keywords_media_private',
-    api: 'services/api/media-private/',
-    partial: 'file-private',
-    model: Media_Private,
-    preview: MediaPreview.private
-  };
-
   this.init = function(options) {
-
     var vm = options.vm;
     var config = options.config;
 
@@ -80,7 +62,6 @@ app.service('AgMedia', function(
     //-----------------------------------------
 
     vm.openFolder = function(location) {
-
       vm.searchClear();
 
       location = location || '';
@@ -90,7 +71,6 @@ app.service('AgMedia', function(
       var locations = [];
       var result = [dirRoot];
       for (var i in dirs) {
-
         i /= 1;
 
         var dir = dirs[i];
@@ -105,12 +85,10 @@ app.service('AgMedia', function(
           name: dir,
           location: locations.join('/')
         });
-
       }
 
       vm.dirs = result;
       vm.selectDir(vm.dirs[result.length - 1]);
-
     };
 
     var startingLocation = vm.startingLocation || $routeParams.location;
@@ -120,7 +98,7 @@ app.service('AgMedia', function(
       vm.refresh();
     };
 
-    require('media/directory.module')({
+    require('./directory.module')({
       vm: vm,
       Portal: Portal,
       $location: $location,
@@ -132,6 +110,4 @@ app.service('AgMedia', function(
 
     vm.openFolder(startingLocation);
   };
-
-
 });

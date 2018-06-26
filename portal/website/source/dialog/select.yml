@@ -1,17 +1,6 @@
 controller: 'AgMediaSelect'
 
-scripts:
-  - 'media'
-
 class: dialog-file-select
 
 authorization:
   - editor
-
-styles:
-  - 'media'
-
-angular_libs:
-  -
-    js: 'lib/ng-file-upload.min'
-    dep: 'ngFileUpload'

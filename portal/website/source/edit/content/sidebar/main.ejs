@@ -1,12 +1,17 @@
 <%
 var tabs = get_data('edit/page').tabs;
 %>
-<div class="template-header" layout="row" ng-if="template" layout-align="start center">
-  <span>{{template.title}}</span>
-  <span flex></span>
-  <md-button class="md-icon-button" ng-click="restart()" aria-label="close template">
-    <md-icon md-svg-src="<%-get_icon('material/close')%>"></md-icon>
-  </md-button>
-</div>
-<%-template('ui/tabs',tabs)%>
-<%-template('ui/loader',{prop:'sidebar.loading'})%>
+  <div class="page-header"
+    layout="row"
+    ng-if="template"
+    layout-align="start center">
+    <span>{{template.title}}</span>
+    <span flex></span>
+    <md-button class="md-icon-button"
+      ng-click="restart()"
+      aria-label="close template">
+      <md-icon md-svg-src="<%-get_icon('material/close')%>"></md-icon>
+    </md-button>
+  </div>
+  <%-template('ui/tabs',tabs)%>
+    <%-template('ui/loader',{prop:'sidebar.loading'})%>

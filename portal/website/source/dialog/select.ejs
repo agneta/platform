@@ -1,13 +1,20 @@
 <md-toolbar>
-  <div class="md-toolbar-tools" layout="row" layout-align="start center" layout-margin>
+  <div class="md-toolbar-tools"
+    layout="row"
+    layout-align="start center"
+    layout-margin>
     <md-icon md-svg-src="<%-get_icon('agneta/media')%>"></md-icon>
-    <h2 class="title"><%-lng('portal.media')%></h2>
+    <h2 class="title">
+      <%-lng('portal.media')%>
+    </h2>
   </div>
 </md-toolbar>
 
-<md-dialog-content class="page-edit-media-main" flex="100" layout="column">
+<md-dialog-content class="template-edit-media-main"
+  flex="100"
+  layout="column">
   <%-template('edit/media/tabs')%>
-  <%-template('edit/media/upload')%>
+    <%-template('edit/media/upload')%>
 </md-dialog-content>
 
 <%-template('ui/loader')%>

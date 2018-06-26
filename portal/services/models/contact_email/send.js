@@ -1,12 +1,10 @@
 const _ = require('lodash');
 
 module.exports = function(Model, app) {
-
   var config = app.web.services.get('email');
   var clientHelpers = app.web.app.locals;
 
   Model.send = function(to, subject, message, req) {
-
     var accountFrom;
     var accountFromId = req.accessToken.userId;
     var Account = Model.projectModel('Account');
@@ -20,24 +18,7 @@ module.exports = function(Model, app) {
       }
     })
       .then(function(_accountFrom) {
-
         accountFrom = _accountFrom.__data;
-        return Account.findOne({
-          where:{
-            email: to
-          },
-          fields: {
-            id: true,
-            name: true,
-            email: true
-          }
-        });
-      })
-      .then(function(accountTo) {
-
-        if(accountTo){
-          to = accountTo;
-        }
 
         var from = _.extend(
           config.contacts.support || config.contacts.default,
@@ -48,8 +29,8 @@ module.exports = function(Model, app) {
 
         var picture;
 
-        if(accountFrom.picture.media){
-          picture = clientHelpers.prv_media(accountFrom.picture.media,'small');
+        if (accountFrom.picture.media) {
+          picture = clientHelpers.prv_media(accountFrom.picture.media, 'small');
         }
 
         var emailOptions = {
@@ -58,9 +39,9 @@ module.exports = function(Model, app) {
           req: req,
           subject: subject,
           templateName: 'message',
-          data:{
+          data: {
             message: message,
-            account:{
+            account: {
               name: accountFrom.name,
               picture: picture,
               position: accountFrom.team_member.position
@@ -68,49 +49,48 @@ module.exports = function(Model, app) {
           }
         };
         return app.loopback.Email.send(emailOptions);
-
       })
-      .then(function(){
+      .then(function() {
         return {
           success: 'Email sent!'
         };
       });
-
   };
 
-  Model.remoteMethod(
-    'send', {
-      description: 'Send an email to a contact',
-      accepts: [{
+  Model.remoteMethod('send', {
+    description: 'Send an email to a contact',
+    accepts: [
+      {
         arg: 'to',
-        type: 'string',
+        type: 'array',
         required: true
-      }, {
+      },
+      {
         arg: 'subject',
         type: 'string',
         required: false
-      }, {
+      },
+      {
         arg: 'message',
         type: 'string',
         required: true
-      }, {
+      },
+      {
         arg: 'req',
         type: 'object',
-        'http': {
+        http: {
           source: 'req'
         }
       }
-      ],
-      returns: {
-        arg: 'result',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'post',
-        path: '/send'
-      }
+    ],
+    returns: {
+      arg: 'result',
+      type: 'object',
+      root: true
+    },
+    http: {
+      verb: 'post',
+      path: '/send'
     }
-  );
-
+  });
 };

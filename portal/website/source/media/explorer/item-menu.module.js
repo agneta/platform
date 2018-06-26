@@ -15,30 +15,38 @@
  *   limitations under the License.
  */
 
-agneta.directive('mediaItem', function($mdMenu,$element, EditFile, $rootScope, $mdDialog) {
-
+agneta.directive('mediaItem', function(
+  $mdMenu,
+  $element,
+  EditFile,
+  $rootScope,
+  $mdDialog
+) {
   var scope = this;
 
   function prompt(options) {
-
     var action = options.action;
-    var confirm = $mdDialog.prompt()
+    var confirm = $mdDialog
+      .prompt()
       .title(action + ' object')
       .textContent(options.message)
-      .placeholder('Location')
+      .placeholder(options.placeholder || 'Location')
       .ok(action)
       .cancel('Cancel');
 
+    confirm.nested = true;
     return $mdDialog.show(confirm);
-
   }
 
-  function handlePromise(options){
+  function handlePromise(options) {
     options.before
-      .then(function(result){
-        scope.$parent.loading = true;
-        return options.after(result);
-      })
+      .then(
+        function(result) {
+          scope.$parent.loading = true;
+          return options.after(result);
+        },
+        function() {}
+      )
       .finally(function() {
         scope.$parent.loading = false;
         scope.object.onChange();
@@ -46,25 +54,25 @@ agneta.directive('mediaItem', function($mdMenu,$element, EditFile, $rootScope, $
   }
 
   scope.renameObject = function() {
-
     handlePromise({
       before: prompt({
         action: 'rename',
-        message: 'Enter the name of the object'
+        message: `
+        Enter the name of the object.</br>
+        Original name: ${scope.object.name}
+        `,
+        placeholder: 'Name'
       }),
       after: function(name) {
         return scope.mediaModel.updateFile({
           location: scope.object.location,
           name: name
-        })
-          .$promise;
+        }).$promise;
       }
     });
-
   };
 
   scope.moveObject = function() {
-
     handlePromise({
       before: prompt({
         action: 'move',
@@ -74,15 +82,12 @@ agneta.directive('mediaItem', function($mdMenu,$element, EditFile, $rootScope, $
         return scope.mediaModel.moveObject({
           source: scope.object.location,
           target: dirTarget + '/' + scope.object.name
-        })
-          .$promise;
+        }).$promise;
       }
     });
-
   };
 
   scope.copyObject = function() {
-
     handlePromise({
       before: prompt({
         action: 'copy',
@@ -92,16 +97,14 @@ agneta.directive('mediaItem', function($mdMenu,$element, EditFile, $rootScope, $
         return scope.mediaModel.copyObject({
           source: scope.object.location,
           target: dirTarget + '/' + scope.object.name
-        })
-          .$promise;
+        }).$promise;
       }
     });
-
   };
 
   scope.deleteObject = function() {
-
-    var confirm = $mdDialog.confirm()
+    var confirm = $mdDialog
+      .confirm()
       .title('Are you sure about deleting this object?')
       .ariaLabel('delete object')
       .ok('Yes')
@@ -112,23 +115,20 @@ agneta.directive('mediaItem', function($mdMenu,$element, EditFile, $rootScope, $
       after: function() {
         return scope.mediaModel.deleteObject({
           location: scope.object.location
-        })
-          .$promise;
+        }).$promise;
       }
     });
-
   };
 
   agneta.contextMenu({
     scope: scope,
     element: $element,
     template: 'media-item-menu.html',
-    onOpen: function(){
+    onOpen: function() {
       scope.object.selected = true;
     },
-    onClose: function(){
+    onClose: function() {
       scope.object.selected = false;
     }
   });
-
 });

@@ -16,10 +16,6 @@
  */
 
 (function() {
-
-  require('media/file.module');
-  require('media/preview.module');
-  require('media/item-menu.module');
-  require('media/main.module');
-
+  require('./preview.module');
+  require('./options.module');
 })();

@@ -18,14 +18,14 @@
 /*global _:true*/
 
 module.exports = function(vm, helpers) {
-
   vm.dragControlListeners = {
     accept: function(sourceItemHandleScope, destSortableScope) {
-      return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
+      return (
+        sourceItemHandleScope.itemScope.sortableScope.$id ===
+        destSortableScope.$id
+      );
     },
-    itemMoved: function() {
-
-    },
+    itemMoved: function() {},
     orderChanged: function() {},
     containment: '.data-node',
     containerPositioning: 'relative'
@@ -42,17 +42,19 @@ module.exports = function(vm, helpers) {
   };
 
   vm.addValue = function(field, parent, key) {
-
     var parentValue = parent.__value || parent;
 
     if (field.fields) {
-
       var childField = _.find(field.fields, {
         name: key
       });
 
       if (!childField) {
-        return console.error('Must provide the right key for the field:', field, key);
+        return console.error(
+          'Must provide the right key for the field:',
+          field,
+          key
+        );
       }
 
       var type = childField.valueType || childField.type;
@@ -60,26 +62,21 @@ module.exports = function(vm, helpers) {
 
       switch (type) {
         case 'date-time':
-          if(value){
+          if (value) {
             value = new Date(value);
-          }else{
+          } else {
             value = Date.now();
           }
-          console.log(value);
+          //console.log(value);
 
           break;
       }
       key = pushValue(value);
 
-      helpers.fixValue(
-        parent,
-        key,
-        childField
-      );
+      helpers.fixValue(parent, key, childField);
     }
 
     function pushValue(value) {
-
       switch (field.type) {
         case 'array':
           var length = parentValue.length;
@@ -93,16 +90,16 @@ module.exports = function(vm, helpers) {
           parentValue[key] = value;
           return key;
         default:
-          console.error('Cannot add value to an unrecognised type: ', field.type);
+          console.error(
+            'Cannot add value to an unrecognised type: ',
+            field.type
+          );
           break;
       }
-
     }
-
   };
 
   vm.objectField = function(childField, parentField, parent, key) {
-
     var parentValue = parent.__value;
     var validators = childField.validators;
     var required = (validators && validators.required) || childField.required;
@@ -110,7 +107,6 @@ module.exports = function(vm, helpers) {
     if (required && !parentValue[key]) {
       vm.addValue(parentField, parent, key);
     }
-
   };
 
   vm.onFieldSelect = function(parentField, parentData, childField, key) {
@@ -127,7 +123,6 @@ module.exports = function(vm, helpers) {
   };
 
   vm.excerpt = function excerpt(data) {
-
     var res = vm.edit.lng(data);
     if (res) {
       return res;
@@ -143,5 +138,4 @@ module.exports = function(vm, helpers) {
 
     return data;
   };
-
 };

@@ -15,8 +15,7 @@
  *   limitations under the License.
  */
 
-agneta.directive('AgEditFile', function(data, EditFile,AgMedia) {
-
+agneta.directive('AgEditFile', function(data, EditFile, AgMedia) {
   var vm = this;
 
   agneta.extend(vm, 'AgDialogCtrl');
@@ -26,6 +25,9 @@ agneta.directive('AgEditFile', function(data, EditFile,AgMedia) {
   //-------------------------------------------------------------
 
   data.media = data.media || AgMedia.public;
+  if (angular.isString(data.media)) {
+    data.media = AgMedia[data.media];
+  }
   var MediaPreview = data.media.preview;
 
   //-------------------------------------------------------------
@@ -37,7 +39,6 @@ agneta.directive('AgEditFile', function(data, EditFile,AgMedia) {
   }
 
   vm.getIcon = function() {
-
     var icon = MediaPreview.objectIcon(vm.file);
     if (!icon) {
       icon = agneta.get_media('icons/agneta/media');
@@ -60,5 +61,4 @@ agneta.directive('AgEditFile', function(data, EditFile,AgMedia) {
       }
     }
   });
-
 });

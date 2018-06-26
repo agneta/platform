@@ -14,8 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-agneta.directive('AgMediaPrivate',function(AgMedia){
-  AgMedia.init({
+agneta.directive('AgMediaPrivate', function(AgMediaExplorer, AgMedia) {
+  AgMediaExplorer.init({
     vm: this,
     config: AgMedia.private
   });

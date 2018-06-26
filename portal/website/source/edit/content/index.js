@@ -18,8 +18,23 @@
 /*global _:true*/
 
 require('edit/content/field-menu.module');
-agneta.directive('AgEditMainCtrl', function($rootScope, $injector,$q, $routeParams, $parse, $ocLazyLoad, $timeout, $mdToast, Account, GIT, $location, $mdDialog, Upload, Portal, AgMedia, Role_Editor) {
-
+agneta.directive('AgEditMainCtrl', function(
+  $rootScope,
+  $injector,
+  $q,
+  $routeParams,
+  $parse,
+  $ocLazyLoad,
+  $timeout,
+  $mdToast,
+  Account,
+  GIT,
+  $location,
+  $mdDialog,
+  Portal,
+  AgMedia,
+  Role_Editor
+) {
   var vm = this;
   var helpers = {};
   var scopeEdit = vm;
@@ -33,7 +48,6 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $injector,$q, $routePara
   vm.page = null;
 
   vm.edit.lang = agneta.lang;
-
 
   var shared = {
     vm: vm,
@@ -61,10 +75,16 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $injector,$q, $routePara
   require('edit/content/main.module')(shared);
   require('edit/content/search.module')(vm, $timeout);
   require('edit/content/source.module')(vm, $mdDialog, $timeout);
-  require('edit/content/contributor.module')(vm, $rootScope, Account, Portal, $timeout, Role_Editor);
+  require('edit/content/contributor.module')(
+    vm,
+    $rootScope,
+    Account,
+    Portal,
+    $timeout,
+    Role_Editor
+  );
 
   vm.onKeyPress = function(event) {
-
     var languages = $$template.configGet('languages');
     // CTRL + SHIFT + S : Save Changes
     if (event.ctrlKey && event.shiftKey && event.keyCode == 19) {
@@ -157,6 +177,4 @@ agneta.directive('AgEditMainCtrl', function($rootScope, $injector,$q, $routePara
   };
 
   vm.$broadcast('code:ready');
-
-
 });

@@ -1,36 +1,62 @@
-md-dialog.ag-email-compose{
+md-dialog.ag-email-compose {
   position: relative;
-  .fields{
-    .field{
-      background: color-primary;
+  width: 1000px;
+
+  >.content {
+    padding: 8px;
+  }
+
+  .header {
+    padding-bottom: 10px;
+    padding-right: 10px;
+  }
+
+  .md-chips-messages {
+    color: #d60707;
+    padding-top: 10px;
+    font-size: 0.8em;
+  }
+
+  .fields {
+    .field {
       padding: 2px;
       border-radius: 3px;
-      .title{
-        color: white;
+
+      .title {
         padding-left: 10px;
         min-width: 80px;
       }
     }
-    input{
+
+    .box {
+      background: whitesmoke;
+      border-left: solid 2px #1394af;
+    }
+
+    input {
       border-radius: 3px;
       line-height: 2em;
       width: 100%;
       padding: 0 10px;
       box-sizing: border-box;
     }
-    ng-quill-editor{
-      >div{
-        border-radius: 2px;
-        background: white;
+
+    ng-quill-editor {
+      >div {
+        border-left: solid 2px #1394af;
+        background: whitesmoke;
       }
     }
-    .ql-toolbar{
+
+    .ql-toolbar {
       border: none;
     }
-    .ql-editor{
+
+    .ql-editor {
       min-height: 320px;
     }
-    .ql-container{
+
+    .ql-container {
       border: none;
     }
   }

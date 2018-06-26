@@ -14,8 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-agneta.directive('AgMediaSelect', function(data, $mdDialog, AgMedia) {
-
+agneta.directive('AgMediaSelect', function(data, $mdDialog, AgMediaExplorer) {
   var vm = this;
 
   agneta.extend(vm, 'AgDialogCtrl');
@@ -23,7 +22,12 @@ agneta.directive('AgMediaSelect', function(data, $mdDialog, AgMedia) {
   vm.startingLocation = data.file.dir;
 
   vm.openObject = function(object) {
-    data.onSelect(object);
+    if (data.onSelect) {
+      data.onSelect(object);
+    }
+    if (data.onApply) {
+      data.onApply(object);
+    }
     $mdDialog.hide();
   };
 
@@ -37,9 +41,8 @@ agneta.directive('AgMediaSelect', function(data, $mdDialog, AgMedia) {
     }
   };
 
-  AgMedia.init({
+  AgMediaExplorer.init({
     vm: vm,
     config: data.media
   });
-
 });

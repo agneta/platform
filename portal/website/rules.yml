@@ -19,12 +19,9 @@
         path: 'lib/moment/moment.min'
         priority: 0
       - 'edit/content'
-      - 'media'
-      - 'lib/fuse.min'
       - 'lib/mdPickers.min'
       - lib/ng-quill
       - lib/ng-sortable.min
-      - lib/ng-file-upload.min
       - lib/angular-moment.min
     styles:
       - 'lib/quill.snow'
@@ -65,17 +62,26 @@
     - "email/inbox"
 -
   data:
+    scripts:
+      - 'media/preview'
+  templates:
+    - 'edit/content'
+    - 'dialog/email-compose'
+-
+  data:
     angular_libs:
       -
         priority: 0
         js: 'lib/ng-file-upload.min'
         dep: 'ngFileUpload'
     scripts:
-      - 'media'
+      - 'media/explorer'
+      - 'media/preview'
       - 'lib/fuse.min'
     styles:
-      - 'media'
+      - 'media/explorer'
   templates:
+    - 'dialog/select'
     - edit/media/main
 -
   data:

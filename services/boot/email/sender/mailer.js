@@ -19,11 +19,9 @@ const Promise = require('bluebird');
 const assert = require('assert');
 const validator = require('validator');
 
-function Mailer() {
-}
+function Mailer() {}
 
-Mailer.send = function(options,cb) {
-
+Mailer.send = function(options, cb) {
   var dataSource = this.dataSource;
   var settings = dataSource && dataSource.settings;
   var connector = dataSource.connector;
@@ -32,7 +30,6 @@ Mailer.send = function(options,cb) {
 
   return Promise.resolve()
     .then(function() {
-
       if (!options.req) {
         throw new Error('Must have a request object to send email');
       }
@@ -41,21 +38,22 @@ Mailer.send = function(options,cb) {
         throw new Error('Must provide an email to send to');
       }
 
-      if(!_.isArray(options.to)){
+      if (!_.isArray(options.to)) {
         options.to = [options.to];
       }
 
-      options.to = options.to.map(function(contact){
+      options.to = options.to.map(function(contact) {
         return checkContact(contact);
       });
 
-      options.from = options.from || _.get(connector.config,'contacts.default.email');
+      options.from =
+        options.from || _.get(connector.config, 'contacts.default.email');
       options.from = checkContact(options.from);
 
       //--------------------------------------------------
 
       var language = settings.app.getLng(options.req);
-      var emailData = _.extend({},options.data, {
+      var emailData = _.extend({}, options.data, {
         info: connector.config.info,
         language: language
       });
@@ -64,19 +62,23 @@ Mailer.send = function(options,cb) {
         from: options.from
       };
 
-      function checkContact(contact){
-        if(_.isString(contact)){
+      function checkContact(contact) {
+        if (_.isString(contact)) {
           contact = {
             email: contact
           };
         }
-        if(!_.isObject(contact)){
+        if (!_.isObject(contact)) {
           throw new Error(`Invalid type for contact: ${contact}`);
         }
-        if(contact.name && _.isObject(contact.name)){
-          contact.name = settings.app.lng(contact.name,options.req);
+        if (contact.name && _.isObject(contact.name)) {
+          contact.name = settings.app.lng(contact.name, options.req);
         }
-        if(!_.isString(contact.email) || !validator.isEmail(contact.email)){
+        if (contact.address) {
+          contact.email = contact.address;
+          delete contact.address;
+        }
+        if (!_.isString(contact.email) || !validator.isEmail(contact.email)) {
           throw new Error(`Email contact is not valid: ${contact.email}`);
         }
         return contact;
@@ -92,7 +94,8 @@ Mailer.send = function(options,cb) {
 
       var renderResult = template.render(emailData);
       emailOptions.html = renderResult.html;
-      emailOptions.text = renderResult.text || connector.config.text(emailOptions.html);
+      emailOptions.text =
+        renderResult.text || connector.config.text(emailOptions.html);
 
       //--------------------------------------------------
 
@@ -102,8 +105,8 @@ Mailer.send = function(options,cb) {
         subject = settings.app.lng(subject, language);
       }
 
-      if(connector.subjectPrefix){
-        subject = settings.app.lng(connector.subjectPrefix,language) + subject;
+      if (connector.subjectPrefix) {
+        subject = settings.app.lng(connector.subjectPrefix, language) + subject;
       }
 
       emailOptions.subject = subject;
@@ -114,23 +117,24 @@ Mailer.send = function(options,cb) {
 
       var contactEmail;
       return Promise.resolve()
-        .then(function(){
-          if(emailOptions.to.id){
+        .then(function() {
+          if (emailOptions.to.id) {
             return emailOptions.to;
           }
           return settings.app.models.Account.findOne({
-            where:{
+            where: {
               email: emailOptions.to.email
             },
-            fields:{
+            fields: {
               id: true
             }
           });
         })
-        .then(function(accountTo){
+        .then(function(accountTo) {
           accountTo = accountTo || {};
           return settings.app.models.Contact_Email.create({
-            accountFromId: emailOptions.from.id || _.get(options.req,'accessToken.userId'),
+            accountFromId:
+              emailOptions.from.id || _.get(options.req, 'accessToken.userId'),
             accountToId: accountTo.id,
             emailTo: emailOptions.to,
             emailFrom: emailOptions.from,
@@ -139,32 +143,31 @@ Mailer.send = function(options,cb) {
             html: emailOptions.html
           });
         })
-        .then(function(_contactEmail){
+        .then(function(_contactEmail) {
           contactEmail = _contactEmail;
           return connector.provider.send(emailOptions);
         })
-        .then(function(){
+        .then(function() {
           return contactEmail.updateAttributes({
             status: 'success'
           });
         })
-        .catch(function(err){
-          return contactEmail.updateAttributes({
-            status: 'error',
-            error: err
-          })
-            .then(function(){
+        .catch(function(err) {
+          return contactEmail
+            .updateAttributes({
+              status: 'error',
+              error: err
+            })
+            .then(function() {
               return Promise.reject(err);
             });
         });
-
     })
-    .catch(function(err){
+    .catch(function(err) {
       err.statusCode = 400;
       return Promise.reject(err);
     })
     .asCallback(cb);
-
 };
 
 Mailer.prototype.send = function(fn) {

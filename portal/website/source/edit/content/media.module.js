@@ -15,7 +15,6 @@
  *   limitations under the License.
  */
 module.exports = function(vm, AgMedia, $mdDialog, helpers) {
-
   var media = {};
 
   media.editPrivate = function(field, parent, key) {
@@ -26,9 +25,7 @@ module.exports = function(vm, AgMedia, $mdDialog, helpers) {
     media.edit(field, parent, key, false);
   };
 
-
   media.edit = function(field, parent, key, isPrivate) {
-
     var parentValue = parent.__value || parent;
     var dataValue = parentValue[key].__value;
     var mediaOptions = AgMedia.public;
@@ -40,7 +37,6 @@ module.exports = function(vm, AgMedia, $mdDialog, helpers) {
     if (isPrivate) {
       dataValue.private = true;
       mediaOptions = AgMedia.private;
-
     } else {
       delete dataValue.private;
     }
@@ -48,44 +44,24 @@ module.exports = function(vm, AgMedia, $mdDialog, helpers) {
     //-----------------------------
     // Select media as a default
 
-    if(!dataValue || !dataValue.location){
-
-      $mdDialog.open({
-        nested: true,
-        partial: 'select',
-        data: {
-          media: mediaOptions,
-          file: {
-            dir: helpers.getBasePath()
-          },
-          onSelect: function(object) {
-            onApply(object);
-          }
-        }
-      });
-
-      return;
-    }
-
-    //-----------------------------
-
-    $mdDialog.open({
-      partial: mediaOptions.partial,
+    AgMedia.explorer({
+      type: mediaOptions,
       data: {
-        config: {
-          nameLock: field.default_name ? true : false,
-          dirLock: true
-        },
-        media: mediaOptions,
         location: dataValue.location,
         name: field.default_name,
         dir: helpers.getBasePath(),
         onApply: onApply,
         onDelete: function() {
           vm.removeValue(key, parentValue);
+        },
+        config: {
+          nameLock: field.default_name ? true : false,
+          dirLock: true
         }
       }
     });
+
+    //-----------------------------
 
     function onApply(file) {
       //console.log(file);
@@ -94,7 +70,6 @@ module.exports = function(vm, AgMedia, $mdDialog, helpers) {
       dataValue.updatedAt = file.updatedAt;
       helpers.setFilePath(dataValue, file.location);
     }
-
   };
 
   function getMedia(data) {
@@ -106,7 +81,6 @@ module.exports = function(vm, AgMedia, $mdDialog, helpers) {
   }
 
   media.backgroundImage = function(child, size) {
-
     var data = helpers.dataValue(child);
     var media = getMedia(data);
 
@@ -117,7 +91,6 @@ module.exports = function(vm, AgMedia, $mdDialog, helpers) {
     if (data.location && data.type) {
       return media.preview.backgroundImage(data, size);
     }
-
   };
 
   media.getIcon = function(child) {
@@ -133,5 +106,4 @@ module.exports = function(vm, AgMedia, $mdDialog, helpers) {
   };
 
   vm.media = media;
-
 };
