@@ -15,25 +15,26 @@
  *   limitations under the License.
  */
 (function() {
-
-  agneta.directive('AgPreviewEmailCtrl', function($sce,SocketIO, $rootScope, Contact_Email) {
-
+  agneta.directive('AgPreviewEmailCtrl', function(
+    $sce,
+    SocketIO,
+    $rootScope,
+    Contact_Email
+  ) {
     var vm = this;
     var email = {};
     vm.email = email;
     var socket = SocketIO.connect('email');
-    socket.on('edit',function(data) {
-      if(data.global || email.template.name==data.name){
+    socket.on('edit', function(data) {
+      if (data.global || email.template.name == data.name) {
         email.loadTemplate(data.name);
       }
     });
 
-    Contact_Email.templateList()
-      .$promise
-      .then(function(result) {
-        email.templates = result.list;
-        email.loadTemplate(result.list[0]);
-      });
+    Contact_Email.templateList().$promise.then(function(result) {
+      email.templates = result.list;
+      email.loadTemplate(result.list[0]);
+    });
 
     email.lang = agneta.lang;
 
@@ -44,16 +45,11 @@
       Contact_Email.templateRender({
         name: item,
         lng: email.lang
-      })
-        .$promise
-        .then(function(result) {
-          $rootScope.loadingMain = false;
-          result.html = $sce.trustAsHtml(result.html);
-          email.template = result;
-        });
-
+      }).$promise.then(function(result) {
+        $rootScope.loadingMain = false;
+        result.html = $sce.trustAsHtml(result.html);
+        email.template = result;
+      });
     };
-
   });
-
 })();

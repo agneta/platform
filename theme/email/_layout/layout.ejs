@@ -1,77 +1,28 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<mjml>
+  <mj-head>
+    <mj-title>
+      <%-lng(locals.title)%>
+    </mj-title>
+    <mj-font name="Roboto"
+      href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500"></mj-font>
+    <mj-attributes>
+      <mj-all font-family="Roboto, Montserrat, Helvetica, Arial, sans-serif"></mj-all>
+      <mj-text font-weight="400"
+        font-size="14px"
+        color="#424141"
+        line-height="24px"></mj-text>
+      <mj-section padding="0px"></mj-section>
+    </mj-attributes>
+    <mj-style inline="inline">
+      <%-locals.style%>
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#F2F2F2">
 
-<head>
-  <meta http-equiv="Content-Type"
-    content="text/html; charset=utf-8" />
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <!--[if !mso]><!-->
-  <meta http-equiv="X-UA-Compatible"
-    content="IE=Edge" />
-  <!--<![endif]-->
-  <!--[if (gte mso 9)|(IE)]><style type="text/css">
-table {border-collapse: collapse;}
-table, td {mso-table-lspace: 0pt;mso-table-rspace: 0pt;}
-img {-ms-interpolation-mode: bicubic;}
-</style>
-<![endif]-->
-</head>
-
-<body>
-  <center class="wrapper">
-    <div class="webkit">
-      <!--[if (gte mso 9)|(IE)]>
-<table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
-<tr>
-<td>
-<![endif]-->
-      <table class="outer"
-        align="center"
-        cellpadding="0"
-        cellspacing="0"
-        border="0">
-        <tr>
-          <td>
-            <table class="main content wrapper"
-              width="100%"
-              cellpadding="0"
-              cellspacing="0"
-              border="0">
-              <tr>
-                <td align="center">
-                  <table width="100%"
-                    cellpadding="0"
-                    cellspacing="0"
-                    border="0">
-                    <%-template('_layout/header')%>
-                      <tr>
-                        <td class="body-wrapper">
-                          <div width="85%"
-                            cellpadding="0"
-                            cellspacing="0"
-                            border="0">
-                            <%-template('_layout/title')%>
-                              <%-template(templatePath)%>
-                          </div>
-                        </td>
-                      </tr>
-                      <%-template('_layout/footer')%>
-                  </table>
-                </td>
-              </tr>
-        </tr>
-        <td height="40"
-          class="spacer">&nbsp;</td>
-        </tr>
-        </table>
-        <!--[if (gte mso 9)|(IE)]>
-                        	</td>
-                        	</tr>
-                        	</table>
-                        	<![endif]-->
-    </div>
-  </center>
-</body>
-
-</html>
+    <%-template('_layout/header')%>
+      <mj-wrapper css-class="content">
+        <%-template(templatePath)%>
+      </mj-wrapper>
+      <%-template('_layout/footer')%>
+  </mj-body>
+</mjml>

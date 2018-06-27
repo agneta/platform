@@ -14,11 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const cheerio = require('cheerio');
 const _ = require('lodash');
 
-module.exports = function(Model,app) {
-
+module.exports = function(Model, app) {
   Model.templateRender = function(name, lng) {
     var template;
     var html;
@@ -26,27 +24,24 @@ module.exports = function(Model,app) {
       .then(function() {
         template = Model.__email.templates[name];
 
-        if(!template){
+        if (!template) {
           return Promise.reject({
             statusCode: 400,
             message: `Email template could not be found with name ${name}`
           });
         }
 
-        var result = null;
-
-        try{
-          result = template.render({
-            language: lng
-          });
-        }catch(err){
-          console.log(err);
-          html = err.toString();
-        }
-
-        if(result){
-          var $ = cheerio.load(result.html);
-          html = $.html(changeTag.call($('body'), $, 'div'));
+        return template.render({
+          language: lng
+        });
+      })
+      .catch(function(err) {
+        //console.log(err);
+        html = err.toString();
+      })
+      .then(function(result) {
+        if (result) {
+          html = result.html;
         }
 
         //console.log('email html',result);
@@ -54,47 +49,33 @@ module.exports = function(Model,app) {
         return {
           name: name,
           html: html,
-          data: app.lngScan(_.pick(template.data,['subject','from']),lng)
+          data: app.lngScan(_.pick(template.data, ['subject', 'from']), lng)
         };
-
       });
-
   };
 
-  function changeTag($, tag) {
-    var elm = this[0];
-    if(!elm){
-      return;
-    }
-    var replacement = $('<' + tag + '>');
-    replacement.attr(elm.attribs);
-    replacement.data(this.data());
-    replacement.append(this.children());
-    return replacement;
-  }
-
-  Model.remoteMethod(
-    'templateRender', {
-      description: 'Render an email template',
-      accepts: [{
+  Model.remoteMethod('templateRender', {
+    description: 'Render an email template',
+    accepts: [
+      {
         arg: 'name',
         type: 'string',
         required: true
-      }, {
+      },
+      {
         arg: 'lng',
         type: 'string',
         required: true
-      }],
-      returns: {
-        arg: 'result',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'post',
-        path: '/template-render'
       }
+    ],
+    returns: {
+      arg: 'result',
+      type: 'object',
+      root: true
+    },
+    http: {
+      verb: 'post',
+      path: '/template-render'
     }
-  );
-
+  });
 };

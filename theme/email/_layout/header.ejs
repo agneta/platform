@@ -1,10 +1,14 @@
-<%if(locals.preheader){%>
-  <%-template('_layout/preheader')%>
-<%}%>
-<tr>
-  <td align="center" class="logo">
-    <!--Add Logo-->
-    <a href="##" target="_blank"><img src="<%-get_media(logo.src)%>" width="<%-logo.width%>" height="<%-logo.height%>" alt="Logo" border="0" /></a>
-    <!--Add Logo-->
-  </td>
-</tr>
+<mj-section padding="10px 0 20px 0">
+  <mj-column>
+    <mj-image href="<%-locals.info.url%>"
+      src="<%-get_media(logo.src)%>"
+      alt="logo"
+      align="center"
+      border="none"
+      width="300"
+      padding-left="0px"
+      padding-right="0px"
+      padding-bottom="0px"
+      padding-top="0"></mj-image>
+  </mj-column>
+</mj-section>

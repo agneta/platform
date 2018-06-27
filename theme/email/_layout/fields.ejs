@@ -1,10 +1,16 @@
-<table class="data fields">
-  <tbody>
-    <%for(var name in fields){var field = fields[name]%>
-      <tr>
-      <td class="title"><%-lng(field.title)||name%></td>
-      <td class="value"><%-field.value%></td>
-      </tr>
-      <% } %>
-    </tbody>
-  </table>
+<mj-section css-class="data fields">
+  <mj-column>
+    <mj-table>
+      <%for(var name in fields){var field = fields[name]%>
+        <tr>
+          <td class="title">
+            <%-lng(field.title)||name%>
+          </td>
+          <td class="value">
+            <%-field.value%>
+          </td>
+        </tr>
+        <% } %>
+    </mj-table>
+  </mj-column>
+</mj-section>

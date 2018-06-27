@@ -101,6 +101,7 @@
     "mime-types": "2.1.18",
     "minimatch": "3.0.4",
     "minimize": "2.2.0",
+    "mjml": "^4.0.5",
     "moment": "2.22.2",
     "moment-timezone": "0.5.20",
     "mongodb": "3.0.10",

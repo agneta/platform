@@ -18,7 +18,7 @@ const _ = require('lodash');
 const Promise = require('bluebird');
 const assert = require('assert');
 const validator = require('validator');
-var prettyBytes = require('pretty-bytes');
+const prettyBytes = require('pretty-bytes');
 const attachmentMaxSize = 25 * 1000 * 1000;
 
 function Mailer() {}
@@ -28,7 +28,9 @@ Mailer.send = function(options, cb) {
   var settings = dataSource && dataSource.settings;
   var connector = dataSource.connector;
   var app = settings.app;
-
+  var emailOptions = {};
+  var template = connector.config.templates[options.templateName];
+  var language;
   assert(connector, 'Cannot send mail without a connector!');
 
   return Promise.resolve()
@@ -55,15 +57,11 @@ Mailer.send = function(options, cb) {
 
       //--------------------------------------------------
 
-      var language = app.getLng(options.req);
+      language = app.getLng(options.req);
       var emailData = _.extend({}, options.data, {
-        info: connector.config.info,
         language: language
       });
-      var emailOptions = {
-        to: options.to,
-        from: options.from
-      };
+      emailOptions = _.pick(options, ['to', 'from']);
 
       function checkContact(contact) {
         if (_.isString(contact)) {
@@ -87,15 +85,13 @@ Mailer.send = function(options, cb) {
         return contact;
       }
 
-      //--------------------------------------------------
-
-      var template = connector.config.templates[options.templateName];
-
       if (!template) {
         throw new Error(`Email template not found: ${options.templateName}`);
       }
 
-      var renderResult = template.render(emailData);
+      return template.render(emailData);
+    })
+    .then(function(renderResult) {
       emailOptions.html = renderResult.html;
       emailOptions.text =
         renderResult.text || connector.config.text(emailOptions.html);

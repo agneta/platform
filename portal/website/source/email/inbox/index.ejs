@@ -39,8 +39,8 @@
           <%-template('./address',page.address.cc)%>
     </div>
     <div class="box email-content">
-      <div ng-bind-html="email.data.html">
-      </div>
+      <iframe srcdoc="{{ email.data.html}}"
+        frameborder="0"></iframe>
       <div ng-if="!email.data.html">
         <p>
           There are no message in this email
