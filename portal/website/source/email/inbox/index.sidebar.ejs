@@ -5,38 +5,29 @@
   </md-list-item>
 </md-list>
 
-<div ng-show="email.list"
+<section ng-show="email.list"
   layout="column"
   class="ag-margin list-email">
-  <div class="header"
-    layout="row"
-    layout-align="start center">
-    <span>{{accounts.selected.email}}</span>
-    <span flex="auto"></span>
-    <md-button class="md-icon-button"
-      ng-click="accounts.close()">
-      <md-icon md-svg-src=<%-get_icon(
-        "material/close")%> aria-label="Cancel"></md-icon>
-    </md-button>
-  </div>
-  <div class="ag-margin"
+  <md-subheader>
+    <div class="header"
+      layout="row"
+      layout-align="start center">
+      <span>{{accounts.selected.email}}</span>
+      <span flex="auto"></span>
+      <md-button class="md-icon-button"
+        ng-click="accounts.close()">
+        <md-icon md-svg-src=<%-get_icon(
+          "material/close")%> aria-label="Cancel"></md-icon>
+      </md-button>
+    </div>
+  </md-subheader>
+  <md-list class="items"
     layout="column">
     <div class="ag-list-item ag-margin"
       ng-repeat="item in email.list"
       ng-click="email.open(item)"
-      ng-class="{active:item==email.selected}"
+      ng-class="{active:item==email.selected,unread:!item.read}"
       layout="row">
-
-      <div>
-        <md-icon class="unread"
-          ng-if="!item.read"
-          md-svg-src="<%-get_icon('material/mail')%>">
-        </md-icon>
-        <md-icon class="read"
-          ng-if="item.read"
-          md-svg-src="<%-get_icon('material/drafts')%>">
-        </md-icon>
-      </div>
 
       <div flex="auto"
         class="item"
@@ -45,18 +36,17 @@
           layout-align="start center"
           class="title ag-margin"
           ng-init="from=item.from[0]">
-          <span class="name"
-            ng-if="from.name">
-            {{from.name}}
-          </span>
           <span flex="auto"
-            class="address">
-            {{from.address}}
+            class="name">
+            {{from.name||from.address}}
+          </span>
+          <span class="date">
+            {{item.date | amDateFormat:'L'}}
           </span>
         </div>
         <span class="subject">{{item.subject}}</span>
       </div>
 
     </div>
-  </div>
-</div>
+  </md-list>
+</section>

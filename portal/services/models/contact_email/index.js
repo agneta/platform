@@ -15,26 +15,23 @@
  *   limitations under the License.
  */
 module.exports = function(Model, app) {
-
   Model.io = app.socket.namespace({
     name: 'email',
     auth: {
-      allow: [
-        'administrator',
-        'editor'
-      ]
+      allow: ['administrator', 'editor']
     }
   });
 
   Model.__email = app.web.services.get('email');
 
-  require('./inbox/list')(Model,app);
-  require('./inbox/load')(Model,app);
-  require('./inbox/accounts')(Model,app);
+  require('./inbox/list')(Model, app);
+  require('./inbox/load')(Model, app);
+  require('./inbox/accounts')(Model, app);
 
-  require('./template/list')(Model,app);
-  require('./template/render')(Model,app);
-  require('./template/onEdit')(Model,app);
+  require('./template/list')(Model, app);
+  require('./template/render')(Model, app);
+  require('./template/onEdit')(Model, app);
 
-  require('./send')(Model,app);
+  require('./send')(Model, app);
+  require('./html')(Model, app);
 };

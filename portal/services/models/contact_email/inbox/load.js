@@ -24,6 +24,7 @@ module.exports = function(Model) {
         });
       })
       .then(function(result) {
+        result.html = Model.html(result.html);
         return result;
       });
   };

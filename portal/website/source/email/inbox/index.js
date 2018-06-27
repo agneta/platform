@@ -29,8 +29,6 @@ agneta.directive('AgEmailInbox', function(
     });
   };
 
-  setInterval(accounts.loadEmails, 5000);
-
   accounts.open = function(account) {
     accounts.selected = account;
     $location.search({
@@ -51,7 +49,7 @@ agneta.directive('AgEmailInbox', function(
     Contact_Email.inboxLoad({
       emailId: item.id
     }).$promise.then(function(result) {
-      $sce.trustAsHtml(result.html);
+      result.html = $sce.trustAsHtml(result.html);
       email.data = result;
     });
   };

@@ -29,30 +29,42 @@
     }
   }
 
+  .md-sidenav-left {
+    md-content {
+      background: #ececec;
+    }
+  }
+
   .list-email {
+    .md-subheader .md-subheader-inner {
+      padding: 0;
+    }
+
     .header {
       padding: 10px;
       background: whitesmoke;
-      border-bottom: solid 2px color-primary;
+      box-shadow: 0 2px 2px grey;
+    }
+
+    .items {
+      margin: 0;
+      padding: 0;
     }
 
     .ag-list-item {
       padding: 10px;
+      border-bottom: solid 1px #cacaca;
 
-      md-icon {
-        width: 16px;
-        height: 16px;
-        color: white;
-        background: #b3b3b3;
-        border-radius: 100%;
-        padding: 3px;
+      &.unread {
+        background: white;
+        border-right: solid 3px #008aff;
+      }
 
-        &.read {
-          background: #0ec138;
-        }
+      &.active {
+        background: grey !important;
 
-        &.unread {
-          background: #ff6300;
+        .date {
+          color: white;
         }
       }
     }
@@ -61,24 +73,19 @@
       width: 100%;
 
       .title {
-        font-weight: bold;
+        margin-bottom: 5px;
       }
 
       .name {
-        font-size: 0.8em;
+        font-weight: bold;
       }
 
-      .address {
-        text-align: right;
+      .date {
+        color: grey;
       }
 
       span {
         font-size: 0.7em;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        width: 100%;
-        position: relative;
       }
     }
   }
