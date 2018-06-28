@@ -47,6 +47,11 @@ module.exports = function(shared) {
 
   vm.selectTemplate = function(template) {
     if (template) {
+      if (angular.isString(template)) {
+        template = {
+          id: template
+        };
+      }
       if (!template.id) {
         template = vm.fuse.search(template)[0];
       }

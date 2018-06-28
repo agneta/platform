@@ -23,16 +23,14 @@ agneta.directive('AgEditMainCtrl', function(
   $injector,
   $q,
   $routeParams,
-  $parse,
-  $ocLazyLoad,
   $timeout,
   $mdToast,
+  $interpolate,
   Account,
-  GIT,
+  AgMedia,
   $location,
   $mdDialog,
   Portal,
-  AgMedia,
   Role_Editor
 ) {
   var vm = this;
@@ -54,28 +52,30 @@ agneta.directive('AgEditMainCtrl', function(
     $rootScope: $rootScope,
     $q: $q,
     helpers: helpers,
+    AgMedia: AgMedia,
     $location: $location,
     $mdToast: $mdToast,
     $routeParams: $routeParams,
     $timeout: $timeout,
+    $interpolate: $interpolate,
     $injector: $injector,
     $mdDialog: $mdDialog,
     scopeEdit: scopeEdit,
     Portal: Portal
   };
 
-  require('edit/content/field-state.module')(vm, helpers);
-  require('edit/content/templates.module')(shared);
-  require('edit/content/content.module')(vm, helpers);
-  require('edit/content/route.module')(shared);
-  require('edit/content/media.module')(vm, AgMedia, $mdDialog, helpers);
-  require('edit/content/relation.module')(shared);
-  require('edit/content/helpers.module')(shared);
-  require('edit/content/history.module')(vm, helpers);
-  require('edit/content/main.module')(shared);
-  require('edit/content/search.module')(vm, $timeout);
-  require('edit/content/source.module')(vm, $mdDialog, $timeout);
-  require('edit/content/contributor.module')(
+  require('./field-state.module')(vm, helpers);
+  require('./templates.module')(shared);
+  require('./content.module')(vm, helpers);
+  require('./route.module')(shared);
+  require('./media.module')(shared);
+  require('./relation.module')(shared);
+  require('./helpers.module')(shared);
+  require('./history.module')(vm, helpers);
+  require('./main.module')(shared);
+  require('./search.module')(vm, $timeout);
+  require('./source.module')(vm, $mdDialog, $timeout);
+  require('./contributor.module')(
     vm,
     $rootScope,
     Account,
@@ -113,7 +113,6 @@ agneta.directive('AgEditMainCtrl', function(
       data = data.__value || data;
     }
     if (_.isString(data)) {
-      console.log(data);
       return data;
     }
     var result = data[vm.edit.lang] || '';

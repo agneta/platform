@@ -19,7 +19,6 @@
 /*global moment*/
 
 module.exports = function(shared) {
-
   var vm = shared.vm;
   var $mdToast = shared.$mdToast;
   var $timeout = shared.$timeout;
@@ -27,25 +26,25 @@ module.exports = function(shared) {
   var helpers = shared.helpers;
 
   //---------------------------------------
-  helpers.checkPage = function(page){
+  helpers.checkPage = function(page) {
     checkField('title');
     checkField('subtitle');
     checkField('image');
-    function checkField(key){
+    function checkField(key) {
       var field = page[key] || {};
       var value = field.value || field;
-      if(!value){
+      if (!value) {
         return;
       }
-      if(field.type=='date'){
+      if (field.type == 'date') {
         value = new Date(value);
         value = moment(value).format('LLLL');
       }
-      if(field.type=='media'){
-        value = agneta.get_media(value,'thumbnail');
+      if (field.type == 'media') {
+        value = agneta.get_media(value, 'thumbnail');
       }
       value = value.value || value;
-      if(angular.isObject(value)){
+      if (angular.isObject(value)) {
         value = '';
       }
       page[key] = value;
@@ -54,7 +53,7 @@ module.exports = function(shared) {
     return page;
   };
 
-  helpers.checkPages = function(pages){
+  helpers.checkPages = function(pages) {
     pages.forEach(helpers.checkPage);
   };
   //---------------------------------------
@@ -64,7 +63,8 @@ module.exports = function(shared) {
   //---------------------------------------
   helpers.toast = function(message) {
     $mdToast.show(
-      $mdToast.simple()
+      $mdToast
+        .simple()
         .textContent(message)
         .position('bottom right')
         .hideDelay(3000)
@@ -80,7 +80,7 @@ module.exports = function(shared) {
   };
   //------------------------------------------
   helpers.getBasePath = function() {
-    var base = agneta.urljoin(helpers.mediaRoot,vm.page.path);
+    var base = agneta.urljoin(helpers.mediaRoot, vm.page.path);
     return helpers.fixPath(base);
   };
   //------------------------------------------
@@ -128,7 +128,6 @@ module.exports = function(shared) {
   };
   //------------------------------------------
   helpers.fixValue = function(parent, key, childField) {
-
     var parentValue = helpers.dataValue(parent);
     var child = parentValue[key];
 
@@ -160,20 +159,25 @@ module.exports = function(shared) {
       }
     }
 
-    switch(childField.type){
+    switch (childField.type) {
+      case 'text':
+        if (_.isString(childValue)) {
+          console.log('_.isString(childValue)', childValue, child);
+          childValue = {
+            en: childValue
+          };
+        }
+        break;
       case 'date-time':
         childValue = new Date(childValue);
         break;
       case 'relation-belongsTo':
-        childField.options = [
-          vm.relations[childField.relation.name]
-        ];
+        childField.options = [vm.relations[childField.relation.name]];
 
         var link = childField.relation.link || {};
         var query = {};
 
-        if(childField.relation.template){
-
+        if (childField.relation.template) {
           link.url = agneta.langPath({
             path: 'edit/data-remote',
             query: {
@@ -181,18 +185,15 @@ module.exports = function(shared) {
               template: childField.relation.template
             }
           });
-
-        }else{
-
+        } else {
           query[link.param] = childValue;
           link.url = agneta.langPath({
             path: link.path,
             query: query
           });
-
         }
 
-        childField.link = function(){
+        childField.link = function() {
           $location.url(link.url);
         };
 
@@ -235,7 +236,6 @@ module.exports = function(shared) {
   };
   //------------------------------------------
   helpers.structureData = function(field, data) {
-
     var dataValue = helpers.dataValue(data);
 
     if (!_.isArray(dataValue) && !_.isObject(dataValue)) {
@@ -243,7 +243,6 @@ module.exports = function(shared) {
     }
 
     for (var key in dataValue) {
-
       if (!field.fields) {
         continue;
       }
@@ -254,7 +253,7 @@ module.exports = function(shared) {
 
       var childData = dataValue[key];
 
-      if(!childData){
+      if (!childData) {
         continue;
       }
 
@@ -265,11 +264,9 @@ module.exports = function(shared) {
       });
 
       if (!childField) {
-
         if (field.type == 'array' && field.fields.length == 1) {
           childField = field.fields[0];
         }
-
       }
 
       if (childField) {
@@ -279,7 +276,6 @@ module.exports = function(shared) {
         }
       }
     }
-
   };
   //------------------------------------------
   helpers.setData = function(data) {
@@ -288,5 +284,4 @@ module.exports = function(shared) {
       vm.page.data = data;
     }, 100);
   };
-
 };

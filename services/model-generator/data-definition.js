@@ -19,7 +19,6 @@ const _ = require('lodash');
 const Promise = require('bluebird');
 
 module.exports = function(app, template) {
-
   var result = {
     name: template.model,
     base: 'PersistedModel',
@@ -34,9 +33,7 @@ module.exports = function(app, template) {
 
   return Promise.resolve()
     .then(function() {
-
-      return Promise.map(template.fields,function(field) {
-
+      return Promise.map(template.fields, function(field) {
         var type = field.valueType || field.type;
         var relation = field.relation;
 
@@ -45,7 +42,6 @@ module.exports = function(app, template) {
             type = 'number';
             break;
         }
-
 
         switch (type) {
           case 'array':
@@ -62,6 +58,7 @@ module.exports = function(app, template) {
             break;
           case 'text':
           case 'text-rich':
+          case 'text-single':
             type = 'object';
             break;
           case 'date-time':
@@ -69,16 +66,21 @@ module.exports = function(app, template) {
             break;
           case 'relation-hasMany':
           case 'relation-belongsTo':
-
             var relationName = relation.name || relation.template;
             if (!relation) {
-              throw new Error(`Field (${field.name}) needs to have a relation object defined`);
+              throw new Error(
+                `Field (${field.name}) needs to have a relation object defined`
+              );
             }
             if (!relation.model) {
-              throw new Error(`Field (${field.name}) needs to have a relation model defined`);
+              throw new Error(
+                `Field (${field.name}) needs to have a relation model defined`
+              );
             }
             if (!relationName) {
-              throw new Error(`Field (${field.name}) needs to have a relation name`);
+              throw new Error(
+                `Field (${field.name}) needs to have a relation name`
+              );
             }
             var options = {
               model: relation.model,
@@ -94,7 +96,11 @@ module.exports = function(app, template) {
                 break;
               case 'hasMany':
                 if (!relation.foreignKey) {
-                  throw new Error(`Field (${field.name}) needs to have a foreignKey defined for a hasMany relation`);
+                  throw new Error(
+                    `Field (${
+                      field.name
+                    }) needs to have a foreignKey defined for a hasMany relation`
+                  );
                 }
                 options.foreignKey = relation.foreignKey;
                 type = 'array';
@@ -116,12 +122,9 @@ module.exports = function(app, template) {
         result.properties[field.name] = property;
       });
     })
-    .then(function(){
-
+    .then(function() {
       result.acls = template.acls;
-      _.extend(result.indexes,template.indexes);
+      _.extend(result.indexes, template.indexes);
       return result;
-
     });
-
 };

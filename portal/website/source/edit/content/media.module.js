@@ -14,7 +14,11 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-module.exports = function(vm, AgMedia, $mdDialog, helpers) {
+module.exports = function(shared) {
+  var vm = shared.vm;
+  var AgMedia = shared.AgMedia;
+  var helpers = shared.helpers;
+  var $interpolate = shared.$interpolate;
   var media = {};
 
   media.editPrivate = function(field, parent, key) {
@@ -44,12 +48,19 @@ module.exports = function(vm, AgMedia, $mdDialog, helpers) {
     //-----------------------------
     // Select media as a default
 
+    var basePath = field.basePath
+      ? $interpolate(field.basePath)({
+        page: vm.page.data
+      })
+      : helpers.getBasePath();
+    console.log('basePath', basePath, field, vm.page);
+
     AgMedia.explorer({
       type: mediaOptions,
       data: {
         location: dataValue.location,
         name: field.default_name,
-        dir: helpers.getBasePath(),
+        dir: basePath,
         onApply: onApply,
         onDelete: function() {
           vm.removeValue(key, parentValue);

@@ -23,6 +23,7 @@
       - lib/ng-quill
       - lib/ng-sortable.min
       - lib/angular-moment.min
+      - 'lib/fuse.min'
     styles:
       - 'lib/quill.snow'
       - 'lib/ng-sortable.min'
