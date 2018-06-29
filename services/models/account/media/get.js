@@ -14,7 +14,7 @@ module.exports = function(Model, app) {
     return Model.__mediaGet({
       location: location,
       type: type,
-      accountId: req.accessToken.userId
+      accountId: req.accessToken.userId + ''
     });
   };
 

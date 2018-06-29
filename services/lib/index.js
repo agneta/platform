@@ -1,4 +1,4 @@
-module.exports = function(app,options){
+module.exports = function(app, options) {
   require('./secrets')(app, options);
   require('./providers')(app, options);
   require('./moment')();
@@ -7,5 +7,6 @@ module.exports = function(app,options){
   require('./require')(app);
   require('./locals')(app, options);
   require('./language')(app);
-  require('./socket')(app,options);
+  require('./socket')(app, options);
+  require('./media')(app, options);
 };

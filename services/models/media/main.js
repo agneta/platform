@@ -17,7 +17,6 @@
 const path = require('path');
 
 module.exports = function(Model, app, options) {
-
   var mediaOptions = {
     name: 'media',
     auth: {
@@ -36,7 +35,6 @@ module.exports = function(Model, app, options) {
   require('./helpers/download')(Model, app);
   require('./helpers/fixParams')(Model, app);
   require('./helpers/getMediaPath')(Model, app);
-  require('./helpers/images')(Model, app);
   require('./helpers/initOperation')(Model, app);
   require('./helpers/copyObject')(Model, app);
   require('./helpers/moveObject')(Model, app);
@@ -64,5 +62,5 @@ module.exports = function(Model, app, options) {
   require('./moveObject')(Model, app);
   require('./uploadFile')(Model, app);
   require('./uploadFiles')(Model, app);
-
+  require('./images')(Model, app);
 };

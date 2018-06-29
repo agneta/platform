@@ -15,42 +15,82 @@
  *   limitations under the License.
  */
 /*global Swiper*/
+/*global Blazy*/
 
 var app = window.angular.module('MainApp');
 
-app.service('UiGallery',function() {
+app.service('UiGallery', function($timeout) {
   var self = this;
 
   this.photoswipe = require('ui/gallery/photoswipe.module');
 
-  this.init = function(options){
+  this.init = swiper;
+
+  this.album = function(options) {
     options = options || {};
+
+    $timeout(function() {
+      if (options.blazy) {
+        blazy();
+      }
+      self.photoswipe(options);
+    }, 400);
+  };
+
+  function blazy() {
+    new Blazy({
+      container: '#view-scroller',
+      src: 'blazy-src',
+      breakpoints: [
+        {
+          width: 420, // Max-width
+          src: 'data-src-small'
+        }
+      ],
+      error: function(ele, msg) {
+        console.log('error', msg);
+
+        if (msg === 'missing') {
+          // Data-src is missing
+        } else if (msg === 'invalid') {
+          // Data-src is invalid
+        }
+      }
+    });
+  }
+
+  function swiper(options) {
+    options = options || {};
+
     var swiperContainer = options.swiperContainer || '.swiper-container';
 
-    var swiperOptions = angular.extend({
-      // If loop true set photoswipe - counterEl: false
-      //loop: true,
-      /* slidesPerView || auto - if you want to set width by css like flickity.js layout - in this case width:80% by CSS */
-      slidesPerView: 'auto',
-      spaceBetween: 7,
-      centeredSlides: true,
-      speed: 800,
-      autoplay: {
-        delay: 4000,
-      },
-      // If we need pagination
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-        renderBullet: function (index, className) {
-          return '<span class="' + className + '"></span>';
+    var swiperOptions = angular.extend(
+      {
+        // If loop true set photoswipe - counterEl: false
+        //loop: true,
+        /* slidesPerView || auto - if you want to set width by css like flickity.js layout - in this case width:80% by CSS */
+        slidesPerView: 'auto',
+        spaceBetween: 7,
+        centeredSlides: true,
+        speed: 800,
+        autoplay: {
+          delay: 4000
+        },
+        // If we need pagination
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+          renderBullet: function(index, className) {
+            return '<span class="' + className + '"></span>';
+          }
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
         }
       },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      }
-    },options);
+      options
+    );
 
     var swiper = new Swiper(swiperContainer, swiperOptions);
     // execute above function
@@ -58,8 +98,5 @@ app.service('UiGallery',function() {
       selector: '.my-gallery',
       swiper: swiper
     });
-
-  };
-
-
+  }
 });

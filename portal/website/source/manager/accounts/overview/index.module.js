@@ -14,6 +14,7 @@ agneta.directive('AgAccountOverview', function(AccountList, $mdDialog) {
       data: {
         model: AccountList.model,
         query: {
+          accountId: vm.viewAccount.id,
           location: 'profile'
         },
         method: 'role-account-manager/media-upload',

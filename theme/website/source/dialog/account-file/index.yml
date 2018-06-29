@@ -11,6 +11,7 @@ sharing:
     en: Sharing
   model: media.file.privacy.type
   method: media.privacyType
+  attr: ng-show="type=='private'"
   list:
     -
       name: public
@@ -22,3 +23,11 @@ sharing:
       icon: material/lock
       title:
         en: Only me
+
+action:
+  upload:
+    title:
+      en: Upload
+  replace:
+    title:
+      en: Replace

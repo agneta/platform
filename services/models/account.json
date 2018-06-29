@@ -182,6 +182,13 @@
       "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": "mediaGet"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "mediaUpload"
     }
   ],
   "methods": {},

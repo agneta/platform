@@ -8,14 +8,14 @@ agneta.directive('AgUploadPicture', function(
   var model = data.model || Account;
   var method = data.method || 'account/media-upload';
   var query = data.query || {};
-  var accountId = (query.accountId =
-    query.accountId || $rootScope.account.profile.id);
 
-  if (query.location) {
+  if (!query.location) {
     console.error('location in query is required');
   }
 
   query.type = data.type || 'public';
+  vm.type = query.type;
+
   var getMedia;
   switch (query.type) {
     case 'public':
@@ -23,6 +23,9 @@ agneta.directive('AgUploadPicture', function(
       break;
     case 'private':
       getMedia = agneta.prv_media;
+      break;
+    default:
+      console.error('Uknown type: ' + query.type);
       break;
   }
 
@@ -33,7 +36,13 @@ agneta.directive('AgUploadPicture', function(
     model
       .mediaGet(query)
       .$promise.then(function(result) {
+        if (!result.location) {
+          media.file = null;
+          return;
+        }
         media.file = result;
+        media.source = getMedia(result.location, 'medium');
+        media.url = getMedia(result.location);
       })
       .finally(function() {
         vm.loading = false;
@@ -46,10 +55,6 @@ agneta.directive('AgUploadPicture', function(
   // Media
 
   var media = (vm.media = {});
-  var mediaBase = `account/${accountId}/profile`;
-
-  media.source = getMedia(mediaBase, 'medium');
-  media.url = getMedia(mediaBase);
 
   media.privacyType = function(value) {
     var privacy = media.file.privacy || {};
@@ -80,10 +85,6 @@ agneta.directive('AgUploadPicture', function(
       data: angular.extend({}, query)
     };
 
-    if (data.account) {
-      options.data.accountId = accountId;
-    }
-
     options.data.object = object;
 
     Upload.upload(options)
@@ -91,9 +92,9 @@ agneta.directive('AgUploadPicture', function(
         if (data.onUploaded) {
           data.onUploaded();
         }
-        vm.close();
       })
       .finally(function() {
+        load();
         vm.loading = false;
       });
   };
