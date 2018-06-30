@@ -1,6 +1,0 @@
-search:
-  details:
-    -
-      name: location
-      attr: ng-bind-html="object.location | highlight:object.words"
-      noValue: true

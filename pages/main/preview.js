@@ -34,7 +34,7 @@ module.exports = function(locals) {
   },
   {
     name: 'theme',
-    path: project.paths.theme.source
+    path: project.paths.app.theme.source
   }
   ];
 

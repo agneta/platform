@@ -1,6 +1,0 @@
-title:
-  en: Search Accounts
-
-scripts:
-  - manager/accounts/list
-controller: 'AgSearchAccounts'

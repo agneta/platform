@@ -1,6 +1,0 @@
-<%
-var fields = get_data('edit/page').fields.inline;
-for(var field of fields){%>
-  <div <%-locals.attr%> flex="100" ng-if="field.type == '<%-field%>'" ng-include="'field-inline-<%-field%>.html'">
-  </div>
-<%}%>

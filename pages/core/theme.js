@@ -52,7 +52,7 @@ module.exports = function(locals) {
   }
 
   filePaths.push(project.paths.common.website);
-  filePaths.push(project.paths.theme.website);
+  filePaths.push(project.paths.app.theme.website);
 
   //--------------------------------------------------
 

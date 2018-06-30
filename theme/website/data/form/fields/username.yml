@@ -1,9 +1,0 @@
-title:
-  en: 'Username'
-group: 'contact/input'
-type: 'text'
-validators:
-  minlength: 4
-  maxlength: 24
-  required: true
-  pattern: username

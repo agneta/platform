@@ -1,4 +1,0 @@
-message:
-  en: Not a valid zip code
-  gr: Δεν είναι έγκυρος ο ταχυδρομικός κώδικας
-pattern: "^[0-9]+$"

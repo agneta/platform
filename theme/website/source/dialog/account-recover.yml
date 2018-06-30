@@ -1,5 +1,0 @@
-title:
-  en: Account recover
-
-controller: AgAccountRecover
-skipAuthorization: true

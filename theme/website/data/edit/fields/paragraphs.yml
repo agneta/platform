@@ -1,7 +1,0 @@
-icon: material/view-headline
-title:
-  en: 'Paragraphs'
-  gr: 'Παράγραφοι'
-type: 'array'
-fields:
-  - 'paragraph'

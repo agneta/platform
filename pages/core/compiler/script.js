@@ -19,7 +19,6 @@ const webpack = require('webpack');
 const util = require('util');
 const _ = require('lodash');
 module.exports = function(locals) {
-
   var project = locals.project;
   var modulesResolve;
 
@@ -28,7 +27,6 @@ module.exports = function(locals) {
 
     switch (parsedPath.ext) {
       case '.js':
-
         if (path.parse(parsedPath.name).ext == '.min') {
           return next();
         }
@@ -50,15 +48,14 @@ module.exports = function(locals) {
     next();
   }
 
-  function compile(pathRelative,options) {
-
+  function compile(pathRelative, options) {
     options = options || {};
 
     let pathSource;
 
-    if(options.base){
-      pathSource = path.join(options.base,pathRelative);
-    }else{
+    if (options.base) {
+      pathSource = path.join(options.base, pathRelative);
+    } else {
       pathSource = project.theme.getFile(path.join('source', pathRelative));
     }
 
@@ -94,11 +91,14 @@ module.exports = function(locals) {
     }
 
     let presets = [
-      [require.resolve('babel-preset-env'), {
-        'targets': {
-          'browsers': ['since 2013']
+      [
+        require.resolve('babel-preset-env'),
+        {
+          targets: {
+            browsers: ['since 2013']
+          }
         }
-      }],
+      ],
       require.resolve('babel-preset-minify')
     ];
 
@@ -119,7 +119,6 @@ module.exports = function(locals) {
       }
 
       return true;
-
     }
 
     let output = {
@@ -127,7 +126,7 @@ module.exports = function(locals) {
       filename: options.outputName || pathRelativeParsed.base
     };
 
-    if(options.onOutputPath){
+    if (options.onOutputPath) {
       output = options.onOutputPath(output);
     }
 
@@ -143,35 +142,38 @@ module.exports = function(locals) {
         noParse: function(content) {
           return !canParse(content);
         },
-        rules: [{
-          test: canParse,
-          loader: path.join(__dirname,'script-template'),
-          enforce: 'pre',
-          options: {
-            locals: locals,
-          }
-        },{
-          test: function(content) {
-            return !canParse(content);
+        rules: [
+          {
+            test: canParse,
+            loader: path.join(__dirname, 'script-template'),
+            enforce: 'pre',
+            options: {
+              locals: locals
+            }
           },
-          use: require.resolve('source-map-loader'),
-          enforce: 'pre'
-        }, {
-          test: canParse,
-          loader: require.resolve('babel-loader'),
-          options: {
-            cacheDirectory: true,
-            presets: presets,
-            plugins: ['babel-plugin-angularjs-annotate'].map(require.resolve)
+          {
+            test: function(content) {
+              return !canParse(content);
+            },
+            use: require.resolve('source-map-loader'),
+            enforce: 'pre'
+          },
+          {
+            test: canParse,
+            loader: require.resolve('babel-loader'),
+            options: {
+              cacheDirectory: true,
+              presets: presets,
+              plugins: ['babel-plugin-angularjs-annotate'].map(require.resolve)
+            }
           }
-        }]
+        ]
       }
     };
 
     let compiler = webpack(compilerOptions);
 
     return new Promise(function(resolve, reject) {
-
       compiler.run(function(err, stats) {
         if (err) {
           return reject(err);
@@ -182,14 +184,13 @@ module.exports = function(locals) {
 
         resolve(stats);
       });
-
     });
   }
 
   return {
-    init: function(){
-      modulesResolve = _.map(project.theme.dirs,function(dir){
-        return path.join(dir,'source');
+    init: function() {
+      modulesResolve = _.map(project.theme.dirs, function(dir) {
+        return path.join(dir, 'source');
       });
     },
     middleware: middleware,

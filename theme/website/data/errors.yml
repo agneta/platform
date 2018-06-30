@@ -1,6 +1,0 @@
-default:
-  title:
-    gr: Παρουσιάστηκε πρόβλημα
-  message:
-    en: 'Unable to communicate with the service provider.'
-    gr: 'Δεν είναι δυνατή η επικοινωνία με τον παροχέα υπηρεσιών.'

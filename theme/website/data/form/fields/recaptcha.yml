@@ -1,4 +1,0 @@
-sendDisabled: true
-group: recaptcha
-validators:
-  required: true

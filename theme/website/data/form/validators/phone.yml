@@ -1,4 +1,0 @@
-message:
-  en: The phone number is invalid
-  gr: Ο αριθμός τηλεφώνου δεν είναι έγκυρος
-pattern: "^\\+?(?:[0-9] ?){6,14}[0-9]$"

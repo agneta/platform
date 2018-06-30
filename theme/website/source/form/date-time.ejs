@@ -1,8 +1,0 @@
-<div layout="column">
-<%if(field.title){%>
-  <p class="title" for="<%-field.name%>"><%-lng(field.title)%></p>
-  <%}%>
-  <<%-field.component%> mdp-open-on-click ng-model="<%-field.model%>" mdp-placeholder="<%-field.placeholdedr%>">
-  </<%-field.component%>>
-  <%-template('form/messages',{field:{prop:field.model}})%>
-</div>

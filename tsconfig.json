@@ -1,21 +1,15 @@
 {
-    "compilerOptions": {
-        "target": "es5",
-        "lib": ["es5", "es6"],
-        "watch": true,
-        "noImplicitAny": true,
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "baseUrl": ".",
-        "paths": {
-            "*": [
-                "node_modules/*",
-                "src/types/*"
-            ]
-        }
-    },
-    "exclude": [
-        "node_modules/**",
-        "bower_components/**"
-    ]
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["es5", "es6"],
+    "watch": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "inlineSourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["node_modules/*", "src/types/*"]
+    }
+  },
+  "exclude": ["node_modules/**", "bower_components/**"]
 }

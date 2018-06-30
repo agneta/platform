@@ -1,5 +1,0 @@
-title:
-  en: Error
-skipAuthorization: true
-controller: 'AgDialogCtrl'
-class: error

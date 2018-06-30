@@ -1,8 +1,0 @@
-<div layout="row">
-    <div class="contributor" ng-repeat="(id,value) in data.$$contributors">
-        <span>{{contributorInitials(id)}}</span>
-        <md-tooltip class="tooltip-contributor" md-direction="bottom">
-            <p>{{contributors[id].info.name || contributors[id].info.username}}</p>
-        </md-tooltip>
-    </div>
-</div>

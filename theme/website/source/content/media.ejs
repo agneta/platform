@@ -1,5 +1,0 @@
-<%if(data.type=='image'){%>
-<img src="<%-get_media(data.location,data.size.__value)%>">
-<%}else{
-  throw new Error('Uknown media type');
-}%>

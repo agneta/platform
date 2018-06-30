@@ -1,9 +1,0 @@
-<div class="step <%-step.name%>" ng-class="{active:showSteps || currentStep=='<%-step.name%>'}" layout="column">
-
-  <%-template(stepTemplate)%>
-  <%-template('ui/form-steps/errors')%>
-  <%if(step.actions){%>
-    <%-template('ui/form-steps/actions')%>
-    <%}%>
-
-  </div>

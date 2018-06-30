@@ -1,6 +1,0 @@
-title:
-  en: 'Success'
-  gr: 'Επιτυχία'
-skipAuthorization: true
-controller: 'AgDialogCtrl'
-class: success

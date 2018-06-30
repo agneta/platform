@@ -57,7 +57,7 @@ module.exports = function(app) {
   var dataMain = {};
 
   var templatePaths = [
-    project.paths.theme.email,
+    project.paths.app.theme.email,
     project.paths.app.email
   ];
 

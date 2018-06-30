@@ -17,6 +17,7 @@
 const path = require('path');
 const yaml = require('js-yaml');
 const fs = require('fs-extra');
+const theme = require('./theme');
 const extensions = require('./extensions');
 const structure = require('./structure');
 //console.log('Application folder:', appName);
@@ -41,24 +42,15 @@ var pages = {};
 pages.base = path.join(core.platform, 'pages');
 pages.scripts = path.join(pages.base, 'scripts');
 
-// Theme
-var theme = structure({
-  base: path.join(core.platform, 'theme')
-});
-
 // Storage
 core.storage = path.join(core.project, '.agneta', 'storage');
-// Portal
-var portal = structure({
-  base: path.join(core.platform, 'portal')
-});
-
-var appPortal = structure({
-  base: path.join(core.project,'portal')
-});
 
 var common = structure({
-  base: path.join(core.project,'common')
+  base: path.join(core.project, 'common')
+});
+
+const portal = require('./portal')({
+  core: core
 });
 
 //--------------------------------------------------------------------
@@ -66,7 +58,6 @@ var common = structure({
 module.exports = loadApp();
 
 function loadApp(options) {
-
   options = options || {};
 
   var base = options.dir || core.project;
@@ -74,28 +65,28 @@ function loadApp(options) {
     base: base
   });
 
-  var appConfig = fs.readFileSync(app.config,'utf8');
+  var appConfig = fs.readFileSync(app.config, 'utf8');
   appConfig = yaml.safeLoad(appConfig);
 
-  //----------------------------
-
-  app.extensions = extensions({
+  var data = {
     config: appConfig,
-    paths: app
-  });
+    paths: app,
+    core: core
+  };
+
+  app.theme = theme(data);
+  app.extensions = extensions(data);
+
   app.cache = path.join(app.website, 'cache');
 
   return {
     app: app,
     url: url,
-    appPortal: appPortal,
+    appPortal: portal.app,
     core: core,
     pages: pages,
-    theme: theme,
     common: common,
-    portal: portal,
+    portal: portal.main,
     loadApp: loadApp
   };
-
-
 }

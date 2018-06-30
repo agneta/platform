@@ -30,7 +30,7 @@ module.exports = function(locals) {
   function preInit() {
 
     var configDirs = [
-      project.paths.theme.website,
+      project.paths.app.theme.website,
       project.paths.app.website
     ];
 

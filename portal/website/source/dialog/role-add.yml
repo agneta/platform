@@ -1,9 +1,0 @@
-title:
-  en: Adding a role
-  gr: Προσθέτοντας ένα ρόλο
-
-controller: AgRoleAdd
-
-message:
-  en: 'Select a role to add from the list below'
-  gr: 'Επιλέξτε ένα ρόλο για να προσθέσετε από την παρακάτω λίστα'

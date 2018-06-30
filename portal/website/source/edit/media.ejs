@@ -1,9 +1,0 @@
-<%
-  var pages = ['edit/media/public','edit/media/private'];
-  for(var page of pages){
-    page = get_page(page);
-    %>
-    <md-button ng-href="<%-get_path(page)%>"><%-lng(page.title)%></md-button>
-    <%
-  }
-%>

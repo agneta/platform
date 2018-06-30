@@ -1,6 +1,0 @@
-title:
-  en: Warning
-
-skipAuthorization: true
-controller: 'AgDialogCtrl'
-class: warning

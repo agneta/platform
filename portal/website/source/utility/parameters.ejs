@@ -1,8 +1,0 @@
-<div ng-if="parameters.length" class="parameters ag-margin" md-whiteframe="2" layout="column">
-<div class="parameter" ng-repeat="parameter in parameters" ng-if="checkCondition(parameter)">
-    <p class="title">{{parameter.title}}</p>
-  <%-template('utility/param-select')%>
-  <%-template('utility/param-checkboxes')%>
-  <%-template('utility/param-radio')%>
-</div>
-</div>
