@@ -12,10 +12,10 @@ module.exports = function(options) {
     throw new Error(`Could not find theme path: ${mainPath}`);
   }
 
-  var app = structure({
+  var app = structure.init({
     base: path.join(options.core.project, 'portal')
   });
-  var main = structure({
+  var main = structure.init({
     base: mainPath
   });
 

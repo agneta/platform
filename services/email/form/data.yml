@@ -1,0 +1,10 @@
+actionHref: '#'
+
+header:
+  en: 'Support'
+
+intro:
+  en: 'You have received an email from your contact form. The details submitted are listed below:'
+
+outro:
+  en: 'If an email is present, you may reply to the sender otherwise use other contact information.'

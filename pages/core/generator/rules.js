@@ -21,10 +21,9 @@ var _ = require('lodash');
 var yaml = require('js-yaml');
 
 module.exports = function(locals) {
-
   var project = locals.project;
 
-  var dataPathTheme = path.join(project.paths.app.theme.website, 'rules.yml');
+  var dataPathTheme = path.join(project.paths.app.frontend.base, 'rules.yml');
   var dataPath = path.join(project.paths.app.website, 'rules.yml');
 
   fs.ensureFileSync(dataPathTheme);
@@ -36,29 +35,25 @@ module.exports = function(locals) {
   _.mergePages(data, dataTheme);
 
   var dict = {
-    templates:{},
+    templates: {},
     paths: {}
   };
 
   if (data) {
-
     for (var props of data) {
-
-      addToDict('paths',props);
-      addToDict('templates',props);
+      addToDict('paths', props);
+      addToDict('templates', props);
     }
   }
 
-  function addToDict(dictName,props){
-
+  function addToDict(dictName, props) {
     var propData = props[dictName];
 
-    if(!propData){
+    if (!propData) {
       return;
     }
 
     for (var name of propData) {
-
       var ruleData = dict[dictName][name] || {
         scripts: [],
         styles: []
@@ -66,24 +61,20 @@ module.exports = function(locals) {
       _.mergePages(ruleData, props.data);
       dict[dictName][name] = ruleData;
     }
-
   }
 
-  function getFromDict(data,dictName,property){
-
+  function getFromDict(data, dictName, property) {
     var ruleData = dict[dictName];
-    if(!ruleData){
+    if (!ruleData) {
       return;
     }
     var dictData = ruleData[property];
     if (dictData) {
       _.mergePages(data, dictData);
     }
-
   }
 
   function run(data) {
-
     data.styles = data.styles || [];
     data.scripts = data.scripts || [];
 
@@ -96,16 +87,14 @@ module.exports = function(locals) {
 
     /////////////////////////////////////
 
-    getFromDict(data,'templates',data.templateSource || data.template);
+    getFromDict(data, 'templates', data.templateSource || data.template);
     //console.log(data.path);
-    getFromDict(data,'paths',data.pathSource || data.path);
+    getFromDict(data, 'paths', data.pathSource || data.path);
 
     return data;
-
   }
 
   return {
     run: run
   };
-
 };

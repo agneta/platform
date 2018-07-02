@@ -33,7 +33,7 @@ module.exports = function(locals, options) {
   logger.log('Copying Assets to public folder');
 
   var sources = [
-    project.paths.app.theme.source,
+    project.paths.app.frontend.source,
     project.paths.app.source
   ];
 

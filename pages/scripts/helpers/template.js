@@ -136,7 +136,7 @@ module.exports = function(locals) {
       return true;
     }
 
-    path_partial = path.join(project.paths.app.theme.source, req + '.ejs');
+    path_partial = path.join(project.paths.app.frontend.source, req + '.ejs');
 
     return this.is_file(path_partial);
 

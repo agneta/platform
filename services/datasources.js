@@ -18,16 +18,18 @@ var _ = require('lodash');
 var db = null;
 
 module.exports = function(app) {
-
-  if(!db){
+  if (!db) {
     db = app.secrets.get('db');
   }
 
   var result = {
-    db: _.extend({
-      name: 'db',
-      connector: 'mongodb'
-    }, db),
+    db: _.extend(
+      {
+        name: 'db',
+        connector: 'mongodb'
+      },
+      db
+    ),
     transient: {
       name: 'transient',
       connector: 'transient'

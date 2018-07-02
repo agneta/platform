@@ -1,28 +1,55 @@
 const appName = process.env.APP_NAME || 'website';
 const path = require('path');
 
-module.exports = function(obj){
+function init(data) {
+  data.website = path.join(data.base, data.appName || appName);
 
-  obj.website = path.join(obj.base, obj.appName || appName);
+  frontend({
+    base: data.website,
+    data: data
+  });
 
-  // website
-  obj.config = path.join(obj.website, 'config.yml');
-  obj.data = path.join(obj.website, 'data');
-  obj.build = path.join(obj.website, 'build');
-  obj.tmp = path.join(obj.website, 'tmp');
-  obj.scripts = path.join(obj.website, 'scripts');
-  // source
-  obj.source = path.join(obj.website, 'source');
-  obj.lib = path.join(obj.source, 'lib');
-  obj.generated = path.join(obj.source, 'generated');
+  backend({
+    data: data
+  });
   // services
-  obj.services = path.join(obj.base, 'services');
-  obj.models = path.join(obj.services, 'models');
-  // email
-  obj.email = path.join(obj.base, 'email');
+
   // editor
-  obj.editDataRemote = path.join(obj.base, 'edit/data-remote');
+  data.editDataRemote = path.join(data.base, 'edit/data-remote');
 
+  return data;
+}
 
-  return obj;
+function frontend(options) {
+  var data = options.data || {};
+  var base = options.base || data.base;
+  // website
+  data.config = path.join(base, 'config.yml');
+  data.data = path.join(base, 'data');
+  data.build = path.join(base, 'build');
+  data.tmp = path.join(base, 'tmp');
+  data.scripts = path.join(base, 'scripts');
+  // source
+  data.source = path.join(base, 'source');
+  data.lib = path.join(data.source, 'lib');
+  data.generated = path.join(data.source, 'generated');
+
+  return data;
+}
+
+function backend(options) {
+  var data = options.data || {};
+  var base = options.base || data.base;
+
+  data.services = path.join(base, 'services');
+  data.models = path.join(data.services, 'models');
+  data.email = path.join(data.services, 'email');
+
+  return data;
+}
+
+module.exports = {
+  init: init,
+  frontend: frontend,
+  backend: backend
 };

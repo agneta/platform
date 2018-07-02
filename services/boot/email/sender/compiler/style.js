@@ -37,7 +37,7 @@ module.exports = function(initOptions) {
       .then(function(_compiler) {
         compiler = _compiler;
         compiler.define('theme', function(params) {
-          var themePath = path.join(project.paths.app.theme.email, params.val);
+          var themePath = path.join(project.paths.core.email, params.val);
           return new stylus.nodes.String(themePath);
         });
 

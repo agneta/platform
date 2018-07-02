@@ -24,24 +24,21 @@ const loopback = require('loopback');
 const DataSource = require('loopback-datasource-juggler').DataSource;
 
 module.exports = function(app) {
-
-  loopback.Email.attachTo(new DataSource(
-    {
+  loopback.Email.attachTo(
+    new DataSource({
       name: 'email',
       connector: require('./connector'),
-      app:app
-    }
-  ));
+      app: app
+    })
+  );
 
   var project = app.web || app.client;
   project = project.project;
-
 
   var templates = {};
   var email = app.get('email');
 
   email.text = function(html) {
-
     return htmlToText.fromString(html, {
       ignoreImage: true,
       ignoreHref: true,
@@ -56,19 +53,15 @@ module.exports = function(app) {
 
   var dataMain = {};
 
-  var templatePaths = [
-    project.paths.app.theme.email,
-    project.paths.app.email
-  ];
+  var templatePaths = [project.paths.core.email, project.paths.app.email];
 
-  for(var name in project.paths.app.extensions){
+  for (var name in project.paths.app.extensions) {
     var extPaths = project.paths.app.extensions[name];
     templatePaths.push(extPaths.email);
   }
   //console.log(templatePaths);
 
   const helpers = require('./helpers')({
-
     templatePaths: _.reverse([].concat(templatePaths)),
     app: app
   });
@@ -86,41 +79,31 @@ module.exports = function(app) {
 
   return reloadAll();
 
-  function reloadAll(){
-
-    return Promise.mapSeries(templatePaths, function(pathTemplates) {
-
-      return fs.ensureDir(pathTemplates)
-        .then(function() {
+  function reloadAll() {
+    return Promise.mapSeries(
+      templatePaths,
+      function(pathTemplates) {
+        return fs.ensureDir(pathTemplates).then(function() {
           var templateDirs = fs.readdirSync(pathTemplates);
           var dataPath = path.join(pathTemplates, '_layout', 'data.yml');
 
           if (fs.existsSync(dataPath)) {
-            _.merge(dataMain,
-              yaml.safeLoad(fs.readFileSync(dataPath, 'utf8'))
-            );
-
+            _.merge(dataMain, yaml.safeLoad(fs.readFileSync(dataPath, 'utf8')));
           }
 
           return Promise.map(templateDirs, function(templateDir) {
-
             return compiler({
               pathTemplate: path.join(pathTemplates, templateDir)
             });
-
           });
-
         });
-
-    },{
-      concurrency: 1
-    })
-      .then(function() {
-        email.templates = templates;
-        return email;
-      });
-
+      },
+      {
+        concurrency: 1
+      }
+    ).then(function() {
+      email.templates = templates;
+      return email;
+    });
   }
-
-
 };

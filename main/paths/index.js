@@ -17,7 +17,7 @@
 const path = require('path');
 const yaml = require('js-yaml');
 const fs = require('fs-extra');
-const theme = require('./theme');
+const frontend = require('./frontend');
 const extensions = require('./extensions');
 const structure = require('./structure');
 //console.log('Application folder:', appName);
@@ -35,6 +35,7 @@ core.project = process.cwd();
 core.platform = path.join(__dirname, '../..');
 core.services = path.join(core.platform, 'services');
 core.models = path.join(core.services, 'models');
+core.email = path.join(core.services, 'email');
 core.tmp = path.join(core.project, 'tmp');
 
 // Base
@@ -45,7 +46,7 @@ pages.scripts = path.join(pages.base, 'scripts');
 // Storage
 core.storage = path.join(core.project, '.agneta', 'storage');
 
-var common = structure({
+var common = structure.init({
   base: path.join(core.project, 'common')
 });
 
@@ -61,7 +62,7 @@ function loadApp(options) {
   options = options || {};
 
   var base = options.dir || core.project;
-  var app = structure({
+  var app = structure.init({
     base: base
   });
 
@@ -74,7 +75,7 @@ function loadApp(options) {
     core: core
   };
 
-  app.theme = theme(data);
+  app.frontend = frontend(data);
   app.extensions = extensions(data);
 
   app.cache = path.join(app.website, 'cache');

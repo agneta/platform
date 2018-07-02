@@ -23,19 +23,20 @@ const color = require('color');
 const Promise = require('bluebird');
 
 module.exports = function(locals) {
-
   var project = locals.project;
 
   function getCompiler(str, pathFile) {
-
     var compiler = stylus(str)
       .set('filename', pathFile)
       .set('include css', true)
       .use(nib())
       .import('nib')
-      .import(path.join(project.paths.app.theme.website, 'variables.styl'));
+      .import(path.join(project.paths.app.frontend.base, 'variables.styl'));
 
-    var pathProjectVariables = path.join(project.paths.app.source, '_variables.styl');
+    var pathProjectVariables = path.join(
+      project.paths.app.source,
+      '_variables.styl'
+    );
 
     if (fs.existsSync(pathProjectVariables)) {
       compiler.import(pathProjectVariables);
@@ -46,12 +47,15 @@ module.exports = function(locals) {
 
       var rgb = color(value).rgb();
 
-      compiler.define('color-' + prop, new stylus.nodes.RGBA(
-        rgb.color[0],
-        rgb.color[1],
-        rgb.color[2],
-        rgb.valpha
-      ));
+      compiler.define(
+        'color-' + prop,
+        new stylus.nodes.RGBA(
+          rgb.color[0],
+          rgb.color[1],
+          rgb.color[2],
+          rgb.valpha
+        )
+      );
     }
 
     compiler.define('asset', function(params) {
@@ -76,7 +80,7 @@ module.exports = function(locals) {
     });
 
     compiler.define('theme', function(params) {
-      var themePath = path.join(project.paths.app.theme.source, params.val);
+      var themePath = path.join(project.paths.app.frontend.source, params.val);
       return new stylus.nodes.String(themePath);
     });
 
@@ -89,10 +93,8 @@ module.exports = function(locals) {
     });
 
     compiler.define('data', function(params) {
-
       var color = locals.app.locals.get_data(params.val);
       return new stylus.nodes.Literal(color);
-
     });
 
     function getValue(obj, params) {
@@ -113,14 +115,11 @@ module.exports = function(locals) {
     }
 
     return compiler;
-
   }
-
 
   //----------------------------------------
 
-  function compile(source_file_path){
-
+  function compile(source_file_path) {
     let pathParsed = path.parse(source_file_path);
     let nameParsed = path.parse(pathParsed.name);
 
@@ -135,17 +134,14 @@ module.exports = function(locals) {
     });
 
     return getCompiler(str, source_file_path).render();
-
   }
 
-  function middleware(req,res,next){
-
+  function middleware(req, res, next) {
     Promise.resolve()
       .then(function() {
-
         var parsedPath = path.parse(req.path);
 
-        if (parsedPath.ext!='.css') {
+        if (parsedPath.ext != '.css') {
           return;
         }
 
@@ -153,28 +149,25 @@ module.exports = function(locals) {
         delete parsedPath.base;
 
         let pathRelative = path.format(parsedPath);
-        let pathSource = project.theme.getFile(path.join('source', pathRelative));
+        let pathSource = project.theme.getFile(
+          path.join('source', pathRelative)
+        );
 
-        if(!pathSource){
+        if (!pathSource) {
           return;
         }
 
-        return fs.readFile(pathSource, {
-          encoding: 'utf8'
-        })
-          .then(function(content){
+        return fs
+          .readFile(pathSource, {
+            encoding: 'utf8'
+          })
+          .then(function(content) {
             content = getCompiler(content, pathSource).render();
-            let pathOutput = path.join(
-              project.paths.app.cache,
-              req.path
-            );
-            return fs.outputFile(pathOutput,content);
+            let pathOutput = path.join(project.paths.app.cache, req.path);
+            return fs.outputFile(pathOutput, content);
           });
-
-
       })
       .asCallback(next);
-
   }
 
   return {

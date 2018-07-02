@@ -19,55 +19,50 @@ var path = require('path');
 var _ = require('lodash');
 
 module.exports = function(locals) {
-
   var project = locals.project;
 
   //--------------------------------------------------
 
-  var filePaths = [
-    project.paths.app.website
-  ];
+  var filePaths = [project.paths.app.website];
   var extensions = project.paths.app.extensions;
 
-  for(let name in extensions){
+  for (let name in extensions) {
     let extPaths = extensions[name];
     filePaths.push(
       extPaths.website,
-      path.join(extPaths.base,'common','website')
+      path.join(extPaths.base, 'common', 'website')
     );
   }
 
   // Add portal paths
-  if(locals.web){
+  if (locals.web) {
     let webPaths = locals.web.project.paths;
     var webExtensions = webPaths.app.extensions;
     filePaths.push(webPaths.appPortal.website);
-    for(let name in webExtensions){
+    for (let name in webExtensions) {
       let extPaths = webExtensions[name];
       filePaths.push(
-        path.join(extPaths.base,'portal/website'),
-        path.join(extPaths.base,'common','website')
+        path.join(extPaths.base, 'portal/website'),
+        path.join(extPaths.base, 'common', 'website')
       );
     }
   }
 
   filePaths.push(project.paths.common.website);
-  filePaths.push(project.paths.app.theme.website);
+  filePaths.push(project.paths.app.frontend.base);
 
   //--------------------------------------------------
 
   project.theme = {
     dirs: filePaths,
     readDir: function(base) {
-
-      var dirs = filePaths.map(function(dir){
-        return path.join(dir,base);
+      var dirs = filePaths.map(function(dir) {
+        return path.join(dir, base);
       });
 
       var files = {};
 
       for (var dir of dirs) {
-
         var stats = null;
 
         try {
@@ -77,22 +72,18 @@ module.exports = function(locals) {
         }
 
         if (stats && stats.isDirectory()) {
-
           var _files = fs.readdirSync(dir);
 
           for (var i in _files) {
-
             var _file = _files[i];
             files[_file] = path.join(dir, _file);
           }
-
         }
       }
 
       return _.values(files);
     },
     getFile: function(getPath) {
-
       var result = getObject(getPath, 'isFile');
 
       if (!result) {
@@ -100,8 +91,9 @@ module.exports = function(locals) {
         getPath = path.join(
           parsedPath.dir,
           parsedPath.name,
-          `index${parsedPath.ext}`);
-        result = getObject(getPath,'isFile');
+          `index${parsedPath.ext}`
+        );
+        result = getObject(getPath, 'isFile');
       }
 
       return result;
@@ -111,10 +103,8 @@ module.exports = function(locals) {
     },
     getSourcePath: function(getFile) {
       for (var _filePath of filePaths) {
-        if(getFile.indexOf(_filePath)===0){
-          return path.relative(
-            path.join(_filePath,'source'),
-            getFile);
+        if (getFile.indexOf(_filePath) === 0) {
+          return path.relative(path.join(_filePath, 'source'), getFile);
         }
       }
     },
@@ -135,11 +125,9 @@ module.exports = function(locals) {
   };
 
   function getObject(getPath, method) {
-
     var filePath;
 
     for (var _filePath of filePaths) {
-
       filePath = path.join(_filePath, getPath);
       var stats;
 
@@ -150,13 +138,10 @@ module.exports = function(locals) {
       }
 
       if (stats && stats[method]()) {
-
         return filePath;
-
       }
     }
 
     return false;
-
   }
 };
