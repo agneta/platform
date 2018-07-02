@@ -1,7 +1,7 @@
 {
   // The following will hide the js and map files in the editor
   "files.exclude": {
-    "**/*.js.map": { "when": "$(basename)" },
-    "**/*.js": { "when": "$(basename).ts" }
+    "**/*.js.map": { "when": "$(basename)" }
+    //"**/*.js": { "when": "$(basename).ts" }
   }
 }

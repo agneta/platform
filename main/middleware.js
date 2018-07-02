@@ -16,7 +16,6 @@
  */
 
 module.exports = function(options) {
-
   var component = options.component;
   var app = options.mainApp;
   var url = '/' + options.root;

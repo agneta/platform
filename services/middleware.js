@@ -15,20 +15,25 @@
  *   limitations under the License.
  */
 
-module.exports = function(app) {
+require('compression');
+require('cors');
 
+module.exports = function(app) {
   var limiterOptions = [];
   var configLimiter = app.web.services.get('limiter');
   var apiRoot = app.web.services.get('restApiRoot');
 
   if (configLimiter.global) {
     limiterOptions.push({
-      params: [app, {
-        name: 'global',
-        title: 'Global',
-        isGlobal: true,
-        options: configLimiter.global
-      }],
+      params: [
+        app,
+        {
+          name: 'global',
+          title: 'Global',
+          isGlobal: true,
+          options: configLimiter.global
+        }
+      ],
       paths: [apiRoot]
     });
   }
@@ -42,20 +47,20 @@ module.exports = function(app) {
     }
   }
 
-  var result =  {
+  var result = {
     'initial:before': {
       'loopback#favicon': {}
     },
     initial: {
-      'compression': {},
-      'cors': {
+      compression: {},
+      cors: {
         params: {
           origin: true,
           credentials: true
         }
       },
       'cookie-parser': {
-        'params': app.secrets.get('cookie')
+        params: app.secrets.get('cookie')
       },
       'helmet#xssFilter': {},
       'helmet#hsts': {
@@ -68,71 +73,67 @@ module.exports = function(app) {
       'helmet#ieNoOpen': {},
       'helmet#noSniff': {},
       'helmet#noCache': {
-        'enabled': false
+        enabled: false
       },
       './middleware/frameguard': {
         params: [app]
       }
     },
     'initial:after': {},
-    'session': {
+    session: {
       './middleware/session': {
         params: [app]
       }
     },
-    'parse': {
+    parse: {
       'body-parser#json': {},
       'body-parser#urlencoded': {
-        'params': {
-          'extended': true
+        params: {
+          extended: true
         }
       }
     },
     'routes:before': {
       './middleware/certificate': {
         params: [app],
-        enabled: process.env.PROTOCOL=='https'
+        enabled: process.env.PROTOCOL == 'https'
       },
       './middleware/token': {
         params: [app]
       },
       './middleware/limiter': limiterOptions
     },
-    'routes': {
+    routes: {
       './middleware/log-request': {
-        'params': [app.get('token')]
+        params: [app.get('token')]
       },
       './middleware/media-private': {
-        'params': [app]
+        params: [app]
       },
       './middleware/page-private': {
-        'params': [app]
+        params: [app]
       },
       'loopback#rest': {
-        'paths': [
-          app.web.services.get('restApiRoot')
-        ]
+        paths: [app.web.services.get('restApiRoot')]
       }
     },
     'routes:after': {},
-    'files': {},
-    'final': {},
+    files: {},
+    final: {},
     'final:after': {
       'strong-error-handler': {
-        'params': {
-          'debug': false,
-          'log': true,
-          'includeStack': false
+        params: {
+          debug: false,
+          log: true,
+          includeStack: false
         }
       },
-      './middleware/not-found':{
-        enabled: process.env.MODE=='live'?true:false,
+      './middleware/not-found': {
+        enabled: process.env.MODE == 'live' ? true : false,
         params: [app]
       }
     }
   };
-
-
 
   return result;
 };
