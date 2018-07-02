@@ -21,9 +21,7 @@ const SocketCluster = require('socketcluster');
 //var workerCount = process.env.WEB_CONCURRENCY || 1;
 // TODO: Make more stable the multiple workers
 
-
 module.exports = function(options) {
-
   var socketPath = '/socket';
   process.env.PATH_SOCKET = process.env.PATH_SOCKET || socketPath;
 
@@ -49,7 +47,7 @@ module.exports = function(options) {
     wsEngine: 'uws',
     rebootWorkerOnCrash: true,
     environment: 'prod',
-    workerController: path.join(__dirname, 'worker.js'),
+    workerController: path.join(__dirname, 'worker.ts'),
     logLevel: 3,
     protocolOptions: options.protocolOptions
   };
@@ -59,11 +57,9 @@ module.exports = function(options) {
   return require('./master')
     .run(socketCluster)
     .then(function(result) {
-
       return {
         port: process.env.PORT,
         result: result
       };
     });
-
 };

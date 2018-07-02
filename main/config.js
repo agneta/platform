@@ -16,6 +16,8 @@
  */
 const error = require('./error');
 const configstore = require('configstore');
+const path = require('path');
+const fs = require('fs');
 
 var port = parseFloat(process.env.PORT) || 8181;
 var protocol = process.env.PROTOCOL || 'https';
@@ -29,9 +31,17 @@ if (!port) {
   error.config(port, 'PORT');
 }
 
+var appConfigPath = path.join(process.cwd(), 'config.json');
+var appConfig = {};
+
+if (fs.existsSync(appConfigPath)) {
+  appConfig = require(appConfigPath);
+}
+
 var result = {
   port: port,
   host: host,
+  app: appConfig,
   protocol: protocol,
   env: env,
   hostName: hostName,

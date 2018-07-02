@@ -1,4 +1,5 @@
 module.exports = function(app, options) {
+  require('./configstore')(app);
   require('./secrets')(app, options);
   require('./providers')(app, options);
   require('./moment')();

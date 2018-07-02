@@ -18,20 +18,27 @@ const path = require('path');
 const _ = require('lodash');
 
 module.exports = function() {
+  var config;
+  var configPath;
+  try {
+    configPath = require.resolve(path.join(process.cwd(), 'services/config'));
+  } catch (err) {
+    config = {};
+  }
+  if (configPath) {
+    config = require(configPath);
+  }
 
   var app = {
     version: {},
-    config: require(
-      path.join(process.cwd(),'services/config')
-    ).git || {}
+    config: config.git || {}
   };
 
-  if(!_.get(app.config,'remote.name')){
+  if (!_.get(app.config, 'remote.name')) {
     return;
   }
 
   require('./update')(app);
 
   return require('./init')(app);
-
 };

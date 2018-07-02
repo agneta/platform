@@ -52,7 +52,9 @@ module.exports = Promise.resolve()
     require('./version')();
   })
   .then(function() {
-    var secrets = require(path.join(paths.core.services, 'lib/secrets'))({});
+    var app = {};
+    require(path.join(paths.core.services, 'lib/configstore'))(app);
+    var secrets = require(path.join(paths.core.services, 'lib/secrets'))(app);
 
     var serverKey = secrets.get('keys.server.key');
     var serverCert = secrets.get('keys.server.cert');
@@ -83,9 +85,9 @@ module.exports = Promise.resolve()
       process.env.SERVER_NAME || config.agneta.get('server.name');
 
     process.env.HOST_NAME = process.env.HOST_NAME || 'localhost';
-    process.env.PORT = process.env.PORT || port;
+    process.env.PORT = config.app.port || process.env.PORT || port;
     process.env.PORT_HTTP = process.env.PORT_HTTP || '80';
-    process.env.MODE = process.env.MODE || 'portal';
+    process.env.MODE = config.app.mode || process.env.MODE || 'portal';
 
     if (!process.env.ENDPOINT) {
       let options: any = {

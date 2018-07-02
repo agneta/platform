@@ -17,8 +17,7 @@
 var projectPaths = require('../paths').core;
 var start = require('../start');
 
-module.exports = function(options) {
-
+module.exports = function(options: any) {
   options = options || {};
 
   var webPages = start.website({
@@ -32,18 +31,13 @@ module.exports = function(options) {
   var services = start.services({
     worker: options.worker,
     dir: projectPaths.project,
-    server: options.server,
+    server: options.server
   });
 
   webPages.locals.services = services.locals.app;
   services.locals.client = webPages.locals;
 
-  return start.init([
-    services,
-    webPages
-  ])
-    .then(function() {
-      return {};
-    });
-
+  return start.init([services, webPages]).then(function() {
+    return {};
+  });
 };

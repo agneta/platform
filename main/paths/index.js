@@ -66,8 +66,12 @@ function loadApp(options) {
     base: base
   });
 
-  var appConfig = fs.readFileSync(app.config, 'utf8');
-  appConfig = yaml.safeLoad(appConfig);
+  var appConfig = {};
+
+  if (fs.existsSync(app.config)) {
+    appConfig = fs.readFileSync(app.config, 'utf8');
+    appConfig = yaml.safeLoad(appConfig);
+  }
 
   var data = {
     config: appConfig,

@@ -20,16 +20,16 @@ var config = require('../config');
 var start = require('../start');
 
 module.exports = function(options) {
-
   options = options || {};
 
   var webPages = start.default({
-    locals:{
+    locals: {
       load: {
         media: false
       },
       host: config.host
-    }});
+    }
+  });
 
   var services = start.services({
     worker: options.worker,
@@ -42,15 +42,10 @@ module.exports = function(options) {
   webPages.locals.services = services.locals.app;
   services.locals.client = webPages.locals;
 
-  return start.init([
-    services,
-    webPages
-  ])
-    .then(function() {
-      return {
-        webPages: webPages,
-        services: services
-      };
-    });
-
+  return start.init([services, webPages]).then(function() {
+    return {
+      webPages: webPages,
+      services: services
+    };
+  });
 };

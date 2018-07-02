@@ -16,10 +16,12 @@
  */
 const configstore = require('configstore');
 const path = require('path');
+const fs = require('fs');
 const _ = require('lodash');
 
 module.exports = function(app) {
-  var pkg = require(path.join(process.cwd(), 'package.json'));
+  var pkgFile = path.join(process.cwd(), 'package.json');
+  var pkg = fs.existsSync(pkgFile) ? require(pkgFile) : {};
 
   var name = pkg.name || path.parse(process.cwd()).name;
   name = _.snakeCase(name);

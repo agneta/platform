@@ -22,10 +22,18 @@ const modelGenerator = require('./model-generator');
 const disableAllMethods = require('./lib/disableAllMethods');
 
 module.exports = function(options) {
-
   options = options || {};
+
+  console.log(options.app);
+
   var app = options.app || loopback();
   app.httpServer = options.server;
+
+  console.log();
+  console.log();
+  console.log();
+  console.log(app);
+
   options.app = app;
 
   app.set('view engine', 'ejs');
@@ -39,12 +47,10 @@ module.exports = function(options) {
       app.client = options.client;
       app.web = options.web || app.client;
       app.paths = options.paths;
-      require('./lib')(app,options);
+      require('./lib')(app, options);
       return Promise.resolve();
-
     },
     start: function() {
-
       if (options.building) {
         return;
       }
@@ -69,15 +75,13 @@ module.exports = function(options) {
         .then(function() {
           app.modelConfig = modelConfig.models;
           return new Promise(function(resolve, reject) {
-
             var middleware = app.configurator.load('middleware', true);
             //console.log(middleware);
             //console.log(modelConfig.modelDefinitions);
 
-            var bootDirs = app.get('services_include')
-              .map(function(dir){
-                return path.join(dir,'boot');
-              });
+            var bootDirs = app.get('services_include').map(function(dir) {
+              return path.join(dir, 'boot');
+            });
 
             var bootOptions = {
               appRootDir: __dirname,
@@ -93,7 +97,7 @@ module.exports = function(options) {
                 reject(err);
                 return;
               }
-              app.models().forEach(function(model){
+              app.models().forEach(function(model) {
                 disableAllMethods(model);
               });
               app.indexes.updateDatasources(['db', 'db_prd']);

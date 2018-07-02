@@ -1,3 +1,7 @@
+import { Request, Response } from 'request';
+import { NextFunction } from 'express';
+import { AnalyticsConfiguration } from 'aws-sdk/clients/s3';
+
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
  *   Source file: main/server/cluster/worker.js
@@ -35,8 +39,8 @@ process.env.XDG_CONFIG_HOME = dirAbsolute;
 class Worker extends SCWorker {
   run() {
     var worker = this;
-    var app;
-    var server;
+    var app: any;
+    var server: any;
     var emitter = new EventEmitter();
 
     switch (process.env.MODE) {
@@ -57,7 +61,7 @@ class Worker extends SCWorker {
         server = require('../portal');
         break;
       default:
-        throw new Error('Unrecognized process mode:', process.env.MODE);
+        throw new Error(`Unrecognized process mode: ${process.env.MODE}`);
     }
 
     //--------------------------------
@@ -68,7 +72,7 @@ class Worker extends SCWorker {
 
     app.set('trust proxy', 1);
 
-    app.use(function(req, res, next) {
+    app.use(function(req: Request, res: Response, next: NextFunction) {
       if (starting) {
         emitter.on('available', next);
         return;
@@ -84,7 +88,7 @@ class Worker extends SCWorker {
           app: app
         });
       })
-      .then(function(result) {
+      .then(function(result: any) {
         starting = false;
         console.log(chalk.bold.green('Application is available'));
         emitter.emit('available');
