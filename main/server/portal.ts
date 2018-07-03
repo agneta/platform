@@ -15,12 +15,11 @@
  *   limitations under the License.
  */
 const _ = require('lodash');
-const start = require('../start');
+import start = require('../start');
 const middleware = require('../middleware');
 const paths = require('../paths');
 
-module.exports = function(options) {
-
+module.exports = function(options: any) {
   var server = options.server;
   var app = options.app;
   //-------------------------------------
@@ -33,8 +32,9 @@ module.exports = function(options) {
   //-----------------------------------------------------
   // Setup the preview components
 
-  function setupServer(name,options){
-    var component = start[name](_.extend(options, commonOptions));
+  function setupServer(name: string, options: any) {
+    var component: any = start[name];
+    component(_.extend(options, commonOptions));
 
     return middleware({
       component: component,
@@ -43,10 +43,9 @@ module.exports = function(options) {
     });
   }
 
-  var storage = require('./storage')({
-  });
+  var storage = require('./storage')({});
 
-  var portalServices = setupServer('services',{
+  var portalServices = setupServer('services', {
     root: 'services',
     id: 'portal',
     dir: paths.portal.base,
@@ -54,12 +53,12 @@ module.exports = function(options) {
     website: {}
   });
 
-  var portalPages = setupServer('portal',{
+  var portalPages = setupServer('portal', {
     root: '',
-    dir: paths.portal.base,
+    dir: paths.portal.base
   });
 
-  var webServices = setupServer('services',{
+  var webServices = setupServer('services', {
     root: paths.url.preview.services,
     id: 'web',
     dir: paths.core.project,
@@ -69,7 +68,7 @@ module.exports = function(options) {
     detached: true
   });
 
-  var webPages = setupServer('website',{
+  var webPages = setupServer('website', {
     root: paths.url.preview.dev,
     detached: true
   });
@@ -96,21 +95,11 @@ module.exports = function(options) {
 
   //----------------------------------------------------------------
   // Start using apps
-
-  return start.init([
-    webServices,
-    storage,
-    portalServices,
-    webPages,
-    portalPages,
-  ])
+  return start
+    .init([webServices, storage, portalServices, webPages, portalPages])
     .then(function() {
-
       return {
-        portalSettings: _.pick(portalServices.locals.app.settings,[
-          'account'
-        ])
+        portalSettings: _.pick(portalServices.locals.app.settings, ['account'])
       };
     });
-
 };

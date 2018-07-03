@@ -1,6 +1,6 @@
 {
-    "rules":{
-        "indent": [true, "spaces", 2],
-        "quotemark": [true, "single", "jsx-double"]
-    }
+  "rules": {
+    "indent": [true, "spaces", 2],
+    "quotemark": [true, "single", "jsx-double"]
+  }
 }

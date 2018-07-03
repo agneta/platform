@@ -1,4 +1,5 @@
 import AWS = require('aws-sdk');
+import Promise = require('bluebird');
 import MailComposer = require('nodemailer/lib/mail-composer');
 import { AnalysisScheme } from 'aws-sdk/clients/cloudsearch';
 

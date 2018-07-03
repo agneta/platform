@@ -22,7 +22,7 @@ var start = require('../start');
 module.exports = function(options) {
   options = options || {};
 
-  var webPages = start.default({
+  var webPages = start.normal({
     locals: {
       load: {
         media: false

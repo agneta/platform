@@ -24,18 +24,13 @@ const disableAllMethods = require('./lib/disableAllMethods');
 module.exports = function(options) {
   options = options || {};
 
-  console.log(options.app);
-
-  var app = options.app || loopback();
-  app.httpServer = options.server;
-
-  console.log();
-  console.log();
-  console.log();
-  console.log(app);
-
+  var app = options.app;
+  if (!app || !app.use) {
+    app = loopback();
+  }
   options.app = app;
 
+  app.httpServer = options.server;
   app.set('view engine', 'ejs');
   app.set('json spaces', 2);
   app.set('trust proxy', 1);

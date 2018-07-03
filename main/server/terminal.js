@@ -19,24 +19,32 @@ var start = require('../start');
 var _ = require('lodash');
 
 module.exports = function() {
-
-
   process.env.MODE = 'terminal';
 
-  var webPages = start.default();
-  var webPortal = start.default({
+  var webPages = start.normal();
+  var webPortal = start.normal({
     dir: projectPaths.portal.base
   });
 
   var commonOptions = {};
 
-  var servicesPortal = start.services(_.extend({
-    dir: projectPaths.portal.base
-  }, commonOptions));
+  var servicesPortal = start.services(
+    _.extend(
+      {
+        dir: projectPaths.portal.base
+      },
+      commonOptions
+    )
+  );
 
-  var servicesWebsite = start.services(_.extend({
-    dir: projectPaths.core.project
-  }, commonOptions));
+  var servicesWebsite = start.services(
+    _.extend(
+      {
+        dir: projectPaths.core.project
+      },
+      commonOptions
+    )
+  );
 
   servicesWebsite.locals.client = webPages.locals;
 
@@ -49,21 +57,14 @@ module.exports = function() {
   webPortal.locals.web = webPages.locals;
   webPortal.locals.services = servicesPortal.locals.app;
 
-  var subApps = [
-    servicesWebsite,
-    servicesPortal,
-    webPages,
-    webPortal
-  ];
+  var subApps = [servicesWebsite, servicesPortal, webPages, webPortal];
 
-  return start.init(subApps)
-    .then(function() {
-      return {
-        servicesPortal: servicesPortal,
-        servicesWebsite: servicesWebsite,
-        webPages: webPages,
-        webPortal: webPortal
-      };
-    });
-
+  return start.init(subApps).then(function() {
+    return {
+      servicesPortal: servicesPortal,
+      servicesWebsite: servicesWebsite,
+      webPages: webPages,
+      webPortal: webPortal
+    };
+  });
 };

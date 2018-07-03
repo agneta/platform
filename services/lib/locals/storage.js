@@ -1,7 +1,6 @@
 const _ = require('lodash');
 
 module.exports = function(data) {
-
   var app = data.app;
   var options = data.options;
   var env = app.web.services.get('env');
@@ -14,10 +13,11 @@ module.exports = function(data) {
     storageConfig = app.web.services.get(configName);
   }
   storageConfig.provider = storageConfig.provider || 'local';
-  storageConfig.port = _.get(options,'storage.port');
+  storageConfig.port = _.get(options, 'storage.port');
 
-  var domain = options.web || options.client;
-  domain = domain.project.config.domain.production;
+  var domain =
+    _.get(options.web || options.client, 'project.config.domain.production') ||
+    'example.com';
 
   var buckets = {
     media: {
@@ -35,8 +35,7 @@ module.exports = function(data) {
     }
   };
 
-
-  if(storageConfig.provider!=='local'){
+  if (storageConfig.provider !== 'local') {
     _.deepMapValues(buckets, function(value, path) {
       value += `.${domain}`;
       _.set(buckets, path, value);

@@ -38,7 +38,7 @@ interface Locals {
   includeSources: Array<Source>;
   app: Application;
 }
-interface Component {
+export interface Component {
   locals: Locals;
   start(): void;
   preInit(): void;
@@ -59,83 +59,82 @@ _.omitDeep = function(collection: Array<any>, excludeKeys: Array<string>) {
   return _.cloneDeepWith(collection, omitFn);
 };
 
-var start = {
-  init: function(subApps: Array<Component>) {
-    return Promise.each(subApps, function(component: Component) {
-      if (component.preInit) {
-        return component.preInit();
-      }
-    })
-      .then(function() {
-        return Promise.each(subApps, function(component: Component) {
-          console.log('Initiating: ' + component.locals.app.get('name'));
+export function init(subApps: Array<Component>) {
+  return Promise.each(subApps, function(component: Component) {
+    if (component.preInit) {
+      return component.preInit();
+    }
+  })
+    .then(function() {
+      return Promise.each(subApps, function(component: Component) {
+        console.log('Initiating: ' + component.locals.app.get('name'));
 
-          if (component.init) {
-            return component.init();
-          }
-        });
-      })
-      .then(function() {
-        return Promise.each(subApps, function(component: Component) {
-          console.log('Starting: ' + component.locals.app.get('name'));
-          if (component.start) {
-            return component.start();
-          }
-          return null;
-        });
+        if (component.init) {
+          return component.init();
+        }
       });
-  },
-  default: function(options: OptionsServer) {
-    var component = start.pages(
-      _.extend(
-        {
-          mode: 'default'
-        },
-        options
-      )
-    );
+    })
+    .then(function() {
+      return Promise.each(subApps, function(component: Component) {
+        console.log('Starting: ' + component.locals.app.get('name'));
+        if (component.start) {
+          return component.start();
+        }
+        return null;
+      });
+    });
+}
 
-    return component;
-  },
-  portal: function(options: Locals) {
-    options.includeSources = [
+export function normal(options: OptionsServer) {
+  var component = pages(
+    _.extend(
       {
-        name: 'portal',
-        path: paths.appPortal.source
-      }
-    ];
+        mode: 'default'
+      },
+      options
+    )
+  );
 
-    var component = start.pages({
-      mode: 'preview',
-      dir: paths.portal.base,
-      locals: options
-    });
+  return component;
+}
+export function portal(options: Locals) {
+  options.includeSources = [
+    {
+      name: 'portal',
+      path: paths.appPortal.source
+    }
+  ];
 
-    setName(component, 'pages_portal', options);
-    return component;
-  },
-  website: function(options: Locals) {
-    var component = start.pages({
-      mode: 'preview',
-      sync: true,
-      locals: options
-    });
+  var component = pages({
+    mode: 'preview',
+    dir: paths.portal.base,
+    locals: options
+  });
 
-    setName(component, 'pages_website', options);
-    return component;
-  },
-  pages: function(options: OptionsServer) {
-    options.paths = paths.loadApp(options);
-    return getComponent('pages', '../pages', options);
-  },
-  services: function(options: OptionsServer) {
-    options.paths = paths.loadApp(options);
-    return getComponent('services', paths.core.services, options);
-  },
-  storage: function(options: OptionsServer) {
-    return getComponent('storage', './server/storage', options);
-  }
-};
+  setName(component, 'pages_portal', options);
+  return component;
+}
+export function website(options: Locals) {
+  var component = pages({
+    mode: 'preview',
+    sync: true,
+    locals: options
+  });
+
+  setName(component, 'pages_website', options);
+  return component;
+}
+export function pages(options: OptionsServer) {
+  options.paths = paths.loadApp(options);
+  return getComponent('pages', '../pages', options);
+}
+export function services(options: OptionsServer) {
+  options.paths = paths.loadApp(options);
+  return getComponent('services', paths.core.services, options);
+}
+export function storage(options: OptionsServer) {
+  return getComponent('storage', './server/storage', options);
+}
 
 function getComponent(
   name: string,
@@ -162,5 +161,3 @@ function setName(
   }
   component.locals.app.set('name', name);
 }
-
-module.exports = start;

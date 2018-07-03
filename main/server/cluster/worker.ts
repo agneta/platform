@@ -1,6 +1,5 @@
 import { Request, Response } from 'request';
 import { NextFunction } from 'express';
-import { AnalyticsConfiguration } from 'aws-sdk/clients/s3';
 
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
