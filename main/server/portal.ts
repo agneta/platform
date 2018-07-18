@@ -33,8 +33,7 @@ module.exports = function(options: any) {
   // Setup the preview components
 
   function setupServer(name: string, options: any) {
-    var component: any = start[name];
-    component(_.extend(options, commonOptions));
+    var component: any = start[name](_.extend(options, commonOptions));
 
     return middleware({
       component: component,

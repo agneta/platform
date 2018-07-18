@@ -44,10 +44,10 @@ module.exports = function(options) {
     port: process.env.PORT,
     protocol: process.env.PROTOCOL,
     path: socketPath,
-    wsEngine: 'uws',
+    wsEngine: 'sc-uws',
     rebootWorkerOnCrash: true,
     environment: 'prod',
-    workerController: path.join(__dirname, 'worker.ts'),
+    workerController: path.join(__dirname, 'worker.js'),
     logLevel: 3,
     protocolOptions: options.protocolOptions
   };
