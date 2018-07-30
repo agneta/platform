@@ -55,11 +55,29 @@ module.exports = function(app, generated) {
               .stat(filePath)
               .then(function(stat) {
                 if (stat.isDirectory()) {
-                  filePath = path.join(filePath, 'index.json');
-                  return fs.pathExists(filePath);
+                  let fileDir = filePath;
+                  filePath = path.join(fileDir, 'index.json');
+                  return fs.pathExists(filePath).then(function(exists) {
+                    if (exists) {
+                      return true;
+                    }
+                    filePath = path.join(fileDir, 'index.schema.js');
+                    console.log(filePath);
+
+                    return fs.pathExists(filePath);
+                  });
                 }
 
-                if (path.parse(file).ext === '.json') {
+                var fileParsed = path.parse(file);
+
+                if (fileParsed.ext === '.json') {
+                  return true;
+                }
+
+                var nameParsed = path.parse(fileParsed.name);
+
+                if (fileParsed.ext === '.js' && nameParsed.ext == '.schema') {
+                  name = nameParsed.name;
                   return true;
                 }
               })

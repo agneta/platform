@@ -76,6 +76,7 @@ module.exports = function(locals) {
       //---------------------
       var packageAgneta = require(path.join(
         project.paths.core.platform,
+        '..',
         'package.json'
       ));
 

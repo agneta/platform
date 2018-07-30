@@ -1,0 +1,11 @@
+module.exports = {
+  name: 'Media_Private',
+  plural: 'Media_Private',
+  base: 'Media',
+  properties: {
+    roles: {
+      type: 'array',
+      required: false
+    }
+  }
+};

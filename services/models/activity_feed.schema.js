@@ -1,0 +1,52 @@
+module.exports = {
+  name: 'Activity_Feed',
+  base: 'PersistedModel',
+  idInjection: true,
+  options: {},
+  properties: {
+    color: {
+      type: 'array',
+      required: false
+    },
+    value: {
+      type: 'string',
+      required: true
+    },
+    type: {
+      type: 'string',
+      required: true
+    }
+  },
+  validations: [],
+  hidden: [],
+  relations: {
+    counts: {
+      type: 'hasMany',
+      model: 'Activity_Count',
+      foreignKey: 'feedId'
+    }
+  },
+  methods: {},
+  acls: [
+    {
+      accessType: '*',
+      principalType: 'ROLE',
+      principalId: '$everyone',
+      permission: 'DENY'
+    }
+  ],
+  indexes: {
+    unique: {
+      keys: {
+        type: 1,
+        value: 1
+      },
+      options: {
+        unique: true
+      }
+    }
+  },
+  http: {
+    path: 'activity/feed'
+  }
+};
