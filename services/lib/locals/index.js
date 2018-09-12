@@ -79,12 +79,14 @@ module.exports = function(app, options) {
   app.set('website', website);
 
   //---------------------------------------------
+  console.log(env, website, options.root);
 
   switch (env) {
+    case 'production':
     case 'development':
     case 'local':
       var services_url = urljoin(website.host, options.root || '');
-      console.log(services_url);
+      //console.log(services_url);
       app.set('services_url', services_url);
       break;
   }

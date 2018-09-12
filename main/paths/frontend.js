@@ -6,20 +6,11 @@ const structure = require('./structure');
 module.exports = function(options) {
   var appConfig = options.config;
 
-  var name = appConfig.frontend;
-  var dirPath;
+  var name = appConfig.frontend || 'angularjs';
+  var dirPath = config.agneta.get('frontend');
 
-  if (name) {
-    dirPath = path.join(
-      options.core.project,
-      'node_modules',
-      `frontend-${name}`
-    );
-  } else {
-    dirPath = config.agneta.get('frontend');
-  }
   if (!dirPath) {
-    throw new Error('No frontend was configured. Please select a frontend.');
+    dirPath = path.join(options.core.project, 'node_modules', `agneta-${name}`);
   }
 
   if (!fs.pathExistsSync(dirPath)) {
