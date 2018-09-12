@@ -29,7 +29,7 @@ module.exports = function(app) {
   }
   //---------------------------------------------
 
-  var secretsPath = path.join(app.configstore.path, '..', filename);
+  var secretsPath = path.join(process.cwd(), filename);
   var keys = fs.readJsonSync(secretsPath);
 
   //----------------------------------------------------
