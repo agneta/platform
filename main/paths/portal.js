@@ -9,7 +9,7 @@ module.exports = function(options) {
     path.join(options.core.project, 'node_modules', 'agneta-portal');
 
   if (!fs.pathExistsSync(mainPath)) {
-    throw new Error(`Could not find theme path: ${mainPath}`);
+    throw new Error(`Could not find portal path: ${mainPath}`);
   }
 
   var app = structure.init({
