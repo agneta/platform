@@ -19,32 +19,26 @@ const path = require('path');
 const urljoin = require('url-join');
 
 module.exports = function(app, options) {
-
   //console.log('options',options);
   options = options || {};
 
   var env = options.env || process.env.NODE_ENV || app.web.services.get('env');
   var baseDir = options.dir || process.env.PROJECT_DIR || process.cwd();
 
-  var include = [
-    options.paths.core.services,
-    options.paths.app.services
-  ];
+  var include = [options.paths.core.services, options.paths.app.services];
 
-  for(var name in options.paths.app.extensions){
+  for (var name in options.paths.app.extensions) {
     var extPaths = options.paths.app.extensions[name];
     include.push(extPaths.services);
   }
 
-  if(options.isPortal){
+  if (options.isPortal) {
     let webPaths = app.web.project.paths;
     var webExtensions = webPaths.app.extensions;
     include.push(webPaths.appPortal.services);
-    for(let name in webExtensions){
+    for (let name in webExtensions) {
       let extPaths = webExtensions[name];
-      include.push(
-        path.join(extPaths.base,'portal','services')
-      );
+      include.push(path.join(extPaths.base, 'portal', 'services'));
     }
   }
 
@@ -75,11 +69,12 @@ module.exports = function(app, options) {
 
   var webOpts = options.website || {};
   var website = {
-    host: webOpts.host || app.web.services.get('web_url') || process.env.ENDPOINT,
+    host:
+      webOpts.host || app.web.services.get('web_url') || process.env.ENDPOINT,
     root: webOpts.root
   };
 
-  website.url = urljoin(website.host, website.root||'');
+  website.url = urljoin(website.host, website.root || '');
   //console.log('services:url_web',website.url);
   app.set('website', website);
 
@@ -88,8 +83,7 @@ module.exports = function(app, options) {
   switch (env) {
     case 'development':
     case 'local':
-
-      var services_url = urljoin( website.host, options.root||'');
+      var services_url = urljoin(website.host, options.root || '');
       console.log(services_url);
       app.set('services_url', services_url);
       break;
@@ -98,9 +92,7 @@ module.exports = function(app, options) {
   //-------------------------------------------
   // Origins
 
-  var allowOrigins = [
-    website.host
-  ];
+  var allowOrigins = [website.host];
 
   app.set('allowOrigins', allowOrigins);
 
@@ -114,31 +106,32 @@ module.exports = function(app, options) {
 
     //-----------------------------------------------------------
 
-    _.defaults(options,{
-      models:{}
+    _.defaults(options, {
+      models: {}
     });
 
     let source = options.model || options.models.source;
 
-    if(!source){
-      throw new Error(`Source is missing from search config with name: ${name}`);
+    if (!source) {
+      throw new Error(
+        `Source is missing from search config with name: ${name}`
+      );
     }
 
-    _.defaults(options.models,{
+    _.defaults(options.models, {
       position: `${source}_Search_Position`,
       field: `${source}_Search_Field`,
       keyword: `${source}_Search_Keyword`
     });
 
     options.models.source = source;
-
   }
 
   //-------------------------------------------
   // Storage
 
   require('./storage')({
-    app:app,
+    app: app,
     options: options
   });
 };
