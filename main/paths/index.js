@@ -32,10 +32,11 @@ url.preview.services = 'services/preview/services';
 
 var core = {};
 core.project = process.cwd();
-core.platform = path.join(__dirname, '../..');
+core.source = path.join(__dirname, '../../..');
+core.platform = path.join(core.source, 'dist');
 core.services = path.join(core.platform, 'services');
 core.models = path.join(core.services, 'models');
-core.email = path.join(core.services, 'email');
+core.email = path.join(core.source, 'services/email');
 core.tmp = path.join(core.project, 'tmp');
 
 // Base

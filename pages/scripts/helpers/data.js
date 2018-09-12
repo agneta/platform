@@ -20,11 +20,9 @@ var _ = require('lodash');
 var yaml = require('js-yaml');
 
 module.exports = function(locals) {
-
   var project = locals.project;
 
   project.extend.helper.register('get_data', function(pathReq) {
-
     if (!pathReq) {
       throw new Error('The path is a required argument');
     }
@@ -38,13 +36,9 @@ module.exports = function(locals) {
 
     //------------------------------------------------------------
     // Check if requesting Directory
-    var pathAbs = project.theme.getDir(
-      path.join('data', pathReq)
-    );
+    var pathAbs = project.theme.getDir(path.join('data', pathReq));
 
-    if (
-      pathAbs
-    ) {
+    if (pathAbs) {
       var dir = getDir();
       if (dir) {
         //console.log('Got dir from cache', pathReq);
@@ -57,13 +51,21 @@ module.exports = function(locals) {
     //------------------------------------------------------------
     // Check if requesting a file
 
-    pathAbs = project.theme.getFile(
-      path.join('data', pathReq + '.yml')
-    );
+    pathAbs = project.theme.getFile(path.join('data', pathReq + '.yml'));
 
-    if (
-      pathAbs
-    ) {
+    if (!pathAbs) {
+      pathAbs = project.theme.getFile(
+        path.join('source', pathReq, 'index.data.yml')
+      );
+    }
+
+    if (!pathAbs) {
+      pathAbs = project.theme.getFile(
+        path.join('source', pathReq + '.data.yml')
+      );
+    }
+
+    if (pathAbs) {
       var file = getFile(pathAbs);
       if (file) {
         //console.log('Got file from cache', pathReq, cache.files.length);
@@ -78,14 +80,10 @@ module.exports = function(locals) {
     // Helper Functions
 
     function readDir() {
-
-      var filePaths = project.theme.readDir(
-        path.join('data', pathReq)
-      );
+      var filePaths = project.theme.readDir(path.join('data', pathReq));
       var cacheNames = [];
 
       for (var filePath of filePaths) {
-
         var cacheName = path.parse(filePath).name;
         var cachePath = objPath + '.' + cacheName;
 
@@ -95,14 +93,12 @@ module.exports = function(locals) {
       }
 
       cache.dirs.set(objPath, cacheNames);
-
     }
 
     function getDir() {
       var cacheNames = cache.dirs.get(objPath);
 
       if (cacheNames) {
-
         var values = _.map(cacheNames, function(cacheName) {
           let fileObjPath = objPath + '.' + cacheName;
           var value = cache.files.get(fileObjPath);
@@ -110,7 +106,7 @@ module.exports = function(locals) {
             let pathAbs = project.theme.getFile(
               path.join('data', pathReq, cacheName) + '.yml'
             );
-            value = loadFile(pathAbs,fileObjPath);
+            value = loadFile(pathAbs, fileObjPath);
           }
           return value;
         });
@@ -124,7 +120,6 @@ module.exports = function(locals) {
     }
 
     function loadFile(filePath, cachePath) {
-
       var nameParsed = path.parse(filePath);
       var parser;
 
@@ -148,29 +143,19 @@ module.exports = function(locals) {
       cache.files.set(cachePath, data);
       return data;
     }
-
   });
 
   project.extend.helper.register('has_data', function(pathReq) {
-
-    var result = project.theme.getDir(
-      path.join('data', pathReq)
-    );
+    var result = project.theme.getDir(path.join('data', pathReq));
 
     if (!result) {
-
-      result = project.theme.getFile(
-        path.join('data', pathReq + '.yml')
-      );
-
+      result = project.theme.getFile(path.join('data', pathReq + '.yml'));
     }
 
     return result ? true : false;
-
   });
 
   project.extend.helper.register('get_value', function(obj) {
-
     if (!obj) {
       return obj;
     }
@@ -191,7 +176,7 @@ module.exports = function(locals) {
     function scan(obj) {
       for (var key in obj) {
         var value = self.get_value(obj[key]);
-        if(_.isObject(value) || _.isArray(value)){
+        if (_.isObject(value) || _.isArray(value)) {
           value = scan(value);
         }
         obj[key] = value;
@@ -200,5 +185,4 @@ module.exports = function(locals) {
     }
     return scan(data);
   });
-
 };

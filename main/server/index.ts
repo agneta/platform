@@ -74,7 +74,6 @@ module.exports = Promise.resolve()
 
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     options.protocolOptions = protocolOptions;
-
     protocol = 'https';
   })
   .then(function() {

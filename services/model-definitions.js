@@ -62,8 +62,6 @@ module.exports = function(app, generated) {
                       return true;
                     }
                     filePath = path.join(fileDir, 'index.schema.js');
-                    console.log(filePath);
-
                     return fs.pathExists(filePath);
                   });
                 }

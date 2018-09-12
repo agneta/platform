@@ -16,11 +16,7 @@
  */
 
 module.exports = function() {
-
-  var sources = [
-    'loopback/common/models',
-    'loopback/server/models'
-  ];
+  var sources = ['loopback/common/models', 'loopback/server/models'];
 
   return {
     _meta: {
@@ -28,8 +24,8 @@ module.exports = function() {
       mixins: [
         'loopback/common/mixins',
         'loopback/server/mixins',
-        '../node_modules/loopback-ds-timestamp-mixin',
-        '../../loopback-ds-timestamp-mixin',
+        '../../node_modules/loopback-ds-timestamp-mixin',
+        '../../../loopback-ds-timestamp-mixin',
         'common/mixins',
         './mixins'
       ]
@@ -156,5 +152,4 @@ module.exports = function() {
       public: false
     }
   };
-
 };
