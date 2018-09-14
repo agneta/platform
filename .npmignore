@@ -5,4 +5,6 @@ bower_components
 *.sublime-workspace
 *.log
 
-/dist
+/main
+/pages
+/services
