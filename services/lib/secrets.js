@@ -20,6 +20,8 @@ const fs = require('fs-extra');
 const path = require('path');
 const filename = 'secrets.json';
 
+_.mixin(require('lodash-deep'));
+
 module.exports = function(app) {
   var encryptionKey;
   var keyPath = path.join(process.cwd(), '../secret.json');
