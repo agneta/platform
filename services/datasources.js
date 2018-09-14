@@ -26,7 +26,8 @@ module.exports = function(app) {
     db: _.extend(
       {
         name: 'db',
-        connector: 'mongodb'
+        connector: 'mongodb',
+        useNewUrlParser: true
       },
       db
     ),
