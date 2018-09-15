@@ -14,8 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var winston = require('winston');
 var processListening = false;
+const { createLogger } = require('winston');
 
 module.exports = function(app) {
   var TransportLogger = require('./transport-logger')(app);
@@ -26,9 +26,9 @@ module.exports = function(app) {
     json: false
   };
 
-  var logger = winston.createLogger({
-    transports: [new TransportLogger(logOptions)],
-    exitOnError: false
+  const logger = createLogger({
+    exitOnError: false,
+    transports: [new TransportLogger(logOptions)]
   });
 
   //------------------------------------------------

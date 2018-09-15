@@ -79,7 +79,6 @@ module.exports = function(app, options) {
   app.set('website', website);
 
   //---------------------------------------------
-  console.log(env, website, options.root);
 
   switch (env) {
     case 'production':
