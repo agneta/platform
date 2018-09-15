@@ -92,7 +92,7 @@ module.exports = function(locals) {
 
     let presets = [
       [
-        require.resolve('babel-preset-env'),
+        require.resolve('@babel/preset-env'),
         {
           targets: {
             browsers: ['since 2013']
