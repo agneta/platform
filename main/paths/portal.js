@@ -6,7 +6,7 @@ const config = require('../config');
 module.exports = function(options) {
   var mainPath =
     config.agneta.get('portal') ||
-    path.join(options.core.project, 'node_modules', 'agneta-portal');
+    path.join(options.core.project, 'node_modules', '@agneta/portal');
 
   if (!fs.pathExistsSync(mainPath)) {
     throw new Error(`Could not find portal path: ${mainPath}`);
