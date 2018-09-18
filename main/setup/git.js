@@ -17,10 +17,10 @@
 const simplegit = require('simple-git/promise');
 const Promise = require('bluebird');
 const path = require('path');
+const _ = require('lodash');
 const config = require('./config');
 
 module.exports = function() {
-
   var base_dir = process.cwd();
 
   var git = {
@@ -37,26 +37,28 @@ module.exports = function() {
 
   return Promise.resolve()
     .then(function() {
-
-      return git.native.init(repoPath, 0);
-
+      git.native.checkIsRepo().then(function(isRepo) {
+        if (isRepo) {
+          return;
+        }
+        return git.native.init(repoPath, 0);
+      });
     })
     .then(function() {
-
+      return git.native.getRemotes();
+    })
+    .then(function(remotes) {
+      var remote = _.find(remotes, { name: config.remote.name });
+      if (remote) {
+        return;
+      }
       return git.native.addRemote(config.remote.name, config.remote.url);
-
     })
     .then(function() {
-
       console.log(`Fetching changes from remote ${config.remote.name}`);
       return git.native.fetch(config.remote.name, 'master');
-
     })
     .then(function() {
-
       console.log('Git repository is ready');
-
     });
-
-
 };
