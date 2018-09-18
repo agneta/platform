@@ -1,3 +1,5 @@
+require('source-map-support').install();
+
 import { Request, Response } from 'request';
 import { NextFunction } from 'express';
 

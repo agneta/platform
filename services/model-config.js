@@ -15,6 +15,7 @@
  *   limitations under the License.
  */
 
+const path = require('path');
 module.exports = function() {
   var sources = ['loopback/common/models', 'loopback/server/models'];
 
@@ -24,8 +25,7 @@ module.exports = function() {
       mixins: [
         'loopback/common/mixins',
         'loopback/server/mixins',
-        '../../node_modules/loopback-ds-timestamp-mixin',
-        '../../../loopback-ds-timestamp-mixin',
+        path.join(require.resolve('loopback-ds-timestamp-mixin'), '..'),
         'common/mixins',
         './mixins'
       ]

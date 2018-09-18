@@ -17,7 +17,6 @@
 
 module.exports.run = function(socketCluster) {
   return new Promise(function(resolve) {
-
     socketCluster.on('ready', function() {
       console.log('Initiating...');
     });
@@ -26,13 +25,9 @@ module.exports.run = function(socketCluster) {
     socketCluster.on('warning', console.warn);
 
     socketCluster.on('workerMessage', function(workerId, msg) {
-
       if (msg.started) {
         resolve(msg.result);
       }
-
     });
-
   });
-
 };
