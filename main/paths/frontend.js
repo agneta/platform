@@ -10,7 +10,7 @@ module.exports = function(options) {
   var dirPath = config.agneta.get('frontend');
 
   if (!dirPath) {
-    dirPath = path.join(options.core.project, 'node_modules', `@agneta/${name}`);
+    dirPath = path.join(process.cwd(), 'node_modules', `@agneta/${name}`);
   }
 
   if (!fs.pathExistsSync(dirPath)) {
