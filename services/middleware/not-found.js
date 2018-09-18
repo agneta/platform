@@ -14,18 +14,16 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const urljoin = require('urljoin');
+const urljoin = require('url-join');
 const _ = require('lodash');
 const url = require('url');
 const request = require('request');
 
 module.exports = function(app) {
-
   var project = app.client.project;
   var storageConfig = app.web.services.get('storage');
 
   return function(req, res) {
-
     var lang = _.get(project.config, 'language.default.key') || 'en';
     var pathname = urljoin(lang, 'error/not-found');
 
@@ -35,9 +33,6 @@ module.exports = function(app) {
       pathname: pathname
     });
 
-    request
-      .get(reqPath)
-      .pipe(res);
-
+    request.get(reqPath).pipe(res);
   };
 };
