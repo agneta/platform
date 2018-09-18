@@ -37,7 +37,7 @@ module.exports = function() {
 
   return Promise.resolve()
     .then(function() {
-      git.native.checkIsRepo().then(function(isRepo) {
+      return git.native.checkIsRepo().then(function(isRepo) {
         if (isRepo) {
           return;
         }
