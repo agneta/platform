@@ -1,16 +1,15 @@
-import AWS = require('aws-sdk');
 import Promise = require('bluebird');
 import MailComposer = require('nodemailer/lib/mail-composer');
 import { AnalysisScheme } from 'aws-sdk/clients/cloudsearch';
 
 module.exports = function() {
-  var ses: AWS.SES;
   var app: any;
   var bucket: any;
+  var ses: any;
   return {
     init: function(_app: any) {
-      ses = new AWS.SES();
       app = _app;
+      ses = app.web.services.aws.ses;
 
       bucket = app.web.services.get('storage').buckets.media;
     },

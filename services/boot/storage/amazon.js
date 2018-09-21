@@ -14,36 +14,28 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var AWS = require('aws-sdk');
 
-module.exports = function() {
-
-  var s3 = new AWS.S3();
-
+module.exports = function(app) {
+  var services = app.web.services;
+  var s3 = services.aws.s3;
   return {
     listObjects: function() {
-      return s3.listObjectsV2.apply(s3, arguments)
-        .promise();
+      return s3.listObjectsV2.apply(s3, arguments).promise();
     },
     headObject: function() {
-      return s3.headObject.apply(s3, arguments)
-        .promise();
+      return s3.headObject.apply(s3, arguments).promise();
     },
     copyObject: function() {
-      return s3.copyObject.apply(s3, arguments)
-        .promise();
+      return s3.copyObject.apply(s3, arguments).promise();
     },
     deleteObjects: function() {
-      return s3.deleteObjects.apply(s3, arguments)
-        .promise();
+      return s3.deleteObjects.apply(s3, arguments).promise();
     },
     deleteObject: function() {
-      return s3.deleteObject.apply(s3, arguments)
-        .promise();
+      return s3.deleteObject.apply(s3, arguments).promise();
     },
     getObjectStream: function() {
-      return s3.getObject.apply(s3, arguments)
-        .createReadStream();
+      return s3.getObject.apply(s3, arguments).createReadStream();
     },
     upload: function(options) {
       var upload = s3.upload.apply(s3, arguments);
@@ -51,7 +43,6 @@ module.exports = function() {
         upload.on('httpUploadProgress', options.onProgress);
       }
       return upload.promise();
-    },
-
+    }
   };
 };

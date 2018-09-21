@@ -1,5 +1,4 @@
 const Promise = require('bluebird');
-const _ = require('lodash');
 
 module.exports = function(app) {
   app.storage.listAllObjects = function(options) {
