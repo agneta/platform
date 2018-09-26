@@ -49,7 +49,10 @@ module.exports = function(app) {
 
   var result = {
     'initial:before': {
-      'loopback#favicon': {}
+      'loopback#favicon': {},
+      './middleware/health': {
+        paths: ['/health']
+      }
     },
     initial: {
       compression: {},

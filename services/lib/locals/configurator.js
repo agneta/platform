@@ -18,34 +18,21 @@ var _ = require('lodash');
 var path = require('path');
 
 function deepMerge(object, source) {
-  return _.mergeWith(object, source,
-    function(objValue, srcValue) {
-      if (_.isObject(objValue) && srcValue) {
-        return deepMerge(objValue, srcValue);
-      }
-      return objValue;
-    });
+  return _.mergeWith(object, source, function(objValue, srcValue) {
+    if (_.isObject(objValue) && srcValue) {
+      return deepMerge(objValue, srcValue);
+    }
+    return objValue;
+  });
 }
 _.deepMerge = deepMerge;
 
 module.exports = function(app) {
-
-  var locals = app.web.services.get('options');
-
   if (process.env.SERVICES_ENV) {
     app.set('env', process.env.SERVICES_ENV);
   }
 
   var env = app.web.services.get('env');
-
-  //------------------------------------------------------
-
-  switch (env) {
-    case 'development':
-    case 'local':
-      app.set('web_url', locals.host);
-      break;
-  }
 
   //console.log('Running on env:',env);
 
@@ -68,27 +55,17 @@ module.exports = function(app) {
     }
 
     return result || {};
-
   }
 
   var dirs = app.get('services_include');
 
   function load(name) {
-
     var result = {};
 
     for (var dir of dirs) {
+      _.merge(result, data(path.join(dir, name)));
 
-      _.merge(
-        result,
-        data(path.join(dir, name))
-      );
-
-      _.merge(
-        result,
-        data(path.join(dir, name + '.' + env))
-      );
-
+      _.merge(result, data(path.join(dir, name + '.' + env)));
     }
 
     return result;
@@ -99,5 +76,4 @@ module.exports = function(app) {
   };
 
   return app.configurator;
-
 };

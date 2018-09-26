@@ -71,7 +71,7 @@ module.exports = function(locals) {
       project.site.host_web = hostPath;
       project.site.url_web = websiteConfig.url;
 
-      //console.log('pages:url_web', project.site.url_web);
+      console.log('URL Web:', project.site.url_web);
 
       //---------------------
       var packageAgneta = require(path.join(

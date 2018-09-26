@@ -17,38 +17,29 @@
 const _ = require('lodash');
 const Promise = require('bluebird');
 
-module.exports = function(app,options) {
-
+module.exports = function(app, options) {
   var worker = options.worker;
-  if(!worker){
+  if (!worker) {
     app.socket = {
-      namespace: function(){
+      namespace: function() {
         return {
-          on: function(){
-
-          },
-          emit: function(){
-
-          }
+          on: function() {},
+          emit: function() {}
         };
       }
     };
     return;
   }
   var server = worker.scServer;
-  var cookieParser = require('cookie-parser')(
-    app.secrets.get('cookie')
-  );
+  var cookieParser = require('cookie-parser')(app.secrets.get('cookie'));
 
   var connections = {};
   var namespaces = {};
   var socket = {};
 
   socket.namespace = function(options) {
-
     namespaces[options.name] = options;
     return namespaceMethods(options.name);
-
   };
 
   function namespaceMethods(namespace, socket) {
@@ -60,7 +51,6 @@ module.exports = function(app,options) {
 
     var result = {
       on: function(name, cb) {
-
         switch (name) {
           case 'connection':
             return server.on(name, function(socket) {
@@ -83,58 +73,45 @@ module.exports = function(app,options) {
         var sessionId = req.session.id;
         return namespaceMethods(namespace, connections[sessionId]);
       };
-
     }
 
     return result;
-
   }
 
   server.addMiddleware(server.MIDDLEWARE_HANDSHAKE_WS, function(req, next) {
-
     req.header = function(name) {
       return req.headers[name];
     };
     req.app = app;
 
     cookieParser(req, null, function() {
-
-      Promise
-        .resolve()
-        .then(function(){
-
-          function check(){
-
-            if(!app.token){
-              return Promise.delay(500)
-                .then(check);
+      Promise.resolve()
+        .then(function() {
+          function check() {
+            if (!app.token) {
+              return Promise.delay(500).then(check);
             }
 
             return Promise.resolve();
-
           }
 
           return check();
-
         })
-        .then(function(){
+        .then(function() {
           app.token.middleware(req, null, next);
           return null;
         })
         .catch(next);
-
     });
   });
 
-  server.addMiddleware(server.MIDDLEWARE_SUBSCRIBE, function(req, next) {
-
+  server.addMiddleware(server.MIDDLEWARE_PUBLISH_IN, function(req, next) {
     var socket = req.socket;
     var request = req.socket.request;
     var parts = req.channel.split('.');
     var name = parts[0];
 
     if (name) {
-
       var namespace = namespaces[name];
 
       if (namespace) {
@@ -142,7 +119,6 @@ module.exports = function(app,options) {
 
         if (auth) {
           if (auth.allow) {
-
             var authenticated = false;
 
             var allow = _.zipObject(
@@ -154,37 +130,27 @@ module.exports = function(app,options) {
 
             var token = request.accessToken;
             if (token) {
-
               for (var key in allow) {
                 if (token.roles[key]) {
                   authenticated = true;
                   break;
                 }
               }
-
             }
 
             if (!authenticated) {
-
               socket.kickOut(req.channel);
               return;
             }
-
           }
         }
-
-
-
       }
     }
 
     next();
-
-
   });
 
   server.on('connection', function(socket) {
-
     var client = server.clients[socket.id];
     client.headers = socket.request.headers;
 
@@ -203,5 +169,4 @@ module.exports = function(app,options) {
 
   socket.server = server;
   app.socket = socket;
-
 };

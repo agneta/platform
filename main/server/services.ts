@@ -42,6 +42,8 @@ module.exports = function(options) {
   webPages.locals.services = services.locals.app;
   services.locals.client = webPages.locals;
 
+  options.app.use(services.locals.app);
+
   return start.init([services, webPages]).then(function() {
     return {
       webPages: webPages,
