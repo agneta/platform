@@ -5,6 +5,8 @@ const paths = require('../paths');
 const Build = require(path.join(paths.pages.base, 'core/build'));
 const _ = require('lodash');
 
+export {};
+
 module.exports = function(options) {
   options = options || {};
   options.env = options.env || 'local';

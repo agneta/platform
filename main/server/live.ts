@@ -43,8 +43,6 @@ module.exports = function(options) {
         return _.isString(n) && n.length;
       });
 
-      //console.log('host for assets', storageConfig.buckets.assets.host);
-
       var reqPath = url.format({
         hostname: storageConfig.buckets.assets.host,
         protocol: 'https',
@@ -58,7 +56,7 @@ module.exports = function(options) {
           }
         })
         .then(function(headers) {
-          //console.log(headers, reqPath);
+          console.log(headers, reqPath);
 
           if (headers) {
             services.frameguard({

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["es6"],
+    "lib": ["es2015"],
     "noImplicitAny": false,
     "moduleResolution": "node",
     "outDir": "./dist",
@@ -10,7 +10,8 @@
     "paths": {
       "*": ["./node_modules/@types/*", "*"]
     },
-    "allowJs": true
+    "allowJs": true,
+    "types": ["node"]
   },
   "compileOnSave": true,
   "exclude": ["node_modules/**", "bower_components/**", "dist/**"]
