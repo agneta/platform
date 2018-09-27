@@ -38,6 +38,7 @@ core.services = path.join(core.platform, 'services');
 core.models = path.join(core.services, 'models');
 core.email = path.join(core.source, 'services/email');
 core.tmp = path.join(core.project, 'tmp');
+core.cache = path.join(core.project, '.cache');
 
 // Base
 var pages = {};

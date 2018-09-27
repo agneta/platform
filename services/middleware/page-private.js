@@ -20,7 +20,6 @@ const urljoin = require('url-join');
 const activity = require('./page-private/activity');
 
 module.exports = function(app) {
-
   var client = app.client;
   var clientProject = client.project;
   var clientHelpers = client.app.locals;
@@ -32,7 +31,7 @@ module.exports = function(app) {
   };
 
   var defaultView = {
-    base: '/' + clientProject.config.page.viewBase.default+'/'
+    base: '/' + clientProject.config.page.viewBase.default + '/'
   };
   switch (app.web.services.get('env')) {
     case 'development':
@@ -46,14 +45,12 @@ module.exports = function(app) {
   //-----------------------------------------------------------
 
   return function(req, res, next) {
-
     var data;
 
     checkBase(defaultView);
     checkBase(localView);
 
     function checkBase(view) {
-
       if (req.path.indexOf(view.base) !== 0) {
         return;
       }
@@ -86,17 +83,12 @@ module.exports = function(app) {
     return Promise.resolve()
       .then(function() {
         if (data.page.authorization) {
-
           //console.log('page:private:auth',data.page.title, data.page.authorization);
-          return app.models.Account.hasRoles(
-            data.page.authorization,
-            req
-          )
-            .then(function(result) {
+          return app.models.Account.hasRoles(data.page.authorization, req).then(
+            function(result) {
               //console.log('app.models.Account.hasRoles.result',result);
 
               if (!result.has) {
-
                 var authPath = path.parse(data.remotePath);
                 var name;
 
@@ -108,7 +100,7 @@ module.exports = function(app) {
                   name = 'view-auth-data';
                 }
 
-                if(!name){
+                if (!name) {
                   return Promise.reject({
                     redirect: true
                   });
@@ -117,11 +109,10 @@ module.exports = function(app) {
                 authPath = urljoin(authPath.dir, name);
                 data.remotePath = authPath;
                 data.page = clientHelpers.get_page(data.remotePath);
-
               }
-            });
+            }
+          );
         }
-
       })
       .then(function() {
         return data.view.method(data);
@@ -142,6 +133,5 @@ module.exports = function(app) {
         }
         next(err);
       });
-
   };
 };

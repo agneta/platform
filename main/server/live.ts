@@ -33,9 +33,9 @@ module.exports = function(options) {
     storageConfig = services.get('storage');
 
     cachedRequest.setCacheDirectory(
-      path.join(project.paths.core.tmp, 'live-cache')
+      path.join(project.paths.core.cache, 'public-pages')
     );
-    cachedRequest.setValue('ttl', 10 * 60 * 1000);
+    cachedRequest.setValue('ttl', 5 * 60 * 1000);
 
     options.app.use(function(req, res, next) {
       var pathParts = req.path.split('/');
@@ -43,7 +43,7 @@ module.exports = function(options) {
         return _.isString(n) && n.length;
       });
 
-      console.log('host for assets', storageConfig.buckets.assets.host);
+      //console.log('host for assets', storageConfig.buckets.assets.host);
 
       var reqPath = url.format({
         hostname: storageConfig.buckets.assets.host,
@@ -58,6 +58,8 @@ module.exports = function(options) {
           }
         })
         .then(function(headers) {
+          //console.log(headers, reqPath);
+
           if (headers) {
             services.frameguard({
               req: req,
@@ -79,5 +81,7 @@ module.exports = function(options) {
           next(err);
         });
     });
+
+    options.app.use(services);
   });
 };
