@@ -20,7 +20,6 @@ const path = require('path');
 const fs = require('fs');
 
 var port = parseFloat(process.env.PORT) || 8181;
-var protocol = process.env.PROTOCOL || 'https';
 var hostName = process.env.HOST_NAME || 'localhost';
 var host = process.env.ENDPOINT || 'localhost';
 var env = process.env.NODE_ENV || 'development';
@@ -42,7 +41,6 @@ var result = {
   port: port,
   host: host,
   app: appConfig,
-  protocol: protocol,
   env: env,
   hostName: hostName,
   socket: {
