@@ -97,6 +97,10 @@ module.exports = function(options: any) {
   return start
     .init([webServices, storage, portalServices, webPages, portalPages])
     .then(function() {
+      options.app.use(
+        require('./middleware/not-found')(webServices.locals.app)
+      );
+
       return {
         portalSettings: _.pick(portalServices.locals.app.settings, ['account'])
       };
