@@ -31,7 +31,12 @@ module.exports = function(options) {
   var http = express();
 
   http.get('*', function(req, res) {
-    res.redirect('https://' + req.headers['host'] + req.url);
+    let host = req.headers['host'];
+    if (host.indexOf('localhost:') === 0) {
+      host = `localhost:${process.env.PORT}`;
+    }
+
+    res.redirect('https://' + host + req.url);
   });
 
   http.listen(process.env.PORT_HTTP);
