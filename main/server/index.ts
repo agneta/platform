@@ -29,6 +29,7 @@ const Promise = require('bluebird');
 const path = require('path');
 const paths = require('../paths');
 const config = require('../config');
+const getPort = require('get-port');
 
 //---------------------------------------------------
 // Look for server certificates
@@ -82,14 +83,28 @@ module.exports = Promise.resolve()
     protocol = 'https';
   })
   .then(function() {
+    return Promise.map(['PORT', 'PORT_HTTP'], setPort);
+
+    function setPort(name: string) {
+      let port = config.app[name.toLowerCase()] || process.env[name];
+      port = parseInt(port);
+      return getPort({
+        port: port
+      }).then(function(result) {
+        if (result != port) {
+          console.log(`${name}: ${port} was taken`);
+        }
+        process.env[name] = result;
+      });
+    }
+  })
+  .then(function() {
     //---------------------------------------------------
     // Set environment variables
 
     process.env.SERVER_NAME =
       process.env.SERVER_NAME || config.agneta.get('server.name');
-
     process.env.HOST_NAME = process.env.HOST_NAME || 'localhost';
-    process.env.PORT = config.app.port || process.env.PORT || port;
     process.env.MODE = config.app.mode || process.env.MODE || 'portal';
 
     if (!process.env.ENDPOINT) {

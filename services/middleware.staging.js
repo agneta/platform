@@ -1,7 +1,5 @@
 module.exports = {
-  'initial:before': {
-    './middleware/force-https': {}
-  },
+  'initial:before': {},
   initial: {},
   'final:after': {}
 };

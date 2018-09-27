@@ -92,6 +92,8 @@ class Worker extends SCWorker {
       .then(function(result: any) {
         starting = false;
         console.log(chalk.bold.green('Application is available'));
+        console.log(`HTTPS port: ${process.env.PORT}`);
+        console.log(`HTTP port: ${process.env.PORT_HTTP}`);
         emitter.emit('available');
         worker.sendToMaster({
           started: true,

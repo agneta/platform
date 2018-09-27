@@ -14,21 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const error = require('./error');
 const configstore = require('configstore');
 const path = require('path');
 const fs = require('fs');
-
-var port = parseFloat(process.env.PORT) || 8181;
-var hostName = process.env.HOST_NAME || 'localhost';
-var host = process.env.ENDPOINT || 'localhost';
-var env = process.env.NODE_ENV || 'development';
-
-//-------------------------------------
-
-if (!port) {
-  error.config(port, 'PORT');
-}
 
 var appConfigPath = path.join(process.cwd(), 'config.json');
 var appConfig = {};
@@ -38,11 +26,7 @@ if (fs.existsSync(appConfigPath)) {
 }
 
 var result = {
-  port: port,
-  host: host,
   app: appConfig,
-  env: env,
-  hostName: hostName,
   socket: {
     path: '/socket'
   }
