@@ -52,24 +52,34 @@ module.exports = function(app) {
 
     return Promise.resolve()
       .then(function() {
-        return fs.pathExists(cachedFilePath);
+        return fs.pathExists(headersPath).then(function(exists) {
+          console.log('headersPath exist', exists);
+
+          if (!exists) {
+            return false;
+          }
+          return fs.pathExists(cachedFilePath);
+        });
       })
       .then(function(exists) {
-        if (exists) {
-          return fs.stat(cachedFilePath).then(function(stats) {
-            if (stats.mtime.getTime() + ttl < Date.now()) {
-              return false;
-            }
-            return fs.readJson(headersPath).then(function(headers) {
-              for (var key in headers) {
-                let value = headers[key];
-                data.res.set(key, value);
-              }
-              fs.createReadStream(cachedFilePath).pipe(data.res);
-              return true;
-            });
-          });
+        console.log('cachedFilePath exist', exists);
+
+        if (!exists) {
+          return false;
         }
+        return fs.stat(headersPath).then(function(stats) {
+          if (stats.mtime.getTime() + ttl < Date.now()) {
+            return false;
+          }
+          return fs.readJson(headersPath).then(function(headers) {
+            for (var key in headers) {
+              let value = headers[key];
+              data.res.set(key, value);
+            }
+            fs.createReadStream(cachedFilePath).pipe(data.res);
+            return true;
+          });
+        });
       })
       .then(function(sent) {
         if (sent) {
@@ -104,7 +114,13 @@ module.exports = function(app) {
               data.res.set(key, value);
             }
 
-            return fs.writeFile(headersPath, JSON.stringify(headers));
+            return fs.outputFile(headersPath, JSON.stringify(headers));
+          })
+          .then(function() {
+            return fs.remove(cachedFilePath);
+          })
+          .then(function() {
+            return fs.ensureFile(cachedFilePath);
           })
           .then(function() {
             var responseWriter = fs.createWriteStream(cachedFilePath);
