@@ -19,7 +19,6 @@ const _ = require('lodash');
 const url = require('url');
 
 module.exports = function(app) {
-
   var processProps = {
     host: process.env.HOST_NAME,
     env: process.env.NODE_ENV,
@@ -45,8 +44,9 @@ module.exports = function(app) {
   })
     .then(function(_processServer) {
       processServer = _processServer;
-      return publicIp.v4()
-        .catch(function(){
+      return publicIp
+        .v4()
+        .catch(function() {
           serverProps.ipv4 = null;
         })
         .then(function(ip) {
@@ -54,26 +54,21 @@ module.exports = function(app) {
         });
     })
     .then(function() {
-
       if (!processServer) {
         return Process_Server.create(serverProps);
       }
       return processServer.updateAttributes(serverProps);
-
     })
     .then(function(_processServer) {
-
       processServer = _processServer;
 
       return Process.findOne({
         where: processProps
       });
-
     })
     .then(function(result) {
-
       var endpoint = url.format({
-        protocol: process.env.PROTOCOL,
+        protocol: 'https',
         hostname: process.env.HOST_NAME,
         pathname: app.web.services.get('services_url')
       });
@@ -86,11 +81,13 @@ module.exports = function(app) {
       });
 
       if (!result) {
-        return Process.findOrCreate({
-          where: processProps
-        }, createProps);
+        return Process.findOrCreate(
+          {
+            where: processProps
+          },
+          createProps
+        );
       }
       return result.updateAttributes(processProps);
     });
-
 };

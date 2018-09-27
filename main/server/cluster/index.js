@@ -15,7 +15,6 @@
  *   limitations under the License.
  */
 const path = require('path');
-const express = require('express');
 const SocketCluster = require('socketcluster');
 
 //var workerCount = process.env.WEB_CONCURRENCY || 1;
@@ -26,23 +25,12 @@ module.exports = function(options) {
   process.env.PATH_SOCKET = process.env.PATH_SOCKET || socketPath;
 
   //---------------------------------------------------
-  // HTTP connections to redirect to HTTPS
-
-  var http = express();
-
-  http.get('*', function(req, res) {
-    res.redirect('https://' + req.headers['host'] + req.url);
-  });
-
-  http.listen(process.env.PORT_HTTP);
-
-  //---------------------------------------------------
   // HTTPS connections with socket cluster
   var clusterOptions = {
     workers: 1,
     brokers: 1,
     port: process.env.PORT,
-    protocol: process.env.PROTOCOL,
+    protocol: 'https',
     path: socketPath,
     wsEngine: 'sc-uws',
     rebootWorkerOnCrash: true,

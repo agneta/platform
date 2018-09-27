@@ -60,7 +60,12 @@ module.exports = Promise.resolve()
     var serverCert = secrets.get('keys.server.cert');
 
     if (!serverKey || !serverCert) {
-      return;
+      let selfsigned = require('selfsigned');
+      let attrs = [{ name: 'commonName', value: 'agneta.io' }];
+      let pems = selfsigned.generate(attrs, { days: 365 });
+
+      serverKey = pems.private;
+      serverCert = pems.cert;
     }
 
     var protocolOptions = {
@@ -85,7 +90,6 @@ module.exports = Promise.resolve()
 
     process.env.HOST_NAME = process.env.HOST_NAME || 'localhost';
     process.env.PORT = config.app.port || process.env.PORT || port;
-    process.env.PORT_HTTP = process.env.PORT_HTTP || '80';
     process.env.MODE = config.app.mode || process.env.MODE || 'portal';
 
     if (!process.env.ENDPOINT) {
@@ -101,7 +105,6 @@ module.exports = Promise.resolve()
     }
 
     process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-    process.env.PROTOCOL = protocol;
   })
   .then(function() {
     var server;

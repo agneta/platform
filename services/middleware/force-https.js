@@ -16,8 +16,6 @@
  */
 module.exports = function() {
   return function(req, res, next) {
-    console.log('force https:', req);
-
     if (!req.secure) {
       var secureUrl = 'https://' + req.headers.host + req.url;
       res.writeHead(301, {

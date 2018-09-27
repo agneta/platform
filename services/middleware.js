@@ -98,8 +98,7 @@ module.exports = function(app) {
     },
     'routes:before': {
       './middleware/certificate': {
-        params: [app],
-        enabled: process.env.PROTOCOL == 'https'
+        params: [app]
       },
       './middleware/token': {
         params: [app]

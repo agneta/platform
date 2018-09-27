@@ -100,6 +100,7 @@
     "replace-ext": "1.0.0",
     "request": "^2.88.0",
     "request-promise": "4.2.2",
+    "selfsigned": "^1.10.3",
     "send": "0.16.2",
     "simple-git": "1.96.0",
     "soap": "^0.25.0",
