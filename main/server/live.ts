@@ -82,6 +82,6 @@ module.exports = function(options) {
         });
     });
 
-    options.app.use(services);
+    options.app.use(require('./middleware/not-found')(services));
   });
 };

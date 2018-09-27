@@ -34,7 +34,7 @@ module.exports = function(app) {
 
   var env = app.web.services.get('env');
 
-  //console.log('Running on env:',env);
+  console.log('Running on env:', env);
 
   function data(file) {
     var result = null;
@@ -64,7 +64,6 @@ module.exports = function(app) {
 
     for (var dir of dirs) {
       _.merge(result, data(path.join(dir, name)));
-
       _.merge(result, data(path.join(dir, name + '.' + env)));
     }
 

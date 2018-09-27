@@ -71,7 +71,6 @@ module.exports = function(options) {
           app.modelConfig = modelConfig.models;
           return new Promise(function(resolve, reject) {
             var middleware = app.configurator.load('middleware', true);
-            //console.log(middleware);
             //console.log(modelConfig.modelDefinitions);
 
             var bootDirs = app.get('services_include').map(function(dir) {
