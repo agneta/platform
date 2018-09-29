@@ -16,17 +16,20 @@
  */
 const path = require('path');
 module.exports = function(locals) {
-
   var project = locals.project;
   var helpers = locals.app.locals;
 
   return {
     run: function(page) {
-
       if (page.parent) {
-        var parent = project.site.pages.findOne({
-          parentName: page.parent
-        });
+        var parent = helpers.get_page(page.parent);
+        console.log(page.parent, parent);
+
+        if (!parent) {
+          project.site.pages.findOne({
+            parentName: page.parent
+          });
+        }
         if (parent) {
           page.parentPath = parent.path;
         }
@@ -35,20 +38,17 @@ module.exports = function(locals) {
       //-----------------------------------------
 
       function findBase(basePage) {
-
         basePage = helpers.get_page(basePage);
 
         if (basePage) {
           page.parentPath = basePage.path;
         }
-
       }
 
       var basePath = page.pathSource || page.path;
 
       while (!page.parentPath) {
-        basePath = path.parse(basePath)
-          .dir;
+        basePath = path.parse(basePath).dir;
 
         if (!basePath || basePath == '/') {
           break;
@@ -56,7 +56,6 @@ module.exports = function(locals) {
 
         findBase(basePath);
       }
-
 
       //-----------------------------------------
 
@@ -71,9 +70,6 @@ module.exports = function(locals) {
       if (page.isDialog) {
         delete page.parentPath;
       }
-
     }
   };
-
-
 };

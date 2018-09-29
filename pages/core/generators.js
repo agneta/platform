@@ -20,7 +20,6 @@ var nPath = require('path');
 var pageProcessor = require('../pages/page');
 
 module.exports = function(locals) {
-
   var project = locals.project;
 
   var rules = require('./generator/rules')(locals);
@@ -34,80 +33,79 @@ module.exports = function(locals) {
 
   return Page.remove({})
     .then(function() {
-
       project.call_listeners('generateBefore');
 
       var generators = project.extend.generator.list();
       var arr = Object.keys(generators);
 
-      return Promise.map(arr, function(key) {
+      return Promise.map(
+        arr,
+        function(key) {
+          var generator = generators[key];
 
-        var generator = generators[key];
+          return generator.call(project, locals).then(function(pages) {
+            return Promise.map(
+              pages,
+              function(page) {
+                if (page.template_build && locals.buildOptions) {
+                  page.template = page.template_build;
+                }
 
-        return generator.call(project, locals)
-          .then(function(pages) {
-            return Promise.map(pages, function(page) {
-              
-              if (page.template_build && locals.buildOptions) {
-                page.template = page.template_build;
-              }
+                page.isSource = true;
 
-              page.isSource = true;
-
-              return Promise.resolve()
-                .then(function() {
-
-                  if (project.config.authorization && !page.skipAuthorization) {
-
-                    if (!page.authorization) {
-                      page.authorization = project.config.authorization;
+                return Promise.resolve()
+                  .then(function() {
+                    if (
+                      project.config.authorization &&
+                      !page.skipAuthorization
+                    ) {
+                      if (!page.authorization) {
+                        page.authorization = project.config.authorization;
+                      }
+                    }
+                  })
+                  .then(function() {
+                    if (excludeConfig.pages || page.viewOnly) {
+                      page.path = pageProcessor.parseFilename(page.path);
+                      return generate(page);
                     }
 
-                  }
-
-                })
-                .then(function() {
-
-                  if (excludeConfig.pages || page.viewOnly) {
-                    page.path = pageProcessor.parseFilename(page.path);
-                    return generate(page);
-                  }
-
-                  return pageProcessor.process.call(project, page)
-                    .then(function(doc) {
-                      if (!doc) {
-                        return;
-                      }
-                      return generate(page);
-                    });
-                });
-
-
-            }, {
-              concurrency: 1
-            });
+                    return pageProcessor.process
+                      .call(project, page)
+                      .then(function(doc) {
+                        if (!doc) {
+                          return;
+                        }
+                        return generate(page);
+                      });
+                  });
+              },
+              {
+                concurrency: 1
+              }
+            );
           });
-      }, {
-        concurrency: 1
-      });
-
+        },
+        {
+          concurrency: 1
+        }
+      );
     })
     .then(function() {
-
       return project.site.pages.map(function(page) {
         rules.run(page);
-        paths.run(page);
         templates(page);
-
+        return page;
+      });
+    })
+    .then(function(pages) {
+      return pages.map(function(page) {
+        paths.run(page);
         page.save();
       });
-
     });
 
-
-
   function generate(page) {
-
     if (!page.template) {
       console.error(page);
       throw new Error('Must have a template on: ' + page.path);
@@ -120,77 +118,65 @@ module.exports = function(locals) {
       path: null
     };
 
-
     return Promise.resolve()
       .then(function() {
-
         if (excludeConfig.view) {
           return;
         }
 
-        return run(_.extend({},
-          page,
-          pageBase, {
+        return run(
+          _.extend({}, page, pageBase, {
             isView: true,
             path: nPath.join(page.path, 'view')
-          }));
+          })
+        );
       })
       .then(function() {
-
         if (excludeConfig.viewData) {
           return;
         }
 
-        return run(_.extend({},
-          page,
-          pageBase, {
+        return run(
+          _.extend({}, page, pageBase, {
             isViewData: true,
             path: nPath.join(page.path, 'view-data'),
             template: 'json/viewData'
-          }));
+          })
+        );
       })
       .then(function() {
-
         if (excludeConfig.auth) {
           return;
         }
 
         if (page.authorization) {
-
-          return run(_.extend({},
-            page,
-            pageBase, {
+          return run(
+            _.extend({}, page, pageBase, {
               isView: true,
               path: nPath.join(page.path, 'view-auth'),
               template: 'authorization'
-            }))
-            .then(function() {
-
-              return run(_.extend({},
-                page,
-                pageBase, {
-                  isViewData: true,
-                  path: nPath.join(page.path, 'view-auth-data'),
-                  template: 'json/viewAuthData'
-                }));
-
-            });
-
+            })
+          ).then(function() {
+            return run(
+              _.extend({}, page, pageBase, {
+                isViewData: true,
+                path: nPath.join(page.path, 'view-auth-data'),
+                template: 'json/viewAuthData'
+              })
+            );
+          });
         }
       });
   }
 
   function run(data) {
-
     delete data.isSource;
     delete data._id;
     delete data.source;
 
     var loadFields = locals.load.pages && locals.load.pages.fields;
 
-    if (
-      _.isObject(loadFields)
-    ) {
+    if (_.isObject(loadFields)) {
       for (var key in data) {
         if (!loadFields[key]) {
           delete data[key];
