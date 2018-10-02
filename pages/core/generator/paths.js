@@ -23,7 +23,6 @@ module.exports = function(locals) {
     run: function(page) {
       if (page.parent) {
         var parent = helpers.get_page(page.parent);
-        console.log(page.parent, parent);
 
         if (!parent) {
           project.site.pages.findOne({

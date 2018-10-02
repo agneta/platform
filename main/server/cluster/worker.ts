@@ -1,4 +1,5 @@
 require('source-map-support').install();
+var StackTraceParser = require('stacktrace-parser');
 
 import { Request, Response } from 'request';
 import { NextFunction } from 'express';
@@ -33,6 +34,22 @@ Promise.config({
     wForgottenReturn: false
   }
 });
+
+if (process.env.NODE_ENV == 'development') {
+  var log = console.log;
+  console.log = function() {
+    let stack = new Error().stack;
+    stack = StackTraceParser.parse(stack);
+    let line = stack[1];
+    line = `${line.file}:${line.lineNumber}:${line.column}`;
+    line = chalk.gray(line);
+    log(' ');
+    log('<--');
+    log(line);
+    log.apply(log, arguments);
+    log('-->');
+  };
+}
 
 const dirAbsolute = path.join(process.env.HOME, '.agneta');
 process.env.XDG_CONFIG_HOME = dirAbsolute;
