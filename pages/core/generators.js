@@ -99,10 +99,15 @@ module.exports = function(locals) {
       });
     })
     .then(function(pages) {
-      return pages.map(function(page) {
-        paths.run(page);
-        page.save();
-      });
+      return pages.map(
+        function(page) {
+          paths.run(page);
+          return page.save();
+        },
+        {
+          concurrency: 10
+        }
+      );
     });
 
   function generate(page) {

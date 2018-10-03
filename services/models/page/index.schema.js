@@ -44,7 +44,7 @@ module.exports = {
       type: 'string',
       required: false
     },
-    date: {
+    mtime: {
       type: 'date',
       required: false
     },
@@ -87,8 +87,8 @@ module.exports = {
   indexes: {
     unique: {
       keys: {
-        path: 1,
-        source: 1
+        source: 1,
+        lang: 1
       },
       options: {
         unique: true

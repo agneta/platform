@@ -15,6 +15,7 @@
  *   limitations under the License.
  */
 const path = require('path');
+
 module.exports = function(locals) {
   var project = locals.project;
   var helpers = locals.app.locals;

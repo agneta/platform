@@ -56,7 +56,10 @@ module.exports = function(locals) {
               if (path.parse(path_file_parsed.name).ext) {
                 return;
               }
-              paths.push(item.path);
+              paths.push({
+                path: item.path,
+                mtime: item.stats.mtime
+              });
             });
 
             return new Promise(function(resolve, reject) {
@@ -67,8 +70,8 @@ module.exports = function(locals) {
             }).then(function(files) {
               return Promise.map(
                 files,
-                function(path_file) {
-                  var filePath = path.relative(dir, path_file);
+                function(item) {
+                  var filePath = path.relative(dir, item.path);
                   var pathParsed = path.parse(filePath);
                   var path_url = filePath;
 
@@ -84,7 +87,7 @@ module.exports = function(locals) {
                   }
 
                   var file = new File({
-                    source: path_file,
+                    source: item.path,
                     path: filePath,
                     type: 'create',
                     params: {
@@ -97,6 +100,7 @@ module.exports = function(locals) {
                   return readFile(file)
                     .then(function(_data) {
                       data = _data;
+                      data.mtime = item.mtime;
                       data.path = data.path || path_url;
                       data.name = path.parse(data.path).name;
                       //---------------------------------------

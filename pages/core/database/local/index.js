@@ -20,19 +20,18 @@ var path = require('path');
 var _ = require('lodash');
 
 module.exports = function(locals) {
-
   var project = locals.project;
 
-  var db = project.database = new Database({
+  var db = (project.database = new Database({
     version: 1,
     path: path.join(project.paths.app.website, 'db.json')
-  });
+  }));
 
   project.model = function(name, schema) {
     return db.model(name, schema);
   };
 
-  models(project);
+  models(locals);
 
   var Page = db.model('Page');
 
@@ -43,7 +42,7 @@ module.exports = function(locals) {
       find: function(query, options) {
         query = query || {};
         query.isSource = true;
-        return Page.find.call(Page, query,options);
+        return Page.find.call(Page, query, options);
       },
       map: function() {
         return Page.map.apply(Page, arguments);
@@ -56,5 +55,4 @@ module.exports = function(locals) {
       }
     }
   });
-
 };

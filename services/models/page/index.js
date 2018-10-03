@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: pages/pages/models/index.js
+ *   Source file: services/models/page.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,19 +15,8 @@
  *   limitations under the License.
  */
 
-var models = {};
-models.Cache = require('./cache');
-models.Data = require('./data');
-models.Page = require('./page');
-
-module.exports = function(locals) {
-  var db = locals.project.database;
-
-  var keys = Object.keys(models);
-  var key = '';
-
-  for (var i = 0, len = keys.length; i < len; i++) {
-    key = keys[i];
-    db.model(key, models[key](locals));
-  }
+module.exports = function(Model, app) {
+  require('./add')(Model, app);
+  require('./search')(Model, app);
+  require('./sync')(Model, app);
 };

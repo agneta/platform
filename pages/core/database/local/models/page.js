@@ -17,9 +17,12 @@
 var Schema = require('warehouse').Schema;
 var pathFn = require('path');
 
-module.exports = function(ctx) {
-
-  var basePath = pathFn.relative(ctx.paths.app.website, ctx.paths.app.source);
+module.exports = function(locals) {
+  var project = locals.project;
+  var basePath = pathFn.relative(
+    project.paths.app.website,
+    project.paths.app.source
+  );
 
   var Model = new Schema({
     id: String,
@@ -39,6 +42,17 @@ module.exports = function(ctx) {
 
   Model.virtual('full_source').get(function() {
     return pathFn.join(basePath, this.source || '');
+  });
+
+  Model.pre('save', function(data) {
+    var Page = locals.services.models.Page;
+
+    return Promise.resolve().then(function() {
+      if (!Page.sync) {
+        return;
+      }
+      return Page.sync(data);
+    });
   });
 
   return Model;

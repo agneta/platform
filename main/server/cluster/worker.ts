@@ -40,7 +40,7 @@ if (process.env.NODE_ENV == 'development') {
   console.log = function() {
     let stack = new Error().stack;
     stack = StackTraceParser.parse(stack);
-    let line = stack[1];
+    let line: any = stack[1];
     line = `${line.file}:${line.lineNumber}:${line.column}`;
     line = chalk.gray(line);
     log(' ');
