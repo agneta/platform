@@ -1,7 +1,7 @@
 const _ = require('lodash');
 
 module.exports = function(app) {
-  app.query.list = function(config) {
+  app.explorer.list = function(config) {
     var model = config.model;
     var pathProp = config.pathProp || 'path';
     var pathBase = config.pathBase || '';

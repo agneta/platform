@@ -4,6 +4,9 @@ module.exports = {
   idInjection: true,
   options: {},
   properties: {
+    dirId: {
+      type: 'String'
+    },
     title: {
       type: 'String',
       required: true
@@ -58,6 +61,11 @@ module.exports = {
       type: 'hasMany',
       model: 'Search_Position',
       foreignKey: 'pageId'
+    },
+    directory: {
+      type: 'belongsTo',
+      model: 'Page_Directory',
+      foreignKey: 'dirId'
     }
   },
   validations: [],

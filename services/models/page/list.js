@@ -1,16 +1,17 @@
 module.exports = function(Model, app) {
-  const list = app.query.list({
+  var directory = app.explorer.directory({
     model: Model,
+    namespace: 'pages',
     pathProp: 'path',
-    pathBase: '/',
     fields: {
-      title: true
+      title: true,
+      path: true
     }
   });
 
   Model.list = function(dir, marker, req) {
     var lang = app.getLng(req);
-    return list({
+    return directory.list({
       dir: dir,
       limit: 20,
       where: {

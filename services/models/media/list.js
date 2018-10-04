@@ -15,7 +15,7 @@
  *   limitations under the License.
  */
 module.exports = function(Model, app) {
-  const list = app.query.list({
+  const list = app.explorer.list({
     model: Model,
     pathProp: 'location'
   });

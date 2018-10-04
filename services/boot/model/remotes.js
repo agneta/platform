@@ -3,7 +3,6 @@ var fs = require('fs');
 var _ = require('lodash');
 
 module.exports = function(options) {
-
   var dirs = options.dirs;
   var app = options.app;
   var getModel = options.getModel;
@@ -11,7 +10,6 @@ module.exports = function(options) {
   //--------------------------------------------------------
 
   function runRemote(key) {
-
     var name = key;
     var map = null;
     var Model = null;
@@ -28,21 +26,32 @@ module.exports = function(options) {
 
     var __findOrCreate = Model.findOrCreate;
     Model.findOrCreate = function(findOptions) {
-      return __findOrCreate.apply(Model, arguments)
-        .catch(function(err) {
-          if (err.code == 11000) {
-            return Model.findOne(findOptions)
-              .then(function(item) {
-                return [item];
-              });
-          }
-          return Promise.reject(err);
-        });
+      return __findOrCreate.apply(Model, arguments).catch(function(err) {
+        if (err.code == 11000) {
+          return Model.findOne(findOptions).then(function(item) {
+            return [item];
+          });
+        }
+        return Promise.reject(err);
+      });
     };
 
     //--------------------------------
 
-    Model.getCollection = function(name){
+    var __upsertWithWhere = Model.upsertWithWhere;
+    Model.upsertWithWhere = function() {
+      var args = arguments;
+      return __upsertWithWhere.apply(Model, args).catch(function(err) {
+        if (err.code == 11000) {
+          return Model.upsertWithWhere.apply(Model, args);
+        }
+        return Promise.reject(err);
+      });
+    };
+
+    //--------------------------------
+
+    Model.getCollection = function(name) {
       return Model.dataSource.connector.collection(
         name || Model.definition.name
       );
@@ -58,7 +67,7 @@ module.exports = function(options) {
 
     //--------------------------------
 
-    Model.getModel = function(name){
+    Model.getModel = function(name) {
       return getModel({
         name: name,
         model: this
@@ -66,12 +75,11 @@ module.exports = function(options) {
     };
 
     dirs.forEach(function(dir) {
-
       var file = path.join(dir, name) + '.js';
       var exists = fs.existsSync(file);
 
       if (!exists) {
-        file = path.join(dir,name,'index.js');
+        file = path.join(dir, name, 'index.js');
         exists = fs.existsSync(file);
       }
 
@@ -80,20 +88,16 @@ module.exports = function(options) {
       }
 
       require(file)(Model, Model.app);
-
-
     });
-
   }
 
-  return function(data){
-    if(_.isArray(data)) {
+  return function(data) {
+    if (_.isArray(data)) {
       data.forEach(function(key) {
         runRemote(key);
       });
       return;
     }
     runRemote(data);
-
   };
 };

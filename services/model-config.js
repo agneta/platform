@@ -135,6 +135,10 @@ module.exports = function() {
       dataSource: 'db',
       public: false
     },
+    Directory: {
+      dataSource: 'db',
+      public: true
+    },
     Page: {
       dataSource: 'db',
       public: true
