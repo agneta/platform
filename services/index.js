@@ -36,6 +36,8 @@ module.exports = function(options) {
   app.set('trust proxy', 1);
   app.set('views', path.resolve(__dirname, 'views'));
 
+  require('loopback-datatype-objectid')(app);
+
   return {
     locals: options,
     init: function() {

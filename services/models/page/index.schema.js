@@ -5,7 +5,7 @@ module.exports = {
   options: {},
   properties: {
     dirId: {
-      type: 'String'
+      type: 'objectid'
     },
     title: {
       type: 'String',

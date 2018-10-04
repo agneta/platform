@@ -43,17 +43,18 @@ module.exports = function(locals) {
   Model.virtual('full_source').get(function() {
     return pathFn.join(basePath, this.source || '');
   });
+  if (!locals.web) {
+    Model.pre('save', function(data) {
+      var Page = locals.services.models.Page;
 
-  Model.pre('save', function(data) {
-    var Page = locals.services.models.Page;
-
-    return Promise.resolve().then(function() {
-      if (!Page.sync) {
-        return;
-      }
-      return Page.sync(data);
+      return Promise.resolve().then(function() {
+        if (!Page.sync) {
+          return;
+        }
+        return Page.sync(data);
+      });
     });
-  });
+  }
 
   return Model;
 };

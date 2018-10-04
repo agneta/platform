@@ -26,9 +26,11 @@ module.exports = function(app) {
 
           var regexp = '/^' + pathBase + dir + '[^\\/]+$/';
 
-          whereFilter[pathProp] = {
-            regexp: regexp
-          };
+          if (!config.overrideWhere) {
+            whereFilter[pathProp] = {
+              regexp: regexp
+            };
+          }
 
           if (options.where) {
             _.extend(whereFilter, options.where);
@@ -39,7 +41,7 @@ module.exports = function(app) {
             limit: limit,
             fields: config.fields,
             skip: marker,
-            order: ['type ASC', 'name ASC']
+            order: options.order || ['type ASC', 'name ASC']
           });
         })
         .then(function(_objects) {
