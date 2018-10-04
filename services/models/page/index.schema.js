@@ -87,7 +87,7 @@ module.exports = {
   indexes: {
     unique: {
       keys: {
-        source: 1,
+        path: 1,
         lang: 1
       },
       options: {

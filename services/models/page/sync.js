@@ -20,7 +20,8 @@ module.exports = function(Model, app) {
 
         return Model.findOne({
           where: {
-            source: attrs.source
+            path: attrs.path,
+            lang: attrs.lang
           },
           fields: {
             id: true,
@@ -37,7 +38,7 @@ module.exports = function(Model, app) {
 
           return Model.upsertWithWhere(
             {
-              source: attrs.source,
+              path: attrs.path,
               lang: attrs.lang
             },
             attrs

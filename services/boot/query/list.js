@@ -1,10 +1,10 @@
 const _ = require('lodash');
 
 module.exports = function(app) {
-  app.query.list = function(options) {
-    var model = options.model;
-    var pathProp = options.pathProp || 'path';
-    var pathBase = options.pathBase || '';
+  app.query.list = function(config) {
+    var model = config.model;
+    var pathProp = config.pathProp || 'path';
+    var pathBase = config.pathBase || '';
     return function(options) {
       var dir = options.dir;
       var limit = options.limit;
@@ -37,7 +37,7 @@ module.exports = function(app) {
           return model.find({
             where: whereFilter,
             limit: limit,
-            fields: options.fields,
+            fields: config.fields,
             skip: marker,
             order: ['type ASC', 'name ASC']
           });
