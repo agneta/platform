@@ -114,7 +114,7 @@ Mailer.send = function(options, cb) {
       return (
         Promise.resolve()
 
-          //--------------------------------------------------
+        //--------------------------------------------------
 
           .then(function() {
             options.attachments = options.attachments || [];
@@ -141,9 +141,9 @@ Mailer.send = function(options, cb) {
             });
           })
 
-          //--------------------------------------------------
+        //--------------------------------------------------
 
-          //console.log('email options',emailOptions);
+        //console.log('email options',emailOptions);
 
           .then(function() {
             if (emailOptions.to.id) {
