@@ -19,7 +19,6 @@ var urljoin = require('url-join');
 var _ = require('lodash');
 
 module.exports = function(locals) {
-
   var project = locals.project;
   var helpers = locals.app.locals;
 
@@ -39,12 +38,21 @@ module.exports = function(locals) {
 
     var tag = page.controller;
     if (tag) {
-      tag = tag.replace(/([a-z](?=[A-Z]))/g, '$1 ').split(' ').join('-').toLowerCase();
+      tag = tag
+        .replace(/([a-z](?=[A-Z]))/g, '$1 ')
+        .split(' ')
+        .join('-')
+        .toLowerCase();
     } else {
       if (page.isDialog) {
         tag = 'ag-dialog-ctrl';
       } else {
-        tag = 'ag-page' + (page.pathSource || page.path).split('/').join('-').toLowerCase();
+        tag =
+          'ag-page' +
+          (page.pathSource || page.path)
+            .split('/')
+            .join('-')
+            .toLowerCase();
         if (tag[tag.length - 1] == '-') {
           tag += 'home';
         }
@@ -52,11 +60,9 @@ module.exports = function(locals) {
     }
 
     return tag;
-
   });
 
   project.extend.helper.register('viewBasicData', function(page) {
-
     var data = {};
     page = page || this.page;
 
@@ -67,15 +73,14 @@ module.exports = function(locals) {
     data.styles = [];
     data.languages = [];
 
-    page.controller = page.controller || this.viewController(this.viewTag(page));
+    page.controller =
+      page.controller || this.viewController(this.viewTag(page));
 
     //----------------------------------------
 
     data.layoutClass = [
-      'template-' + page.templateSource.split('/')
-        .join('-'),
-      'page'+page.pathSource.split('/')
-        .join('-')
+      'template-' + page.templateSource.split('/').join('-'),
+      'page' + page.pathSource.split('/').join('-')
     ];
     if (page.class) {
       data.layoutClass.push(page.class);
@@ -85,7 +90,6 @@ module.exports = function(locals) {
     //----------------------------------------------------
 
     var sourceStyle = this.layout_style(page.pathSource);
-    console.log(page.pathSource,sourceStyle);
     if (sourceStyle) {
       data.styles.push(sourceStyle);
     }
@@ -99,51 +103,37 @@ module.exports = function(locals) {
     }
 
     return data;
-
-
   });
 
-
   project.extend.helper.register('viewAuthData', function(page) {
-
     page = page || this.page;
-    page = _.extend(_.pick(page,[
-      'title',
-      'path',
-      'pathSource',
-      'templateSource'
-    ]),{
-      class: 'page-authorization'
-    });
+    page = _.extend(
+      _.pick(page, ['title', 'path', 'pathSource', 'templateSource']),
+      {
+        class: 'page-authorization'
+      }
+    );
     var data = getData(page);
-    data.dependencies = [
-      [
-        this.get_asset('authorization.css')
-      ]
-    ];
+    data.dependencies = [[this.get_asset('authorization.css')]];
     return JSON.stringify(data);
-
   });
 
   project.extend.helper.register('viewData', function(page) {
-
     page = page || this.page;
-    return JSON.stringify(getData(page),null,2);
-
+    return JSON.stringify(getData(page), null, 2);
   });
 
   function getData(page) {
-
     var data = helpers.viewBasicData(page);
     var commonData = locals.page.commonData(page);
     var config = helpers.config;
     var self = helpers;
 
-    if(!commonData.templateChecked){
+    if (!commonData.templateChecked) {
       let pagePath = path.parse(page.pathSource);
-      pagePath = path.join(page.pathSource,'view');
+      pagePath = path.join(page.pathSource, 'view');
       let commonPage = helpers.get_page(pagePath);
-      helpers.template('page',{page:commonPage});
+      helpers.template('page', { page: commonPage });
       commonData = locals.page.commonData(page);
     }
 
@@ -155,7 +145,10 @@ module.exports = function(locals) {
 
     //----------------------------------------
 
-    if (page.toolbar && helpers.has_template(path.join('partials', page.toolbar))) {
+    if (
+      page.toolbar &&
+      helpers.has_template(path.join('partials', page.toolbar))
+    ) {
       data.toolbar = helpers.get_path(urljoin('partial', page.toolbar));
     }
 
@@ -164,8 +157,8 @@ module.exports = function(locals) {
     if (page.angular_libs) {
       data.inject = _.map(page.angular_libs, function(value) {
         data.scripts.push({
-          path:value.js||value.path,
-          priority:10
+          path: value.js || value.path,
+          priority: 10
         });
         return value.dep;
       });
@@ -176,11 +169,11 @@ module.exports = function(locals) {
     var tmpDependencies = [];
     data.dependencies = [];
     data.scripts = data.scripts.concat(page.scripts).concat(commonData.scripts);
-    data.scripts.map(function(script){
-      if(!script){
+    data.scripts.map(function(script) {
+      if (!script) {
         return;
       }
-      if(script.dep){
+      if (script.dep) {
         data.inject.push(script.dep);
       }
     });
@@ -200,9 +193,8 @@ module.exports = function(locals) {
     delete data.styles;
 
     function setAssets(assets, type) {
-      var ext = '.'+type;
+      var ext = '.' + type;
       for (var y in assets) {
-
         var asset = assets[y];
         var priority = 999;
         var assetPath = asset;
@@ -227,7 +219,7 @@ module.exports = function(locals) {
 
         assetPath = self.get_asset(assetPath);
 
-        if(asset.noExt){
+        if (asset.noExt) {
           assetPath = {
             path: assetPath,
             type: type
@@ -241,12 +233,9 @@ module.exports = function(locals) {
         var dependencies = tmpDependencies[priority] || [];
         dependencies.push(assetPath);
         tmpDependencies[priority] = dependencies;
-
       }
-
     }
 
     return data;
   }
-
 };

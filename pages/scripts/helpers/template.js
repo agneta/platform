@@ -23,34 +23,34 @@ _.templateSettings.escape = null;
 _.templateSettings.evaluate = null;
 
 module.exports = function(locals) {
-
   var project = locals.project;
 
-  project.extend.helper.register('render', function(template,data) {
+  project.extend.helper.register('render', function(template, data) {
     if (!_.isString(template)) {
       return template;
     }
 
-    if(data){
-      data = _.extend({},data,this);
-    }else{
+    if (data) {
+      data = _.extend({}, data, this);
+    } else {
       data = this;
     }
 
-    return _.template(template,{
+    return _.template(template, {
       interpolate: /\$\{(.+?)\}/g
     })(data);
-
   });
 
-  project.extend.helper.register('template', function(path_partial, data, cache) {
-
+  project.extend.helper.register('template', function(
+    path_partial,
+    data,
+    cache
+  ) {
     var content;
     var memCache = locals.cache.templates;
     var self = this;
 
     if (cache) {
-
       content = memCache.get(path_partial);
 
       if (content) {
@@ -59,20 +59,16 @@ module.exports = function(locals) {
       }
     }
 
-    if(path_partial[0]=='.'&&self.__path){
-      /*
-      let filePath = project.theme.getSourceFile(
-        path.join(self.__path,path_partial)+ '.ejs'
-      );
-      let stats = fs.existsSync(filePath) && fs.statSync(filePath);
-      let base;
-      console.log(filePath);
-      if(stats && stats.isDirectory()){
-        base = self.__path;
-      }else{
-        base = path.parse(self.__path).dir;
-      }*/
-      path_partial = path.join(self.__path,path_partial);
+    if (path_partial[0] == '.' && self.__path) {
+      var sourcePath = project.theme.getSourceFile(self.__path + '.ejs');
+
+      var sourceParsed = path.parse(sourcePath);
+
+      if (sourceParsed.name == 'index') {
+        path_partial = path.join(self.__path, path_partial);
+      } else {
+        path_partial = path.join(self.__path, '..', path_partial);
+      }
     }
 
     self.__path = path_partial;
@@ -84,7 +80,8 @@ module.exports = function(locals) {
     }
 
     content = fs.readFileSync(file_path, 'utf8');
-    content = ejs.render.apply(this, [content,
+    content = ejs.render.apply(this, [
+      content,
       _.extend(this, data, {
         locals: data || {}
       })
@@ -95,10 +92,9 @@ module.exports = function(locals) {
       //console.log('cache', memCache.length, memCache.itemCount);
     }
 
-    (function(){
-
+    (function() {
       var page = self.page;
-      if(!page){
+      if (!page) {
         return;
       }
 
@@ -117,12 +113,10 @@ module.exports = function(locals) {
       commonData.scripts = _.uniq(commonData.scripts);
       commonData.styles = _.uniq(commonData.styles);
 
-      if(!self.__commonData){
+      if (!self.__commonData) {
         self.__commonData = commonData;
       }
-
     })();
-
 
     return content;
   });
@@ -139,7 +133,5 @@ module.exports = function(locals) {
     path_partial = path.join(project.paths.app.frontend.source, req + '.ejs');
 
     return this.is_file(path_partial);
-
   });
-
 };
