@@ -4,7 +4,7 @@ module.exports = function(app) {
   app.query.list = function(options) {
     var model = options.model;
     var pathProp = options.pathProp || 'path';
-
+    var pathBase = options.pathBase || '';
     return function(options) {
       var dir = options.dir;
       var limit = options.limit;
@@ -24,7 +24,7 @@ module.exports = function(app) {
             dir += '\\/';
           }
 
-          var regexp = '/^' + dir + '[^\\/]+$/';
+          var regexp = '/^' + pathBase + dir + '[^\\/]+$/';
 
           whereFilter[pathProp] = {
             regexp: regexp
@@ -33,7 +33,7 @@ module.exports = function(app) {
           if (options.where) {
             _.extend(whereFilter, options.where);
           }
-
+          console.log(whereFilter, marker);
           return model.find({
             where: whereFilter,
             limit: limit,

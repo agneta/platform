@@ -2,6 +2,7 @@ module.exports = function(Model, app) {
   const list = app.query.list({
     model: Model,
     pathProp: 'path',
+    pathBase: '/',
     fields: {
       title: true
     }

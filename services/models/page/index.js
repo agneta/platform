@@ -19,4 +19,5 @@ module.exports = function(Model, app) {
   require('./add')(Model, app);
   require('./search')(Model, app);
   require('./sync')(Model, app);
+  require('./list')(Model, app);
 };
