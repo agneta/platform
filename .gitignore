@@ -8,3 +8,4 @@ package-lock.json
 theme/icons
 portal/website/cache
 /theme/source/lib
+/dist
