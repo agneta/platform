@@ -35,7 +35,7 @@ module.exports = function(app) {
           if (options.where) {
             _.extend(whereFilter, options.where);
           }
-          console.log(whereFilter, marker);
+          //console.log(whereFilter, marker);
           return model.find({
             where: whereFilter,
             limit: limit,

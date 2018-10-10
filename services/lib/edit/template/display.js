@@ -1,7 +1,6 @@
 const _ = require('lodash');
 
-module.exports = function(options){
-
+module.exports = function(options) {
   var templateData = options.templateData;
   var labels = templateData.list.labels;
   var fields = ['id'];
@@ -9,43 +8,40 @@ module.exports = function(options){
 
   labels.metadata = labels.metadata || [];
 
-  for(let key in labels){
+  for (let key in labels) {
     checkLabel(key);
   }
 
-  for(let label of labels.metadata){
+  for (let label of labels.metadata) {
     checkLabel(label);
   }
 
   return {
-    fields: fields,
+    fields: _.uniq(fields),
     include: include
   };
 
-
-  function checkLabel(label){
-
+  function checkLabel(label) {
     label = labels[label] || label;
-    if(!label){
+    if (!label) {
       return;
     }
-    if(!_.isString(label)){
+    if (!_.isString(label)) {
       return;
     }
-    if(!label.length){
+    if (!label.length) {
       return;
     }
     var field = templateData.field[label] || {};
 
-    if(field.relation){
+    if (field.relation) {
       include.push({
         relation: field.relation.name,
-        scope:{
+        scope: {
           fields: [field.relation.label]
         }
       });
     }
     fields.push(label);
   }
-
 };

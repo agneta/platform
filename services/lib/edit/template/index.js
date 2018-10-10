@@ -20,7 +20,6 @@ const path = require('path');
 const _ = require('lodash');
 const LRU = require('lru-cache');
 module.exports = function(app) {
-
   const fields = require('./fields')(app);
   const list = require('./list');
   const relations = require('./relations')(app);
@@ -29,26 +28,24 @@ module.exports = function(app) {
     max: 100
   });
 
-  app.edit.clearCache = function(options){
+  app.edit.clearCache = function(options) {
     options = options || {};
 
-    if(options.path){
+    if (options.path) {
       return cache.del(options.path);
     }
     cache.clear();
   };
 
   app.edit.loadTemplate = function(options) {
-
     options = _.cloneDeep(options);
 
     return Promise.resolve()
       .then(function() {
-
-        if(options.path){
+        if (options.path) {
           let template = cache.get(options.path);
 
-          if(template){
+          if (template) {
             //console.log('loaded from cache',options.path);
             options.data = template;
             return;
@@ -57,31 +54,30 @@ module.exports = function(app) {
 
         return Promise.resolve()
           .then(function() {
-
-            if(options.data){
+            if (options.data) {
               return options.data;
             }
 
-            return Promise.resolve()
-              .then(function() {
-
-                return fs.exists(options.path)
-                  .then(function(exists){
-                    if(!exists){
-                      throw new Error(`Could not find template with path: ${options.path}`);
-                    }
-                    return fs.readFile(options.path);
-                  })
-                  .then(function(content) {
-                    let template = yaml.safeLoad(content);
-                    if(!_.isObject(template)){
-                      throw new Error(`Invalid template at: ${options.path}`);
-                    }
-                    template.id = template.id || path.parse(options.path).name;
-                    return template;
-                  });
-
-              });
+            return Promise.resolve().then(function() {
+              return fs
+                .exists(options.path)
+                .then(function(exists) {
+                  if (!exists) {
+                    throw new Error(
+                      `Could not find template with path: ${options.path}`
+                    );
+                  }
+                  return fs.readFile(options.path);
+                })
+                .then(function(content) {
+                  let template = yaml.safeLoad(content);
+                  if (!_.isObject(template)) {
+                    throw new Error(`Invalid template at: ${options.path}`);
+                  }
+                  template.id = template.id || path.parse(options.path).name;
+                  return template;
+                });
+            });
           })
           .then(function(template) {
             options.data = template;
@@ -90,7 +86,7 @@ module.exports = function(app) {
               options.data.fields = options.base.concat(options.data.fields);
             }
 
-            if(!options.data){
+            if (!options.data) {
               return Promise.reject({
                 statusCode: 400,
                 message: `No template data found for path: ${options.path}`
@@ -99,35 +95,30 @@ module.exports = function(app) {
 
             fields(template);
             list(template);
-
+            cache.set(options.path, template);
           })
           .then(function() {
-
-            if(options.skipScan){
+            if (options.skipScan) {
               return;
             }
 
-            if(options.path){
+            if (options.path) {
               options.basePath = path.parse(options.path).dir;
             }
 
-            return relations(options)
-              .then(function(template){
-                options.data = template;
-                if(options.path){
-                  cache.set(options.path, template);
-                }
-              });
+            return relations(options).then(function(template) {
+              options.data = template;
+              if (options.path) {
+                cache.set(options.path, template);
+              }
+            });
           });
       })
       .then(function() {
-        if(!options.data){
+        if (!options.data) {
           throw new Error(`Cannot ${options.path}`);
         }
         return options.data;
       });
-
-
   };
-
 };

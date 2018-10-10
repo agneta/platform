@@ -20,7 +20,6 @@ const urljoin = require('url-join');
 const _ = require('lodash');
 
 module.exports = function(Model, app) {
-
   var rolesConfig = app.get('roles');
   var types = {
     public: true,
@@ -28,13 +27,12 @@ module.exports = function(Model, app) {
   };
 
   Model.__updateFile = function(options) {
-
     var id = options.id;
     var location = options.location;
     var dir = options.dir || path.parse(location).dir;
     var name = options.name || path.parse(location).name;
     var contentType = options.contentType;
-    var privacy = options.privacy = options.privacy || {};
+    var privacy = (options.privacy = options.privacy || {});
 
     var operations;
     var file;
@@ -42,7 +40,6 @@ module.exports = function(Model, app) {
 
     return Promise.resolve()
       .then(function() {
-
         privacy.roles = _.uniq(privacy.roles || []);
         privacy.roles.map(function(roleName) {
           var role = rolesConfig[roleName];
@@ -56,13 +53,12 @@ module.exports = function(Model, app) {
 
         privacy.type = privacy.type || 'private';
 
-        if(!types[privacy.type]){
+        if (!types[privacy.type]) {
           return Promise.reject({
             statusCode: 400,
             message: `Incorrect type: ${privacy.type}`
           });
         }
-
       })
       .then(function() {
         if (id) {
@@ -80,11 +76,9 @@ module.exports = function(Model, app) {
         });
       })
       .then(function(_file) {
-
         file = _file;
 
         //console.log('media:updateFile:item',file);
-
 
         if (!file) {
           return Promise.reject({
@@ -98,16 +92,20 @@ module.exports = function(Model, app) {
         //console.log('media:updateFile:dir',dir);
         //console.log('media:updateFile:target',target);
 
-        operations = [{
-          source: file.location,
-          target: target
-        }];
+        operations = [
+          {
+            source: file.location,
+            target: target
+          }
+        ];
 
         if (file.type == 'folder') {
-          return Model._list(file.location)
-            .then(function(result) {
-              return Promise.map(result.objects, function(object) {
-
+          return Model._list({
+            dir: file.location
+          }).then(function(result) {
+            return Promise.map(
+              result.objects,
+              function(object) {
                 var childDir = object.location.replace(file.location, target);
                 childDir = path.normalize(childDir);
                 childDir = childDir.split('/');
@@ -123,10 +121,12 @@ module.exports = function(Model, app) {
                 });
 
                 return Model.__updateFile(childOptions);
-              }, {
+              },
+              {
                 concurrency: 6
-              });
-            });
+              }
+            );
+          });
         }
 
         Model.__images.onUpdate({
@@ -134,16 +134,13 @@ module.exports = function(Model, app) {
           target: target,
           operations: operations
         });
-
       })
       .then(function() {
-
         if (!operations) {
           return file;
         }
 
         return Promise.map(operations, function(operation) {
-
           return Promise.resolve()
             .then(function() {
               operation.contentType = contentType;
@@ -163,7 +160,6 @@ module.exports = function(Model, app) {
               return Model.__moveObject(operation);
             })
             .then(function(object) {
-
               if (!object) {
                 return Model.findOne({
                   where: {
@@ -173,39 +169,36 @@ module.exports = function(Model, app) {
               }
 
               return object;
-
             })
             .then(function(object) {
-
-              if(!object){
+              if (!object) {
                 return Promise.reject({
                   statusCode: 400,
-                  message: `Could not find object with target ${operation.target}`
+                  message: `Could not find object with target ${
+                    operation.target
+                  }`
                 });
               }
 
-              var attrs = _.pick(options,['privacy']);
+              var attrs = _.pick(options, ['privacy']);
 
               if (_.size(attrs)) {
                 return object.patchAttributes(attrs);
               }
               return object;
             });
-        })
-          .then(function(objects) {
-            //console.log('On updated', objects);
-            var object = _.find(objects, {
-              location: target
-            });
-
-            Model.__prepareObject(object);
-            return {
-              _success: 'Object was updated',
-              file: object
-            };
+        }).then(function(objects) {
+          //console.log('On updated', objects);
+          var object = _.find(objects, {
+            location: target
           });
+
+          Model.__prepareObject(object);
+          return {
+            _success: 'Object was updated',
+            file: object
+          };
+        });
       });
-
-
   };
 };

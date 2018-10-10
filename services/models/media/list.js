@@ -15,13 +15,13 @@
  *   limitations under the License.
  */
 module.exports = function(Model, app) {
-  const list = app.explorer.list({
+  Model._list = app.explorer.list({
     model: Model,
     pathProp: 'location'
   });
 
   Model.list = function(dir, marker) {
-    return list({
+    return Model._list({
       dir: dir,
       limit: 20,
       marker: marker

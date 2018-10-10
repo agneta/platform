@@ -17,9 +17,7 @@
 const Promise = require('bluebird');
 
 module.exports = function(Model, app) {
-
   Model.deleteObject = function(location) {
-
     var file;
     var files;
 
@@ -29,7 +27,6 @@ module.exports = function(Model, app) {
       }
     })
       .then(function(_file) {
-
         file = _file;
 
         if (!file) {
@@ -38,20 +35,27 @@ module.exports = function(Model, app) {
           });
         }
 
-        files = [{
-          Key: location
-        }];
+        files = [
+          {
+            Key: location
+          }
+        ];
 
         if (file.type == 'folder') {
-          return Model._list(file.location)
-            .then(function(result) {
-              return Promise.map(result.objects, function(object) {
+          return Model._list({
+            dir: file.location
+          }).then(function(result) {
+            return Promise.map(
+              result.objects,
+              function(object) {
                 //console.log('delete folder object:', object.name);
                 return Model.deleteObject(object.location);
-              }, {
+              },
+              {
                 concurrency: 6
-              });
-            });
+              }
+            );
+          });
         }
 
         Model.__images.onDelete({
@@ -59,20 +63,16 @@ module.exports = function(Model, app) {
           files: files,
           location: location
         });
-
       })
       .then(function() {
-
         return app.storage.deleteObjects({
           Bucket: Model.__bucket,
           Delete: {
             Objects: files
           }
         });
-
       })
       .then(function() {
-
         return file.destroy();
       })
       .then(function() {
@@ -82,23 +82,23 @@ module.exports = function(Model, app) {
       });
   };
 
-  Model.remoteMethod(
-    'deleteObject', {
-      description: 'Delete an object',
-      accepts: [{
+  Model.remoteMethod('deleteObject', {
+    description: 'Delete an object',
+    accepts: [
+      {
         arg: 'location',
         type: 'string',
         required: true
-      }],
-      returns: {
-        arg: 'result',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'post',
-        path: '/delete-object'
       }
-    });
-
+    ],
+    returns: {
+      arg: 'result',
+      type: 'object',
+      root: true
+    },
+    http: {
+      verb: 'post',
+      path: '/delete-object'
+    }
+  });
 };

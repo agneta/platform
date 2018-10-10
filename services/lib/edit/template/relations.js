@@ -2,11 +2,9 @@ const Promise = require('bluebird');
 const path = require('path');
 
 module.exports = function(app) {
-
   const display = require('./display');
 
   return function(options) {
-
     options.source = options.source || options;
     var template = options.data;
     template.display = template.display || {};
@@ -14,13 +12,11 @@ module.exports = function(app) {
 
     return Promise.resolve()
       .then(function() {
-
         //-----------------------------------
         // Relations
 
-        var relations = template.relations = [];
+        var relations = (template.relations = []);
         return Promise.map(template.fields, function(field) {
-
           var relation = field.relation;
           if (!relation) {
             return;
@@ -31,11 +27,11 @@ module.exports = function(app) {
           relation.key = field.name;
           relation.type = field.type;
 
-          var templatePath = path.join(options.basePath, relation.template || '') + '.yml';
+          var templatePath =
+            path.join(options.basePath, relation.template || '') + '.yml';
 
           return Promise.resolve()
             .then(function() {
-
               if (!relation.template) {
                 let relationTemplate = {
                   field: {},
@@ -72,7 +68,7 @@ module.exports = function(app) {
                     data: relation.templateData
                   });
                 })
-                .then(function(relationTemplate){
+                .then(function(relationTemplate) {
                   relation.templateData = relationTemplate;
                   var displayScope = display({
                     templateData: relationTemplate
@@ -83,7 +79,6 @@ module.exports = function(app) {
                     scope: displayScope
                   });
                 });
-
             })
             .then(function() {
               relations.push(relation);
@@ -91,7 +86,6 @@ module.exports = function(app) {
         });
       })
       .then(function() {
-
         template.display.fields = display({
           templateData: template
         }).fields;
