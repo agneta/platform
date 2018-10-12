@@ -10,7 +10,7 @@
     "lint": "node node_modules/eslint/bin/eslint --ignore-path .gitignore ./ --ext .js"
   },
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=8.0.0"
   },
   "repository": {
     "type": "git",
@@ -50,8 +50,7 @@
     "delete-empty": "2.0.0",
     "ejs": "2.6.1",
     "express": "4.16.3",
-    "express-brute": "1.0.1",
-    "express-brute-mongo": "1.0.0",
+    "express-brute": "^1.0.1",
     "express-session": "1.15.6",
     "fs-extra": "^7.0.0",
     "get-port": "^4.0.0",

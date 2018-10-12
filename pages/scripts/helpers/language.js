@@ -18,7 +18,6 @@ var ejs = require('ejs');
 var _ = require('lodash');
 
 module.exports = function(locals) {
-
   var project = locals.project;
 
   /////////////////////////////////////////////////////////////////
@@ -26,15 +25,14 @@ module.exports = function(locals) {
   /////////////////////////////////////////////////////////////////
 
   project.extend.helper.register('lng', function(obj, lang) {
-
-    if(!obj){
+    if (!obj) {
       return;
     }
 
     var strict;
     var templateData;
 
-    if(obj.source){
+    if (obj.source) {
       var options = obj;
       obj = options.source;
       lang = options.lang;
@@ -51,7 +49,6 @@ module.exports = function(locals) {
     }
 
     if (_.isString(obj)) {
-
       var objPath = obj.split('.');
       var lngName = objPath[0];
 
@@ -86,8 +83,8 @@ module.exports = function(locals) {
       res = obj.en || obj.gr;
     }
 
-    if(_.isString(res)){
-      res = this.render(res,templateData);
+    if (_.isString(res)) {
+      res = this.render(res, templateData);
     }
 
     return res;
@@ -97,11 +94,9 @@ module.exports = function(locals) {
   // GET TITLE
   /////////////////////////////////////////////////////////////////
 
-
   project.extend.helper.register('get_title', function(page, lang, strict) {
-
     var title = page.title;
-
+    this.page = page;
     if (title) {
       var lng = this.lng(title, lang, strict);
       if (lng) {
@@ -117,12 +112,10 @@ module.exports = function(locals) {
   /////////////////////////////////////////////////////////////////
 
   project.extend.helper.register('has_lang', function(page, lang) {
-
     lang = lang || project.site.lang;
     var title = this.get_title(page, lang);
     return title ? true : false;
   });
-
 
   /////////////////////////////////////////////////////////////////
   // Render EJS template code
@@ -139,12 +132,10 @@ module.exports = function(locals) {
   // Scan Object for language proprties
   /////////////////////////////////////////////////////////////////
 
-  project.extend.helper.register('lngScan', function(mainObj,lng) {
-
+  project.extend.helper.register('lngScan', function(mainObj, lng) {
     var self = this;
 
     function scan(obj) {
-
       if (!obj) {
         return;
       }
@@ -154,27 +145,20 @@ module.exports = function(locals) {
       }
 
       for (var key in obj) {
-
         var source = obj[key];
 
-        if(
-          _.isObject(source) && !_.keys(source).length
-        ){
+        if (_.isObject(source) && !_.keys(source).length) {
           obj[key] = null;
           continue;
         }
-        if(
-          _.isArray(source) && !source.length
-        ){
+        if (_.isArray(source) && !source.length) {
           continue;
         }
 
-        var res = self.lng(source,lng);
+        var res = self.lng(source, lng);
 
         if (res) {
-
           obj[key] = res;
-
         } else {
           scan(source);
         }
@@ -182,7 +166,7 @@ module.exports = function(locals) {
     }
 
     var result = JSON.stringify(mainObj);
-    if(!result){
+    if (!result) {
       return;
     }
     result = JSON.parse(result);
@@ -190,5 +174,4 @@ module.exports = function(locals) {
 
     return result;
   });
-
 };
