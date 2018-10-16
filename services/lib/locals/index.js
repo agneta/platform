@@ -70,7 +70,10 @@ module.exports = function(app, options) {
   var webOpts = options.website || {};
   var website = {
     host:
-      webOpts.host || app.web.services.get('web_url') || process.env.ENDPOINT,
+      webOpts.host ||
+      app.web.services.get('web_url') ||
+      process.env.ENDPOINT ||
+      'localhost',
     root: webOpts.root
   };
 
