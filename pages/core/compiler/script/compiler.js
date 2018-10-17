@@ -25,10 +25,25 @@ module.exports = function(locals) {
     } else {
       pathSource = project.theme.getFile(path.join('source', pathRelative));
     }
-
     let pathOutput = options.output || project.paths.app.cache;
     let pathRelativeParsed = path.parse(pathRelative);
     let pathNameParsed = path.parse(pathRelativeParsed.name);
+    let output = {
+      path: path.join(pathOutput, pathRelativeParsed.dir),
+      filename: options.outputName || pathRelativeParsed.base
+    };
+
+    if (options.onOutputPath) {
+      output = options.onOutputPath(output);
+    }
+
+    let metaPath = path.join(
+      output.path,
+      path.parse(output.filename).name + '.meta.json'
+    );
+    let meta,
+      stats,
+      depDict = {};
 
     if (!pathSource) {
       return Promise.reject({
@@ -88,28 +103,12 @@ module.exports = function(locals) {
       return true;
     }
 
-    let output = {
-      path: path.join(pathOutput, pathRelativeParsed.dir),
-      filename: options.outputName || pathRelativeParsed.base
-    };
-
-    if (options.onOutputPath) {
-      output = options.onOutputPath(output);
-    }
-
     return Promise.resolve()
       .then(function() {
-        var metaPath = path.join(
-          output.path,
-          path.parse(output.filename).name + '.meta.json'
-        );
-
-        var meta, mtime;
-
         return fs
           .stat(pathSource)
-          .then(function(stats) {
-            mtime = stats.mtime + '';
+          .then(function(_stats) {
+            stats = _stats;
 
             return fs.exists(metaPath);
           })
@@ -119,25 +118,36 @@ module.exports = function(locals) {
             }
             return fs.readJson(metaPath).then(function(_meta) {
               meta = _meta;
-              //console.log(mtime, meta.mtime);
-              if (mtime == meta.mtime) {
-                return true;
-              }
-            });
-          })
-          .then(function(result) {
-            return fs
-              .outputJson(metaPath, {
-                mtime: mtime
-              })
-              .then(function() {
-                return result;
+              let deps = meta.dependencies || [];
+              let depChanged = false;
+              return Promise.map(deps, function(dep) {
+                if (!dep || !dep.source) {
+                  return;
+                }
+                return fs.stat(dep.source).then(function(depStat) {
+                  var changed = depStat.mtimeMs != dep.mtimeMs;
+                  depDict[dep] = {
+                    mtimeMs: depStat.mtimeMs,
+                    changed: changed
+                  };
+                  if (changed) {
+                    depChanged = changed;
+                  }
+                });
+              }).then(function() {
+                if (depChanged) {
+                  return;
+                }
+                if (stats.mtimeMs == meta.mtimeMs) {
+                  return true;
+                }
               });
+            });
           });
       })
       .then(function(cannotCompile) {
         if (cannotCompile) {
-          console.log('skipped compilation');
+          console.log(`skipped compilation: ${pathSource}`);
           return;
         }
         let compilerOptions = {
@@ -200,12 +210,43 @@ module.exports = function(locals) {
             if (err) {
               return reject(err);
             }
-            if (stats.compilation.errors.length) {
-              console.error(stats.compilation.errors);
-              return reject(stats.compilation.errors[0]);
+            let compilation = stats.compilation;
+            if (compilation.errors.length) {
+              console.error(compilation.errors);
+              return reject(compilation.errors[0]);
             }
 
-            resolve(stats);
+            resolve(compilation);
+          });
+        }).then(function(compilation) {
+          var dependencies = Array.from(compilation.fileDependencies);
+          var depResult = [];
+          return Promise.map(dependencies, function(dep) {
+            var depData = depDict[dep] || {};
+
+            return Promise.resolve()
+              .then(function() {
+                if (depData.mtimeMs && !depData.changed) {
+                  return;
+                }
+                if (!depData.mtimeMs) {
+                  return fs.stat(dep).then(function(depStat) {
+                    depData.mtimeMs = depStat.mtimeMs;
+                  });
+                }
+              })
+              .then(function() {
+                depResult.push({
+                  mtimeMs: depData.mtimeMs,
+                  source: dep
+                });
+              });
+          }).then(function() {
+            //console.log(dependencies);
+            return fs.outputJson(metaPath, {
+              mtimeMs: stats.mtimeMs,
+              dependencies: depResult
+            });
           });
         });
       });
