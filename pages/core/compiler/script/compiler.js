@@ -147,7 +147,7 @@ module.exports = function(locals) {
       })
       .then(function(cannotCompile) {
         if (cannotCompile) {
-          console.log(`skipped compilation: ${pathSource}`);
+          //console.log(`skipped compilation: ${pathSource}`);
           return;
         }
         let compilerOptions = {
