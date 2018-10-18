@@ -124,15 +124,23 @@ module.exports = function(locals) {
                 if (!dep || !dep.source) {
                   return;
                 }
-                return fs.stat(dep.source).then(function(depStat) {
-                  var changed = depStat.mtimeMs != dep.mtimeMs;
-                  depDict[dep] = {
-                    mtimeMs: depStat.mtimeMs,
-                    changed: changed
-                  };
-                  if (changed) {
-                    depChanged = changed;
+                if (dep.source == pathSource) {
+                  return;
+                }
+                return fs.exists(dep.source).then(function(exists) {
+                  if (!exists) {
+                    return;
                   }
+                  return fs.stat(dep.source).then(function(depStat) {
+                    var changed = depStat.mtimeMs != dep.mtimeMs;
+                    depDict[dep] = {
+                      mtimeMs: depStat.mtimeMs,
+                      changed: changed
+                    };
+                    if (changed) {
+                      depChanged = changed;
+                    }
+                  });
                 });
               }).then(function() {
                 if (depChanged) {
@@ -223,6 +231,10 @@ module.exports = function(locals) {
           var depResult = [];
           return Promise.map(dependencies, function(dep) {
             var depData = depDict[dep] || {};
+
+            if (dep == pathSource) {
+              return;
+            }
 
             return Promise.resolve()
               .then(function() {
