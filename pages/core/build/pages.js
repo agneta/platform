@@ -24,7 +24,6 @@ const zlib = require('zlib');
 const gzip = Promise.promisify(zlib.gzip);
 
 module.exports = function(locals, options) {
-
   var logger = options.logger;
   var app = locals.app;
   var project = locals.project;
@@ -45,12 +44,11 @@ module.exports = function(locals, options) {
     }
   });
 
-    ///////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////
 
   project.site._build = true;
 
   return Promise.each(project.config.languages, function(language) {
-
     if (language.skipBuild) {
       return;
     }
@@ -60,8 +58,9 @@ module.exports = function(locals, options) {
     project.site.lang = lang;
     project.call_listeners('ready');
 
-    logger.log('Building on Language: ' + language.value + '(' + project.site.lang + ')');
-
+    logger.log(
+      'Building on Language: ' + language.value + '(' + project.site.lang + ')'
+    );
 
     ///////////////////////////////////////////////////////
     // Prepare paths to Generate
@@ -72,18 +71,15 @@ module.exports = function(locals, options) {
     var pages_no_lang = [];
 
     project.site.pages.map(function(data) {
-
       ///////////////////////////////////////////////////////
       // FILTER UNWANTED PAGES
       ///////////////////////////////////////////////////////
 
       if (!data.barebones) {
-
         if (!app.locals.has_lang(data)) {
           pages_no_lang.push(data.path);
           return;
         }
-
       }
 
       if (data.skip) {
@@ -97,7 +93,6 @@ module.exports = function(locals, options) {
       }
 
       generate_data.push(data);
-
     });
 
     //--------------------------------------------------
@@ -106,9 +101,11 @@ module.exports = function(locals, options) {
     var indexPage = project.site.pages.findOne({
       path: '/'
     });
-    generate_data.push(_.extend({}, indexPage, {
-      _rootPath: true
-    }));
+    generate_data.push(
+      _.extend({}, indexPage, {
+        _rootPath: true
+      })
+    );
 
     //----------------------------------------------------
     // Display Statistics before building
@@ -124,90 +121,81 @@ module.exports = function(locals, options) {
     return Promise.resolve()
       .delay(20)
       .then(function() {
+        return Promise.map(
+          generate_data,
+          function(data) {
+            //-----------------------------------------------
+            // GENERATE HTML
 
-        return Promise.map(generate_data, function(data) {
-
-          //-----------------------------------------------
-          // GENERATE HTML
-
-          bar.tick({
-            title: data.path
-          });
-
-          var html_rendered = locals.page.renderData(data);
-
-          //-----------------------------------------------
-          // MINIFY HTML
-
-          if (project.config.minify && project.config.minify.html) {
-            minimize.parse(html_rendered, function(error, html_minified) {
-
-              html_minified = htmlclean(html_minified);
-              return outputHtml(html_minified);
-
+            bar.tick({
+              title: data.path
             });
-          } else {
-            return outputHtml(html_rendered);
-          }
 
-          function outputHtml(html) {
+            return locals.page.renderData(data).then(function(html_rendered) {
+              //-----------------------------------------------
+              // MINIFY HTML
 
-            var data_path = data.path;
+              if (project.config.minify && project.config.minify.html) {
+                minimize.parse(html_rendered, function(error, html_minified) {
+                  html_minified = htmlclean(html_minified);
+                  return outputHtml(html_minified);
+                });
+              } else {
+                return outputHtml(html_rendered);
+              }
+            });
 
-            //-------------------------------
+            function outputHtml(html) {
+              var data_path = data.path;
 
-            var outputPath;
-            var path_parsed = path.parse(data_path);
+              //-------------------------------
 
-            switch (path_parsed.ext) {
-              case '':
-                outputPath = path.join(data_path, 'index.html');
-                break;
-              default:
-                outputPath = path.join(path_parsed.dir, path_parsed.base);
-                break;
-            }
+              var outputPath;
+              var path_parsed = path.parse(data_path);
 
-            if (!data._rootPath) {
-              outputPath = path.join(lang, outputPath);
-            }
+              switch (path_parsed.ext) {
+                case '':
+                  outputPath = path.join(data_path, 'index.html');
+                  break;
+                default:
+                  outputPath = path.join(path_parsed.dir, path_parsed.base);
+                  break;
+              }
 
-            if (outputPath[0] == '/') {
-              outputPath = outputPath.substring(1);
-            }
+              if (!data._rootPath) {
+                outputPath = path.join(lang, outputPath);
+              }
 
-            //----------------------------------
+              if (outputPath[0] == '/') {
+                outputPath = outputPath.substring(1);
+              }
 
-            var container;
+              //----------------------------------
 
-            if (data.isView || data.isViewData) {
-              container = 'private';
-            } else {
-              container = 'public';
-            }
+              var container;
 
-            //----------------------------------
-            // gzip
+              if (data.isView || data.isViewData) {
+                container = 'private';
+              } else {
+                container = 'public';
+              }
 
-            return gzip(
-              Buffer.from(html)
-            )
-              .then(function(html) {
+              //----------------------------------
+              // gzip
+
+              return gzip(Buffer.from(html)).then(function(html) {
                 return locals.exportFile({
                   container: container,
                   path: outputPath,
                   data: html
                 });
               });
-
-
+            }
+          },
+          {
+            concurrency: 3
           }
-
-
-        }, {
-          concurrency: 3
-        });
-
+        );
       });
   });
 };

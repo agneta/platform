@@ -18,6 +18,7 @@ const fs = require('fs-extra');
 const ejs = require('ejs');
 const _ = require('lodash');
 const path = require('path');
+const Promise = require('bluebird');
 
 _.templateSettings.escape = null;
 _.templateSettings.evaluate = null;
@@ -46,79 +47,88 @@ module.exports = function(locals) {
     data,
     cache
   ) {
-    var content;
     var memCache = locals.cache.templates;
     var self = this;
 
-    if (cache) {
-      content = memCache.get(path_partial);
+    return Promise.resolve().then(function() {
+      if (cache) {
+        let content = memCache.get(path_partial);
 
-      if (content) {
-        //console.log('serving cached:', path_partial);
-        return content;
-      }
-    }
-
-    if (path_partial[0] == '.' && self.__path) {
-      var sourcePath = project.theme.getSourceFile(self.__path + '.ejs');
-
-      var sourceParsed = path.parse(sourcePath);
-
-      if (sourceParsed.name == 'index') {
-        path_partial = path.join(self.__path, path_partial);
-      } else {
-        path_partial = path.join(self.__path, '..', path_partial);
-      }
-    }
-
-    self.__path = path_partial;
-
-    var file_path = project.theme.getSourceFile(path_partial + '.ejs');
-
-    if (!file_path) {
-      throw new Error('Could not find template: ' + path_partial);
-    }
-
-    content = fs.readFileSync(file_path, 'utf8');
-    content = ejs.render.apply(this, [
-      content,
-      _.extend(this, data, {
-        locals: data || {}
-      })
-    ]);
-
-    if (cache) {
-      memCache.set(path_partial, content);
-      //console.log('cache', memCache.length, memCache.itemCount);
-    }
-
-    (function() {
-      var page = self.page;
-      if (!page) {
-        return;
+        if (content) {
+          //console.log('serving cached:', path_partial);
+          return content;
+        }
       }
 
-      var commonData = self.__commonData || locals.page.commonData(page);
+      if (path_partial[0] == '.' && self.__path) {
+        var sourcePath = project.theme.getSourceFile(self.__path + '.ejs');
 
-      var templateStyle = self.layout_style(path_partial);
-      if (templateStyle) {
-        commonData.styles.push(templateStyle);
+        var sourceParsed = path.parse(sourcePath);
+
+        if (sourceParsed.name == 'index') {
+          path_partial = path.join(self.__path, path_partial);
+        } else {
+          path_partial = path.join(self.__path, '..', path_partial);
+        }
       }
 
-      var templateScript = self.layout_script(path_partial);
-      if (templateScript) {
-        commonData.scripts.push(templateScript);
+      self.__path = path_partial;
+
+      var file_path = project.theme.getSourceFile(path_partial + '.ejs');
+
+      if (!file_path) {
+        throw new Error('Could not find template: ' + path_partial);
       }
 
-      commonData.scripts = _.uniq(commonData.scripts);
-      commonData.styles = _.uniq(commonData.styles);
+      return fs
+        .readFile(file_path, 'utf8')
+        .then(function(content) {
+          return ejs.render.apply(self, [
+            content,
+            _.extend(self, data, {
+              locals: data || {}
+            }),
+            {
+              async: true
+            }
+          ]);
+        })
 
-      if (!self.__commonData) {
-        self.__commonData = commonData;
-      }
-    })();
+        .then(function(content) {
+          if (cache) {
+            memCache.set(path_partial, content);
+            //console.log('cache', memCache.length, memCache.itemCount);
+          }
 
-    return content;
+          (function() {
+            var page = self.page;
+            if (!page) {
+              return;
+            }
+
+            var commonData = self.__commonData || locals.page.commonData(page);
+
+            var templateStyle = self.layout_style(path_partial);
+            if (templateStyle) {
+              commonData.styles.push(templateStyle);
+            }
+
+            var templateScript = self.layout_script(path_partial);
+            if (templateScript) {
+              commonData.scripts.push(templateScript);
+            }
+
+            commonData.scripts = _.uniq(commonData.scripts);
+            commonData.styles = _.uniq(commonData.styles);
+
+            if (!self.__commonData) {
+              self.__commonData = commonData;
+            }
+          })();
+
+          return content;
+        });
+    });
   });
 
   project.extend.helper.register('has_template', function(req) {

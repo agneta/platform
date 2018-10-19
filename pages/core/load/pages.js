@@ -18,15 +18,13 @@ var _ = require('lodash');
 var beautify_html = require('js-beautify').html;
 
 module.exports = function(locals) {
-
   var commonData = {};
-  var page = locals.page = {};
+  var page = (locals.page = {});
 
   page.commonData = function(page) {
-
     var key = page.pathSource || page.path;
     var data = commonData[key] || (commonData[key] = {});
-    _.defaults(data,{
+    _.defaults(data, {
       scripts: [],
       styles: []
     });
@@ -34,42 +32,37 @@ module.exports = function(locals) {
   };
 
   page.renderData = function(data) {
-
     let helpers = locals.app.locals;
     let data_render = _.extend({
       page: data
     });
 
-    let body = helpers.template('page', data_render);
-    data_render.body = body;
+    return helpers.template('page', data_render).then(function(body) {
+      data_render.body = body;
+      return helpers.template('layout', data_render).then(function(content) {
+        if (!data.barebones || data.isView) {
+          content = beautify_html(content, {
+            indent_size: 2,
+            max_preserve_newlines: 0,
+            wrap_attributes: 'force'
+          });
+        }
 
-    let content = helpers.template('layout', data_render);
-
-    if(!data.barebones || data.isView){
-      content = beautify_html(content,{
-        indent_size: 2,
-        max_preserve_newlines: 0,
-        wrap_attributes: 'force'
+        return content;
       });
-    }
-
-
-    return content;
-
-
+    });
   };
 
   return function() {
     commonData = {};
     return require('../generators')(locals)
       .catch(function(err) {
-        console.log('Generator Error (check logs): ',err.message);
+        console.log('Generator Error (check logs): ', err.message);
         console.error();
         return Promise.reject(err);
       })
       .then(function() {
-      //console.log('Loaded all pages');
+        //console.log('Loaded all pages');
       });
   };
-
 };

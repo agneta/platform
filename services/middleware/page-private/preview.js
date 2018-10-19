@@ -15,16 +15,15 @@
  *   limitations under the License.
  */
 module.exports = function(app) {
-
   var client = app.client;
   var project = client.project;
 
   return function(data) {
     project.site.lang = data.lang;
-    var content = client.page.renderData(data.page);
-    if (content) {
-      data.res.send(content);
-    }
+    return client.page.renderData(data.page).then(function(content) {
+      if (content) {
+        data.res.send(content);
+      }
+    });
   };
-
 };
