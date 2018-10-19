@@ -18,21 +18,22 @@ var path = require('path');
 var _ = require('lodash');
 
 module.exports = function(options) {
-
   options.mode = options.mode || 'default';
-  var locals = options.locals = options.locals || {};
+  var locals = (options.locals = options.locals || {});
   //--------------------------------------------
   // Loading Config
 
-  locals.load = _.extend({
-    scripts: true,
-    data: true,
-    media: true,
-    pages: true
-  }, locals.load || {});
+  locals.load = _.extend(
+    {
+      scripts: true,
+      data: true,
+      media: true,
+      pages: true
+    },
+    locals.load || {}
+  );
 
   //-----------------------------------------------------------------
-
 
   locals.project = {
     theme: {},
@@ -44,14 +45,14 @@ module.exports = function(options) {
       root: '/'
     },
     site: {
-      set lang(value){
+      set lang(value) {
         var language = locals.project.site.languages[value];
-        if(!language){
+        if (!language) {
           throw new Error(`Language with key "${value}" does not exist`);
         }
         locals.project.site.language = language;
       },
-      get lang(){
+      get lang() {
         return locals.project.site.language.key;
       }
     },
@@ -66,8 +67,7 @@ module.exports = function(options) {
 
   Object.defineProperty(locals, 'agneta', {
     get: function() {
-      var stack = new Error()
-        .stack;
+      var stack = new Error().stack;
       console.warn('Deprecated method "agneta", will be removed');
       console.log(stack);
       return locals.project;
@@ -86,17 +86,16 @@ module.exports = function(options) {
     locals: locals,
     preInit: locals.main.preInit,
     init: function() {
-
       locals.project.env = locals.env || 'development';
       locals.build_dir = path.join(options.paths.app.build, locals.project.env);
 
-      return locals.main.init()
-        .then(function() {
-          return locals;
-        });
+      return locals.main.init().then(function() {
+        return locals;
+      });
     },
     start: function() {
-      return locals.main.start()
+      return locals.main
+        .start()
         .then(function() {
           if (_.isFunction(core.mode)) {
             return core.mode();

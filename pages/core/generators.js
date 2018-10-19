@@ -17,7 +17,7 @@
 var Promise = require('bluebird');
 var _ = require('lodash');
 var nPath = require('path');
-var pageProcessor = require('../pages/page');
+var pageProcessor = require('./page');
 
 module.exports = function(locals) {
   var project = locals.project;
@@ -26,12 +26,10 @@ module.exports = function(locals) {
   var paths = require('./generator/paths')(locals);
   var templates = require('./generator/templates')(locals);
 
-  var Page = project.model('Page');
-
   var excludeConfig = locals.load.pages && locals.load.pages.exclude;
   excludeConfig = excludeConfig || {};
 
-  return Page.remove({})
+  return Promise.resolve()
     .then(function() {
       project.call_listeners('generateBefore');
 

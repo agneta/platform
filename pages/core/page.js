@@ -15,13 +15,12 @@
  *   limitations under the License.
  */
 var pathFn = require('path');
-var exports = (module.exports = {});
 
 exports.parseFilename = parseFilename;
 
 exports.process = function(data) {
   /* jshint validthis: true */
-  var Page = this.model('Page');
+  var Page = this.site.pages;
   var self = this;
   var path = parseFilename(data.path);
 

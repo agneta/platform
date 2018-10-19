@@ -16,7 +16,6 @@
  */
 
 module.exports = function(locals) {
-
   var config = require('./config')(locals);
   var scripts = require('./scripts')(locals);
   var pages = require('./pages')(locals);
@@ -29,25 +28,18 @@ module.exports = function(locals) {
     scripts: scripts,
     preInit: config.preInit,
     init: function() {
-
-      return config.init()
-        .then(function() {
-          if (loadConfig.scripts) {
-            return scripts();
-          }
-        });
-
+      return config.init().then(function() {
+        if (loadConfig.scripts) {
+          return scripts();
+        }
+      });
     },
     start: function() {
-
-      return Promise.resolve()
-        .then(function() {
-          if (loadConfig.pages) {
-            return pages();
-          }
-        });
-
+      return Promise.resolve().then(function() {
+        if (loadConfig.pages) {
+          return pages();
+        }
+      });
     }
   };
-
 };

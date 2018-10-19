@@ -51,9 +51,16 @@ module.exports = function(options) {
   }
 
   function start() {
-    return load.start().then(function() {
-      return project.call_listeners('ready');
-    });
+    return Promise.resolve()
+      .then(function() {
+        return require('./database')(locals);
+      })
+      .then(function() {
+        return load.start();
+      })
+      .then(function() {
+        return project.call_listeners('ready');
+      });
   }
 
   locals.main = {

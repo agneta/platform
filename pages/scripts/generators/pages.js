@@ -14,11 +14,11 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const page = require('../../pages/page');
+const page = require('../../core/page');
 const path = require('path');
 const _ = require('lodash');
 const Promise = require('bluebird');
-const File = require('../../pages/file');
+const File = require('../../core/file');
 const yaml = require('js-yaml');
 const replaceExt = require('replace-ext');
 const klaw = require('klaw');
