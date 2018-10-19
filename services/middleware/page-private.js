@@ -44,7 +44,6 @@ module.exports = function(app) {
   //-----------------------------------------------------------
 
   return function(req, res, next) {
-    var data;
     var type = req.query.type;
 
     Promise.resolve()
@@ -77,19 +76,7 @@ module.exports = function(app) {
               return next();
             }
 
-            var lang = remotePath.split('/')[0];
-
-            data = {
-              view: view,
-              remotePath: remotePath,
-              res: res,
-              lang: lang,
-              next: next,
-              type: type
-            };
-
             if (page.authorization) {
-              //console.log('page:private:auth',data.page.title, page.authorization);
               return app.models.Account.hasRoles(page.authorization, req).then(
                 function(result) {
                   //console.log('app.models.Account.hasRoles.result',result);
@@ -109,6 +96,17 @@ module.exports = function(app) {
             }
           })
           .then(function() {
+            var lang = remotePath.split('/')[0];
+
+            var data = {
+              view: view,
+              remotePath: remotePath,
+              res: res,
+              lang: lang,
+              next: next,
+              type: type
+            };
+
             return data.view.method(data).then(function() {
               return activity({
                 app: app,
