@@ -1,6 +1,7 @@
 var path = require('path');
 var fs = require('fs');
 var _ = require('lodash');
+var Promise = require('bluebird');
 
 module.exports = function(options) {
   var dirs = options.dirs;
@@ -47,6 +48,37 @@ module.exports = function(options) {
         }
         return Promise.reject(err);
       });
+    };
+
+    //--------------------------------
+
+    Model.map = function(callback, options) {
+      let skipIndex = 0;
+      options = options || {};
+      function find() {
+        return Model.find({
+          limit: 20,
+          skipIndex: skipIndex
+        }).then(function(items) {
+          return Promise.map(
+            items,
+            function(item) {
+              return callback(item);
+            },
+            {
+              concurrency: options.concurrency || 5
+            }
+          ).then(function() {
+            if (!items || !items.length) {
+              return;
+            }
+            skipIndex += items.length;
+            return find();
+          });
+        });
+      }
+
+      return find();
     };
 
     //--------------------------------

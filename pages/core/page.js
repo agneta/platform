@@ -21,34 +21,42 @@ var _ = require('lodash');
 function processor(locals) {
   var project = locals.project;
   var appName = locals.app.get('name');
+  var rules = require('./generator/rules')(locals);
+  var paths = require('./generator/paths')(locals);
 
   return function(data) {
     /* jshint validthis: true */
     var Page = project.site.pages;
     var path = parseFilename(data.path);
 
-    return Promise.resolve().then(function() {
-      data.path = path;
-      data.app = appName;
+    return Promise.resolve()
+      .then(function() {
+        data.path = path;
+        data.app = appName;
 
-      if (data.if && !project.config[data.if]) {
-        data.skip = true;
-      }
+        if (data.if && !project.config[data.if]) {
+          data.skip = true;
+        }
 
-      if (!data.title) {
-        data.title = {
-          en: pathFn.parse(data.path).name
-        };
-      }
+        if (!data.title) {
+          data.title = {
+            en: pathFn.parse(data.path).name
+          };
+        }
 
-      return Page.upsertWithWhere(
-        {
-          path: path,
-          app: appName
-        },
-        data
-      );
-    });
+        rules.run(data);
+
+        return paths.run(data);
+      })
+      .then(function() {
+        return Page.upsertWithWhere(
+          {
+            path: path,
+            app: appName
+          },
+          data
+        );
+      });
   };
 }
 
