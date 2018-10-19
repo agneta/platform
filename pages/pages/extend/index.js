@@ -17,10 +17,6 @@
 'use strict';
 
 module.exports = {
-  Filter: require('./filter'),
   Generator: require('./generator'),
-  Helper: require('./helper'),
-  Migrator: require('./migrator'),
-  Processor: require('./processor'),
-  Renderer: require('./renderer')
+  Helper: require('./helper')
 };

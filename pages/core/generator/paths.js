@@ -26,7 +26,7 @@ module.exports = function(locals) {
         var parent = helpers.get_page(page.parent);
 
         if (!parent) {
-          project.site.pages.findOne({
+          parent = project.site.pages.findOne({
             parentName: page.parent
           });
         }

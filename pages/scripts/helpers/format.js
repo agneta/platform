@@ -14,18 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var util = require('hexo-util');
+var _ = require('lodash');
 module.exports = function(locals) {
-
   var project = locals.project;
-
-  function trim(str) {
-    return str.trim();
-  }
-
-  project.extend.helper.register('strip_html', util.stripHTML);
-  project.extend.helper.register('trim', trim);
-  project.extend.helper.register('word_wrap', util.wordWrap);
-  project.extend.helper.register('truncate', util.truncate);
-
+  project.extend.helper.register('trim', _.trim);
+  project.extend.helper.register('truncate', _.truncate);
 };

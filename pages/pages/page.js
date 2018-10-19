@@ -14,50 +14,12 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var common = require('./common');
 var pathFn = require('path');
-var util = require('hexo-util');
-var Pattern = util.Pattern;
-var postDir = 'source/';
-var draftDir = '_drafts/';
-
-function startsWith(str, prefix) {
-  return str.substring(0, prefix.length) === prefix;
-}
-
-var exports = module.exports = {};
+var exports = (module.exports = {});
 
 exports.parseFilename = parseFilename;
 
-exports.process = function(file) {
-  return processPost.call(this, file);
-};
-
-exports.pattern = new Pattern(function(path) {
-  if (common.isTmpFile(path)) return false;
-
-  var result;
-
-  if (startsWith(path, postDir)) {
-    result = {
-      published: true,
-      path: path.substring(postDir.length)
-    };
-  } else if (startsWith(path, draftDir)) {
-    result = {
-      published: false,
-      path: path.substring(draftDir.length)
-    };
-  } else {
-    return false;
-  }
-
-  if (common.isHiddenFile(result.path)) return false;
-  return result;
-});
-
-function processPost(data) {
-
+exports.process = function(data) {
   /* jshint validthis: true */
   var Page = this.model('Page');
   var self = this;
@@ -84,10 +46,9 @@ function processPost(data) {
   } else {
     return Page.insert(data);
   }
-}
+};
 
 function parseFilename(path) {
-
   path = path.substring(0, path.length - pathFn.extname(path).length);
   path = pathFn.normalize(path);
   if (path[0] != '/') {
