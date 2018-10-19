@@ -15,37 +15,57 @@
  *   limitations under the License.
  */
 var pathFn = require('path');
+var Promise = require('bluebird');
+var _ = require('lodash');
 
-exports.parseFilename = parseFilename;
+function processor(locals) {
+  var project = locals.project;
+  var appName = locals.app.get('name');
 
-exports.process = function(data) {
-  /* jshint validthis: true */
-  var Page = this.site.pages;
-  var self = this;
-  var path = parseFilename(data.path);
+  return function(data) {
+    /* jshint validthis: true */
+    var Page = project.site.pages;
+    var path = parseFilename(data.path);
 
-  var doc = Page.findOne({
-    path: path
+    return Promise.resolve().then(function() {
+      data.path = path;
+      data.app = appName;
+
+      if (data.if && !project.config[data.if]) {
+        data.skip = true;
+      }
+
+      if (!data.title) {
+        data.title = {
+          en: pathFn.parse(data.path).name
+        };
+      }
+
+      return Page.upsertWithWhere(
+        {
+          path: path,
+          app: appName
+        },
+        data
+      );
+    });
+  };
+}
+
+function getBase(page) {
+  var data = _.extend({}, page, {
+    templateSource: page.template,
+    pathSource: page.path,
+    barebones: true,
+    path: null
   });
 
-  data.path = path;
+  delete data.isSource;
+  delete data._id;
+  delete data.source;
 
-  if (data.if && !self.config[data.if]) {
-    return;
-  }
-
-  if (!data.title) {
-    data.title = {
-      en: pathFn.parse(data.path).name
-    };
-  }
-
-  if (doc) {
-    return doc.replace(data);
-  } else {
-    return Page.insert(data);
-  }
-};
+  return data;
+}
 
 function parseFilename(path) {
   path = path.substring(0, path.length - pathFn.extname(path).length);
@@ -55,3 +75,35 @@ function parseFilename(path) {
   }
   return path;
 }
+
+module.exports = {
+  parseFilename: parseFilename,
+  processor: processor,
+  view: function(page) {
+    return _.extend(getBase(page), {
+      isView: true,
+      path: pathFn.join(page.path, 'view')
+    });
+  },
+  viewData: function(page) {
+    return _.extend(getBase(page), {
+      isViewData: true,
+      path: pathFn.join(page.path, 'view-data'),
+      template: 'json/viewData'
+    });
+  },
+  auth: function(page) {
+    return _.extend(getBase(page), {
+      isView: true,
+      path: pathFn.join(page.path, 'view-auth'),
+      template: 'authorization'
+    });
+  },
+  authData: function(page) {
+    return _.extend(getBase(page), {
+      isViewData: true,
+      path: pathFn.join(page.path, 'view-auth-data'),
+      template: 'json/viewAuthData'
+    });
+  }
+};

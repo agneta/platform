@@ -111,7 +111,7 @@ export function portal(options: Locals) {
     locals: options
   });
 
-  setName(component, 'pages_portal', options);
+  setName(component, 'portal', options);
   return component;
 }
 export function website(options: Locals) {
@@ -121,7 +121,7 @@ export function website(options: Locals) {
     locals: options
   });
 
-  setName(component, 'pages_website', options);
+  setName(component, 'website', options);
   return component;
 }
 export function pages(options: OptionsServer) {

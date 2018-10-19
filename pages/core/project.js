@@ -1,4 +1,4 @@
-const extend = require('../pages/extend');
+const extend = require('./extend');
 const Promise = require('bluebird');
 
 module.exports = function(locals) {

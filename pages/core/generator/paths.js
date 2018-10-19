@@ -22,54 +22,56 @@ module.exports = function(locals) {
 
   return {
     run: function(page) {
-      if (page.parent) {
-        var parent = helpers.get_page(page.parent);
+      return Promise.resolve().then(function() {
+        if (page.parent) {
+          var parent = helpers.get_page(page.parent);
 
-        if (!parent) {
-          parent = project.site.pages.findOne({
-            parentName: page.parent
-          });
-        }
-        if (parent) {
-          page.parentPath = parent.path;
-        }
-      }
-
-      //-----------------------------------------
-
-      function findBase(basePage) {
-        basePage = helpers.get_page(basePage);
-
-        if (basePage) {
-          page.parentPath = basePage.path;
-        }
-      }
-
-      var basePath = page.pathSource || page.path;
-
-      while (!page.parentPath) {
-        basePath = path.parse(basePath).dir;
-
-        if (!basePath || basePath == '/') {
-          break;
+          if (!parent) {
+            parent = project.site.pages.findOne({
+              parentName: page.parent
+            });
+          }
+          if (parent) {
+            page.parentPath = parent.path;
+          }
         }
 
-        findBase(basePath);
-      }
+        //-----------------------------------------
 
-      //-----------------------------------------
+        function findBase(basePage) {
+          basePage = helpers.get_page(basePage);
 
-      if (!page.parentPath) {
-        page.parentPath = '/';
-      }
+          if (basePage) {
+            page.parentPath = basePage.path;
+          }
+        }
 
-      if (page.templateSource == 'home') {
-        page.parentPath = null;
-      }
+        var basePath = page.pathSource || page.path;
 
-      if (page.isDialog) {
-        delete page.parentPath;
-      }
+        while (!page.parentPath) {
+          basePath = path.parse(basePath).dir;
+
+          if (!basePath || basePath == '/') {
+            break;
+          }
+
+          findBase(basePath);
+        }
+
+        //-----------------------------------------
+
+        if (!page.parentPath) {
+          page.parentPath = '/';
+        }
+
+        if (page.templateSource == 'home') {
+          page.parentPath = null;
+        }
+
+        if (page.isDialog) {
+          delete page.parentPath;
+        }
+      });
     }
   };
 };

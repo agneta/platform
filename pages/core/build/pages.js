@@ -70,132 +70,139 @@ module.exports = function(locals, options) {
     var pages_skipped = [];
     var pages_no_lang = [];
 
-    project.site.pages.map(function(data) {
-      ///////////////////////////////////////////////////////
-      // FILTER UNWANTED PAGES
-      ///////////////////////////////////////////////////////
+    return project.site.pages
+      .map(function(data) {
+        ///////////////////////////////////////////////////////
+        // FILTER UNWANTED PAGES
+        ///////////////////////////////////////////////////////
 
-      if (!data.barebones) {
-        if (!app.locals.has_lang(data)) {
-          pages_no_lang.push(data.path);
+        if (!data.barebones) {
+          if (!app.locals.has_lang(data)) {
+            pages_no_lang.push(data.path);
+            return;
+          }
+        }
+
+        if (data.skip) {
+          pages_skipped.push(data.path);
           return;
         }
-      }
 
-      if (data.skip) {
-        pages_skipped.push(data.path);
-        return;
-      }
+        if (data.if && !project.config[data.if]) {
+          pages_skipped.push(data.path);
+          return;
+        }
 
-      if (data.if && !project.config[data.if]) {
-        pages_skipped.push(data.path);
-        return;
-      }
-
-      generate_data.push(data);
-    });
-
-    //--------------------------------------------------
-    // Add root page
-
-    var indexPage = project.site.pages.findOne({
-      path: '/'
-    });
-    generate_data.push(
-      _.extend({}, indexPage, {
-        _rootPath: true
+        generate_data.push(data);
       })
-    );
-
-    //----------------------------------------------------
-    // Display Statistics before building
-
-    logger.log('No Language on ' + pages_no_lang.length + ' pages');
-    logger.log('Skipped ' + pages_skipped.length + ' pages');
-    logger.log('Generating ' + generate_data.length + ' paths:');
-
-    var bar = options.progress(generate_data.length, {
-      title: 'Pages'
-    });
-
-    return Promise.resolve()
-      .delay(20)
       .then(function() {
-        return Promise.map(
-          generate_data,
-          function(data) {
-            //-----------------------------------------------
-            // GENERATE HTML
+        //--------------------------------------------------
+        // Add root page
 
-            bar.tick({
-              title: data.path
-            });
-
-            return locals.page.renderData(data).then(function(html_rendered) {
-              //-----------------------------------------------
-              // MINIFY HTML
-
-              if (project.config.minify && project.config.minify.html) {
-                minimize.parse(html_rendered, function(error, html_minified) {
-                  html_minified = htmlclean(html_minified);
-                  return outputHtml(html_minified);
-                });
-              } else {
-                return outputHtml(html_rendered);
-              }
-            });
-
-            function outputHtml(html) {
-              var data_path = data.path;
-
-              //-------------------------------
-
-              var outputPath;
-              var path_parsed = path.parse(data_path);
-
-              switch (path_parsed.ext) {
-                case '':
-                  outputPath = path.join(data_path, 'index.html');
-                  break;
-                default:
-                  outputPath = path.join(path_parsed.dir, path_parsed.base);
-                  break;
-              }
-
-              if (!data._rootPath) {
-                outputPath = path.join(lang, outputPath);
-              }
-
-              if (outputPath[0] == '/') {
-                outputPath = outputPath.substring(1);
-              }
-
-              //----------------------------------
-
-              var container;
-
-              if (data.isView || data.isViewData) {
-                container = 'private';
-              } else {
-                container = 'public';
-              }
-
-              //----------------------------------
-              // gzip
-
-              return gzip(Buffer.from(html)).then(function(html) {
-                return locals.exportFile({
-                  container: container,
-                  path: outputPath,
-                  data: html
-                });
-              });
-            }
-          },
-          {
-            concurrency: 3
-          }
+        var indexPage = project.site.pages.findOne({
+          path: '/'
+        });
+        generate_data.push(
+          _.extend({}, indexPage, {
+            _rootPath: true
+          })
         );
+
+        //----------------------------------------------------
+        // Display Statistics before building
+
+        logger.log('No Language on ' + pages_no_lang.length + ' pages');
+        logger.log('Skipped ' + pages_skipped.length + ' pages');
+        logger.log('Generating ' + generate_data.length + ' paths:');
+
+        var bar = options.progress(generate_data.length, {
+          title: 'Pages'
+        });
+
+        return Promise.resolve()
+          .delay(20)
+          .then(function() {
+            return Promise.map(
+              generate_data,
+              function(data) {
+                //-----------------------------------------------
+                // GENERATE HTML
+
+                bar.tick({
+                  title: data.path
+                });
+
+                return locals.page
+                  .renderData(data)
+                  .then(function(html_rendered) {
+                    //-----------------------------------------------
+                    // MINIFY HTML
+
+                    if (project.config.minify && project.config.minify.html) {
+                      minimize.parse(html_rendered, function(
+                        error,
+                        html_minified
+                      ) {
+                        html_minified = htmlclean(html_minified);
+                        return outputHtml(html_minified);
+                      });
+                    } else {
+                      return outputHtml(html_rendered);
+                    }
+                  });
+
+                function outputHtml(html) {
+                  var data_path = data.path;
+
+                  //-------------------------------
+
+                  var outputPath;
+                  var path_parsed = path.parse(data_path);
+
+                  switch (path_parsed.ext) {
+                    case '':
+                      outputPath = path.join(data_path, 'index.html');
+                      break;
+                    default:
+                      outputPath = path.join(path_parsed.dir, path_parsed.base);
+                      break;
+                  }
+
+                  if (!data._rootPath) {
+                    outputPath = path.join(lang, outputPath);
+                  }
+
+                  if (outputPath[0] == '/') {
+                    outputPath = outputPath.substring(1);
+                  }
+
+                  //----------------------------------
+
+                  var container;
+
+                  if (data.isView || data.isViewData) {
+                    container = 'private';
+                  } else {
+                    container = 'public';
+                  }
+
+                  //----------------------------------
+                  // gzip
+
+                  return gzip(Buffer.from(html)).then(function(html) {
+                    return locals.exportFile({
+                      container: container,
+                      path: outputPath,
+                      data: html
+                    });
+                  });
+                }
+              },
+              {
+                concurrency: 3
+              }
+            );
+          });
       });
   });
 };

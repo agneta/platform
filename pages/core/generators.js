@@ -15,19 +15,14 @@
  *   limitations under the License.
  */
 var Promise = require('bluebird');
-var _ = require('lodash');
-var nPath = require('path');
-var pageProcessor = require('./page');
 
 module.exports = function(locals) {
+  var pageProcessor = require('./page').processor(locals);
   var project = locals.project;
 
   var rules = require('./generator/rules')(locals);
   var paths = require('./generator/paths')(locals);
   var templates = require('./generator/templates')(locals);
-
-  var excludeConfig = locals.load.pages && locals.load.pages.exclude;
-  excludeConfig = excludeConfig || {};
 
   return Promise.resolve()
     .then(function() {
@@ -63,19 +58,7 @@ module.exports = function(locals) {
                     }
                   })
                   .then(function() {
-                    if (excludeConfig.pages || page.viewOnly) {
-                      page.path = pageProcessor.parseFilename(page.path);
-                      return generate(page);
-                    }
-
-                    return pageProcessor.process
-                      .call(project, page)
-                      .then(function(doc) {
-                        if (!doc) {
-                          return;
-                        }
-                        return generate(page);
-                      });
+                    return pageProcessor.call(project, page);
                   });
               },
               {
@@ -91,102 +74,16 @@ module.exports = function(locals) {
     })
     .then(function() {
       return project.site.pages.map(function(page) {
-        rules.run(page);
-        templates(page);
-        return page;
+        return rules.run(page).then(function() {
+          templates(page);
+          return page.save();
+        });
       });
     })
-    .then(function(pages) {
-      return pages.map(
-        function(page) {
-          paths.run(page);
-          return page.save();
-        },
-        {
-          concurrency: 10
-        }
-      );
-    });
-
-  function generate(page) {
-    if (!page.template) {
-      console.error(page);
-      throw new Error('Must have a template on: ' + page.path);
-    }
-
-    var pageBase = {
-      templateSource: page.template,
-      pathSource: page.path,
-      barebones: true,
-      path: null
-    };
-
-    return Promise.resolve()
-      .then(function() {
-        if (excludeConfig.view) {
-          return;
-        }
-
-        return run(
-          _.extend({}, page, pageBase, {
-            isView: true,
-            path: nPath.join(page.path, 'view')
-          })
-        );
-      })
-      .then(function() {
-        if (excludeConfig.viewData) {
-          return;
-        }
-
-        return run(
-          _.extend({}, page, pageBase, {
-            isViewData: true,
-            path: nPath.join(page.path, 'view-data'),
-            template: 'json/viewData'
-          })
-        );
-      })
-      .then(function() {
-        if (excludeConfig.auth) {
-          return;
-        }
-
-        if (page.authorization) {
-          return run(
-            _.extend({}, page, pageBase, {
-              isView: true,
-              path: nPath.join(page.path, 'view-auth'),
-              template: 'authorization'
-            })
-          ).then(function() {
-            return run(
-              _.extend({}, page, pageBase, {
-                isViewData: true,
-                path: nPath.join(page.path, 'view-auth-data'),
-                template: 'json/viewAuthData'
-              })
-            );
-          });
-        }
+    .then(function() {
+      return project.site.pages.map(function(page) {
+        paths.run(page);
+        return page.save();
       });
-  }
-
-  function run(data) {
-    delete data.isSource;
-    delete data._id;
-    delete data.source;
-
-    var loadFields = locals.load.pages && locals.load.pages.fields;
-
-    if (_.isObject(loadFields)) {
-      for (var key in data) {
-        if (!loadFields[key]) {
-          delete data[key];
-        }
-      }
-    }
-
-    return pageProcessor.process.call(project, data);
-  }
+    });
 };

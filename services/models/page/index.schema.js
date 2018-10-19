@@ -8,60 +8,20 @@ module.exports = {
       type: 'objectid'
     },
     title: {
-      type: 'String',
-      required: true
-    },
-    title_keywords: {
-      type: ['String'],
-      required: false
-    },
-    description: {
-      type: 'String',
-      required: false
-    },
-    description_keywords: {
-      type: ['String'],
-      required: false
-    },
-    content: {
-      type: ['String'],
-      required: false
-    },
-    content_keywords: {
-      type: ['String'],
-      required: false
+      type: 'object'
     },
     path: {
       type: 'String',
       required: true
     },
     source: {
-      type: 'string',
-      required: true
+      type: 'string'
     },
     template: {
-      type: 'string',
-      required: false
-    },
-    authorization: {
-      type: 'string',
-      required: false
-    },
-    mtime: {
-      type: 'date',
-      required: false
-    },
-    lang: {
-      type: 'String',
-      required: true
+      type: 'string'
     }
   },
   relations: {
-    positions: {
-      type: 'hasMany',
-      model: 'Search_Position',
-      foreignKey: 'pageId'
-    },
     directory: {
       type: 'belongsTo',
       model: 'Page_Directory',
@@ -96,7 +56,7 @@ module.exports = {
     unique: {
       keys: {
         path: 1,
-        lang: 1
+        app: 1
       },
       options: {
         unique: true
