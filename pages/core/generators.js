@@ -20,10 +20,6 @@ module.exports = function(locals) {
   var pageProcessor = require('./page').processor(locals);
   var project = locals.project;
 
-  var rules = require('./generator/rules')(locals);
-  var paths = require('./generator/paths')(locals);
-  var templates = require('./generator/templates')(locals);
-
   return Promise.resolve().then(function() {
     project.call_listeners('generateBefore');
 
@@ -58,7 +54,7 @@ module.exports = function(locals) {
                 });
             },
             {
-              concurrency: 1
+              concurrency: 10
             }
           );
         });

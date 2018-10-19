@@ -21,73 +21,83 @@ var urljoin = require('url-join');
 const querystring = require('querystring');
 
 module.exports = function(locals) {
-
   var project = locals.project;
-  var basePath = path.relative(project.paths.app.website, project.paths.app.source);
+  var basePath = path.relative(
+    project.paths.app.website,
+    project.paths.app.source
+  );
 
   //----------------------------------------------------------------------
   //
 
-  function getPage(_path_request) {
+  function getPage(_path_request, options) {
+    options = options || {};
+    var page_path;
+    return Promise.resolve()
+      .then(function() {
+        var path_request = _path_request;
 
-    var path_request = _path_request;
+        if (_path_request.path) {
+          path_request = path_request.path;
 
-    if (_path_request.path) {
-      path_request = path_request.path;
+          if (_path_request.query) {
+            path_request += '?' + querystring.stringify(_path_request.query);
+          }
+        }
 
-      if (_path_request.query) {
-        path_request += '?' + querystring.stringify(_path_request.query);
-      }
+        if (!_.isString(path_request)) {
+          return;
+        }
 
-    }
+        var parsed = url.parse(path_request);
+        path_request = parsed.pathname || '/';
 
-    if (!_.isString(path_request)) {
-      return;
-    }
+        var page_path_search = '/' + sourcePath(path_request);
+        page_path = page_path_search;
 
-    var parsed = url.parse(path_request);
-    path_request = parsed.pathname || '/';
-
-    var page_path_search = '/' + sourcePath(path_request);
-    var page_path = page_path_search;
-
-    if (parsed.search) {
-      page_path += parsed.search;
-    }
-    var data = project.site.pages.findOne({
-      path: page_path_search
-    });
-
-    return {
-      path: page_path,
-      data: data
-    };
-
+        if (parsed.search) {
+          page_path += parsed.search;
+        }
+        return project.site.pages.findOne({
+          where: {
+            path: page_path_search
+          },
+          fields: options.fields
+        });
+      })
+      .then(function(data) {
+        return {
+          path: page_path,
+          data: data
+        };
+      });
   }
 
   project.getPage = getPage;
 
   //.......................................................
 
-  project.extend.helper.register('get_page', function(path_request) {
-
-    return getPage(path_request)
-      .data;
+  project.extend.helper.register('get_page', function(path_request, options) {
+    return getPage(path_request, options).then(function(result) {
+      return result.data;
+    });
   });
 
   //.......................................................
 
   project.extend.helper.register('has_path', function(path_request) {
-
-    return getPage(path_request)
-      .data ? true : false;
-
+    return getPage(path_request, {
+      fields: {
+        id: true
+      }
+    }).then(function(result) {
+      return result.data ? true : false;
+    });
   });
 
   //----------------------------------------------------------------------
 
   function sourcePath(path_request) {
-
     if (path_request.path) {
       path_request = path_request.path;
     }
@@ -100,7 +110,6 @@ module.exports = function(locals) {
     }
 
     return tmp.join('/');
-
   }
 
   project.extend.helper.register('sourcePath', sourcePath);
@@ -115,54 +124,56 @@ module.exports = function(locals) {
   //----------------------------------------------------------------------
 
   project.extend.helper.register('get_path', function(path_request) {
+    var self = this;
+    return Promise.resolve()
+      .then(function() {
+        path_request = path_request || self.page;
+        return getPage(path_request, { fields: { id: true } });
+      })
+      .then(function(res) {
+        if (!res.data) {
+          throw new Error('No page found with such path: ' + path_request);
+        }
 
-    path_request = path_request || this.page;
-    var res = getPage(path_request) || {};
-    var data = res.data;
+        //////////////////////////////////////////////////////////
+        // RETURN THE CORRECT PATH
+        //////////////////////////////////////////////////////////
 
-    if (!data) {
-      throw new Error('No page found with such path: ' + path_request);
-    }
+        var lang_short = project.site.lang;
 
-    //////////////////////////////////////////////////////////
-    // RETURN THE CORRECT PATH
-    //////////////////////////////////////////////////////////
+        if (!lang_short) {
+          throw new Error('Could not get the correct lang short');
+        }
 
-    var lang_short = project.site.lang;
+        res = urljoin(lang_short, res.path);
+        res = self.url_for(res);
 
-    if (!lang_short) {
-      throw new Error('Could not get the correct lang short');
-    }
-
-    res = urljoin(lang_short, res.path);
-    res = this.url_for(res);
-
-    return res;
+        return res;
+      });
   });
 
   //----------------------------------------------------------------------
 
   project.extend.helper.register('path_relative', function(path_request) {
-    var result = this.get_path(path_request);
-    result = this.clean_path(result);
-    if (project.config.root &&
-      result.indexOf(project.config.root) === 0
-    ) {
-      result = result.substring(project.config.root.length + 1);
-    }
-    return '/' + result;
+    var self = this;
+    return self.get_path(path_request).then(function(result) {
+      result = self.clean_path(result);
+      if (project.config.root && result.indexOf(project.config.root) === 0) {
+        result = result.substring(project.config.root.length + 1);
+      }
+      return '/' + result;
+    });
   });
 
   //----------------------------------------------------------------------
 
   project.extend.helper.register('has_file', function(pathFile) {
-
-    pathFile = path.join('source',pathFile);
+    pathFile = path.join('source', pathFile);
 
     var pathParsed = path.parse(pathFile);
     var sourceFile = project.theme.getFile(pathFile);
 
-    if(!sourceFile){
+    if (!sourceFile) {
       switch (pathParsed.ext) {
         case '.css':
           pathParsed.base = pathParsed.name + '.styl';
@@ -174,9 +185,7 @@ module.exports = function(locals) {
       sourceFile = project.theme.getFile(pathFile);
     }
 
-
     return sourceFile ? true : false;
-
   });
 
   ///////////////////////////////////////////////////////////////
@@ -184,13 +193,11 @@ module.exports = function(locals) {
   ///////////////////////////////////////////////////////////////
 
   project.extend.helper.register('get_source', function(data) {
-
     var result = this.get_asset(data);
     result = this.clean_path(result);
     result = path.join(basePath, result) + '.yml';
 
     return result;
-
   });
 
   ///////////////////////////////////////////////////////////////
@@ -210,9 +217,7 @@ module.exports = function(locals) {
 
   ///////////////////////////////////////////////////////////////
 
-
   project.extend.helper.register('pagePath', function(page) {
     return page.pathSource || page.path;
   });
-
 };

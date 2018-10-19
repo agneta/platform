@@ -17,16 +17,13 @@
 var _ = require('lodash');
 
 module.exports = function(locals) {
-
   var project = locals.project;
 
   function deps() {
-
     //------------------------------
 
     var result = [];
-    var arr =
-    [].concat(
+    var arr = [].concat(
       project.config.angular_libs,
       project.config.scripts.lib,
       project.config.scripts.app
@@ -34,7 +31,7 @@ module.exports = function(locals) {
 
     //-------------------------------
     for (var lib of arr) {
-      if(!lib){
+      if (!lib) {
         continue;
       }
       if (lib.dep) {
@@ -44,57 +41,65 @@ module.exports = function(locals) {
 
     result = _.uniqBy(result);
 
-
     return result;
   }
 
   project.extend.helper.register('agnetaConfig', function() {
+    var self = this,
+      pagePath;
+    return Promise.resolve()
+      .then(function() {
+        return self.path_relative();
+      })
+      .then(function(_pagePath) {
+        pagePath = _pagePath;
+      })
+      .then(function() {
+        var agneta = {
+          page: {
+            version: self.getVersion()
+          },
+          urls: {},
+          keys: {},
+          deps: deps(),
+          lang: self.site.lang,
+          locale: self.site.locale,
+          path: pagePath,
+          root: self.config.root,
+          title: self.lng(self.config.title),
+          env: self.services_config('env'),
+          server: {
+            lib: self.site.servers.lib,
+            media: self.site.servers.media,
+            assets: self.site.servers.assets
+          },
+          services: {
+            url: self.site.services.url,
+            host: self.site.services.host,
+            view: self.site.services.view,
+            token: self.services_config('token').name
+          },
+          url_web: self.site.url_web,
+          host: self.site.host_web,
+          theme: {
+            primary: self.config.colors.primary,
+            accent: self.config.colors.accent
+          }
+        };
 
-    var agneta = {
-      page:{
-        version: this.getVersion()
-      },
-      urls: {},
-      keys: {},
-      deps: deps(),
-      lang: this.site.lang,
-      locale: this.site.locale,
-      path: this.path_relative(),
-      root: this.config.root,
-      title: this.lng(this.config.title),
-      env: this.services_config('env'),
-      server:{
-        lib: this.site.servers.lib,
-        media: this.site.servers.media,
-        assets: this.site.servers.assets
-      },
-      services: {
-        url: this.site.services.url,
-        host: this.site.services.host,
-        view: this.site.services.view,
-        token: this.services_config('token').name
-      },
-      url_web: this.site.url_web,
-      host: this.site.host_web,
-      theme: {
-        primary: this.config.colors.primary,
-        accent: this.config.colors.accent
-      }
-    };
+        var googleConfig = self.services_config('google');
+        if (googleConfig) {
+          agneta.keys.googleAPI = googleConfig.api;
+          agneta.keys.recaptcha = googleConfig.recaptcha;
+        }
 
-    var googleConfig = this.services_config('google');
-    if(googleConfig){
-      agneta.keys.googleAPI= googleConfig.api;
-      agneta.keys.recaptcha= googleConfig.recaptcha;
-    }
+        if (self.config.search) {
+          agneta.urls.keywords = self.get_asset(
+            'generated/keywords_' + self.site.lang + '.json'
+          );
+        }
 
-    if(this.config.search){
-      agneta.urls.keywords = this.get_asset('generated/keywords_' + this.site.lang + '.json');
-    }
-
-    return `JSON.parse('${JSON.stringify(agneta)}')`;
-
+        return `JSON.parse('${JSON.stringify(agneta)}')`;
+      });
   });
-
-
 };

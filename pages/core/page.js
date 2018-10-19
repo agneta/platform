@@ -29,8 +29,15 @@ function processor(locals) {
     var Page = project.site.pages;
     var path = parseFilename(data.path);
 
-    return Promise.resolve()
-      .then(function() {
+    return Promise.resolve().then(function() {
+      return Page.count({
+        path: path,
+        mtime: data.mtime
+      }).then(function(count) {
+        if (count) {
+          //console.log('already up to date', data.path);
+          return;
+        }
         data.path = path;
         data.app = appName;
 
@@ -46,17 +53,17 @@ function processor(locals) {
 
         rules.run(data);
 
-        return paths.run(data);
-      })
-      .then(function() {
-        return Page.upsertWithWhere(
-          {
-            path: path,
-            app: appName
-          },
-          data
-        );
+        return paths.run(data).then(function() {
+          return Page.upsertWithWhere(
+            {
+              path: path,
+              app: appName
+            },
+            data
+          );
+        });
       });
+    });
   };
 }
 

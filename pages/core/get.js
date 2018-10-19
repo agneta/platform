@@ -20,17 +20,16 @@ const Promise = require('bluebird');
 const _ = require('lodash');
 
 module.exports = function(locals) {
-
   var project = locals.project;
 
   locals.app.get('/', function(req, res) {
-    var url = '/' + urljoin(project.config.root, project.config.language.default.key);
+    var url =
+      '/' + urljoin(project.config.root, project.config.language.default.key);
     url = path.normalize(url);
     res.redirect(url);
   });
 
   locals.app.get('/:lang*', function(req, res, next) {
-
     var target = req.params[0];
     var lang = req.params.lang;
     Promise.resolve()
@@ -38,22 +37,18 @@ module.exports = function(locals) {
         return locals.app.renderPage(target, lang);
       })
       .then(function(content) {
-
         if (!content) {
           return next();
         }
 
         res.send(content);
-
       })
       .catch(next);
   });
 
   locals.app.renderPage = function(target, lang) {
-
     return Promise.resolve()
       .then(function() {
-
         var languages = _.get(project, 'site.languages');
         if (!languages) {
           return;
@@ -67,16 +62,19 @@ module.exports = function(locals) {
 
         project.site.lang = lang;
 
-        //-----------------------------------------------------------
-
-        var data;
-
         if (_.isString(target)) {
-          data = project.getPage(target).data;
-        } else if (_.isObject(target)) {
-          data = target;
+          return project.getPage(target).then(function(page) {
+            console.log('page', target, page);
+            return page.data;
+          });
         }
 
+        if (_.isObject(target)) {
+          return target;
+        }
+      })
+      .then(function(data) {
+        console.log(data);
         if (!data) {
           //throw new Error('No Data found for ' + target);
           return;
@@ -97,8 +95,6 @@ module.exports = function(locals) {
 
         //-----------------------------------------------------------
         return locals.page.renderData(data);
-
       });
   };
-
 };
