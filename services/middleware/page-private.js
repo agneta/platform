@@ -16,7 +16,6 @@
  */
 const path = require('path');
 const Promise = require('bluebird');
-const urljoin = require('url-join');
 const activity = require('./page-private/activity');
 
 module.exports = function(app) {
@@ -46,91 +45,80 @@ module.exports = function(app) {
 
   return function(req, res, next) {
     var data;
+    var type = req.query.type;
 
-    checkBase(defaultView);
-    checkBase(localView);
-
-    function checkBase(view) {
-      if (req.path.indexOf(view.base) !== 0) {
-        return;
-      }
-
-      var remotePath = req.path;
-      remotePath = remotePath.substring(view.base.length);
-      remotePath = path.normalize(remotePath);
-
-      var page = clientHelpers.get_page(remotePath);
-      var lang = remotePath.split('/')[0];
-
-      data = {
-        view: view,
-        remotePath: remotePath,
-        page: page,
-        res: res,
-        lang: lang,
-        next: next
-      };
-    }
-
-    if (!data) {
-      return next();
-    }
-
-    if (!data.page) {
-      return next();
-    }
-
-    return Promise.resolve()
+    Promise.resolve()
       .then(function() {
-        if (data.page.authorization) {
-          //console.log('page:private:auth',data.page.title, data.page.authorization);
-          return app.models.Account.hasRoles(data.page.authorization, req).then(
-            function(result) {
-              //console.log('app.models.Account.hasRoles.result',result);
+        var view = null;
 
-              if (!result.has) {
-                var authPath = path.parse(data.remotePath);
-                var name;
-
-                if (data.page.isView) {
-                  name = 'view-auth';
-                }
-
-                if (data.page.isViewData) {
-                  name = 'view-auth-data';
-                }
-
-                if (!name) {
-                  return Promise.reject({
-                    redirect: true
-                  });
-                }
-
-                authPath = urljoin(authPath.dir, name);
-                data.remotePath = authPath;
-                data.page = clientHelpers.get_page(data.remotePath);
-              }
-            }
-          );
+        for (let _view of [defaultView, localView]) {
+          if (req.path.indexOf(_view.base) === 0) {
+            view = _view;
+          }
         }
-      })
-      .then(function() {
-        return data.view.method(data);
-      })
-      .then(function() {
-        return activity({
-          app: app,
-          req: req,
-          data: data
-        });
-      })
-      .catch(function(err) {
-        if (err.redirect) {
-          return res.redirect(`/gr/authorization?redirect=${req.originalUrl}`);
-        }
-        if (err.notfound) {
+
+        if (!view) {
           return next();
         }
+
+        var remotePath = req.path;
+        remotePath = remotePath.substring(view.base.length);
+        remotePath = path.normalize(remotePath);
+
+        return clientHelpers
+          .get_page(remotePath, {
+            fields: {
+              id: true,
+              authorization: true
+            }
+          })
+          .then(function(page) {
+            if (!page) {
+              return next();
+            }
+
+            var lang = remotePath.split('/')[0];
+
+            data = {
+              view: view,
+              remotePath: remotePath,
+              res: res,
+              lang: lang,
+              next: next,
+              type: type
+            };
+
+            if (page.authorization) {
+              //console.log('page:private:auth',data.page.title, page.authorization);
+              return app.models.Account.hasRoles(page.authorization, req).then(
+                function(result) {
+                  //console.log('app.models.Account.hasRoles.result',result);
+
+                  if (!result.has) {
+                    switch (type) {
+                      case 'view':
+                        type = 'view-auth';
+                        break;
+                      case 'view-data':
+                        type = 'view-auth-data';
+                        break;
+                    }
+                  }
+                }
+              );
+            }
+          })
+          .then(function() {
+            return data.view.method(data).then(function() {
+              return activity({
+                app: app,
+                req: req,
+                data: data
+              });
+            });
+          });
+      })
+      .catch(function(err) {
         next(err);
       });
   };

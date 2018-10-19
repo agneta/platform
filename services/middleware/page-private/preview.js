@@ -17,13 +17,29 @@
 module.exports = function(app) {
   var client = app.client;
   var project = client.project;
+  var clientHelpers = client.app.locals;
 
   return function(data) {
-    project.site.lang = data.lang;
-    return client.page.renderData(data.page).then(function(content) {
-      if (content) {
-        data.res.send(content);
+    return Promise.resolve().then(function() {
+      project.site.lang = data.lang;
+
+      var pageType = client.page.type[data.type];
+      if (!pageType) {
+        return data.next();
       }
+
+      return clientHelpers
+        .get_page(data.remotePath)
+        .then(function(page) {
+          page = pageType(page);
+
+          return client.page.renderData(page);
+        })
+        .then(function(content) {
+          if (content) {
+            data.res.send(content);
+          }
+        });
     });
   };
 };

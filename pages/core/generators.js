@@ -17,7 +17,6 @@
 var Promise = require('bluebird');
 
 module.exports = function(locals) {
-  var pageProcessor = require('./page').processor(locals);
   var project = locals.project;
 
   return Promise.resolve().then(function() {
@@ -50,7 +49,7 @@ module.exports = function(locals) {
                   }
                 })
                 .then(function() {
-                  return pageProcessor.call(project, page);
+                  return locals.page.processor.call(project, page);
                 });
             },
             {

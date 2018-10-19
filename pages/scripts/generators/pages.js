@@ -14,7 +14,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const page = require('../../core/page');
 const path = require('path');
 const _ = require('lodash');
 const Promise = require('bluebird');
@@ -174,12 +173,12 @@ module.exports = function(locals) {
       });
 
     function pageExists(dataPath) {
-      var pagePath = page.parseFilename(dataPath);
+      var pagePath = locals.page.parseFilename(dataPath);
       return result[pagePath] ? true : false;
     }
 
     function addPage(data) {
-      var pagePath = page.parseFilename(data.path);
+      var pagePath = locals.page.parseFilename(data.path);
       result[pagePath] = data;
     }
   });
