@@ -97,10 +97,10 @@ module.exports = function(app) {
                   if (!result.has) {
                     switch (type) {
                       case 'view':
-                        type = 'view-auth';
+                        type = 'auth';
                         break;
-                      case 'view-data':
-                        type = 'view-auth-data';
+                      case 'viewData':
+                        type = 'authData';
                         break;
                     }
                   }

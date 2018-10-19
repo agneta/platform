@@ -5,16 +5,25 @@ module.exports = function(locals) {
   var model = locals.services.models.Page;
 
   project.site.pages = {
-    findOne: function(options) {
-      _.defaults(options, {
+    find: function(options) {
+      _.defaultsDeep(options, {
         where: {
           app: appName
         }
       });
+      return model.find(options);
+    },
+    findOne: function(options) {
+      _.defaultsDeep(options, {
+        where: {
+          app: appName
+        }
+      });
+      console.log(appName, options);
       return model.findOne(options);
     },
     count: function(options) {
-      _.defaults(options, {
+      _.defaultsDeep(options, {
         app: appName
       });
       return model.findOne(options);
