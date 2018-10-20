@@ -15,13 +15,8 @@
  *   limitations under the License.
  */
 const path = require('path');
-const _ = require('lodash');
 const Promise = require('bluebird');
-const File = require('../../file');
-const yaml = require('js-yaml');
-const replaceExt = require('replace-ext');
 const klaw = require('klaw');
-const fs = require('fs-extra');
 
 module.exports = function(locals) {
   var project = locals.project;
@@ -30,189 +25,59 @@ module.exports = function(locals) {
     var pageDirs = project.theme.dirs.map(function(pathDir) {
       return path.join(pathDir, 'source');
     });
+    var readFile = require('./readFile')(locals);
 
-    var result = {};
+    return Promise.map(
+      pageDirs,
+      function(dir) {
+        var walker = klaw(dir);
+        var items = [];
 
-    return Promise.resolve().then(function() {
-      return Promise.map(
-        pageDirs,
-        function(dir) {
-          var walker = klaw(dir);
-          var paths = [];
+        walker.on('data', function(item) {
+          var path_file_parsed = path.parse(item.path);
 
-          walker.on('data', function(item) {
-            var path_file_parsed = path.parse(item.path);
+          if (item.stats.isDirectory()) {
+            return;
+          }
 
-            if (item.stats.isDirectory()) {
-              return;
-            }
+          if (path_file_parsed.ext != '.yml') {
+            return;
+          }
 
-            if (path_file_parsed.ext != '.yml') {
-              return;
-            }
-
-            if (path.parse(path_file_parsed.name).ext) {
-              return;
-            }
-            paths.push({
-              path: item.path,
-              mtime: item.stats.mtime
-            });
+          if (path.parse(path_file_parsed.name).ext) {
+            return;
+          }
+          items.push({
+            path: item.path,
+            mtime: item.stats.mtime
           });
+        });
 
-          return new Promise(function(resolve, reject) {
-            walker.on('end', function() {
-              resolve(paths);
-            });
-            walker.on('error', reject);
-          }).then(function(files) {
-            return Promise.map(
-              files,
-              function(item) {
-                var filePath = path.relative(dir, item.path);
-                var pathParsed = path.parse(filePath);
-                var path_url = filePath;
-
-                if (pathParsed.base === 'index.yml') {
-                  path_url = path.join(filePath, '..');
-                } else {
-                  path_url = path.join(pathParsed.dir, pathParsed.name);
-                }
-                path_url = path_url.split(path.sep).join('/');
-
-                if (pageExists(path_url)) {
-                  return;
-                }
-
-                var file = new File({
-                  source: item.path,
-                  path: filePath,
-                  type: 'create',
-                  params: {
-                    path: path_url
-                  }
-                });
-
-                var data;
-
-                return readFile(file)
-                  .then(function(_data) {
-                    data = _data;
-                    data.mtime = item.mtime;
-                    data.path = data.path || path_url;
-                    data.name = path.parse(data.path).name;
-                    //---------------------------------------
-                    // extend
-
-                    if (data.extend) {
-                      var extendPath =
-                        path.join(project.paths.app.source, data.extend) +
-                        '.yml';
-                      return fs.readFile(extendPath).then(function(content) {
-                        var extendedData = yaml.safeLoad(content) || {};
-                        _.mergePages(extendedData, data);
-                        data = extendedData;
-                      });
-                    }
-                  })
-                  .then(function() {
-                    //---------------------------------------
-                    // Dialogs
-
-                    if (data.path.indexOf('dialog/') === 0) {
-                      data.viewOnly = true;
-                      data.isDialog = true;
-                    }
-
-                    if (data.path.indexOf('partial/') === 0) {
-                      data.viewOnly = true;
-                      data.isPartial = true;
-                    }
-
-                    //---------------------------------------
-                    // Search for template if not defined
-
-                    if (!data.template) {
-                      var templatePath = path.join(
-                        'source',
-                        replaceExt(data.path, '.ejs')
-                      );
-
-                      templatePath = project.theme.getFile(templatePath);
-
-                      if (templatePath) {
-                        templatePath = path.parse(data.path);
-                        templatePath = path.join(
-                          templatePath.dir,
-                          templatePath.name
-                        );
-                        data.template = templatePath;
-                      }
-                    }
-
-                    data.isSource = true;
-
-                    if (
-                      project.config.authorization &&
-                      !data.skipAuthorization
-                    ) {
-                      if (!data.authorization) {
-                        data.authorization = project.config.authorization;
-                      }
-                    }
-
-                    //---------------------------------------
-
-                    var pagePath = locals.page.parseFilename(data.path);
-                    result[pagePath] = true;
-                    return locals.page.process(data);
-                  });
-              },
-              {
-                concurrency: 10
-              }
-            );
+        return new Promise(function(resolve, reject) {
+          walker.on('end', function() {
+            resolve(items);
           });
-        },
-        {
-          concurrency: 1
-        }
-      );
-    });
+          walker.on('error', reject);
+        }).then(function(items) {
+          return Promise.map(
+            items,
+            function(item) {
+              //console.log('onItem:', item);
 
-    function pageExists(dataPath) {
-      var pagePath = locals.page.parseFilename(dataPath);
-      return result[pagePath] ? true : false;
-    }
+              return readFile({
+                item: item,
+                dir: dir
+              });
+            },
+            {
+              concurrency: 10
+            }
+          );
+        });
+      },
+      {
+        concurrency: 1
+      }
+    );
   };
-
-  function readFile(file) {
-    return Promise.all([file.stat(), file.read()]).spread(function(
-      stats,
-      content
-    ) {
-      var data;
-      try {
-        data = yaml.safeLoad(content);
-      } catch (error) {
-        console.error(
-          'Found problem on YAML: ' + file.path + '. ' + error.message
-        );
-        data = {
-          template: 'error/format',
-          hasError: true,
-          data: error
-        };
-      }
-
-      if (!data) {
-        data = {};
-      }
-
-      data.source = file.path;
-      data.filename = path.parse(data.source).name;
-
-      return data;
-    });
-  }
 };

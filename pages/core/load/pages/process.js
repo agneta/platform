@@ -24,45 +24,32 @@ module.exports = function(locals) {
   var paths = require('./paths')(locals);
 
   locals.page.process = function(data) {
-    var appName = locals.app.get('name');
-
     /* jshint validthis: true */
     var Page = project.site.pages;
     var path = locals.page.parseFilename(data.path);
 
     return Promise.resolve().then(function() {
-      return Page.count({
-        path: path,
-        mtime: data.mtime
-      }).then(function(count) {
-        if (count) {
-          //console.log('already up to date', data.path);
-          return;
-        }
-        data.path = path;
-        data.app = appName;
+      data.path = path;
 
-        if (data.if && !project.config[data.if]) {
-          data.skip = true;
-        }
+      if (data.if && !project.config[data.if]) {
+        data.skip = true;
+      }
 
-        if (!data.title) {
-          data.title = {
-            en: pathFn.parse(data.path).name
-          };
-        }
+      if (!data.title) {
+        data.title = {
+          en: pathFn.parse(data.path).name
+        };
+      }
 
-        rules.run(data);
+      rules.run(data);
 
-        return paths.run(data).then(function() {
-          return Page.upsertWithWhere(
-            {
-              path: path,
-              app: appName
-            },
-            data
-          );
-        });
+      return paths.run(data).then(function() {
+        return Page.upsertWithWhere(
+          {
+            path: path
+          },
+          data
+        );
       });
     });
   };

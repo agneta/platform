@@ -14,26 +14,23 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-'use strict';
 
-var Promise = require('bluebird');
-
-function Generator(){
+function Generator() {
   this.id = 0;
   this.store = {};
 }
 
-Generator.prototype.list = function(){
+Generator.prototype.list = function() {
   return this.store;
 };
 
-Generator.prototype.get = function(name){
+Generator.prototype.get = function(name) {
   return this.store[name];
 };
 
-Generator.prototype.register = function(name, fn){
-  if (!fn){
-    if (typeof name === 'function'){
+Generator.prototype.register = function(name, fn) {
+  if (!fn) {
+    if (typeof name === 'function') {
       fn = name;
       name = 'generator-' + this.id++;
     } else {
@@ -41,8 +38,7 @@ Generator.prototype.register = function(name, fn){
     }
   }
 
-  if (fn.length > 1) fn = Promise.promisify(fn);
-  this.store[name] = Promise.method(fn);
+  this.store[name] = fn;
 };
 
 module.exports = Generator;

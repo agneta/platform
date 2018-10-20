@@ -17,6 +17,7 @@
 var Promise = require('bluebird');
 var fs = require('fs-extra');
 var path = require('path');
+const yaml = require('js-yaml');
 
 module.exports = function(locals) {
   var project = locals.project;
@@ -43,10 +44,11 @@ module.exports = function(locals) {
       function onPage(data) {
         data.generated = true;
 
+        var content = yaml.safeDump(data);
         var outputPath =
           path.join(project.paths.app.source, data.path) + '.yml';
 
-        return fs.outputFile(outputPath, data);
+        return fs.outputFile(outputPath, content);
       }
     });
   };

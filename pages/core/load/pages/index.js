@@ -13,7 +13,11 @@ module.exports = function(locals) {
       return page
         .generate()
         .then(function() {
-          return require('./read')(locals);
+          console.log('generated!');
+          return page.read();
+        })
+        .then(function() {
+          console.log('read!');
         })
         .catch(function(err) {
           console.log('Generator Error (check logs): ', err.message);

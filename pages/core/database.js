@@ -5,6 +5,12 @@ module.exports = function(locals) {
   var model = locals.services.models.Page;
 
   project.site.pages = {
+    upsertWithWhere: function(filter, data) {
+      filter.app = appName;
+      data.app = appName;
+
+      return model.upsertWithWhere(filter, data);
+    },
     find: function(options) {
       _.defaultsDeep(options, {
         where: {
