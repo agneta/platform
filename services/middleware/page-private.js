@@ -53,7 +53,8 @@ module.exports = function(app) {
 
     Promise.resolve()
       .then(function() {
-        var view = null;
+        var view = null,
+          roleView = null;
 
         for (let _view of [defaultView, localView]) {
           if (req.path.indexOf(_view.base) === 0) {
@@ -81,7 +82,8 @@ module.exports = function(app) {
           .get_page(remotePath, {
             fields: {
               id: true,
-              authorization: true
+              authorization: true,
+              override: true
             }
           })
           .then(function(page) {
@@ -90,25 +92,58 @@ module.exports = function(app) {
             }
             return Promise.resolve()
               .then(function() {
-                if (page.authorization) {
-                  return app.models.Account.hasRoles(
-                    page.authorization,
-                    req
-                  ).then(function(result) {
-                    //console.log('app.models.Account.hasRoles.result',result);
-
-                    if (!result.has) {
-                      switch (type) {
-                        case 'view':
-                          type = 'auth';
-                          break;
-                        case 'viewData':
-                          type = 'authData';
-                          break;
-                      }
-                    }
-                  });
+                console.log(page.override);
+                if (!page.override) {
+                  return;
                 }
+                if (!page.override.rules) {
+                  return;
+                }
+                for (let rule of page.override.rules) {
+                  if (!rule.role) {
+                    continue;
+                  }
+                  let userRole = req.accessToken.roles[rule.role];
+                  if (userRole) {
+                    let viewData = page.override.view[rule.view];
+                    if (!viewData) {
+                      return Promise.reject({
+                        statusCode: 401,
+                        message: `Role view "${
+                          rule.view
+                        }" is not specified in the override configuration`
+                      });
+                    }
+                    roleView = {
+                      name: rule.view,
+                      data: viewData
+                    };
+                    break;
+                  }
+                }
+                console.log(roleView);
+              })
+              .then(function() {
+                if (!page.authorization) {
+                  return;
+                }
+                return app.models.Account.hasRoles(
+                  page.authorization,
+                  req
+                ).then(function(result) {
+                  //console.log('app.models.Account.hasRoles.result',result);
+
+                  if (!result.has) {
+                    switch (type) {
+                      case 'view':
+                        type = 'auth';
+                        break;
+                      case 'viewData':
+                        type = 'authData';
+                        break;
+                    }
+                  }
+                });
               })
               .then(function() {
                 var lang = remotePath.split('/')[0];
@@ -118,6 +153,7 @@ module.exports = function(app) {
                   remotePath: remotePath,
                   res: res,
                   lang: lang,
+                  roleView: roleView,
                   next: next,
                   type: type
                 };

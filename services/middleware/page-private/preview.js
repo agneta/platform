@@ -14,6 +14,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+const _ = require('lodash');
+
 module.exports = function(app) {
   var client = app.client;
   var project = client.project;
@@ -31,6 +34,9 @@ module.exports = function(app) {
       return clientHelpers
         .get_page(data.remotePath)
         .then(function(page) {
+          if (data.roleView) {
+            _.extend(page, data.roleView.data);
+          }
           page = pageType(page);
 
           return client.page.renderData(page);
