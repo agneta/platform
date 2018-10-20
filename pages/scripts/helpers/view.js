@@ -106,6 +106,7 @@ module.exports = function(locals) {
   });
 
   project.extend.helper.register('viewAuthData', function(page) {
+    let self = this;
     page = page || this.page;
     page = _.extend(
       _.pick(page, ['title', 'path', 'pathSource', 'templateSource']),
@@ -118,7 +119,7 @@ module.exports = function(locals) {
         return getData(page);
       })
       .then(function(data) {
-        data.dependencies = [[this.get_asset('authorization.css')]];
+        data.dependencies = [[self.get_asset('authorization.css')]];
         return JSON.stringify(data);
       });
   });

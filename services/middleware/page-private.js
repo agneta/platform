@@ -92,11 +92,14 @@ module.exports = function(app) {
             }
             return Promise.resolve()
               .then(function() {
-                console.log(page.override);
                 if (!page.override) {
                   return;
                 }
                 if (!page.override.rules) {
+                  return;
+                }
+
+                if (!req.accessToken) {
                   return;
                 }
                 for (let rule of page.override.rules) {
@@ -121,7 +124,6 @@ module.exports = function(app) {
                     break;
                   }
                 }
-                console.log(roleView);
               })
               .then(function() {
                 if (!page.authorization) {
