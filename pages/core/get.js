@@ -82,12 +82,6 @@ module.exports = function(locals) {
 
         //-----------------------------------------------------------
 
-        if (data.isView || data.isViewData) {
-          return;
-        }
-
-        //-----------------------------------------------------------
-
         if (data.if && !project.config[data.if]) {
           //throw new Error('Page does not meet condition');
           return;

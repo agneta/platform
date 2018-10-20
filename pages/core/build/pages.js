@@ -72,6 +72,10 @@ module.exports = function(locals, options) {
 
     return project.site.pages
       .map(function(data) {
+        if (data.template_build && locals.buildOptions) {
+          data.template = data.template_build;
+        }
+
         ///////////////////////////////////////////////////////
         // FILTER UNWANTED PAGES
         ///////////////////////////////////////////////////////

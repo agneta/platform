@@ -19,11 +19,10 @@ module.exports = function(locals) {
   var config = require('./config')(locals);
   var scripts = require('./scripts')(locals);
   var pages = require('./pages')(locals);
-
   var loadConfig = locals.load;
 
   return {
-    pages: pages,
+    pages: pages.load,
     config: config.load,
     scripts: scripts,
     preInit: config.preInit,
@@ -37,7 +36,8 @@ module.exports = function(locals) {
     start: function() {
       return Promise.resolve().then(function() {
         if (loadConfig.pages) {
-          return pages();
+          pages.start();
+          return pages.load();
         }
       });
     }
