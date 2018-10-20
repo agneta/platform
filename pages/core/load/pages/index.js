@@ -11,11 +11,7 @@ module.exports = function(locals) {
   return {
     load: function() {
       return page
-        .generate()
-        .then(function() {
-          console.log('generated!');
-          return page.read();
-        })
+        .read()
         .then(function() {
           console.log('read!');
         })
@@ -27,6 +23,10 @@ module.exports = function(locals) {
     },
     start: function() {
       require('./process')(locals);
+
+      return page.generate().then(function() {
+        console.log('generated!');
+      });
     }
   };
 };

@@ -36,8 +36,9 @@ module.exports = function(locals) {
     start: function() {
       return Promise.resolve().then(function() {
         if (loadConfig.pages) {
-          pages.start();
-          return pages.load();
+          return pages.start().then(function() {
+            return pages.load();
+          });
         }
       });
     }
