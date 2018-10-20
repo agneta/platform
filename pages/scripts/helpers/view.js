@@ -113,14 +113,25 @@ module.exports = function(locals) {
         class: 'page-authorization'
       }
     );
-    var data = getData(page);
-    data.dependencies = [[this.get_asset('authorization.css')]];
-    return JSON.stringify(data);
+    return Promise.resolve()
+      .then(function() {
+        return getData(page);
+      })
+      .then(function(data) {
+        data.dependencies = [[this.get_asset('authorization.css')]];
+        return JSON.stringify(data);
+      });
   });
 
   project.extend.helper.register('viewData', function(page) {
     page = page || this.page;
-    return JSON.stringify(getData(page), null, 2);
+    return Promise.resolve()
+      .then(function() {
+        return getData(page);
+      })
+      .then(function(data) {
+        return JSON.stringify(data, null, 2);
+      });
   });
 
   function getData(page) {
@@ -129,113 +140,123 @@ module.exports = function(locals) {
     var config = helpers.config;
     var self = helpers;
 
-    if (!commonData.templateChecked) {
-      let pagePath = path.parse(page.pathSource);
-      pagePath = path.join(page.pathSource, 'view');
-      let commonPage = helpers.get_page(pagePath);
-      helpers.template('page', { page: commonPage });
-      commonData = locals.page.commonData(page);
-    }
+    return Promise.resolve()
+      .then(function() {
+        if (!commonData.templateChecked) {
+          console.log(page.pathSource);
+          return helpers
+            .get_page(page.pathSource)
+            .then(function(commonPage) {
+              return helpers.template('page', { page: commonPage });
+            })
+            .then(function() {
+              commonData = locals.page.commonData(page);
+            });
+        }
+      })
+      .then(function() {
+        data.authorization = page.authorization;
+        data.keypress = page.keypress;
+        data.controller = page.controller;
+        data.menuLock = config.lockSidebar || page.menuLock;
+        data.extra = helpers.lngScan(page.viewData);
 
-    data.authorization = page.authorization;
-    data.keypress = page.keypress;
-    data.controller = page.controller;
-    data.menuLock = config.lockSidebar || page.menuLock;
-    data.extra = helpers.lngScan(page.viewData);
+        //----------------------------------------
 
-    //----------------------------------------
+        if (
+          page.toolbar &&
+          helpers.has_template(path.join('partials', page.toolbar))
+        ) {
+          data.toolbar = helpers.get_path(urljoin('partial', page.toolbar));
+        }
 
-    if (
-      page.toolbar &&
-      helpers.has_template(path.join('partials', page.toolbar))
-    ) {
-      data.toolbar = helpers.get_path(urljoin('partial', page.toolbar));
-    }
+        //----------------------------------------
 
-    //----------------------------------------
+        if (page.angular_libs) {
+          data.inject = _.map(page.angular_libs, function(value) {
+            data.scripts.push({
+              path: value.js || value.path,
+              priority: 10
+            });
+            return value.dep;
+          });
+        }
 
-    if (page.angular_libs) {
-      data.inject = _.map(page.angular_libs, function(value) {
-        data.scripts.push({
-          path: value.js || value.path,
-          priority: 10
+        //----------------------------------------
+
+        var tmpDependencies = [];
+        data.dependencies = [];
+        data.scripts = data.scripts
+          .concat(page.scripts)
+          .concat(commonData.scripts);
+        data.scripts.map(function(script) {
+          if (!script) {
+            return;
+          }
+          if (script.dep) {
+            data.inject.push(script.dep);
+          }
         });
-        return value.dep;
+
+        data.styles = data.styles.concat(page.styles).concat(commonData.styles);
+
+        setAssets(data.scripts, 'js');
+        setAssets(data.styles, 'css');
+
+        for (var index in tmpDependencies) {
+          var value = tmpDependencies[index];
+          value = _.uniq(value);
+          data.dependencies.push(value);
+        }
+
+        delete data.scripts;
+        delete data.styles;
+
+        function setAssets(assets, type) {
+          var ext = '.' + type;
+          for (var y in assets) {
+            var asset = assets[y];
+            var priority = 999;
+            var assetPath = asset;
+
+            if (!asset) {
+              continue;
+            }
+
+            if (_.isObject(asset)) {
+              assetPath = asset.path;
+              priority = _.isNumber(asset.priority) ? asset.priority : priority;
+            }
+
+            if (!_.isString(assetPath)) {
+              console.error(asset);
+              throw new Error('Could not find asset path');
+            }
+
+            if (!asset.noExt && assetPath.indexOf(ext) < 0) {
+              assetPath += ext;
+            }
+
+            assetPath = self.get_asset(assetPath);
+
+            if (asset.noExt) {
+              assetPath = {
+                path: assetPath,
+                type: type
+              };
+            }
+
+            if (!assetPath) {
+              throw new Error(`Could not find asset ${asset}`);
+            }
+
+            var dependencies = tmpDependencies[priority] || [];
+            dependencies.push(assetPath);
+            tmpDependencies[priority] = dependencies;
+          }
+        }
+
+        return data;
       });
-    }
-
-    //----------------------------------------
-
-    var tmpDependencies = [];
-    data.dependencies = [];
-    data.scripts = data.scripts.concat(page.scripts).concat(commonData.scripts);
-    data.scripts.map(function(script) {
-      if (!script) {
-        return;
-      }
-      if (script.dep) {
-        data.inject.push(script.dep);
-      }
-    });
-
-    data.styles = data.styles.concat(page.styles).concat(commonData.styles);
-
-    setAssets(data.scripts, 'js');
-    setAssets(data.styles, 'css');
-
-    for (var index in tmpDependencies) {
-      var value = tmpDependencies[index];
-      value = _.uniq(value);
-      data.dependencies.push(value);
-    }
-
-    delete data.scripts;
-    delete data.styles;
-
-    function setAssets(assets, type) {
-      var ext = '.' + type;
-      for (var y in assets) {
-        var asset = assets[y];
-        var priority = 999;
-        var assetPath = asset;
-
-        if (!asset) {
-          continue;
-        }
-
-        if (_.isObject(asset)) {
-          assetPath = asset.path;
-          priority = _.isNumber(asset.priority) ? asset.priority : priority;
-        }
-
-        if (!_.isString(assetPath)) {
-          console.error(asset);
-          throw new Error('Could not find asset path');
-        }
-
-        if (!asset.noExt && assetPath.indexOf(ext) < 0) {
-          assetPath += ext;
-        }
-
-        assetPath = self.get_asset(assetPath);
-
-        if (asset.noExt) {
-          assetPath = {
-            path: assetPath,
-            type: type
-          };
-        }
-
-        if (!assetPath) {
-          throw new Error(`Could not find asset ${asset}`);
-        }
-
-        var dependencies = tmpDependencies[priority] || [];
-        dependencies.push(assetPath);
-        tmpDependencies[priority] = dependencies;
-      }
-    }
-
-    return data;
   }
 };

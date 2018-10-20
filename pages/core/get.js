@@ -64,7 +64,7 @@ module.exports = function(locals) {
 
         if (_.isString(target)) {
           return project.getPage(target).then(function(page) {
-            console.log('page', target, page);
+            //console.log('page', target, page);
             return page.data;
           });
         }

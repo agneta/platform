@@ -60,8 +60,7 @@ module.exports = function(locals) {
     var data = _.extend({}, page, {
       templateSource: page.template,
       pathSource: page.path,
-      barebones: true,
-      path: null
+      barebones: true
     });
 
     delete data.isSource;
@@ -83,28 +82,24 @@ module.exports = function(locals) {
   page.type = {
     view: function(page) {
       return _.extend(getBase(page), {
-        isView: true,
-        path: pathFn.join(page.path, 'view')
+        isView: true
       });
     },
     viewData: function(page) {
       return _.extend(getBase(page), {
         isViewData: true,
-        path: pathFn.join(page.path, 'view-data'),
         template: 'json/viewData'
       });
     },
     auth: function(page) {
       return _.extend(getBase(page), {
         isView: true,
-        path: pathFn.join(page.path, 'view-auth'),
         template: 'authorization'
       });
     },
     authData: function(page) {
       return _.extend(getBase(page), {
         isViewData: true,
-        path: pathFn.join(page.path, 'view-auth-data'),
         template: 'json/viewAuthData'
       });
     }
