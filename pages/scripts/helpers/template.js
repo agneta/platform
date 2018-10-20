@@ -50,6 +50,11 @@ module.exports = function(locals) {
     var memCache = locals.cache.templates;
     var self = this;
 
+    if (!path_partial) {
+      //console.error(arguments);
+      throw new Error('Must provide a path for the template');
+    }
+
     return Promise.resolve().then(function() {
       if (cache) {
         let content = memCache.get(path_partial);

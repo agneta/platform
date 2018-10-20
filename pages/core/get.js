@@ -74,7 +74,7 @@ module.exports = function(locals) {
         }
       })
       .then(function(data) {
-        console.log(data);
+        //console.log(data);
         if (!data) {
           //throw new Error('No Data found for ' + target);
           return;

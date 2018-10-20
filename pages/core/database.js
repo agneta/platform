@@ -19,7 +19,6 @@ module.exports = function(locals) {
           app: appName
         }
       });
-      console.log(appName, options);
       return model.findOne(options);
     },
     count: function(options) {

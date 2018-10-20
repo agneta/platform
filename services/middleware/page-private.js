@@ -18,6 +18,11 @@ const path = require('path');
 const Promise = require('bluebird');
 const activity = require('./page-private/activity');
 
+const typeAllowed = {
+  view: true,
+  viewData: true
+};
+
 module.exports = function(app) {
   var client = app.client;
   var clientProject = client.project;
@@ -60,6 +65,14 @@ module.exports = function(app) {
           return next();
         }
 
+        if (!type) {
+          return res.status(404).send('Must provide a type.');
+        }
+
+        if (!typeAllowed[type]) {
+          return res.status(404).send(`Not recognised type: ${type}`);
+        }
+
         var remotePath = req.path;
         remotePath = remotePath.substring(view.base.length);
         remotePath = path.normalize(remotePath);
@@ -73,47 +86,50 @@ module.exports = function(app) {
           })
           .then(function(page) {
             if (!page) {
-              return next();
+              return res.status(404).send('Page not found');
             }
+            return Promise.resolve()
+              .then(function() {
+                if (page.authorization) {
+                  return app.models.Account.hasRoles(
+                    page.authorization,
+                    req
+                  ).then(function(result) {
+                    //console.log('app.models.Account.hasRoles.result',result);
 
-            if (page.authorization) {
-              return app.models.Account.hasRoles(page.authorization, req).then(
-                function(result) {
-                  //console.log('app.models.Account.hasRoles.result',result);
-
-                  if (!result.has) {
-                    switch (type) {
-                      case 'view':
-                        type = 'auth';
-                        break;
-                      case 'viewData':
-                        type = 'authData';
-                        break;
+                    if (!result.has) {
+                      switch (type) {
+                        case 'view':
+                          type = 'auth';
+                          break;
+                        case 'viewData':
+                          type = 'authData';
+                          break;
+                      }
                     }
-                  }
+                  });
                 }
-              );
-            }
-          })
-          .then(function() {
-            var lang = remotePath.split('/')[0];
+              })
+              .then(function() {
+                var lang = remotePath.split('/')[0];
 
-            var data = {
-              view: view,
-              remotePath: remotePath,
-              res: res,
-              lang: lang,
-              next: next,
-              type: type
-            };
+                var data = {
+                  view: view,
+                  remotePath: remotePath,
+                  res: res,
+                  lang: lang,
+                  next: next,
+                  type: type
+                };
 
-            return data.view.method(data).then(function() {
-              return activity({
-                app: app,
-                req: req,
-                data: data
+                return data.view.method(data).then(function() {
+                  return activity({
+                    app: app,
+                    req: req,
+                    data: data
+                  });
+                });
               });
-            });
           });
       })
       .catch(function(err) {
