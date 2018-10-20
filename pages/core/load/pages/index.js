@@ -10,23 +10,16 @@ module.exports = function(locals) {
 
   return {
     load: function() {
-      return page
-        .read()
-        .then(function() {
-          console.log('read!');
-        })
-        .catch(function(err) {
-          console.log('Generator Error (check logs): ', err.message);
-          console.error();
-          return Promise.reject(err);
-        });
+      return page.read().catch(function(err) {
+        console.log('Generator Error (check logs): ', err.message);
+        console.error(err);
+        return Promise.reject(err);
+      });
     },
     start: function() {
       require('./process')(locals);
 
-      return page.generate().then(function() {
-        console.log('generated!');
-      });
+      return page.generate();
     }
   };
 };

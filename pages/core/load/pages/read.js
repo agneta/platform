@@ -64,13 +64,26 @@ module.exports = function(locals) {
             function(item) {
               //console.log('onItem:', item);
 
-              return readFile({
-                item: item,
-                dir: dir
-              });
+              return Promise.resolve()
+                .then(function() {
+                  return project.site.pages.count({
+                    source: item.path,
+                    mtime: item.mtime
+                  });
+                })
+                .then(function(count) {
+                  if (count) {
+                    //console.log('cached!');
+                    return;
+                  }
+                  return readFile({
+                    item: item,
+                    dir: dir
+                  });
+                });
             },
             {
-              concurrency: 10
+              concurrency: 2
             }
           );
         });

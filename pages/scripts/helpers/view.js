@@ -144,7 +144,6 @@ module.exports = function(locals) {
     return Promise.resolve()
       .then(function() {
         if (!commonData.templateChecked) {
-          console.log(page.pathSource);
           return helpers
             .get_page(page.pathSource)
             .then(function(commonPage) {
