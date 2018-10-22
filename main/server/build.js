@@ -2,11 +2,10 @@ const config = require('../config');
 const path = require('path');
 const start = require('../start');
 const paths = require('../paths');
-const Build = require(path.join(paths.pages.base, 'core/build'));
+const Build = require(path.join(paths.pages.base, 'core/builder'));
 const _ = require('lodash');
 
 module.exports = function(options) {
-
   options = options || {};
   options.env = options.env || 'local';
 
@@ -41,12 +40,7 @@ module.exports = function(options) {
 
   var build = Build(buildPages.locals);
 
-  return start.init([
-    buildServices,
-    buildPages
-  ])
-    .then(function() {
-      return build(options);
-    });
-
+  return start.init([buildServices, buildPages]).then(function() {
+    return build(options);
+  });
 };

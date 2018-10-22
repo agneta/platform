@@ -15,7 +15,6 @@
  *   limitations under the License.
  */
 module.exports = function(app) {
-
   var email = app.web.services.get('email');
 
   if (!email) {
@@ -23,7 +22,5 @@ module.exports = function(app) {
     app.set('email', email);
   }
 
-  require('./email/receiver')(app);
   require('./email/sender')(app);
-
 };

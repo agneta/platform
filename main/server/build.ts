@@ -2,7 +2,7 @@ const config = require('../config');
 const path = require('path');
 const start = require('../start');
 const paths = require('../paths');
-const Build = require(path.join(paths.pages.base, 'core/build'));
+const Build = require(path.join(paths.pages.base, 'core/builder'));
 const _ = require('lodash');
 
 export {};
