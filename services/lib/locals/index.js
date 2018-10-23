@@ -30,6 +30,7 @@ module.exports = function(app, options) {
   for (var name in options.paths.app.extensions) {
     var extPaths = options.paths.app.extensions[name];
     include.push(extPaths.services);
+    include.push(path.join(extPaths.base, 'common', 'services'));
   }
 
   if (options.isPortal) {
@@ -39,8 +40,10 @@ module.exports = function(app, options) {
     for (let name in webExtensions) {
       let extPaths = webExtensions[name];
       include.push(path.join(extPaths.base, 'portal', 'services'));
+      include.push(path.join(extPaths.base, 'common', 'services'));
     }
   }
+  include = _.uniq(include);
 
   app.set('env', env);
   app.set('website_dir', path.join(baseDir, 'website'));

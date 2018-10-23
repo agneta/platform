@@ -63,19 +63,6 @@ module.exports = function() {
       public: false
     },
     //-----------------------------------------
-    Contact_Address: {
-      dataSource: 'db',
-      public: false
-    },
-    Contact_Email: {
-      dataSource: 'db',
-      public: true
-    },
-    Contact_Email_Address: {
-      dataSource: 'db',
-      public: false
-    },
-    //-----------------------------------------
     // Account
     AccountRole: {
       dataSource: 'db',

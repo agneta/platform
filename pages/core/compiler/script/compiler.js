@@ -15,6 +15,37 @@ module.exports = function(locals) {
     modulesResolve.push(path.join(process.cwd(), 'node_modules'));
   }
 
+  const presets = [
+    [
+      require.resolve('@babel/preset-env'),
+      {
+        targets: {
+          browsers: ['since 2013']
+        }
+      }
+    ],
+    require.resolve('babel-preset-minify')
+  ];
+
+  function canParse(testPath) {
+    //console.log(testPath);
+    if (testPath.indexOf('/source/lib/') > 0) {
+      return;
+    }
+
+    let parsed = path.parse(testPath);
+    if (parsed.ext != '.js') {
+      return;
+    }
+
+    parsed = path.parse(parsed.name);
+    if (parsed.ext == '.min') {
+      return;
+    }
+
+    return true;
+  }
+
   function run(pathRelative, options) {
     options = options || {};
 
@@ -45,66 +76,42 @@ module.exports = function(locals) {
       stats,
       depDict = {};
 
-    if (!pathSource) {
-      return Promise.reject({
-        notfound: true,
-        message: `Did not find the source file at ${pathRelative}`
-      });
-    }
-
-    if (pathRelative.indexOf('/lib/') == 0) {
-      return Promise.reject({
-        skip: true,
-        message: 'We do not compile library files'
-      });
-    }
-
-    if (pathNameParsed.ext == '.min') {
-      return Promise.reject({
-        skip: true,
-        message: 'We do not compile minified files'
-      });
-    }
-
-    if (pathNameParsed.ext == '.module') {
-      return Promise.reject({
-        message: 'Modules are not supposed to be loaded'
-      });
-    }
-
-    let presets = [
-      [
-        require.resolve('@babel/preset-env'),
-        {
-          targets: {
-            browsers: ['since 2013']
-          }
-        }
-      ],
-      require.resolve('babel-preset-minify')
-    ];
-
-    function canParse(testPath) {
-      //console.log(testPath);
-      if (testPath.indexOf('/source/lib/') > 0) {
-        return;
-      }
-
-      let parsed = path.parse(testPath);
-      if (parsed.ext != '.js') {
-        return;
-      }
-
-      parsed = path.parse(parsed.name);
-      if (parsed.ext == '.min') {
-        return;
-      }
-
-      return true;
-    }
-
     return Promise.resolve()
       .then(function() {
+        if (!pathSource) {
+          return {
+            notfound: true,
+            message: `Did not find the source file at ${pathRelative}`
+          };
+        }
+
+        if (pathRelative.indexOf('/lib/') == 0) {
+          return {
+            skip: true,
+            message: 'We do not compile library files'
+          };
+        }
+
+        if (pathNameParsed.ext == '.min') {
+          return {
+            skip: true,
+            message: 'We do not compile minified files'
+          };
+        }
+
+        if (pathNameParsed.ext == '.module') {
+          return {
+            message: 'Modules are not supposed to be loaded'
+          };
+        }
+      })
+      .then(function(err) {
+        if (err) {
+          let error = new Error();
+          _.extend(error, err);
+          return Promise.reject(error);
+        }
+
         return fs
           .stat(pathSource)
           .then(function(_stats) {

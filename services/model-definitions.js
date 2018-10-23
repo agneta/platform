@@ -35,7 +35,6 @@ module.exports = function(app, generated) {
       return srcValue.concat(objValue);
     }
   }
-
   //-------------------------------------------
 
   return Promise.map(
