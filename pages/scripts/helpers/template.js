@@ -137,16 +137,10 @@ module.exports = function(locals) {
   });
 
   project.extend.helper.register('has_template', function(req) {
-    var path_partial = path.join(project.paths.app.source, req + '.ejs');
-
-    var res = this.is_file(path_partial);
-
+    var path_partial = path.join('source', req + '.ejs');
+    var res = project.theme.getFile(path_partial);
     if (res) {
       return true;
     }
-
-    path_partial = path.join(project.paths.app.frontend.source, req + '.ejs');
-
-    return this.is_file(path_partial);
   });
 };
