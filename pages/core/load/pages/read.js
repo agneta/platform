@@ -59,28 +59,16 @@ module.exports = function(locals) {
           });
           walker.on('error', reject);
         }).then(function(items) {
+          //console.log('total pages found:', items.length);
           return Promise.map(
             items,
             function(item) {
-              //console.log('onItem:', item);
-
-              return Promise.resolve()
-                .then(function() {
-                  return project.site.pages.count({
-                    source: item.path,
-                    mtime: item.mtime
-                  });
-                })
-                .then(function(count) {
-                  if (count) {
-                    //console.log('cached!');
-                    return;
-                  }
-                  return readFile({
-                    item: item,
-                    dir: dir
-                  });
+              return Promise.resolve().then(function() {
+                return readFile({
+                  item: item,
+                  dir: dir
                 });
+              });
             },
             {
               concurrency: 2

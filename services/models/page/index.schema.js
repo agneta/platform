@@ -10,6 +10,9 @@ module.exports = {
     title: {
       type: 'object'
     },
+    mtime: {
+      type: 'date'
+    },
     path: {
       type: 'String',
       required: true

@@ -4,6 +4,12 @@ module.exports = function(locals) {
   var appName = locals.app.get('name');
   var model = locals.services.models.Page;
 
+  console.log(project.paths.core.cache);
+  model.observe('after save', function(ctx) {
+    //console.log(ctx);
+    return Promise.resolve();
+  });
+
   project.site.pages = {
     upsertWithWhere: function(filter, data) {
       filter.app = appName;
@@ -31,7 +37,7 @@ module.exports = function(locals) {
       _.defaultsDeep(options, {
         app: appName
       });
-      return model.findOne(options);
+      return model.count(options);
     }
   };
 };

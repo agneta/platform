@@ -17,61 +17,63 @@
 const path = require('path');
 
 module.exports = function(locals) {
-  var project = locals.project;
   var helpers = locals.app.locals;
 
   return {
     run: function(page) {
-      return Promise.resolve().then(function() {
-        if (page.parent) {
-          var parent = helpers.get_page(page.parent);
+      return Promise.resolve()
+        .then(function() {
+          if (!page.parent) {
+            return;
+          }
+          return helpers.get_page(page.parent).then(function(parent) {
+            if (parent) {
+              page.parentPath = parent.path;
+            }
+          });
+        })
+        .then(function() {
+          //-----------------------------------------
 
-          if (!parent) {
-            parent = project.site.pages.findOne({
-              parentName: page.parent
+          var basePath = page.pathSource || page.path;
+
+          function checkBase(basePath) {
+            return Promise.resolve().then(function() {
+              if (page.parentPath) {
+                return;
+              }
+              basePath = path.parse(basePath).dir;
+
+              if (!basePath || basePath == '/') {
+                return;
+              }
+
+              return helpers.get_page(basePath).then(function(result) {
+                if (result) {
+                  page.parentPath = result.path;
+                }
+
+                return checkBase(basePath);
+              });
             });
           }
-          if (parent) {
-            page.parentPath = parent.path;
-          }
-        }
 
-        //-----------------------------------------
+          return checkBase(basePath).then(function() {
+            //-----------------------------------------
 
-        function findBase(basePage) {
-          basePage = helpers.get_page(basePage);
+            if (!page.parentPath) {
+              page.parentPath = '/';
+            }
 
-          if (basePage) {
-            page.parentPath = basePage.path;
-          }
-        }
+            if (page.templateSource == 'home') {
+              page.parentPath = null;
+            }
 
-        var basePath = page.pathSource || page.path;
-
-        while (!page.parentPath) {
-          basePath = path.parse(basePath).dir;
-
-          if (!basePath || basePath == '/') {
-            break;
-          }
-
-          findBase(basePath);
-        }
-
-        //-----------------------------------------
-
-        if (!page.parentPath) {
-          page.parentPath = '/';
-        }
-
-        if (page.templateSource == 'home') {
-          page.parentPath = null;
-        }
-
-        if (page.isDialog) {
-          delete page.parentPath;
-        }
-      });
+            if (page.isDialog) {
+              delete page.parentPath;
+            }
+          });
+        });
     }
   };
 };

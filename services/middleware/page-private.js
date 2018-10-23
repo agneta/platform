@@ -16,7 +16,7 @@
  */
 const path = require('path');
 const Promise = require('bluebird');
-const activity = require('./page-private/activity');
+//const activity = require('./page-private/activity');
 
 const typeAllowed = {
   view: true,
@@ -161,11 +161,12 @@ module.exports = function(app) {
                 };
 
                 return data.view.method(data).then(function() {
+                  /* TODO: First impement elastic search
                   return activity({
                     app: app,
                     req: req,
                     data: data
-                  });
+                  });*/
                 });
               });
           });
