@@ -5,8 +5,20 @@ module.exports = function(app) {
   if (!secretConfig) {
     return;
   }
-  var queue = new Queue('agneta', {
-    redis: secretConfig
-  });
+
+  var opts = {
+    createClient: function(type) {
+      switch (type) {
+        case 'client':
+          return app.redis.client;
+        case 'subscriber':
+          return app.redis.subscriber;
+        default:
+          return app.redis.createClient();
+      }
+    }
+  };
+
+  var queue = new Queue('agneta', opts);
   app.queue = queue;
 };

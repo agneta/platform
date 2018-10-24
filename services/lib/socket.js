@@ -26,45 +26,10 @@ module.exports = function(app, options) {
   var socket = {};
 
   socket.namespace = function(options) {
+    options.io = io.of(`/${options.name}`);
     namespaces[options.name] = options;
-    return namespaceMethods(options.name);
+    return options.io;
   };
-
-  function namespaceMethods(namespace, socket) {
-    var _socket;
-    if (socket) {
-      _socket = socket.exchange || socket;
-    }
-    _socket = _socket || io.exchange;
-
-    var result = {
-      on: function(name, cb) {
-        switch (name) {
-          case 'connection':
-            return io.on(name, function(socket) {
-              return cb(namespaceMethods(namespace, socket));
-            });
-        }
-
-        var channel = _socket.subscribe(namespace + '.' + name);
-        return channel.watch(cb);
-      },
-      emit: function(name, data) {
-        return _socket.publish(namespace + '.' + name, data);
-      }
-    };
-
-    if (socket) {
-      result.request = socket.request;
-    } else {
-      result.currentConnection = function(req) {
-        var sessionId = req.session.id;
-        return namespaceMethods(namespace, connections[sessionId]);
-      };
-    }
-
-    return result;
-  }
 
   io.use(function(socket, next) {
     console.log(socket);
