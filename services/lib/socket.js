@@ -18,19 +18,7 @@ const _ = require('lodash');
 const Promise = require('bluebird');
 
 module.exports = function(app, options) {
-  var worker = options.worker;
-  if (!worker) {
-    app.socket = {
-      namespace: function() {
-        return {
-          on: function() {},
-          emit: function() {}
-        };
-      }
-    };
-    return;
-  }
-  var server = worker.scServer;
+  var io = options.io;
   var cookieParser = require('cookie-parser')(app.secrets.get('cookie'));
 
   var connections = {};
@@ -47,13 +35,13 @@ module.exports = function(app, options) {
     if (socket) {
       _socket = socket.exchange || socket;
     }
-    _socket = _socket || server.exchange;
+    _socket = _socket || io.exchange;
 
     var result = {
       on: function(name, cb) {
         switch (name) {
           case 'connection':
-            return server.on(name, function(socket) {
+            return io.on(name, function(socket) {
               return cb(namespaceMethods(namespace, socket));
             });
         }
@@ -78,7 +66,9 @@ module.exports = function(app, options) {
     return result;
   }
 
-  server.addMiddleware(server.MIDDLEWARE_HANDSHAKE_WS, function(req, next) {
+  io.use(function(socket, next) {
+    console.log(socket);
+    var req;
     req.header = function(name) {
       return req.headers[name];
     };
@@ -105,8 +95,8 @@ module.exports = function(app, options) {
     });
   });
 
-  server.addMiddleware(server.MIDDLEWARE_PUBLISH_IN, function(req, next) {
-    var socket = req.socket;
+  io.use(function(socket, next) {
+    var req;
     var request = req.socket.request;
     var parts = req.channel.split('.');
     var name = parts[0];
@@ -150,8 +140,8 @@ module.exports = function(app, options) {
     next();
   });
 
-  server.on('connection', function(socket) {
-    var client = server.clients[socket.id];
+  io.on('connection', function(socket) {
+    var client = io.clients[socket.id];
     client.headers = socket.request.headers;
 
     var sessionId = _.get(socket, 'request.signedCookies.agneta_session');
@@ -167,6 +157,6 @@ module.exports = function(app, options) {
     });
   });
 
-  socket.server = server;
+  socket.io = io;
   app.socket = socket;
 };

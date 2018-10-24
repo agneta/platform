@@ -32,7 +32,7 @@ module.exports = function(options) {
   });
 
   var services = start.services({
-    worker: options.worker,
+    io: options.io,
     dir: projectPaths.project,
     client: webPages.locals,
     server: options.server,

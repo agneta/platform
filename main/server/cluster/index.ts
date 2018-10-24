@@ -14,12 +14,10 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-const path = require('path');
 const express = require('express');
-const SocketCluster = require('socketcluster');
-
-//var workerCount = process.env.WEB_CONCURRENCY || 1;
-// TODO: Make more stable the multiple workers
+const io = require('socket.io')(3000);
+const redis = require('socket.io-redis');
+const chalk = require('chalk');
 
 module.exports = function(options) {
   var socketPath = '/socket';
@@ -39,32 +37,41 @@ module.exports = function(options) {
     res.redirect('https://' + host + req.url);
   });
 
-  http.listen(process.env.PORT_HTTP);
-
   //---------------------------------------------------
   // HTTPS connections with socket cluster
-  var clusterOptions = {
-    workers: 1,
-    brokers: 1,
-    port: process.env.PORT,
-    protocol: 'https',
+
+  const io = require('socket.io')({
     path: socketPath,
-    wsEngine: 'sc-uws',
-    rebootWorkerOnCrash: true,
-    environment: 'prod',
-    workerController: path.join(__dirname, 'worker.js'),
-    logLevel: 3,
-    protocolOptions: options.protocolOptions
-  };
+    serveClient: false
+  });
 
-  var socketCluster = new SocketCluster(clusterOptions);
+  // either
+  const https = require('https').createServer(options.protocolOptions);
 
-  return require('./master')
-    .run(socketCluster)
-    .then(function(result) {
-      return {
-        port: process.env.PORT,
-        result: result
-      };
-    });
+  io.attach(https, {
+    pingInterval: 10000,
+    pingTimeout: 5000,
+    cookie: false
+  });
+
+  return require('./worker')({
+    server: https,
+    io: io
+  }).then(function(result) {
+    console.log(result);
+    var redisOptions = result.services.secrets.get('redis');
+    io.adapter(redis(redisOptions));
+
+    http.listen(process.env.PORT_HTTP);
+    https.listen(process.env.PORT);
+
+    console.log(chalk.bold.green('Application is available'));
+    console.log(`HTTPS port: ${process.env.PORT}`);
+    console.log(`HTTP port: ${process.env.PORT_HTTP}`);
+
+    return {
+      port: process.env.PORT,
+      result: result
+    };
+  });
 };

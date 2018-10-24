@@ -5,7 +5,6 @@ module.exports = function(app) {
   if (!secretConfig) {
     return;
   }
-  console.log(secretConfig);
   var queue = new Queue('agneta', {
     redis: secretConfig
   });

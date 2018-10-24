@@ -25,8 +25,6 @@ const loopback = require('loopback');
 const chalk = require('chalk');
 const path = require('path');
 const Promise = require('bluebird');
-const EventEmitter = require('events').EventEmitter;
-var SCWorker = require('socketcluster/scworker');
 
 Promise.config({
   // Enables all warnings except forgotten return statements.
@@ -54,70 +52,41 @@ if (process.env.NODE_ENV == 'development') {
 const dirAbsolute = path.join(process.env.HOME, '.agneta');
 process.env.XDG_CONFIG_HOME = dirAbsolute;
 
-class Worker extends SCWorker {
-  run() {
-    var worker = this;
-    var app: any;
-    var server: any;
-    var emitter = new EventEmitter();
+module.exports = function(options) {
+  var app: any;
+  var server: any;
 
-    switch (process.env.MODE) {
-      case 'pages':
-        app = express();
-        server = require('../pages');
-        break;
-      case 'services':
-        app = loopback();
-        server = require('../services');
-        break;
-      case 'live':
-        app = loopback();
-        server = require('../live');
-        break;
-      case 'portal':
-        app = express();
-        server = require('../portal');
-        break;
-      default:
-        throw new Error(`Unrecognized process mode: ${process.env.MODE}`);
-    }
-
-    //--------------------------------
-
-    var httpServer = worker.httpServer;
-    var starting = true;
-    httpServer.on('request', app);
-
-    app.set('trust proxy', 1);
-
-    app.use(function(req: Request, res: Response, next: NextFunction) {
-      if (starting) {
-        emitter.on('available', next);
-        return;
-      }
-      next();
-    });
-
-    Promise.resolve()
-      .then(function() {
-        return server({
-          worker: worker,
-          server: httpServer,
-          app: app
-        });
-      })
-      .then(function(result: any) {
-        starting = false;
-        console.log(chalk.bold.green('Application is available'));
-        console.log(`HTTPS port: ${process.env.PORT}`);
-        console.log(`HTTP port: ${process.env.PORT_HTTP}`);
-        emitter.emit('available');
-        worker.sendToMaster({
-          started: true,
-          result: result
-        });
-      });
+  switch (process.env.MODE) {
+    case 'pages':
+      app = express();
+      server = require('../pages');
+      break;
+    case 'services':
+      app = loopback();
+      server = require('../services');
+      break;
+    case 'live':
+      app = loopback();
+      server = require('../live');
+      break;
+    case 'portal':
+      app = express();
+      server = require('../portal');
+      break;
+    default:
+      throw new Error(`Unrecognized process mode: ${process.env.MODE}`);
   }
-}
 
-new Worker();
+  //--------------------------------
+
+  options.server.on('request', app);
+  app.set('trust proxy', 1);
+
+  return Promise.resolve().then(function() {
+    return server({
+      server: options.server,
+      io: options.io,
+      app: app
+    });
+  });
+};

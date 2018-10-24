@@ -46,7 +46,6 @@ interface ServerOptions {
 
 var options: ServerOptions = {};
 var protocol = 'http';
-var port = '443';
 
 module.exports = Promise.resolve()
   .then(function() {

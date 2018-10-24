@@ -26,7 +26,7 @@ module.exports = function(options: any) {
 
   var commonOptions = {
     mainApp: app,
-    worker: options.worker,
+    io: options.io,
     server: server
   };
   //-----------------------------------------------------

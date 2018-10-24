@@ -22,14 +22,14 @@ module.exports = function(options: any) {
 
   var webPages = start.website({
     root: '',
-    worker: options.worker,
+    io: options.io,
     dir: projectPaths.project,
     server: options.server,
     app: options.app
   });
 
   var services = start.services({
-    worker: options.worker,
+    io: options.io,
     dir: projectPaths.project,
     server: options.server
   });
