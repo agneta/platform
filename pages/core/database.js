@@ -18,20 +18,10 @@ module.exports = function(locals) {
       return model.upsertWithWhere(filter, data);
     },
     find: function(options) {
-      _.defaultsDeep(options, {
-        where: {
-          app: appName
-        }
-      });
-      return model.find(options);
+      return model.find(fixFilter(options));
     },
     findOne: function(options) {
-      _.defaultsDeep(options, {
-        where: {
-          app: appName
-        }
-      });
-      return model.findOne(options);
+      return model.findOne(fixFilter(options));
     },
     count: function(options) {
       _.defaultsDeep(options, {
@@ -40,4 +30,20 @@ module.exports = function(locals) {
       return model.count(options);
     }
   };
+
+  function fixFilter(options) {
+    if (!options.where) {
+      options = {
+        where: options
+      };
+    }
+
+    _.defaultsDeep(options, {
+      where: {
+        app: appName
+      }
+    });
+
+    return options;
+  }
 };
