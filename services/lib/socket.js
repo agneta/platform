@@ -42,6 +42,11 @@ module.exports = function(app, options) {
         allow: []
       }
     });
+
+    if (!options.auth.allow.length) {
+      options.auth.skip = true;
+    }
+
     options.auth.allow = _.zipObject(
       options.auth.allow,
       _.map(options.auth.allow, function() {
@@ -139,22 +144,25 @@ module.exports = function(app, options) {
       callback();
     });
     socket.on('join', function(roomName) {
-      var authenticated = isAuthenticated({
+      var allowed = isAllowed({
         room: roomName,
         request: socket.request
       });
 
-      if (authenticated) {
+      if (allowed) {
         console.log('Socket joined ' + roomName);
         socket.join(roomName);
       }
     });
   });
 
-  function isAuthenticated(options) {
+  function isAllowed(options) {
     var roomConfig = rooms[options.room];
     if (!roomConfig) {
       return;
+    }
+    if (roomConfig.auth.skip) {
+      return true;
     }
     var token = options.request.accessToken;
     if (token) {
