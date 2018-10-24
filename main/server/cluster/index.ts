@@ -58,9 +58,13 @@ module.exports = function(options) {
     server: https,
     io: io
   }).then(function(result) {
-    console.log(result);
-    var redisOptions = result.services.secrets.get('redis');
-    io.adapter(redis(redisOptions));
+    var services = result.services;
+    io.adapter(
+      redis({
+        pubClient: services.redis.publisher,
+        subClient: services.redis.subscriber
+      })
+    );
 
     http.listen(process.env.PORT_HTTP);
     https.listen(process.env.PORT);

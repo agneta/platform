@@ -88,7 +88,6 @@ module.exports = function(options: any) {
 
   webPages.locals.portal = portalServices.locals.app;
   webPages.locals.services = webServices.locals.app;
-  webPages.locals.build = require('./build');
 
   storage.locals.services = webServices.locals;
 
@@ -102,7 +101,7 @@ module.exports = function(options: any) {
       );
 
       return {
-        portalSettings: _.pick(portalServices.locals.app.settings, ['account'])
+        services: webServices.locals.app
       };
     });
 };

@@ -10,7 +10,7 @@ module.exports = function(app) {
     createClient: function(type) {
       switch (type) {
         case 'client':
-          return app.redis.client;
+          return app.redis.publisher;
         case 'subscriber':
           return app.redis.subscriber;
         default:

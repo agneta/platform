@@ -19,6 +19,17 @@ const Promise = require('bluebird');
 
 module.exports = function(app, options) {
   var io = options.io;
+  if (!io) {
+    app.socket = {
+      namespace: function() {
+        return {
+          on: function() {},
+          emit: function() {}
+        };
+      }
+    };
+    return;
+  }
   var cookieParser = require('cookie-parser')(app.secrets.get('cookie'));
 
   var connections = {};
