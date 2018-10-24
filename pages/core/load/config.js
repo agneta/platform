@@ -148,7 +148,7 @@ module.exports = function(locals) {
 
         project.site.services = {
           url: servicesUrl,
-          host: servicesParsed.host,
+          host: url.format(_.pick(servicesParsed, ['protocol', 'host'])),
           view: urljoin(servicesUrl, viewPath)
         };
         //console.log('pages:url_services', project.site.services.url);

@@ -18,24 +18,26 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 module.exports = function(locals) {
-
   locals.app = express();
   var app = locals.app;
   var project = locals.project;
 
-  app.use(bodyParser.urlencoded({
-    extended: false
-  }));
+  app.use(
+    bodyParser.urlencoded({
+      extended: false
+    })
+  );
   app.use(bodyParser.json());
 
-  var sources = [{
-    name: 'project',
-    path: project.paths.app.source
-  },
-  {
-    name: 'theme',
-    path: project.paths.app.frontend.source
-  }
+  var sources = [
+    {
+      name: 'project',
+      path: project.paths.app.source
+    },
+    {
+      name: 'theme',
+      path: project.paths.app.frontend.source
+    }
   ];
 
   if (locals.includeSources) {
@@ -55,27 +57,4 @@ module.exports = function(locals) {
   // middleware for rendering pages
 
   require('../core/get')(locals);
-
-  //--------------------------------------------------
-  // Return not found page
-
-  app.use(function(req,res,next){
-
-    Promise.resolve()
-      .then(function() {
-        return locals.app.renderPage('error/not-found', project.config.language.default.key);
-      })
-      .then(function(content) {
-
-        if (!content) {
-          return next();
-        }
-
-        res.status(404);
-        res.send(content);
-
-      })
-      .catch(next);
-  });
-
 };

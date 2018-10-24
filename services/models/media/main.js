@@ -24,7 +24,7 @@ module.exports = function(Model, app, options) {
     }
   };
 
-  Model.io = app.socket.namespace(mediaOptions);
+  Model.io = app.socket.room(mediaOptions);
 
   Model.__tempUploads = path.join('temp/uploads', options.name);
   Model.__bucket = options.bucket;

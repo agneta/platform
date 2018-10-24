@@ -45,7 +45,6 @@ interface ServerOptions {
 }
 
 var options: ServerOptions = {};
-var protocol = 'http';
 
 module.exports = Promise.resolve()
   .then(function() {
@@ -79,7 +78,6 @@ module.exports = Promise.resolve()
 
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     options.protocolOptions = protocolOptions;
-    protocol = 'https';
   })
   .then(function() {
     return Promise.map(['PORT', 'PORT_HTTP'], setPort);
@@ -108,7 +106,7 @@ module.exports = Promise.resolve()
 
     if (!process.env.ENDPOINT) {
       let options: any = {
-        protocol: protocol,
+        protocol: 'https',
         hostname: process.env.HOST_NAME
       };
       if (process.env.HOST_NAME == 'localhost') {

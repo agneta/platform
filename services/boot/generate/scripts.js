@@ -7,22 +7,21 @@ module.exports = function(app) {
   var client = app.client;
   var project = client.project;
 
-  return function(options){
-
+  return function(options) {
     options = options || {};
     var outputDir = options.outputDir || project.paths.app.generated;
     var log = options.log || console.log;
     var filter = options.filter;
     return Promise.resolve()
       .then(function() {
-        if(filter && !filter.services){
+        if (filter && !filter.services) {
           return;
         }
         log('Exporting Services...');
         return services();
       })
       .then(function() {
-        if(filter && !filter.bundles){
+        if (filter && !filter.bundles) {
           return;
         }
         log('Exporting Library Bundle...');
@@ -32,7 +31,7 @@ module.exports = function(app) {
         });
       })
       .then(function() {
-        if(filter && !filter.bundles){
+        if (filter && !filter.bundles) {
           return;
         }
         log('Exporting App Script...');
@@ -40,7 +39,6 @@ module.exports = function(app) {
           name: 'app'
         });
       });
-
 
     function bundle(optionsBundle) {
       let scripts = [];
@@ -51,14 +49,12 @@ module.exports = function(app) {
         .then(function() {
           let content = '';
 
-          for (var script of project.config.scripts[
-            optionsBundle.name
-          ]) {
+          for (var script of project.config.scripts[optionsBundle.name]) {
             scripts.push(script);
           }
 
-          scripts = scripts.map(function(script){
-            if(_.isString(script)){
+          scripts = scripts.map(function(script) {
+            if (_.isString(script)) {
               return {
                 path: script
               };
@@ -66,13 +62,12 @@ module.exports = function(app) {
             return script;
           });
 
-          scripts = _.uniqBy(scripts,'path');
+          scripts = _.uniqBy(scripts, 'path');
 
-          scripts = scripts.map(function(script){
-
+          scripts = scripts.map(function(script) {
             var scriptPath = script.path || script;
 
-            if(script.name){
+            if (script.name) {
               content += `window.${script.name}=`;
             }
 
@@ -80,11 +75,9 @@ module.exports = function(app) {
           });
 
           return fs.outputFile(sourcePath, content);
-
         })
-        .then(function(){
-
-          if(!optionsBundle.compile){
+        .then(function() {
+          if (!optionsBundle.compile) {
             return;
           }
           var targetParsed = path.parse(target);
@@ -92,15 +85,12 @@ module.exports = function(app) {
           return project.compiler.script.compile(target, {
             base: outputDir,
             output: outputDir,
-            outputName: targetParsed.name+'.min'+targetParsed.ext,
+            outputName: targetParsed.name + '.min' + targetParsed.ext
           });
         });
-
-
     }
 
     function services() {
-
       var script = generator.services(app, {});
       var token = app.get('token');
 
@@ -118,10 +108,9 @@ module.exports = function(app) {
           return project.compiler.script.compile(target, {
             base: outputDir,
             output: outputDir,
-            outputName: targetParsed.name+'.min'+targetParsed.ext,
+            outputName: targetParsed.name + '.min' + targetParsed.ext
           });
         });
     }
   };
-
 };

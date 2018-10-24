@@ -15,13 +15,10 @@
  *   limitations under the License.
  */
 module.exports = function(Model, app) {
-
-  Model.io = app.socket.namespace({
+  Model.io = app.socket.room({
     name: 'process',
     auth: {
-      allow: [
-        'administrator'
-      ]
+      allow: ['administrator']
     }
   });
 
@@ -31,5 +28,4 @@ module.exports = function(Model, app) {
 
   require('./process/changes/list')(Model, app);
   require('./process/changes/refresh')(Model, app);
-
 };

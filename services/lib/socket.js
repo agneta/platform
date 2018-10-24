@@ -16,12 +16,13 @@
  */
 const _ = require('lodash');
 const Promise = require('bluebird');
+const events = require('events');
 
 module.exports = function(app, options) {
   var io = options.io;
   if (!io) {
     app.socket = {
-      namespace: function() {
+      room: function() {
         return {
           on: function() {},
           emit: function() {}
@@ -32,23 +33,57 @@ module.exports = function(app, options) {
   }
   var cookieParser = require('cookie-parser')(app.secrets.get('cookie'));
 
-  var connections = {};
-  var namespaces = {};
-  var socket = {};
+  var rooms = {};
+  let result = {};
 
-  socket.namespace = function(options) {
-    options.io = io.of(`/${options.name}`);
-    namespaces[options.name] = options;
-    return options.io;
+  result.room = function(options) {
+    _.defaultsDeep(options, {
+      auth: {
+        allow: []
+      }
+    });
+    options.auth.allow = _.zipObject(
+      options.auth.allow,
+      _.map(options.auth.allow, function() {
+        return true;
+      })
+    );
+
+    var roomName = options.name;
+
+    var em = new events.EventEmitter();
+
+    var socket = {
+      on: em.on,
+      once: em.once,
+      emit: function(name, data) {
+        return io.sockets.to(roomName).emit(getPath(name), data);
+      }
+    };
+
+    options.emmiter = em;
+    options.socket = socket;
+    rooms[options.name] = options;
+
+    return socket;
+
+    function getPath(name) {
+      return `${roomName}.${name}`;
+    }
   };
 
-  io.use(function(socket, next) {
-    console.log(socket);
-    var req;
+  function makeRequest(socket) {
+    var req = socket.request;
     req.header = function(name) {
       return req.headers[name];
     };
     req.app = app;
+    return req;
+  }
+
+  io.use(function(socket, next) {
+    //console.log(socket.handshake);
+    var req = makeRequest(socket);
 
     cookieParser(req, null, function() {
       Promise.resolve()
@@ -71,68 +106,66 @@ module.exports = function(app, options) {
     });
   });
 
-  io.use(function(socket, next) {
-    var req;
-    var request = req.socket.request;
-    var parts = req.channel.split('.');
-    var name = parts[0];
-
-    if (name) {
-      var namespace = namespaces[name];
-
-      if (namespace) {
-        var auth = namespace.auth;
-
-        if (auth) {
-          if (auth.allow) {
-            var authenticated = false;
-
-            var allow = _.zipObject(
-              auth.allow,
-              _.map(auth.allow, function() {
-                return true;
-              })
-            );
-
-            var token = request.accessToken;
-            if (token) {
-              for (var key in allow) {
-                if (token.roles[key]) {
-                  authenticated = true;
-                  break;
-                }
-              }
-            }
-
-            if (!authenticated) {
-              socket.kickOut(req.channel);
-              return;
-            }
-          }
-        }
-      }
-    }
-
-    next();
-  });
-
   io.on('connection', function(socket) {
-    var client = io.clients[socket.id];
-    client.headers = socket.request.headers;
+    socket.use(function(packet, callback) {
+      function emit() {
+        var event = {
+          name: packet[0],
+          data: packet[1]
+        };
 
-    var sessionId = _.get(socket, 'request.signedCookies.agneta_session');
+        var nameParsed = event.name.split('.');
+        var roomName = nameParsed.shift();
+        var method = nameParsed.join('.');
 
-    if (!sessionId) {
-      return;
-    }
+        if (!roomName) {
+          return;
+        }
 
-    connections[sessionId] = socket;
+        if (!socket.rooms[roomName]) {
+          return;
+        }
 
-    socket.on('disconnect', function() {
-      delete connections[sessionId];
+        var roomConfig = rooms[roomName];
+
+        if (!roomConfig) {
+          return;
+        }
+
+        roomConfig.emmiter.emit(method);
+      }
+
+      emit();
+      callback();
+    });
+    socket.on('join', function(roomName) {
+      var authenticated = isAuthenticated({
+        room: roomName,
+        request: socket.request
+      });
+
+      if (authenticated) {
+        console.log('Socket joined ' + roomName);
+        socket.join(roomName);
+      }
     });
   });
 
-  socket.io = io;
-  app.socket = socket;
+  function isAuthenticated(options) {
+    var roomConfig = rooms[options.room];
+    if (!roomConfig) {
+      return;
+    }
+    var token = options.request.accessToken;
+    if (token) {
+      for (var key in roomConfig.auth.allow) {
+        if (token.roles[key]) {
+          return true;
+        }
+      }
+    }
+  }
+
+  result.io = io;
+  app.socket = result;
 };

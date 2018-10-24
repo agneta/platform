@@ -48,12 +48,6 @@ module.exports = function(options) {
   // either
   const https = require('https').createServer(options.protocolOptions);
 
-  io.attach(https, {
-    pingInterval: 10000,
-    pingTimeout: 5000,
-    cookie: false
-  });
-
   return require('./worker')({
     server: https,
     io: io
@@ -65,6 +59,8 @@ module.exports = function(options) {
         subClient: services.redis.subscriber
       })
     );
+
+    io.attach(https);
 
     http.listen(process.env.PORT_HTTP);
     https.listen(process.env.PORT);
