@@ -18,7 +18,6 @@ module.exports = function(locals) {
 
   model.observe('after save', function() {
     return Promise.resolve().then(function() {
-      console.log('cache reset');
       cache.reset();
     });
   });
