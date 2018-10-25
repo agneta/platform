@@ -42,6 +42,7 @@ module.exports = function(options) {
     var __upsertWithWhere = Model.upsertWithWhere;
     Model.upsertWithWhere = function() {
       var args = arguments;
+
       return __upsertWithWhere.apply(Model, args).catch(function(err) {
         if (err.code == 11000) {
           return Model.upsertWithWhere.apply(Model, args);

@@ -24,23 +24,28 @@ module.exports = function(app) {
 
     model.observe('before save', function(ctx) {
       var instance = ctx.data || ctx.currentInstance || ctx.instance;
-      var itemPath = instance.path.split('/');
-      itemPath = _.compact(itemPath);
-      itemPath.pop();
-      itemPath = itemPath.join('/');
-      return app.models.Directory.upsertWithWhere(
-        {
-          path: itemPath,
-          namespace: config.namespace
-        },
-        {
-          name: path.parse(itemPath).name || 'root',
-          namespace: config.namespace,
-          path: itemPath
-        }
-      ).then(function(directory) {
-        instance.dirId = directory.id;
-      });
+
+      return Promise.resolve()
+        .then(function() {
+          var itemPath = instance.path.split('/');
+          itemPath = _.compact(itemPath);
+          itemPath.pop();
+          itemPath = itemPath.join('/');
+          return app.models.Directory.upsertWithWhere(
+            {
+              path: itemPath,
+              namespace: config.namespace
+            },
+            {
+              name: path.parse(itemPath).name || 'root',
+              namespace: config.namespace,
+              path: itemPath
+            }
+          );
+        })
+        .then(function(directory) {
+          instance.dirId = directory.id;
+        });
     });
 
     function list(options) {

@@ -17,8 +17,10 @@ module.exports = function(locals) {
   });
 
   model.observe('after save', function() {
-    console.log('cache reset');
-    cache.reset();
+    return Promise.resolve().then(function() {
+      console.log('cache reset');
+      cache.reset();
+    });
   });
 
   project.site.pages = {

@@ -42,7 +42,6 @@ module.exports = function(locals) {
       }
 
       rules.run(data);
-
       return paths.run(data).then(function() {
         return Page.upsertWithWhere(
           {

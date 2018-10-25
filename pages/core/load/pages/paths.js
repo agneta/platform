@@ -33,6 +33,9 @@ module.exports = function(locals) {
           });
         })
         .then(function() {
+          if (page.parentPath) {
+            return;
+          }
           //-----------------------------------------
 
           var basePath = page.pathSource || page.path;
@@ -58,21 +61,22 @@ module.exports = function(locals) {
             });
           }
 
-          return checkBase(basePath).then(function() {
-            //-----------------------------------------
+          return checkBase(basePath);
+        })
+        .then(function() {
+          //-----------------------------------------
 
-            if (!page.parentPath) {
-              page.parentPath = '/';
-            }
+          if (!page.parentPath) {
+            page.parentPath = '/';
+          }
 
-            if (page.templateSource == 'home') {
-              page.parentPath = null;
-            }
+          if (page.templateSource == 'home') {
+            page.parentPath = null;
+          }
 
-            if (page.isDialog) {
-              delete page.parentPath;
-            }
-          });
+          if (page.isDialog) {
+            delete page.parentPath;
+          }
         });
     }
   };

@@ -26,7 +26,6 @@ module.exports = function(locals) {
     if (pageExists(path_url)) {
       return;
     }
-
     return project.site.pages
       .count({
         source: filePath,
@@ -114,6 +113,7 @@ module.exports = function(locals) {
             var pagePath = locals.page.parseFilename(data.path);
             pagePaths[pagePath] = true;
             //console.log(data.path);
+
             return locals.page.process(data);
           });
       });
