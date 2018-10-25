@@ -57,4 +57,25 @@ module.exports = function(locals) {
   // middleware for rendering pages
 
   require('../core/get')(locals);
+
+  //--------------------------------------------------
+  // Return not found page
+
+  app.use(function(req, res, next) {
+    Promise.resolve()
+      .then(function() {
+        return locals.app.renderPage(
+          'error/not-found',
+          project.config.language.default.key
+        );
+      })
+      .then(function(content) {
+        if (!content) {
+          return next();
+        }
+        res.status(404);
+        res.send(content);
+      })
+      .catch(next);
+  });
 };

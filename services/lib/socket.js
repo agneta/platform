@@ -150,7 +150,7 @@ module.exports = function(app, options) {
       });
 
       if (allowed) {
-        console.log('Socket joined ' + roomName);
+        //console.log('Socket joined ' + roomName);
         socket.join(roomName);
       }
     });
