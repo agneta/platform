@@ -27,14 +27,25 @@ module.exports = function(options) {
 
     var __findOrCreate = Model.findOrCreate;
     Model.findOrCreate = function(findOptions) {
-      return __findOrCreate.apply(Model, arguments).catch(function(err) {
-        if (err.code == 11000) {
-          return Model.findOne(findOptions).then(function(item) {
-            return [item];
-          });
-        }
-        return Promise.reject(err);
-      });
+      return __findOrCreate
+        .apply(Model, arguments)
+        .catch(function(err) {
+          if (err.code == 11000) {
+            return Model.findOne(findOptions).then(function(item) {
+              return [item];
+            });
+          }
+          return Promise.reject(err);
+        })
+        .then(function(result) {
+          var data = {
+            instance: result[0],
+            created: result[1]
+          };
+          data[0] = data.instance;
+          data[1] = data.created;
+          return data;
+        });
     };
 
     //--------------------------------
